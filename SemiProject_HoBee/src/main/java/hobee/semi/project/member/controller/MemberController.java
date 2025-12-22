@@ -1,7 +1,8 @@
-package hobee.semi.project.main.controller;
+package hobee.semi.project.member.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
@@ -11,9 +12,15 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("member")
 public class MemberController {
 
-	@GetMapping("login")
+	@GetMapping("loginPage")
 	public String loginPage() {
+		return"member/loginPage";
+	}
+	
+	@PostMapping("loginPage")
+	public String login() {
 		
-		return"member/login";
+		
+		return"redirect:/";
 	}
 }
