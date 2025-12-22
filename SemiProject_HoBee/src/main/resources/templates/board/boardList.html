@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자유게시판</title>
+    <link rel="stylesheet" href="/css/board/boardList-style.css"> 
+     
+</head>
+<body>
+    <main>
+        <th:block th:replace="~{common/header}"></th:block>
+
+<section class="board-list container">
+    <th:block th:each="boardType : ${application.boardTypeList}">
+        <h1 class="board-name" th:if="${boardType.boardCode} == ${boardCode}" th:text="${boardType.boardName}">게시판 이름</h1>
+    </th:block>
+
+    <div class="contents-column">
+        
+        <div class="top-boxes">
+            <div class="top-box">
+                <h2>공지사항</h2>
+                <ul th:if="${not #lists.isEmpty(noticeList)}">
+                    <li th:each="notice : ${noticeList}">
+                        <a th:href="@{/board/1/${notice.boardNo}}" th:text="${notice.boardTitle}">공지글 제목</a>
+                    </li>
+                </ul>
+                <p th:if="${#lists.isEmpty(noticeList)}">등록된 공지가 없습니다.</p>
+            </div>
+
+            <div class="top-box">
+                <h2>취미게시판 RANKING</h2>
+                <ol th:if="${not #lists.isEmpty(rankList)}">
+                    <li th:each="rank : ${rankList}">
+                        <span th:text="${rank.boardTitle}">인기글 제목</span>
+                        <small th:text="| (추천: ${rank.likeCount})|"></small>
+                    </li>
+                </ol>
+                <p th:if="${#lists.isEmpty(rankList)}">순위 데이터가 없습니다.</p>
+            </div>
+        </div>
+
+        <div class="main-table-box">
+            <table class="list-table">
+                <thead>
+                    <tr>
+                        <th>게시글번호</th>
+                        <th>게시글제목</th>
+                        <th>회원이름</th>
+                        <th>게시글작성일</th>
+                        <th>조회수</th>
+                        <th>추천수</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <th:block th:if="${#lists.isEmpty(boardList)}">
+                        <tr><th colspan="6">게시글이 존재하지 않습니다.</th></tr>
+                    </th:block>
+
+                    <th:block th:unless="${#lists.isEmpty(boardList)}">
+                        <tr th:each="board : ${boardList}" th:object="${board}">
+                            <td th:text="*{boardNo}">1</td>
+                            <td class="text-left">
+                                <a th:href="@{/board/{boardCode}/{boardNo}(boardCode=${boardCode}, boardNo=*{boardNo}, cp=${pagination.currentPage})}" 
+                                   th:text="*{boardTitle}">제목</a>
+                                <th:block th:text="|[*{commentCount}]|"></th:block>
+                            </td>
+                            <td th:text="*{memberNickname}">작성자</td>
+                            <td th:text="*{boardWriteDate}">2023-12-22</td>
+                            <td th:text="*{readCount}">0</td>
+                            <td th:text="*{likeCount}">0</td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination-area">
+            <ul class="pagination" th:object="${pagination}">
+                <li><a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=1, key=${param.key}, query=${param.query})}">&lt;&lt;</a></li>
+                <li><a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{prevPage}, key=${param.key}, query=${param.query})}">&lt;</a></li>
+                <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
+                    <li th:if="${i > 0}">
+                        <a th:classappend="${i == pagination.currentPage} ? 'current'"
+                           th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=${i}, key=${param.key}, query=${param.query})}"
+                           th:text="${i}">1</a>
+                    </li>
+                </th:block>
+                <li><a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{nextPage}, key=${param.key}, query=${param.query})}">&gt;</a></li>
+                <li><a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{maxPage}, key=${param.key}, query=${param.query})}">&gt;&gt;</a></li>
+            </ul>
+        </div>
+
+        <form th:action="@{/board/{boardCode}(boardCode=${boardCode})}" method="get" id="boardSearch">
+            <select name="key" id="searchKey">
+                <option value="t">제목</option>
+                <option value="c">내용</option>
+                <option value="tc">제목+내용</option>
+                <option value="w">작성자</option>
+            </select>
+            <input type="text" name="query" id="searchQuery" placeholder="검색어를 입력해주세요.">
+            <button class="btn-search">검색</button>
+        </form>
+        
+        <div class="btn-area" style="text-align: right; margin-top: 10px;">
+            <button id="insertBtn" th:if="${session.loginMember}" class="btn-search">글쓰기</button>
+        </div>
+    </div>
+</section>
+</body>
+</html>
