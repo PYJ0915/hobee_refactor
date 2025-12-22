@@ -1,7 +1,6 @@
 /* 전체 배경 */
 body {
   margin: 0;
-  background-color: #FFF57E;
 }
 
 /* 컨테이너 */
@@ -10,12 +9,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #FFF57E;
 }
 
 /* 박스 */
 .start-box {
   text-align: center;
-  background-color: #FFF57E;
   padding: 60px 40px;
 }
 
