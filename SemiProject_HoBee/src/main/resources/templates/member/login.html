@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <th:block th:replace="~{common/header}"></th:block>
+
+    <main>
+
+        <h1>로그인</h1>
+
+        <form action="/member/login" method="post" name="login" id="login">
+            <section>
+
+                <h3>아이디</h3>
+                <input type="text" name="memberId" class="id">
+    
+                <h3>비밀번호</h3>
+                <input type="password" name="memberPw" class="pw">
+    
+                <button id="login-btn">로그인</button>
+                
+                <label>
+                    <input type="checkbox" name="saveId">아이디 저장
+                </label>
+                
+            </section>
+        </form>
+        
+        <div>
+            <button id="idSerch">아이디 찾기</button>
+            <button id="pwSerch">비밀번호 찾기</button>
+        </div>
+
+
+    </main>
+
+
+
+
+
+
+
+
+    <th:block th:replace="~{common/footer}"></th:block>
+    
+</body>
+</html>
