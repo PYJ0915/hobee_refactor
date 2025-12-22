@@ -15,7 +15,7 @@ public class FindHobbyController {
 	
 	@GetMapping("start")
 	public String findHobbyStart() {
-		return "findHobby/question1";
+		return "findHobby/questions/question1";
 	}
 	
 	
