@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>HO-BEE</title>
+
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/main.css">
+
+<th:block th:replace="~{common/common}"></th:block>
+</head>
+<body>
+
+<th:block th:replace="~{common/header}"></th:block>
+
+<main>
+
+  <!-- Hero Banner -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>HO-BEE</h1>
+      <p>Find your hobby!!</p>
+    </div>
+  </section>
+
+  <!-- Intro -->
+  <section class="intro">
+    <div class="intro-card">
+      <div class="intro-logo">
+        <img src="/images/logo/logo-main.png" alt="Ho-bee 메인 로고">
+      </div>
+      <div class="intro-text">
+        <p>
+          Ho-bee는 취미를 통해 사람과 사람을 연결하는 커뮤니티 플랫폼입니다.<br>
+          나에게 맞는 취미를 발견하고, 같은 관심사를 가진 사람들과 소통하며<br>
+          일상에 새로운 즐거움을 더해보세요.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="categories">
+    <div class="category">
+      <i class="fa-solid fa-baseball"></i>
+      <p>운동·레저</p>
+    </div>
+    <div class="category">
+      <i class="fa-solid fa-lightbulb"></i>
+      <p>자기 계발</p>
+    </div>
+    <div class="category">
+      <i class="fa-solid fa-palette"></i>
+      <p>문화·예술</p>
+    </div>
+    <div class="category">
+      <i class="fa-solid fa-users"></i>
+      <p>사회 교류</p>
+    </div>
+    <div class="category">
+      <i class="fa-solid fa-box-archive"></i>
+      <p>수집·소비</p>
+    </div>
+  </section>
+  
+</main>
+
+<th:block th:replace="~{common/footer}"></th:block>
+
+</body>
+</html>

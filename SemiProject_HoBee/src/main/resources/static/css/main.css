@@ -1,0 +1,91 @@
+/* Hero */
+.hero {
+  background: #FFF57E; 
+  height: 420px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer; 
+}
+
+.hero-text {
+  text-align: center;
+  color: var(--hobee-brown);
+}
+
+.hero-text h1 {
+  font-size: 64px;
+  margin-bottom: 12px;
+}
+
+.hero-text p {
+  font-size: 20px;
+}
+
+/* Intro */
+.intro {
+  padding: 80px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.intro-card {
+  width: 900px;
+  display: flex;
+  border-radius: 30px;
+  overflow: hidden;
+  border: 2px solid #452829;
+}
+
+.intro-logo {
+  width: 40%;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.intro-logo img {
+  width: 260px;
+}
+
+.intro-text {
+  width: 60%;
+  background: #452829;
+  color: white;
+  padding: 40px;
+  line-height: 1.7;
+}
+
+/* Categories */
+.categories {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  padding: 60px 0;
+}
+
+.category {
+  text-align: center;
+  cursor: pointer;
+  transition-duration: 0.25s;
+}
+
+.category i {
+  width: 90px;
+  height: 90px;
+  background: #FFF57E;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 34px;
+  color: #452829;
+  margin-bottom: 12px;
+  transition-duration: 0.25s;
+}
+
+.category:hover {
+  transform: scale(1.2);
+}
+
