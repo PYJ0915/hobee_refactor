@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>취미 탐색 검사</title>
+
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/findHobby/findHobbyStart.css">
+</head>
+<body>
+
+<!-- 헤더 -->
+<th:block th:replace="~{common/header}" />
+
+<main class="start-container">
+
+  <section class="start-box">
+    <h1 class="start-title">취미 탐색 검사</h1>
+    <p class="start-sub">
+      간단한 질문을 통해<br>
+      나에게 어울리는 취미를 찾아보세요.
+    </p>
+
+    <!-- 이름 입력 -->
+    <div class="name-area">
+      <input
+        type="text"
+        placeholder="이름을 입력해주세요"
+        class="name-input"
+      >
+      <p class="privacy-text">
+        ※ 입력한 이름은 결과 화면에만 사용되며,<br>
+        별도로 저장되거나 수집되지 않습니다.
+      </p>
+    </div>
+
+    <!-- 시작 버튼 -->
+    <button class="start-btn">
+      검사 시작하기
+    </button>
+  </section>
+
+</main>
+
+<!-- 푸터 -->
+<th:block th:replace="~{common/footer}" />
+
+<script src="/js/findHobby/findHobby.js"></script>
+</body>
+</html>
