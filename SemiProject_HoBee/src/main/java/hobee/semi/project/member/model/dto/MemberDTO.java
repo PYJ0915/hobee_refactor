@@ -7,13 +7,14 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder 
 public class MemberDTO {
 	private int memberNo;
 	private String memberEmail;
 	private String memberId;
 	private String memberPw;
-	private String memberName;
+	private String memberNickame;
 	private String memberTel;
 	private String memberAddress;
 	private String profileImg;
