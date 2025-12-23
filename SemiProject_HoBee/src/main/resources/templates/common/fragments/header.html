@@ -14,11 +14,38 @@
       <a href="/findHobby/main" class="nav-item">취미 탐색</a>
     </nav>
 
-    <!-- 인증 영역 -->
-    <div class="header-auth">
-      <a href="/member/loginPage" class="login-btn">로그인</a>
-      <a href="#" class="signup-btn">회원가입</a>
+    <!-- 비로그인 상태 인증 영역 -->
+    <th:block th:if="${session.loginMember} == null">
+      <div class="header-auth">
+        <a href="#" class="login-btn">로그인</a>
+        <a href="#" class="signup-btn">회원가입</a>
+      </div>
+    </th:block>
+
+
+    <!-- 로그인 상태 사용자 영역 -->
+    <th:block th:unless="${session.loginMember == null}">
+    <div class="header-user-loggedin">
+
+      <img
+        src="/images/user.png"
+        alt="프로필 이미지"
+        class="header-profile-img"
+      >
+      
+      <span class="header-user-name">
+        홍길동 님
+      </span>
+
+      <a href="/logout" class="header-btn-logout">
+        로그아웃
+      </a>
+
     </div>
+    </th:block>
+
+
+  </div>
 
   </div>
 </header>
