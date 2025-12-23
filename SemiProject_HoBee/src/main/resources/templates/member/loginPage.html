@@ -18,11 +18,13 @@
         <form action="/member/loginPage" method="post" name="login" id="login">
             <section>
 
+                <div id="loginMember">
+                    <input type="text" name="memberId" class="memberId" id="memberId">
+        
+                    <h3>비밀번호</h3>
+                    <input type="password" name="memberPw" class="memberPw" id="memberPw">
+                </div>
                 <h3>아이디</h3>
-                <input type="text" name="memberId" class="memberId">
-    
-                <h3>비밀번호</h3>
-                <input type="password" name="memberPw" class="memberPw">
     
                 <button id="login-btn">로그인</button>
                 
@@ -49,6 +51,9 @@
 
 
     <th:block th:replace="~{common/footer}"></th:block>
+    
+    <!-- js -->
+    <script src="/js/member/login.js"></script>
     
 </body>
 </html>
