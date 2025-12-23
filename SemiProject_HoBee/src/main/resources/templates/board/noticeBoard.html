@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공지게시판</title>
+
+    <th:block th:replace="~{common/fragments/common}"></th:block>
+
+    <link rel="stylesheet" href="/css/board/noticeBoard-style.css">
+</head>
+<body>
+    <th:block th:replace="~{common/fragments/header}"></th:block>
+    <section>
+        <h1 class="board-name">공지게시판</h1>
+
+        	<div class="list-wrapper">
+				<table class="list-table">
+
+					<thead>
+						<tr>
+							<th>글번호</th>
+							<th>제목</th>
+							<th>작성자</th>
+							<th>작성일</th>
+							<th>조회수</th>
+							<th>좋아요</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<!-- 게시글이 존재하지 않을 때 -->
+						
+						<!-- 여러행 조회 시 결과가 없을 경우 == List 가 비어있음 -->
+						
+						<!-- #lists : 타임리프에서 list 관련 기능을 제공하는 객체 -->
+						<!-- ${#lists.size(boardList) == 0} -->
+						<th:block th:if="${#lists.isEmpty(boardList)}">
+							<tr>
+								<th colspan="6">게시글이 존재하지 않습니다.</th>
+							</tr>
+						</th:block>
+
+						<!-- 게시글이 존재할 때 -->
+						<th:block th:unless="${#lists.isEmpty(boardList)}">
+							
+							<tr th:each="board, iterStat : ${boardList}" th:object="${board}">
+								<td th:text="*{boardNo}">게시글 번호</td>
+								
+								<td>
+									<!-- 썸네일 추가 예정 -->
+									
+									<!-- 상세 조회 주소에 cp가 포함된 이유 : 상세 -> 목록으로 돌아올 때 사용 -->
+									
+									
+									<!-- 검색 X -->
+									<a th:unless="${param.key}"
+									th:href="@{/board/{boardCode}/{boardNo} (boardCode=${boardCode}, boardNo=*{boardNo}, cp=${pagination.currentPage})}"
+									th:text="*{boardTitle}">게시글 제목</a>
+		
+									<!-- 검색 O -->
+									<a th:if="${param.key}"
+									th:href="@{/board/{boardCode}/{boardNo} (boardCode=${boardCode}, boardNo=*{boardNo}, cp=${pagination.currentPage}, key=${param.key}, query=${param.query})}"
+									th:text="*{boardTitle}">게시글 제목</a>
+		
+									<th:block th:text="|[*{commentCount}]|">댓글 수</th:block>
+								</td>
+	
+								<!-- 작성자 닉네임 -->
+								<td th:text="*{memberNickname}">닉네임</td>
+	
+								<!-- 작성일 -->
+								<td th:text="*{boardWriteDate}">2023-10-26</td>
+	
+								<!-- 조회수 -->
+								<td th:text="*{readCount}">0</td>
+	
+								<!-- 좋아요 수 -->
+								<td th:text="*{likeCount}">0</td>
+	
+							</tr>
+						</th:block>
+
+					</tbody>
+				</table>
+			</div>
+
+    </section>
+    <th:block th:replace="board/fragments/pagination"></th:block>
+
+    <th:block th:replace="board/fragments/search"></th:block>
+
+    <th:block th:replace="common/fragments/footer"></th:block>
+</body>
+</html>
