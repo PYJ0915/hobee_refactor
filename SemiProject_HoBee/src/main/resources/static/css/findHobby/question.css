@@ -34,6 +34,8 @@ body {
 .answer-area {
   display: flex;
   gap: 80px;
+  padding-left: 50px;
+  padding-bottom: 200px;
 }
 
 /* 답변 버튼 */
@@ -47,8 +49,7 @@ body {
   transition: background-color 0.25s ease;
 }
 
-/* ✅ 핵심 요구사항 */
 .answer:hover {
   background-color: #452829;
-  color: #FFF57E; /* 가독성 */
+  color: #FFF57E; 
 }
