@@ -140,6 +140,8 @@ public class Pagination {
 		// 게시글 수 101개 -> 11 page
 		maxPage = (int)Math.ceil((double)listCount / limit);
 		
+		if(maxPage == 0) maxPage = 1;
+		
 		// startPage : 페이지 번호 목록의 시작 번호
 		
 		// 페이지 번호 목록이 10개(pageSize) 씩 보여지는 경우
