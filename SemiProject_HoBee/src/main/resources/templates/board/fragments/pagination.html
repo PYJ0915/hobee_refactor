@@ -1,0 +1,39 @@
+<div class="pagination-area">
+    <ul class="pagination" th:unless="${param.key}" th:object="${pagination}">
+        <li><a th:href="@{/notice(cp=1)}">&lt;&lt;</a></li>
+        <li><a th:href="@{/notice(cp=*{prevPage})}">&lt;</a></li>
+
+        <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
+            <li th:if="${i} == *{currentPage}">
+                <a class="current" th:text="${i}">1</a>
+            </li>
+            <li th:unless="${i} == *{currentPage}">
+                <a th:href="@{/notice(cp=${i})}" th:text="${i}">2</a>
+            </li>
+        </th:block>
+
+        <li><a th:href="@{/notice(cp=*{nextPage})}">&gt;</a></li>
+        <li><a th:href="@{/notice(cp=*{maxPage})}">&gt;&gt;</a></li>
+    </ul>
+
+    <ul class="pagination" th:if="${param.key}" th:object="${pagination}">
+        <li><a th:href="@{/notice(cp=1, key=${param.key}, query=${param.query})}">&lt;&lt;</a></li>
+        <li><a th:href="@{/notice(cp=*{prevPage}, key=${param.key}, query=${param.query})}">&lt;</a></li>
+
+        <th:block th:if="*{startPage lt endPage}" th:each="i : *{#numbers.sequence(startPage, endPage)}">
+            <li th:if="${i} == *{currentPage}">
+                <a class="current" th:text="${i}">1</a>
+            </li>
+            <li th:unless="${i} == *{currentPage}">
+                <a th:href="@{/notice(cp=${i}, key=${param.key}, query=${param.query})}" th:text="${i}">2</a>
+            </li>
+        </th:block>
+
+        <th:block th:unless="*{startPage lt endPage}">
+            <li><a class="current">1</a></li>
+        </th:block>
+
+        <li><a th:href="@{/notice(cp=*{nextPage}, key=${param.key}, query=${param.query})}">&gt;</a></li>
+        <li><a th:href="@{/notice(cp=*{maxPage}, key=${param.key}, query=${param.query})}">&gt;&gt;</a></li>
+    </ul>
+</div>
