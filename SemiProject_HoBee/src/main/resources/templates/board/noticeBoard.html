@@ -7,6 +7,7 @@
 
     <th:block th:replace="~{common/common}"></th:block>
     <link rel="stylesheet" href="/css/board/noticeBoard-style.css">
+	<link rel="stylesheet" href="/css/common.css">
 </head>
 <body>
     <th:block th:replace="~{common/fragments/header}"></th:block>
@@ -62,6 +63,11 @@
                 </tbody>
             </table>
         </div>
+
+			<div class="btn-area">
+				<!-- 로그인 상태일 때만 글쓰기 버튼 노출 -->
+				<button id="insertBtn" th:if="${session.loginMember}">글쓰기</button>
+			</div>
 
         <div class="pagination-area">
             <ul class="pagination" th:unless="${param.key}" th:object="${pagination}">
