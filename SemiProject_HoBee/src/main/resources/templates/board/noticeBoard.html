@@ -1,95 +1,120 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>공지게시판</title>
 
-    <th:block th:replace="~{common/fragments/common}"></th:block>
-
+    <th:block th:replace="~{common/common}"></th:block>
     <link rel="stylesheet" href="/css/board/noticeBoard-style.css">
 </head>
 <body>
     <th:block th:replace="~{common/fragments/header}"></th:block>
-    <section>
+    
+    <section class="board-list">
         <h1 class="board-name">공지게시판</h1>
 
-        	<div class="list-wrapper">
-				<table class="list-table">
+        <div class="list-wrapper">
+            <table class="list-table">
+                <thead>
+                    <tr>
+                        <th>글번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                        <th>조회수</th>
+                        <th>좋아요</th>
+                    </tr>
+                </thead>
 
-					<thead>
-						<tr>
-							<th>글번호</th>
-							<th>제목</th>
-							<th>작성자</th>
-							<th>작성일</th>
-							<th>조회수</th>
-							<th>좋아요</th>
-						</tr>
-					</thead>
+                <tbody>
+                    <th:block th:if="${#lists.isEmpty(boardList)}">
+                        <tr>
+                            <td colspan="6" style="text-align: center;">게시글이 존재하지 않습니다.</td>
+                        </tr>
+                    </th:block>
 
-					<tbody>
-						<!-- 게시글이 존재하지 않을 때 -->
-						
-						<!-- 여러행 조회 시 결과가 없을 경우 == List 가 비어있음 -->
-						
-						<!-- #lists : 타임리프에서 list 관련 기능을 제공하는 객체 -->
-						<!-- ${#lists.size(boardList) == 0} -->
-						<th:block th:if="${#lists.isEmpty(boardList)}">
-							<tr>
-								<th colspan="6">게시글이 존재하지 않습니다.</th>
-							</tr>
-						</th:block>
+                    <th:block th:unless="${#lists.isEmpty(boardList)}">
+                        <tr th:each="board : ${boardList}" th:object="${board}">
+                            <td th:text="*{boardNo}">게시글 번호</td>
+                            
+                            <td>
+                                <a th:unless="${param.key}"
+                                   th:href="@{/notice/{boardNo}(boardNo=*{boardNo}, cp=${pagination.currentPage})}"
+                                   th:text="*{boardTitle}">게시글 제목</a>
+                                
+                                <a th:if="${param.key}"
+                                   th:href="@{/notice/{boardNo}(boardNo=*{boardNo}, cp=${pagination.currentPage}, key=${param.key}, query=${param.query})}"
+                                   th:text="*{boardTitle}">게시글 제목</a>
+                                
+                                <th:block th:text="|[*{commentCount}]|">댓글 수</th:block>
+                            </td>
+                            
+                            <td th:text="*{memberNickname}">닉네임</td>
+                            
+                            <td th:text="*{boardWriteDate}">작성일</td>
+                            
+                            <td th:text="*{boardViewCount}">0</td>
+                            
+                            <td th:text="*{likeCount}">0</td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
 
-						<!-- 게시글이 존재할 때 -->
-						<th:block th:unless="${#lists.isEmpty(boardList)}">
-							
-							<tr th:each="board, iterStat : ${boardList}" th:object="${board}">
-								<td th:text="*{boardNo}">게시글 번호</td>
-								
-								<td>
-									<!-- 썸네일 추가 예정 -->
-									
-									<!-- 상세 조회 주소에 cp가 포함된 이유 : 상세 -> 목록으로 돌아올 때 사용 -->
-									
-									
-									<!-- 검색 X -->
-									<a th:unless="${param.key}"
-									th:href="@{/board/{boardCode}/{boardNo} (boardCode=${boardCode}, boardNo=*{boardNo}, cp=${pagination.currentPage})}"
-									th:text="*{boardTitle}">게시글 제목</a>
-		
-									<!-- 검색 O -->
-									<a th:if="${param.key}"
-									th:href="@{/board/{boardCode}/{boardNo} (boardCode=${boardCode}, boardNo=*{boardNo}, cp=${pagination.currentPage}, key=${param.key}, query=${param.query})}"
-									th:text="*{boardTitle}">게시글 제목</a>
-		
-									<th:block th:text="|[*{commentCount}]|">댓글 수</th:block>
-								</td>
-	
-								<!-- 작성자 닉네임 -->
-								<td th:text="*{memberNickname}">닉네임</td>
-	
-								<!-- 작성일 -->
-								<td th:text="*{boardWriteDate}">2023-10-26</td>
-	
-								<!-- 조회수 -->
-								<td th:text="*{readCount}">0</td>
-	
-								<!-- 좋아요 수 -->
-								<td th:text="*{likeCount}">0</td>
-	
-							</tr>
-						</th:block>
+        <div class="pagination-area">
+            <ul class="pagination" th:unless="${param.key}" th:object="${pagination}">
+                <li><a th:href="@{/notice(cp=1)}">&lt;&lt;</a></li>
+                <li><a th:href="@{/notice(cp=*{prevPage})}">&lt;</a></li>
 
-					</tbody>
-				</table>
-			</div>
+                <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
+                    <li th:if="${i} == *{currentPage}">
+                        <a class="current" th:text="${i}">1</a>
+                    </li>
+                    <li th:unless="${i} == *{currentPage}">
+                        <a th:href="@{/notice(cp=${i})}" th:text="${i}">2</a>
+                    </li>
+                </th:block>
 
+                <li><a th:href="@{/notice(cp=*{nextPage})}">&gt;</a></li>
+                <li><a th:href="@{/notice(cp=*{maxPage})}">&gt;&gt;</a></li>
+            </ul>
+
+            <ul class="pagination" th:if="${param.key}" th:object="${pagination}">
+                <li><a th:href="@{/notice(cp=1, key=${param.key}, query=${param.query})}">&lt;&lt;</a></li>
+                <li><a th:href="@{/notice(cp=*{prevPage}, key=${param.key}, query=${param.query})}">&lt;</a></li>
+
+                <th:block th:if="*{startPage lt endPage}" th:each="i : *{#numbers.sequence(startPage, endPage)}">
+                    <li th:if="${i} == *{currentPage}">
+                        <a class="current" th:text="${i}">1</a>
+                    </li>
+                    <li th:unless="${i} == *{currentPage}">
+                        <a th:href="@{/notice(cp=${i}, key=${param.key}, query=${param.query})}" th:text="${i}">2</a>
+                    </li>
+                </th:block>
+
+                <th:block th:unless="*{startPage lt endPage}">
+                    <li><a class="current">1</a></li>
+                </th:block>
+
+                <li><a th:href="@{/notice(cp=*{nextPage}, key=${param.key}, query=${param.query})}">&gt;</a></li>
+                <li><a th:href="@{/notice(cp=*{maxPage}, key=${param.key}, query=${param.query})}">&gt;&gt;</a></li>
+            </ul>
+        </div>
+
+        <form th:action="@{/notice}" method="get" id="boardSearch">
+            <select name="key" id="searchKey">
+                <option value="t" th:selected="${param.key == 't'}">제목</option>
+                <option value="c" th:selected="${param.key == 'c'}">내용</option>
+                <option value="tc" th:selected="${param.key == 'tc'}">제목+내용</option>
+                <option value="w" th:selected="${param.key == 'w'}">작성자</option>
+            </select>
+            <input type="text" name="query" id="searchQuery" th:value="${param.query}" placeholder="검색어를 입력해주세요.">
+            <button>검색</button>
+        </form>
     </section>
-    <th:block th:replace="board/fragments/pagination"></th:block>
 
-    <th:block th:replace="board/fragments/search"></th:block>
-
-    <th:block th:replace="common/fragments/footer"></th:block>
+    <th:block th:replace="~{common/fragments/footer}"></th:block>
 </body>
 </html>

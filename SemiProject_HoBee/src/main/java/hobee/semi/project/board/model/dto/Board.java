@@ -1,4 +1,4 @@
-package hobee.semi.project.board.dto;
+package hobee.semi.project.board.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
