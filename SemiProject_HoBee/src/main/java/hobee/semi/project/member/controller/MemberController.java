@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("member")
-@SessionAttributes("{loginMember}") // 세션 스코프에 로그인 한 회원정보 저장
+@SessionAttributes({"loginMember"}) // 세션 스코프에 로그인 한 회원정보 저장
 public class MemberController {
 
 	@GetMapping("loginPage")

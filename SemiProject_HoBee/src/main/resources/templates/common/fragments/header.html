@@ -15,25 +15,28 @@
     </nav>
 
     <!-- 비로그인 상태 인증 영역 -->
-    <th:block th:if="${session.loginMember} == null">
+    <!-- <th:block th:if="${session.loginMember} == null">
       <div class="header-auth">
-        <a href="#" class="login-btn">로그인</a>
+        <a href="/member/loginPage" class="login-btn">로그인</a>
         <a href="#" class="signup-btn">회원가입</a>
       </div>
-    </th:block>
+    </th:block> -->
 
 
     <!-- 로그인 상태 사용자 영역 -->
-    <th:block th:unless="${session.loginMember == null}">
+    <!-- <th:block th:unless="${session.loginMember == null}"> -->
     <div class="header-user-loggedin">
 
       <img
-        src="/images/user.png"
+        
         alt="프로필 이미지"
         class="header-profile-img"
-      >
+
+        th:with="user=#{user.default.image}"
+        th:src="${sesstion.loginMember.profileImg ?: user}"
+        >
       
-      <span class="header-user-name">
+      <span class="header-user-name" th:text="${loginMember.memberNickname}">
         홍길동 님
       </span>
 
@@ -42,7 +45,7 @@
       </a>
 
     </div>
-    </th:block>
+    <!-- </th:block> -->
 
 
   </div>
