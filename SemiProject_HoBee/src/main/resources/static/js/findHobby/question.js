@@ -81,22 +81,21 @@ fetch("/findHobby/selectQuestionList")
 
       if(i == questionList.length()) {
 
-        const scoreMap = new Map();
-        scoreMap.set(sports, "sports");
-        scoreMap.set(art, "art");
-        scoreMap.set(selfDevelop, "selfDevelop");
-        scoreMap.set(social, "social");
-        scoreMap.set(shopping, "shopping");
+        const scores = [
+          {hobby : "sports", score : sports},
+          {hobby : "art", score : art},
+          {hobby : "selfDevelop", score : selfDevelop},
+          {hobby : "social", score : social},
+          {hobby : "shopping", score : shopping}
+        ];
 
-        const scoreArr = [sports, art, selfDevelop, social, shopping];
-        scoreArr.sort((a,b) => b - a);
+        scores.sort((a,b) => b.score - a.score);
 
-        const firstHobby = scoreMap.get(scoreArr[0]);
-        const secondHobby = scoreMap.get(scoreArr[1]);
+        const firstHobby = scores[0].hobby;
+        const secondHobby = scores[1].hobby;
 
         location.href = "/findHobby/end?firstHobby=" + firstHobby + "&secondHobby=" + secondHobby;
 
       }
-
     }
   });
