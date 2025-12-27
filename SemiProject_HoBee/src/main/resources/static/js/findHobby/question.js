@@ -15,87 +15,102 @@ fetch("/findHobby/selectQuestionList")
     let social = 0;
     let shopping = 0;
 
-    let i = 1; // 질문 순서
+    let index = 0;
 
-    // 질문 내용을 사용자에게 제공 (배열 순회)
-    for (let inputQuestion of questionList) {
-      question.innerText = "Q" + i + ". " + inputQuestion.questionContent;
+    question.innerText = "Q" + 1 + ". " + questionList[0].questionContent;
 
-      let questionNo = inputQuestion.questionNo;
+    answerBtns.forEach(answerBtn => {
 
-      answerBtns.forEach(answerBtn => {
+      // 버튼 클릭 시 다음 질문 제공 + 점수 누적
+      answerBtn.addEventListener("click", e => {
 
-        // 버튼 클릭 시 다음 질문 제공 + 점수 누적
-        answerBtn.addEventListener("click", e => {
+        let questionNo = questionList[index].questionNo;
 
-          if (e.target.innerText == "모르겠다") return;
+        if (e.target.innerText == "모르겠다") {
+          if (index == questionList.length - 1) {
+            lastQuestion();
+            return;
+          } else {
+            nextQuestion();
+            return;
+          }
+        }
 
-          fetch("/findHobby/selectScore?questionNo=" + questionNo)
-            .then(resp => resp.json())
-            .then(questionScoreList => {
+        fetch("/findHobby/selectScore?questionNo=" + questionNo)
+          .then(resp => resp.json())
+          .then(questionScoreList => {
 
-              if (e.target.innerText == "그렇다") { // 그렇다 클릭 시 점수 가산
-                for (let questionScore of questionScoreList) {
-                  switch (questionScore.hobbyCode) {
-                    case 1:
-                      sports += questionScore.answerScore;
-                      break;
-                    case 2:
-                      art += questionScore.answerScore;
-                      break;
-                    case 3:
-                      selfDevelop += questionScore.answerScore;
-                      break;
-                    case 4:
-                      social += questionScore.answerScore;
-                      break;
-                    case 5:
-                      shopping += questionScore.answerScore;
-                      break;
-                  }
-                }
-              } else { // 그렇지 않다 클릭 시 점수 차감
-                for (let questionScore of questionScoreList) {
-                  switch (questionScore.hobbyCode) {
-                    case 1:
-                      sports -= questionScore.answerScore;
-                      break;
-                    case 2:
-                      art -= questionScore.answerScore;
-                      break;
-                    case 3:
-                      selfDevelop -= questionScore.answerScore;
-                      break;
-                    case 4:
-                      social -= questionScore.answerScore;
-                      break;
-                    case 5:
-                      shopping -= questionScore.answerScore;
-                      break;
-                  }
+            if (e.target.innerText == "그렇다") { // 그렇다 클릭 시 점수 가산
+              for (let questionScore of questionScoreList) {
+                switch (questionScore.hobbyCode) {
+                  case 1:
+                    sports += questionScore.answerScore;
+                    break;
+                  case 2:
+                    art += questionScore.answerScore;
+                    break;
+                  case 3:
+                    selfDevelop += questionScore.answerScore;
+                    break;
+                  case 4:
+                    social += questionScore.answerScore;
+                    break;
+                  case 5:
+                    shopping += questionScore.answerScore;
+                    break;
                 }
               }
-            });
-        });
+            } else { // 그렇지 않다 클릭 시 점수 차감
+              for (let questionScore of questionScoreList) {
+                switch (questionScore.hobbyCode) {
+                  case 1:
+                    sports -= questionScore.answerScore;
+                    break;
+                  case 2:
+                    art -= questionScore.answerScore;
+                    break;
+                  case 3:
+                    selfDevelop -= questionScore.answerScore;
+                    break;
+                  case 4:
+                    social -= questionScore.answerScore;
+                    break;
+                  case 5:
+                    shopping -= questionScore.answerScore;
+                    break;
+                }
+              }
+            }
+
+            if (index == questionList.length - 1) {
+              lastQuestion();
+            } else {
+              nextQuestion();
+            }
+          });
       });
+    });
 
-      if(i == questionList.length()) {
-
-        const scores = [
-          {hobby : "sports", score : sports},
-          {hobby : "art", score : art},
-          {hobby : "selfDevelop", score : selfDevelop},
-          {hobby : "social", score : social},
-          {hobby : "shopping", score : shopping}
-        ];
-
-        scores.sort((a,b) => b.score - a.score);
-
-        const firstHobby = scores[0].hobby;
-        const secondHobby = scores[1].hobby;
-
-        location.href = "/findHobby/end?firstHobby=" + firstHobby + "&secondHobby=" + secondHobby;
-
-      }
+    function nextQuestion() {
+      index++;
+      question.innerText = "Q" + (index + 1) + ". " + questionList[index].questionContent;
     }
+
+    function lastQuestion() {
+      const scores = [
+        { hobby: "sports", score: sports },
+        { hobby: "art", score: art },
+        { hobby: "selfDevelop", score: selfDevelop },
+        { hobby: "social", score: social },
+        { hobby: "shopping", score: shopping }
+      ];
+
+      scores.sort((a, b) => b.score - a.score);
+
+      const firstHobby = scores[0].hobby;
+      const secondHobby = scores[1].hobby;
+
+      location.href = "/findHobby/end?firstHobby=" + firstHobby + "&secondHobby=" + secondHobby;
+    }
+
   });

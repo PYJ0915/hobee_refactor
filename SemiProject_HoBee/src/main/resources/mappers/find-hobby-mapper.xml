@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hobee.semi.project.findHobby.model.mapper.FindHobbyMapper">
+
+	<resultMap type="Hobby" id="hobby_rm">
+		<id property="hobbyCode" column="HOBBY_CODE" />
+	
+		<collection 
+			property="hobbyList" 
+			column="HOBBY_CODE"
+			select="getHobbyList"
+			javaType="java.util.ArrayList"
+			ofType="Hobby"	
+		/>
+	
+	</resultMap>
+	
+	<select id="getHobbyList">
+		<![CDATA[
+			SELECT HOBBY_NAME, HOBBY_ICON
+			FROM (
+			SELECT HOBBY_NAME, HOBBY_ICON
+			FROM "HOBBY"
+			WHERE PARENT_CODE = #{hobbyCode}
+			ORDER BY DBMS_RANDOM.VALUE
+			)
+			WHERE ROWNUM <= 3
+		]]>
+	</select>
+
+	<select id="getHobby" parameterType="_int" resultMap="hobby_rm">
+		SELECT HOBBY_NAME, HOBBY_ICON 
+		FROM "HOBBY"
+		WHERE HOBBY_CODE = ${hobbyCode}
+	</select>
+
+</mapper>
