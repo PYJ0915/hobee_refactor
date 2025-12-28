@@ -1,5 +1,6 @@
 package hobee.semi.project.findHobby.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,14 +9,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import hobee.semi.project.findHobby.model.dto.Hobby;
+import hobee.semi.project.findHobby.model.dto.Question;
+import hobee.semi.project.findHobby.model.dto.QuestionScore;
 import hobee.semi.project.findHobby.model.service.FindHobbyService;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("findHobby")
+@Slf4j
 public class FindHobbyController {
 	
 	@Autowired
@@ -30,6 +36,18 @@ public class FindHobbyController {
 	public String findHobbyStart(@RequestParam("inputName") String inputName, HttpSession session) {
 		session.setAttribute("inputName", inputName);
 		return "findHobby/question";
+	}
+	
+	@ResponseBody
+	@GetMapping("selectQuestionList")
+	public List<Question> selectQuestionList() {
+		return service.selectQuestionList();
+	}
+	
+	@ResponseBody
+	@GetMapping("selectScore")
+	public List<QuestionScore> selectScore(@RequestParam("questionNo") int questionNo) {
+		return service.selectScore(questionNo);
 	}
 	
 	@GetMapping("end")
@@ -52,10 +70,11 @@ public class FindHobbyController {
 			
 		} else {
 			
-			path = "findHobby/end";
+			path = "findHobby/findHobbyEnd";
 			
 			model.addAttribute("inputName", inputName);
-			model.addAttribute("hobbyMap", hobbyMap);
+			model.addAttribute("firstHobby", hobbyMap.get("firstHobby"));
+			model.addAttribute("secondHobby", hobbyMap.get("secondHobby"));
 			
 			String resultMessage = null;
 			

@@ -110,7 +110,7 @@ fetch("/findHobby/selectQuestionList")
       const firstHobby = scores[0].hobby;
       const secondHobby = scores[1].hobby;
 
-      location.href = "/findHobby/end?firstHobby=" + firstHobby + "&secondHobby=" + secondHobby;
+      location.href = "/findHobby/end?firstHobby=" + firstHobby + "&secondHobby="   + secondHobby;
     }
 
   });

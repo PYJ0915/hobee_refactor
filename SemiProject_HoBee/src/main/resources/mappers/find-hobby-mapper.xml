@@ -2,6 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="hobee.semi.project.findHobby.model.mapper.FindHobbyMapper">
 
+	<select id="selectQuestionList" resultType="Question">
+		SELECT * FROM "QUESTION"
+	</select>
+	
+	<select id="selectScore">
+		SELECT HOBBY_CODE, ANSWER_SCORE FROM "FIND_HOBBY"
+		WHERE QUESTION_NO = #{questionNo}
+	</select>
+
+
 	<resultMap type="Hobby" id="hobby_rm">
 		<id property="hobbyCode" column="HOBBY_CODE" />
 	
@@ -15,7 +25,7 @@
 	
 	</resultMap>
 	
-	<select id="getHobbyList">
+	<select id="getHobbyList" resultType="Hobby">
 		<![CDATA[
 			SELECT HOBBY_NAME, HOBBY_ICON
 			FROM (
@@ -29,9 +39,9 @@
 	</select>
 
 	<select id="getHobby" parameterType="_int" resultMap="hobby_rm">
-		SELECT HOBBY_NAME, HOBBY_ICON 
+		SELECT HOBBY_CODE, HOBBY_NAME, HOBBY_ICON 
 		FROM "HOBBY"
-		WHERE HOBBY_CODE = ${hobbyCode}
+		WHERE HOBBY_CODE = #{hobbyCode}
 	</select>
 
 </mapper>

@@ -108,7 +108,7 @@
 
 /* 결과 해석 메시지 */
 .result-message {
-  max-width: 700px;
+  max-width: 800px;
   margin: 0 auto;
   padding: 18px 24px;
 
@@ -119,7 +119,7 @@
 
 .result-message p {
   margin: 0;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 2.0;
   color: #452829;
   font-weight: 500;

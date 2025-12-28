@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <title>취미 탐색 결과</title>
 
-  <link rel="stylesheet" th:href="@{/css/common.css}">
-  <link rel="stylesheet" th:href="@{/css/hobby-result.css}">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/findHobby/findHobbyEnd.css">
   <th:block th:replace="~{common/common}"></th:block>
 </head>
 <body>
@@ -40,10 +40,9 @@
       <h2 th:text="|🏆 1순위 · *{hobbyName}|">🏆 1순위 · 운동 · 레저</h2>
 
       <ul class="hobby-list">
-        <li th:each="hobby : *{hobbyList}"
-            th:text="${hobby.hobbyName}">
-          러닝
-          <i class="${hobby.hobbyIcon}"></i>
+        <li th:each="hobby : *{hobbyList}">
+          <span th:text="${hobby.hobbyName}">러닝</span>
+          <i th:class="${hobby.hobbyIcon}"></i>
         </li>
       </ul>
     </div>
@@ -53,10 +52,9 @@
       <h2 th:text="|🥈 2순위 · *{hobbyName}|">🥈 2순위 · 문화 · 예술</h2>
 
       <ul class="hobby-list">
-        <li th:each="hobby : *{hobbyList}"
-            th:text="${hobby.hobbyName}">
-          드로잉
-          <i class="${hobby.hobbyIcon}"></i>
+        <li th:each="hobby : *{hobbyList}">
+          <span th:text="${hobby.hobbyName}">글쓰기</span>
+          <i th:class="${hobby.hobbyIcon}"></i>
         </li>
       </ul>
     </div>
