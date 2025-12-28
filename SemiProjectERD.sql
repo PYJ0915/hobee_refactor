@@ -1,4 +1,4 @@
-﻿CREATE TABLE "HOBBY" (
+CREATE TABLE "HOBBY" (
 	"HOBBY_CODE"	NUMBER		NOT NULL,
 	"HOBBY_NAME"	NVARCHAR2(20)		NOT NULL,
 	"HOBBY_ICON"	NVARCHAR2(200)		NULL,
@@ -161,14 +161,14 @@ INSERT INTO QUESTION VALUES (3, '활동 자체보다 그 안에서 생기는 관
 INSERT INTO QUESTION VALUES (4, '관심 있는 분야는 알아보다가 장비나 굿즈까지 보게 된다.');
 INSERT INTO QUESTION VALUES (5, '피곤해도 움직이고 나면 오히려 개운해진다.');
 INSERT INTO QUESTION VALUES (6, '정답 없는 문제를 만났을 때 오히려 흥미가 생긴다.');
-INSERT INTO QUESTION VALUES (7, '취향이 분명한 편이다.');
+INSERT INTO QUESTION VALUES (7, '좋아하는 것과 좋아하지 않는 것이 비교적 분명한 편이다.');
 INSERT INTO QUESTION VALUES (8, '약속 없는 주말, 집에만 있으면 괜히 손해 본 기분이 든다.');
 INSERT INTO QUESTION VALUES (9, '취미라도 나중에 써먹을 수 있으면 더 끌린다.');
-INSERT INTO QUESTION VALUES (10, '게임이든 뭐든 ‘‘순위’’가 나오면 괜히 열심히 하게 된다.');
-INSERT INTO QUESTION VALUES (11, '움직이면서 생각이 정리되거나 아이디어가 떠오를 때가 있다.');
+INSERT INTO QUESTION VALUES (10, '게임이든 뭐든 순위가 나오면 괜히 열심히 하게 된다.');
+INSERT INTO QUESTION VALUES (11, '움직일 때 생각이 정리되거나 아이디어가 떠오르는 편이다.');
 INSERT INTO QUESTION VALUES (12, '취미는 눈에 보이는 결과가 있어야 실감 난다.');
 INSERT INTO QUESTION VALUES (13, '무엇을 하느냐보다, 누구와 했는지가 더 중요할 때가 있다.');
-INSERT INTO QUESTION VALUES (14, '취미와 자기 관리의 경계가 흐려도 괜찮다.');
+INSERT INTO QUESTION VALUES (14, '취미와 자기 관리의 경계가 꼭 나뉘어야 할 필요는 없다고 생각한다.');
 INSERT INTO QUESTION VALUES (15, '알아보고 비교하는 과정 자체가 즐겁다.');
 
 COMMIT;
@@ -201,7 +201,7 @@ INSERT INTO FIND_HOBBY VALUES (3, 1, 1);
 INSERT INTO FIND_HOBBY VALUES (4, 5, 3);
 INSERT INTO FIND_HOBBY VALUES (4, 1, 1);
 
--- Q5 움직이면 개운 (운동 3 / 자기계발 1)
+-- Q5 움직이면 개운
 INSERT INTO FIND_HOBBY VALUES (5, 1, 3);
 INSERT INTO FIND_HOBBY VALUES (5, 3, 1);
 
@@ -213,7 +213,7 @@ INSERT INTO FIND_HOBBY VALUES (6, 3, 1);
 INSERT INTO FIND_HOBBY VALUES (7, 2, 2);
 INSERT INTO FIND_HOBBY VALUES (7, 5, 1);
 
--- Q8 주말 집에만 있으면 손해 (운동 2 / 사회교류 2)
+-- Q8 주말 집에만 있으면 손해
 INSERT INTO FIND_HOBBY VALUES (8, 1, 2);
 INSERT INTO FIND_HOBBY VALUES (8, 4, 2);
 

@@ -39,15 +39,15 @@ public class FindHobbyServiceImpl implements FindHobbyService{
 		Hobby firstHb = mapper.getHobby(firstHobbyCode);
 		Hobby secondHb = mapper.getHobby(secondHobbyCode);
 		
+		if(firstHb == null || secondHb == null) return null;
+		
 		Map<String, Hobby> hobbyMap = new HashMap<>();
 		
 		hobbyMap.put("firstHobby", firstHb);
-		hobbyMap.put("secondHobby", secondHb);
+		hobbyMap.put("secondHobby", secondHb);	
 		
 		return hobbyMap;
 	}
-	
-	
 	
 	public int getHobbyCode(String hobby) {
 		
