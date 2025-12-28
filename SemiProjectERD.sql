@@ -1,26 +1,87 @@
 ﻿CREATE TABLE "HOBBY" (
-	"HOBBY_CODE"	VARCHAR(20)		NOT NULL,
+	"HOBBY_CODE"	NUMBER		NOT NULL,
 	"HOBBY_NAME"	NVARCHAR2(20)		NOT NULL,
-	"HOBBY_INFO"	VARCHAR2(4000)		NOT NULL,
 	"HOBBY_ICON"	NVARCHAR2(200)		NULL,
-	"PARENT_CODE"	VARCHAR(20)		NULL,
+	"PARENT_CODE"	NUMBER		NULL,
 	"HOBBY_LEVEL"	NUMBER		NOT NULL,
 	"BOARD_CODE"	NUMBER		NOT NULL
 );
+
+
+ALTER TABLE HOBBY MODIFY HOBBY_CODE NUMBER;
 
 COMMENT ON COLUMN "HOBBY"."HOBBY_CODE" IS '취미 코드 (PK)';
 
 COMMENT ON COLUMN "HOBBY"."HOBBY_NAME" IS '취미명';
 
-COMMENT ON COLUMN "HOBBY"."HOBBY_INFO" IS '취미 상세 정보';
-
 COMMENT ON COLUMN "HOBBY"."HOBBY_ICON" IS '취미 아이콘';
 
-COMMENT ON COLUMN "HOBBY"."PARENT_CODE" IS '취미 부모 코드';
+COMMENT ON COLUMN "HOBBY"."PARENT_CODE" IS '취미 부모 코드 (FK)';
 
 COMMENT ON COLUMN "HOBBY"."HOBBY_LEVEL" IS '취미 레벨';
 
-COMMENT ON COLUMN "HOBBY"."BOARD_CODE" IS '게시판 코드 번호 (PK)';
+COMMENT ON COLUMN "HOBBY"."BOARD_CODE" IS '게시판 코드 번호 (FK)';
+
+INSERT INTO HOBBY VALUES
+(1, '운동-레저', 'fa-solid fa-baseball', NULL, 1, 2);
+
+INSERT INTO HOBBY VALUES
+(2, '문화-예술', 'fa-solid fa-palette', NULL, 1, 2);
+
+INSERT INTO HOBBY VALUES
+(3, '자기 계발', 'fa-solid fa-lightbulb', NULL, 1, 2);
+
+INSERT INTO HOBBY VALUES
+(4, '사회 교류', 'fa-solid fa-users', NULL, 1, 2);
+
+INSERT INTO HOBBY VALUES
+(5, '수집-소비', 'fa-solid fa-box-archive', NULL, 1, 2);
+
+INSERT INTO HOBBY VALUES (101, '러닝', 'fa-solid fa-person-running', 1, 2, 2);
+INSERT INTO HOBBY VALUES (102, '헬스', 'fa-solid fa-dumbbell', 1, 2, 2);
+INSERT INTO HOBBY VALUES (103, '등산', 'fa-solid fa-person-hiking', 1, 2, 2);
+INSERT INTO HOBBY VALUES (104, '사이클', 'fa-solid fa-bicycle', 1, 2, 2);
+INSERT INTO HOBBY VALUES (105, '볼링', 'fa-solid fa-bowling-ball', 1, 2, 2);
+INSERT INTO HOBBY VALUES (106, '탁구', 'fa-solid fa-table-tennis-paddle-ball', 1, 2, 2);
+INSERT INTO HOBBY VALUES (107, '수영', 'fa-solid fa-person-swimming', 1, 2, 2);
+INSERT INTO HOBBY VALUES (108, '축구', 'fa-solid fa-futbol', 1, 2, 2);
+INSERT INTO HOBBY VALUES (109, '야구', 'fa-solid fa-baseball-bat-ball', 1, 2, 2);
+INSERT INTO HOBBY VALUES (110, '골프', 'fa-solid fa-golf-ball-tee', 1, 2, 2);
+
+INSERT INTO HOBBY VALUES (201, '드로잉', 'fa-solid fa-palette', 2, 2, 2);
+INSERT INTO HOBBY VALUES (202, '캘리그라피', 'fa-solid fa-paintbrush', 2, 2, 2);
+INSERT INTO HOBBY VALUES (203, '사진 촬영', 'fa-solid fa-camera', 2, 2, 2);
+INSERT INTO HOBBY VALUES (204, '영상 편집', 'fa-solid fa-video', 2, 2, 2);
+INSERT INTO HOBBY VALUES (205, '악기 연주', 'fa-solid fa-guitar', 2, 2, 2);
+INSERT INTO HOBBY VALUES (206, '도예/공예', 'fa-solid fa-compass-drafting', 2, 2, 2);
+INSERT INTO HOBBY VALUES (207, '전시회·공연 관람', 'fa-solid fa-landmark', 2, 2, 2);
+
+
+INSERT INTO HOBBY VALUES (301, '독서', 'fa-solid fa-book', 3, 2, 2);
+INSERT INTO HOBBY VALUES (302, '글쓰기', 'fa-solid fa-pen-fancy', 3, 2, 2);
+INSERT INTO HOBBY VALUES (303, '코딩', 'fa-solid fa-code', 3, 2, 2);
+INSERT INTO HOBBY VALUES (304, '외국어 공부', 'fa-solid fa-language', 3, 2, 2);
+INSERT INTO HOBBY VALUES (305, '요리', 'fa-solid fa-kitchen-set', 3, 2, 2);
+INSERT INTO HOBBY VALUES (306, '재테크/투자', 'fa-solid fa-sack-dollar', 3, 2, 2);
+
+INSERT INTO HOBBY VALUES (401, '봉사활동', 'fa-solid fa-handshake-angle', 4, 2, 2);
+INSERT INTO HOBBY VALUES (402, '북클럽', 'fa-solid fa-book-open-reader', 4, 2, 2);
+INSERT INTO HOBBY VALUES (403, '보드게임 모임', 'fa-solid fa-chess-board', 4, 2, 2);
+INSERT INTO HOBBY VALUES (404, '취미 클래스', 'fa-solid fa-chalkboard-user', 4, 2, 2);
+INSERT INTO HOBBY VALUES (405, '스포츠 동호회', NULL, 4, 2, 2);
+INSERT INTO HOBBY VALUES (406, '스터디 모임', 'fa-solid fa-graduation-cap', 4, 2, 2);
+INSERT INTO HOBBY VALUES (407, '그룹 운동', 'fa-solid fa-people-pulling', 4, 2, 2);
+
+INSERT INTO HOBBY VALUES (501, '피규어/굿즈 수집', NULL, 5, 2, 2);
+INSERT INTO HOBBY VALUES (502, '음반/LP 수집', 'fa-solid fa-record-vinyl', 5, 2, 2);
+INSERT INTO HOBBY VALUES (503, '향수 수집', NULL, 5, 2, 2);
+INSERT INTO HOBBY VALUES (504, '패션 아이템 수집', 'fa-solid fa-shirt', 5, 2, 2);
+INSERT INTO HOBBY VALUES (505, '문구류 수집', 'fa-solid fa-pen', 5, 2, 2);
+INSERT INTO HOBBY VALUES (506, '한정판/콜라보 수집', NULL, 5, 2, 2);
+
+COMMIT;
+
+SELECT * FROM HOBBY;
 
 CREATE TABLE "MEMBER" (
 	"MEMBER_NO"	NUMBER		NOT NULL,
@@ -35,8 +96,6 @@ CREATE TABLE "MEMBER" (
 	"AUTHOR_LEVEL"	NUMBER	DEFAULT 1	NOT NULL,
 	"MEMBER_DEL_FL"	CHAR(1)	DEFAULT 'N'	NOT NULL
 );
-
-SELECT * FROM "MEMBER"; 
 
 COMMENT ON COLUMN "MEMBER"."MEMBER_NO" IS '회원 번호(PK)';
 
@@ -83,12 +142,117 @@ COMMENT ON COLUMN "PENALTY"."MEMBER_NO" IS '회원 번호(PK)';
 
 CREATE TABLE "MEMBER_HOBBY" (
 	"MEMBER_NO"	NUMBER		NOT NULL,
-	"HOBBY_CODE"	VARCHAR(20)		NOT NULL
+	"HOBBY_CODE"	NUMBER		NOT NULL
 );
+
 
 COMMENT ON COLUMN "MEMBER_HOBBY"."MEMBER_NO" IS '회원 번호(PK)';
 
 COMMENT ON COLUMN "MEMBER_HOBBY"."HOBBY_CODE" IS '취미 코드 (PK)';
+
+CREATE TABLE "QUESTION" (
+	"QUESTION_NO"	NUMBER		NOT NULL,
+	"QUESTION_CONTENT"	NVARCHAR2(200)		NOT NULL
+);
+
+INSERT INTO QUESTION VALUES (1, '결과보다 과정이 예쁘거나 재밌으면 만족한다.');
+INSERT INTO QUESTION VALUES (2, '쓸모없지만 재밌는 것보다는, 쓸모 있는 것이 좋다.');
+INSERT INTO QUESTION VALUES (3, '활동 자체보다 그 안에서 생기는 관계가 중요하다.');
+INSERT INTO QUESTION VALUES (4, '관심 있는 분야는 알아보다가 장비나 굿즈까지 보게 된다.');
+INSERT INTO QUESTION VALUES (5, '피곤해도 움직이고 나면 오히려 개운해진다.');
+INSERT INTO QUESTION VALUES (6, '정답 없는 문제를 만났을 때 오히려 흥미가 생긴다.');
+INSERT INTO QUESTION VALUES (7, '취향이 분명한 편이다.');
+INSERT INTO QUESTION VALUES (8, '약속 없는 주말, 집에만 있으면 괜히 손해 본 기분이 든다.');
+INSERT INTO QUESTION VALUES (9, '취미라도 나중에 써먹을 수 있으면 더 끌린다.');
+INSERT INTO QUESTION VALUES (10, '게임이든 뭐든 ‘‘순위’’가 나오면 괜히 열심히 하게 된다.');
+INSERT INTO QUESTION VALUES (11, '움직이면서 생각이 정리되거나 아이디어가 떠오를 때가 있다.');
+INSERT INTO QUESTION VALUES (12, '취미는 눈에 보이는 결과가 있어야 실감 난다.');
+INSERT INTO QUESTION VALUES (13, '무엇을 하느냐보다, 누구와 했는지가 더 중요할 때가 있다.');
+INSERT INTO QUESTION VALUES (14, '취미와 자기 관리의 경계가 흐려도 괜찮다.');
+INSERT INTO QUESTION VALUES (15, '알아보고 비교하는 과정 자체가 즐겁다.');
+
+COMMIT;
+
+SELECT * FROM QUESTION;
+
+COMMENT ON COLUMN "QUESTION"."QUESTION_NO" IS '질문 번호 (PK)';
+
+COMMENT ON COLUMN "QUESTION"."QUESTION_CONTENT" IS '질문 내용';
+
+CREATE TABLE "FIND_HOBBY" (
+	"QUESTION_NO"	NUMBER		NOT NULL,
+	"HOBBY_CODE"	NUMBER		NOT NULL,
+	"ANSWER_SCORE"	NUMBER		NOT NULL
+);
+
+-- Q1 과정이 예쁘면 만족
+INSERT INTO FIND_HOBBY VALUES (1, 2, 3);
+INSERT INTO FIND_HOBBY VALUES (1, 5, 1);
+
+-- Q2 쓸모도 있는 게 좋다
+INSERT INTO FIND_HOBBY VALUES (2, 3, 3);
+INSERT INTO FIND_HOBBY VALUES (2, 1, 1);
+
+-- Q3 관계가 중요
+INSERT INTO FIND_HOBBY VALUES (3, 4, 3);
+INSERT INTO FIND_HOBBY VALUES (3, 1, 1);
+
+-- Q4 장비·굿즈까지 본다
+INSERT INTO FIND_HOBBY VALUES (4, 5, 3);
+INSERT INTO FIND_HOBBY VALUES (4, 1, 1);
+
+-- Q5 움직이면 개운 (운동 3 / 자기계발 1)
+INSERT INTO FIND_HOBBY VALUES (5, 1, 3);
+INSERT INTO FIND_HOBBY VALUES (5, 3, 1);
+
+-- Q6 정답 없는 문제 흥미
+INSERT INTO FIND_HOBBY VALUES (6, 2, 3);
+INSERT INTO FIND_HOBBY VALUES (6, 3, 1);
+
+-- Q7 취향이 분명
+INSERT INTO FIND_HOBBY VALUES (7, 2, 2);
+INSERT INTO FIND_HOBBY VALUES (7, 5, 1);
+
+-- Q8 주말 집에만 있으면 손해 (운동 2 / 사회교류 2)
+INSERT INTO FIND_HOBBY VALUES (8, 1, 2);
+INSERT INTO FIND_HOBBY VALUES (8, 4, 2);
+
+-- Q9 나중에 써먹을 수 있으면
+INSERT INTO FIND_HOBBY VALUES (9, 3, 3);
+INSERT INTO FIND_HOBBY VALUES (9, 4, 1);
+
+-- Q10 순위 나오면 열심히
+INSERT INTO FIND_HOBBY VALUES (10, 3, 2);
+INSERT INTO FIND_HOBBY VALUES (10, 1, 1);
+
+-- Q11 움직이며 아이디어
+INSERT INTO FIND_HOBBY VALUES (11, 1, 2);
+INSERT INTO FIND_HOBBY VALUES (11, 2, 1);
+
+-- Q12 눈에 보이는 결과
+INSERT INTO FIND_HOBBY VALUES (12, 5, 2);
+INSERT INTO FIND_HOBBY VALUES (12, 2, 1);
+
+-- Q13 누구와 했는지가 중요
+INSERT INTO FIND_HOBBY VALUES (13, 4, 3);
+
+-- Q14 취미 = 자기관리
+INSERT INTO FIND_HOBBY VALUES (14, 3, 2);
+INSERT INTO FIND_HOBBY VALUES (14, 1, 1);
+
+-- Q15 비교·탐색이 즐겁다
+INSERT INTO FIND_HOBBY VALUES (15, 5, 3);
+INSERT INTO FIND_HOBBY VALUES (15, 2, 1);
+
+COMMIT;
+
+SELECT * FROM FIND_HOBBY;
+
+COMMENT ON COLUMN "FIND_HOBBY"."QUESTION_NO" IS '질문 번호 (PK)';
+
+COMMENT ON COLUMN "FIND_HOBBY"."HOBBY_CODE" IS '취미 코드 (PK)';
+
+COMMENT ON COLUMN "FIND_HOBBY"."ANSWER_SCORE" IS '답변 점수';
 
 CREATE TABLE "COMMENT" (
 	"COMMENT_NO"	NUMBER		NOT NULL,
@@ -272,6 +436,15 @@ ALTER TABLE "MEMBER_HOBBY" ADD CONSTRAINT "PK_MEMBER_HOBBY" PRIMARY KEY (
 	"HOBBY_CODE"
 );
 
+ALTER TABLE "QUESTION" ADD CONSTRAINT "PK_QUESTION" PRIMARY KEY (
+	"QUESTION_NO"
+);
+
+ALTER TABLE "FIND_HOBBY" ADD CONSTRAINT "PK_FIND_HOBBY" PRIMARY KEY (
+	"QUESTION_NO",
+	"HOBBY_CODE"
+);
+
 ALTER TABLE "COMMENT" ADD CONSTRAINT "PK_COMMENT" PRIMARY KEY (
 	"COMMENT_NO"
 );
@@ -339,6 +512,20 @@ REFERENCES "MEMBER" (
 );
 
 ALTER TABLE "MEMBER_HOBBY" ADD CONSTRAINT "FK_HOBBY_TO_MEMBER_HOBBY_1" FOREIGN KEY (
+	"HOBBY_CODE"
+)
+REFERENCES "HOBBY" (
+	"HOBBY_CODE"
+);
+
+ALTER TABLE "FIND_HOBBY" ADD CONSTRAINT "FK_QUESTION_TO_FIND_HOBBY_1" FOREIGN KEY (
+	"QUESTION_NO"
+)
+REFERENCES "QUESTION" (
+	"QUESTION_NO"
+);
+
+ALTER TABLE "FIND_HOBBY" ADD CONSTRAINT "FK_HOBBY_TO_FIND_HOBBY_1" FOREIGN KEY (
 	"HOBBY_CODE"
 )
 REFERENCES "HOBBY" (
