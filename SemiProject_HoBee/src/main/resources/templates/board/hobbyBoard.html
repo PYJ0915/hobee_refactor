@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자유게시판</title>
+
+    <th:block th:replace="~{common/common}"></th:block>
+    <link rel="stylesheet" href="/css/board/hobby-style.css">
+	<link rel="stylesheet" href="/css/common.css">
+</head>
+<body>
+    <th:block th:replace="~{common/fragments/header}"></th:block>
+    
+    <section class="board-list">
+        <h1 class="board-name">취미게시판</h1>
+
+<div class="rankList-wrapper">
+    <div class="rank-box">
+        <h3>취미게시판 TOP 5</h3>
+        <ul>
+            <th:block th:if="${#lists.isEmpty(hobbyBestList)}">
+                <li>인기 게시글이 없습니다.</li>
+            </th:block>
+            <li th:each="post : ${hobbyBestList}">
+                <a th:href="@{/board/hobby/{boardNo}(boardNo=${post.boardNo})}" th:text="${post.boardTitle}">제목</a>
+                <span class="rank-count" th:text="${post.likeCount}">0</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="rank-box">
+        <h3>공지사항</h3>
+        <ul>
+            <th:block th:if="${#lists.isEmpty(noticeList)}">
+                <li>작성된 공지사항이 없습니다.</li>
+            </th:block>
+            <li th:each="post : ${noticeList}">
+                <a th:href="@{/board/notice/{boardNo}(boardNo=${post.boardNo})}" th:text="${post.boardTitle}">공지 제목</a>
+                <span class="notice-date" th:text="${post.boardWriteDate}">2024.05.20</span>
+            </li>
+        </ul>
+    </div>
+</div>
+        <div class="list-wrapper">
+            <table class="list-table">
+                <thead>
+                    <tr>
+                        <th>글번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                        <th>조회수</th>
+                        <th>좋아요</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <th:block th:if="${#lists.isEmpty(boardList)}">
+                        <tr>
+                            <td colspan="6" style="text-align: center;">게시글이 존재하지 않습니다.</td>
+                        </tr>
+                    </th:block>
+
+                    <th:block th:unless="${#lists.isEmpty(boardList)}">
+                        <tr th:each="board : ${boardList}" th:object="${board}">
+                            <td th:text="*{boardNo}">게시글 번호</td>
+                            
+                            <td>
+                                <a th:unless="${param.key}"
+                                   th:href="@{/hobby/{boardNo}(boardNo=*{boardNo}, cp=${pagination.currentPage})}"
+                                   th:text="*{boardTitle}">게시글 제목</a>
+                                
+                                <a th:if="${param.key}"
+                                   th:href="@{/hobby/{boardNo}(boardNo=*{boardNo}, cp=${pagination.currentPage}, key=${param.key}, query=${param.query})}"
+                                   th:text="*{boardTitle}">게시글 제목</a>
+                                
+                                <th:block th:text="|[*{commentCount}]|">댓글 수</th:block>
+                            </td>
+                            
+                            <td th:text="*{memberNickname}">닉네임</td>
+                            
+                            <td th:text="*{boardWriteDate}">작성일</td>
+                            
+                            <td th:text="*{boardViewCount}">0</td>
+                            
+                            <td th:text="*{likeCount}">0</td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+
+			<div class="btn-area">
+				<!-- 로그인 상태일 때만 글쓰기 버튼 노출 -->
+				<button id="insertBtn" th:if="${session.loginMember}">글쓰기</button>
+			</div>
+
+        <div class="pagination-area">
+            <ul class="pagination" th:unless="${param.key}" th:object="${pagination}">
+                <li><a th:href="@{/hobby(cp=1)}">&lt;&lt;</a></li>
+                <li><a th:href="@{/hobby(cp=*{prevPage})}">&lt;</a></li>
+
+                <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
+                    <li th:if="${i} == *{currentPage}">
+                        <a class="current" th:text="${i}">1</a>
+                    </li>
+                    <li th:unless="${i} == *{currentPage}">
+                        <a th:href="@{/hobby(cp=${i})}" th:text="${i}">2</a>
+                    </li>
+                </th:block>
+
+                <li><a th:href="@{/hobby(cp=*{nextPage})}">&gt;</a></li>
+                <li><a th:href="@{/hobby(cp=*{maxPage})}">&gt;&gt;</a></li>
+            </ul>
+
+            <ul class="pagination" th:if="${param.key}" th:object="${pagination}">
+                <li><a th:href="@{/hobby(cp=1, key=${param.key}, query=${param.query})}">&lt;&lt;</a></li>
+                <li><a th:href="@{/hobby(cp=*{prevPage}, key=${param.key}, query=${param.query})}">&lt;</a></li>
+
+                <th:block th:if="*{startPage lt endPage}" th:each="i : *{#numbers.sequence(startPage, endPage)}">
+                    <li th:if="${i} == *{currentPage}">
+                        <a class="current" th:text="${i}">1</a>
+                    </li>
+                    <li th:unless="${i} == *{currentPage}">
+                        <a th:href="@{/hobby(cp=${i}, key=${param.key}, query=${param.query})}" th:text="${i}">2</a>
+                    </li>
+                </th:block>
+
+                <th:block th:unless="*{startPage lt endPage}">
+                    <li><a class="current">1</a></li>
+                </th:block>
+
+                <li><a th:href="@{/hobby(cp=*{nextPage}, key=${param.key}, query=${param.query})}">&gt;</a></li>
+                <li><a th:href="@{/hobby(cp=*{maxPage}, key=${param.key}, query=${param.query})}">&gt;&gt;</a></li>
+            </ul>
+        </div>
+
+        <form th:action="@{/hobby}" method="get" id="boardSearch">
+            <select name="key" id="searchKey">
+                <option value="t" th:selected="${param.key == 't'}">제목</option>
+                <option value="c" th:selected="${param.key == 'c'}">내용</option>
+                <option value="tc" th:selected="${param.key == 'tc'}">제목+내용</option>
+                <option value="w" th:selected="${param.key == 'w'}">작성자</option>
+            </select>
+            <input type="text" name="query" id="searchQuery" th:value="${param.query}" placeholder="검색어를 입력해주세요.">
+            <button>검색</button>
+        </form>
+    </section>
+
+    <th:block th:replace="~{common/fragments/footer}"></th:block>
+</body>
+</html>
