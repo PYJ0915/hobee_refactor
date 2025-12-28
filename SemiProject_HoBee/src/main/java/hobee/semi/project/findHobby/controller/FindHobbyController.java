@@ -1,15 +1,5 @@
 package hobee.semi.project.findHobby.controller;
 
-<<<<<<< HEAD
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-@Controller
-@RequestMapping("findHobby")
-public class FindHobbyController {
-	
-=======
 import java.util.List;
 import java.util.Map;
 
@@ -37,19 +27,12 @@ public class FindHobbyController {
 	@Autowired
 	private FindHobbyService service;
 	
->>>>>>> cac63ee4428cb72110908c7fb2d02804905df2be
 	@GetMapping("main")
 	public String findHobbyMain() {
 		return "findHobby/findHobbyStart";
 	}
 	
 	@GetMapping("start")
-<<<<<<< HEAD
-	public String findHobbyStart() {
-		return "findHobby/question";
-	}
-	
-=======
 	public String findHobbyStart(@RequestParam("inputName") String inputName, HttpSession session) {
 		session.setAttribute("inputName", inputName);
 		return "findHobby/question";
@@ -120,6 +103,5 @@ public class FindHobbyController {
 		return path;
 	}
 	
->>>>>>> cac63ee4428cb72110908c7fb2d02804905df2be
 	
 }
