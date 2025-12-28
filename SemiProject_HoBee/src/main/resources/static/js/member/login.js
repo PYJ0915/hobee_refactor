@@ -1,10 +1,11 @@
 // 로그인 
 
-const loginId = document.querySelector("#memberId")
-const loginPw = document.querySelector("#memberPw")
-const loginbtn = document.querySelector("#login-btn")
+const loginId = document.querySelector("#memberId");
+const loginPw = document.querySelector("#memberPw");
+const loginbtn = document.querySelector("#login-btn");
 const login = document.querySelector("#login");
 const loginMember = document.querySelector("#loginMmeber");
+const saveId = document.querySelector("#saveId");
 
 //로그인 전
 loginbtn.addEventListener("click",(e)=>{
@@ -27,15 +28,7 @@ loginbtn.addEventListener("click",(e)=>{
             
     }
 
-    if(loginMember == null){
-        alert("아이디/비번 불일치");
-        e.preventDefault();
-        return;
-    }
-
-
-
-
+    console.log(saveId);    
 
 
  });

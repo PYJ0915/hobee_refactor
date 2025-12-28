@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <th:block th:replace="~{common/fragments/header}"></th:block>
+
+    <main>
+
+        <h1>회원가입</h1>
+
+        <form action="/member/signupPage" method="post" id="signup" name="signup">
+            <section>
+
+                <!-- 이메일 -->
+                <h3>이메일</h3>
+                <div class="signUp-input">
+                     <input type="email"  placeholder="이메일" id="signupEamil">
+                     <button>인증</button>
+                 </div>
+
+                <!-- 인증코드 -->
+                <h3>인증번호</h3>
+                 <div class="signUp-input">
+                     <input type="text" maxlength="6" placeholder="인증번호" id="signupCode">
+                     <button>확인</button>
+                 </div>
+
+                <!-- 아이디 -->
+                <h3>아이디</h3>
+                <div class="signUp-input">
+                    <input type="text" placeholder="아이디" id="signupId">
+                    <button>중복</button>
+                </div>
+
+                <!-- 비밀번호 -->
+                <h3>비밀번호</h3>
+                <div class="signUp-input">
+                    <input type="password" placeholder="비밀번호" id="signupPw">
+                </div>
+
+                <!-- 비밀번호 확인 -->
+                <h3>비밀번호 확인</h3>
+                <div class="signUp-input">
+                    <input type="password" placeholder="비밀번호 확인" id="signupPwConfirm">
+                </div>
+
+                <!-- 이름 -->
+                <h3>이름</h3>
+                <div class="signUp-input">
+                    <input type="text" placeholder="이름(2~8글자)" minlength="2" maxlength="8" id="signupName">
+                </div>
+
+                <!-- 전화번호 -->
+                <h3>전화번호</h3>
+                <div class="signUp-input">
+                    <input type="tel" placeholder="전화번호(숫자만 입력)" id="signupTel">
+                </div>
+                
+                <!-- 주소 -->
+                <h3>주소</h3>
+
+                <div class="signUp-input">
+                <input type="text" name="memberAddress" placeholder="우편번호" maxlength="6" id="postcode">                       
+                
+                <button type="button" id="searchAddress">검색</button>
+                </div>
+
+                <div class="signUp-input">
+                <input type="text" name="memberAddress" placeholder="도로명/지번 주소" id="address">
+                </div>
+
+                <div class="signUp-input">
+                <input type="text" name="memberAddress" placeholder="상세 주소" id="detailAddress">
+                </div>
+
+                <button id="signupBtn" name="signupBtn">가입하기</button>
+
+            </section>
+
+
+        </form>
+
+    </main>
+
+
+    <!-- 다음 주소 API 추가 -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+    <!-- 푸처 추가 -->
+    <th:block th:replace="~{common/fragments/footer}"></th:block>
+    
+</body>
+</html>

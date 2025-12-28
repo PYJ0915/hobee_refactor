@@ -1,8 +1,6 @@
 /* 전체 배경 */
 body {
   margin: 0;
-  background-color: #FFF57E;
-  font-family: Arial, sans-serif;
 }
 
 /* 컨테이너 */
@@ -12,6 +10,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: #FFF57E;
 }
 
 /* 질문 영역 */
@@ -35,6 +34,8 @@ body {
 .answer-area {
   display: flex;
   gap: 80px;
+  padding-left: 50px;
+  padding-bottom: 200px;
 }
 
 /* 답변 버튼 */
@@ -48,8 +49,7 @@ body {
   transition: background-color 0.25s ease;
 }
 
-/* ✅ 핵심 요구사항 */
 .answer:hover {
   background-color: #452829;
-  color: #FFF57E; /* 가독성 */
+  color: #FFF57E; 
 }

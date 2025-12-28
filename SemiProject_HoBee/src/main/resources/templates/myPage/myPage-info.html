@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>내 정보</title>
+
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/css/mypage.css}">
+</head>
+<body>
+
+<!-- 헤더 -->
+<th:block th:replace="~{common/fragments/header}" />
+
+<main class="mypage-container">
+
+  <!-- 사이드 메뉴 -->
+  <th:block th:replace="~{common/fragments/mypageSideMenu}" />
+
+  <!-- 메인 콘텐츠 -->
+  <section class="mypage-content">
+
+    <h1 class="mypage-title">내 정보</h1>
+
+    <!-- 프로필 영역 -->
+    <div class="profile-area">
+      <div class="profile-img"></div>
+      <button type="button" class="profile-btn">변경</button>
+    </div>
+
+    <!-- 정보 수정 폼 -->
+    <form class="info-form">
+
+      <label>닉네임</label>
+      <input type="text" name="memberNickname">
+
+      <label>전화 번호</label>
+      <input type="text" name="memberTel">
+
+      <label>주소</label>
+      <div class="address-area">
+        <input type="text" name="memberAddress">
+        <button type="button" class="address-btn">검색</button>
+      </div>
+
+      <div class="form-btns">
+        <button type="submit" class="submit-btn">변경</button>
+        <button type="button" class="cancel-btn">취소</button>
+      </div>
+
+    </form>
+
+  </section>
+
+</main>
+
+<!-- 푸터 -->
+<th:block th:replace="~{common/fragments/footer}" />
+
+</body>
+</html>
