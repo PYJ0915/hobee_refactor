@@ -1,0 +1,126 @@
+/* 전체 */
+.result-container {
+  padding: 80px 20px;
+  background-color: #FFF57E;
+  text-align: center;
+}
+
+/* 타이틀 */
+.result-title h1 {
+  font-size: 32px;
+  color: #452829;
+  margin-bottom: 10px;
+}
+
+.result-title p {
+  font-size: 18px;
+  margin-bottom: 60px;
+}
+
+/* 상위 분야 영역 */
+.top-category {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* 카드 공통 */
+.category-card {
+  width: 360px;
+  padding: 40px;
+  border-radius: 20px;
+  background-color: #FFFFFF;
+}
+
+/* 1순위 강조 */
+.category-card.primary {
+  border: 3px solid #452829;
+}
+
+/* 제목 */
+.category-card h2 {
+  font-size: 22px;
+  color: #452829;
+  margin-bottom: 20px;
+}
+
+/* 취미 리스트 */
+.hobby-list {
+  list-style: none;
+  padding: 0;
+}
+
+.hobby-list li {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+/* 안내 */
+.result-guide {
+  margin: 60px 0 40px;
+  font-size: 16px;
+}
+
+/* 버튼 */
+.result-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.btn {
+  padding: 14px 32px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* 메인 버튼 */
+.primary-btn {
+  background-color: #452829;
+  color: #FFF57E;
+}
+
+/* 서브 버튼 */
+.secondary-btn {
+  border: 2px solid #452829;
+  color: #452829;
+}
+
+/* 결과 타이틀 영역 */
+.result-title {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.result-title h1 {
+  font-size: 32px;
+  color: #452829;
+  margin-bottom: 12px;
+}
+
+.result-name {
+  font-size: 18px;
+  color: #452829;
+  margin-bottom: 20px;
+}
+
+/* 결과 해석 메시지 */
+.result-message {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 18px 24px;
+
+  background-color: #ffffff;
+  border-left: 6px solid #452829;
+  border-radius: 12px;
+}
+
+.result-message p {
+  margin: 0;
+  font-size: 18px;
+  line-height: 2.0;
+  color: #452829;
+  font-weight: 500;
+}
