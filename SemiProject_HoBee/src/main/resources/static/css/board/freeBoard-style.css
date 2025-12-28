@@ -1,0 +1,179 @@
+
+/* 1. 공통 설정 및 폰트 정돈 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: #452829;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* 2. 게시판 전체 컨테이너 (중심축) */
+.board-list {
+    width: 1000px;
+    margin: 50px auto;
+    display: block !important; /* 부모 flex 해제: 요소들이 위아래로 쌓이게 함 */
+}
+
+.board-name {
+    font-size: 2em;
+    margin: 20px 0 30px 0;
+    font-weight: bold;
+}
+
+/* 3. 상단 랭킹 및 공지사항 섹션 (가로 정렬) */
+.rankList-wrapper {
+    display: flex !important;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+    margin-bottom: 40px;
+}
+
+.rank-box {
+    flex: 1; /* 1:1 비율로 너비 나눔 */
+    background-color: #D9D9D9; /* 설계도와 동일한 회색 */
+    padding: 20px;
+    border-radius: 4px;
+    min-height: 250px;
+}
+
+.rank-box h3 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #aaa;
+    padding-bottom: 10px;
+    color: #452829;
+}
+
+.rank-box ul {
+    list-style: none;
+}
+
+.rank-box li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+}
+
+/* 제목이 길어지면 '...' 처리 */
+.rank-box li a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    margin-right: 10px;
+}
+
+.rank-count, .notice-date {
+    color: #666;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+/* 4. 게시글 목록 테이블 영역 */
+.list-wrapper {
+    width: 100%;
+    min-height: 500px;
+}
+
+.list-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* 헤더 노란색 배경 (설계도 포인트) */
+.list-table thead tr {
+    background-color: #FFF57E;
+    color: #452829;
+}
+
+.list-table th, .list-table td {
+    border-bottom: 1px solid #452829;
+    padding: 15px 5px;
+    text-align: center;
+    white-space: nowrap; /* 헤더 글자 세로 현상 방지 */
+}
+
+/* 테이블 각 칸 너비 설정 */
+.list-table tr > *:nth-of-type(1) { width: 8%; }  /* 글번호 */
+.list-table tr > *:nth-of-type(2) {                /* 제목 */
+    width: 47%; 
+    text-align: left; 
+    padding-left: 20px; 
+}
+.list-table tr > *:nth-of-type(3) { width: 15%; } /* 작성자 */
+.list-table tr > *:nth-of-type(4) { width: 12%; } /* 작성일 */
+.list-table tr > *:nth-of-type(5) { width: 9%; }  /* 조회수 */
+.list-table tr > *:nth-of-type(6) { width: 9%; }  /* 좋아요 */
+
+/* 5. 버튼 및 페이지네이션 */
+.btn-area {
+    margin: 20px 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-area button {
+    width: 90px;
+    height: 40px;
+    background-color: #452829;
+    color: #FFF57E;
+    border: 2px solid #FFF57E;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.pagination-area {
+    margin: 30px 0;
+}
+
+.pagination {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination li {
+    margin: 0 5px;
+}
+
+.current {
+    font-weight: bold;
+    background-color: #FFF57E;
+    border-radius: 50%;
+    padding: 2px 8px;
+}
+
+/* 6. 검색 영역 */
+#boardSearch {
+    width: 500px;
+    margin: 30px auto;
+    display: flex;
+    gap: 10px;
+}
+
+#boardSearch input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+#boardSearch button {
+    width: 80px;
+    background-color: #452829;
+    color: #FFF57E;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
