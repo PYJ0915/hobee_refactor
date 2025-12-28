@@ -23,7 +23,8 @@
                 <li>인기 게시글이 없습니다.</li>
             </th:block>
             <li th:each="post : ${freeBestList}">
-                <a th:href="@{/board/free/{boardNo}(boardNo=${post.boardNo})}" th:text="${post.boardTitle}">제목</a>
+                <a th:href="@{/board/{boardCode}/{boardNo}(boardCode=${boardCode}, boardNo=${post.boardNo})}" 
+                   th:text="${post.boardTitle}">제목</a>
                 <span class="rank-count" th:text="${post.likeCount}">0</span>
             </li>
         </ul>
@@ -36,8 +37,9 @@
                 <li>작성된 공지사항이 없습니다.</li>
             </th:block>
             <li th:each="post : ${noticeList}">
-                <a th:href="@{/board/notice/{boardNo}(boardNo=${post.boardNo})}" th:text="${post.boardTitle}">공지 제목</a>
-                <span class="notice-date" th:text="${post.boardWriteDate}">2024.05.20</span>
+                <a th:href="@{/board/1/{boardNo}(boardNo=${post.boardNo})}" 
+                   th:text="${post.boardTitle}">공지 제목</a>
+                <span class="notice-date" th:text="${post.boardWriteDate}">2025.12.28</span>
             </li>
         </ul>
     </div>

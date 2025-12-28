@@ -24,7 +24,6 @@
             </th:block>
             <li th:each="post : ${hobbyBestList}">
                 <a th:href="@{/board/hobby/{boardNo}(boardNo=${post.boardNo})}" th:text="${post.boardTitle}">제목</a>
-                <span class="rank-count" th:text="${post.likeCount}">0</span>
             </li>
         </ul>
     </div>
@@ -37,7 +36,6 @@
             </th:block>
             <li th:each="post : ${noticeList}">
                 <a th:href="@{/board/notice/{boardNo}(boardNo=${post.boardNo})}" th:text="${post.boardTitle}">공지 제목</a>
-                <span class="notice-date" th:text="${post.boardWriteDate}">2024.05.20</span>
             </li>
         </ul>
     </div>

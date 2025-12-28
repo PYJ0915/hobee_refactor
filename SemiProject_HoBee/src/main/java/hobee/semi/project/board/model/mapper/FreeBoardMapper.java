@@ -19,4 +19,8 @@ public interface FreeBoardMapper {
 
 	List<Board> selectSearchList(Map<String, Object> paramMap, RowBounds rowBounds);
 
+	List<Board> selectFreeBestList(int boardCode, RowBounds rowBounds);
+
+	List<Board> selectNoticeList(int noticeBoardCode, RowBounds rowBounds);
+
 }

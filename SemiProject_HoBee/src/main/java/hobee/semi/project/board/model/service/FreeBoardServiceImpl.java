@@ -72,6 +72,23 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 
         return map;
 	}
+
+	@Override
+	public List<Board> freeBestList(int boardCode) {
+	    // 상위 5개만 가져오기 위해 RowBounds 사용 (offset: 0, limit: 5)
+	    RowBounds rowBounds = new RowBounds(0, 5);
+	    
+	    // Mapper 호출 시 boardCode와 rowBounds 전달
+	    return mapper.selectFreeBestList(boardCode, rowBounds);
+	}
+
+	@Override
+	public List<Board> noticeList(int noticeBoardCode) {
+	    // 최신 공지사항 5개만 가져오기 (offset: 0, limit: 5)
+	    RowBounds rowBounds = new RowBounds(0, 5);
+	    
+	    return mapper.selectNoticeList(noticeBoardCode, rowBounds);
+	}
 	
 	
 

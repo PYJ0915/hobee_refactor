@@ -7,132 +7,88 @@
 
 
 <select id="getListCount" resultType="_int">
-
 SELECT COUNT(*)
-
 FROM "BOARD"
-
 WHERE BOARD_DEL_FL = 'N'
-
 AND BOARD_CODE = #{boardCode}
-
 </select>
 
 
 <select id="selectBoardList" resultType="hobee.semi.project.board.model.dto.Board">
-
 SELECT BOARD_NO, BOARD_TITLE, MEMBER_NICKNAME, BOARD_VIEW_COUNT,
-
 (SELECT COUNT(*) FROM "COMMENT" C WHERE C.BOARD_NO = B.BOARD_NO) COMMENT_COUNT,
-
 (SELECT COUNT(*) FROM "BOARD_LIKE" L WHERE L.BOARD_NO = B.BOARD_NO) LIKE_COUNT,
-
 <![CDATA[
-
 CASE
-
 WHEN SYSDATE - BOARD_WRITE_DATE < 1 / 24 / 60 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24 * 60 * 60) || '초 전'
-
 WHEN SYSDATE - BOARD_WRITE_DATE < 1 / 24 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24 * 60) || '분 전'
-
 WHEN SYSDATE - BOARD_WRITE_DATE < 1 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24) || '시간 전'
-
 ELSE TO_CHAR(B.BOARD_WRITE_DATE, 'YYYY-MM-DD')
-
-END BOARD_WRITE_DATE
-
-]]>
-
+END BOARD_WRITE_DATE]]>
 FROM "BOARD" B
-
 JOIN "MEMBER" USING(MEMBER_NO)
-
 WHERE BOARD_DEL_FL = 'N'
-
 AND BOARD_CODE = #{boardCode}
-
 ORDER BY BOARD_NO DESC
 
 </select>
 
 
 <select id="getSearchCount" resultType="_int">
-
 SELECT COUNT(*)
-
 FROM "BOARD"
-
 <if test='key == "w"'>
-
 JOIN "MEMBER" USING(MEMBER_NO)
-
 </if>
-
 WHERE BOARD_DEL_FL = 'N'
-
 AND BOARD_CODE = #{boardCode}
-
 <choose>
-
 <when test='key == "t"'> AND BOARD_TITLE LIKE '%' || #{query} ||'%' </when>
-
 <when test='key == "c"'> AND BOARD_CONTENT LIKE '%' || #{query} ||'%' </when>
-
 <when test='key == "tc"'> AND (BOARD_CONTENT LIKE '%' || #{query} ||'%' OR BOARD_TITLE LIKE '%' || #{query} ||'%') </when>
-
 <otherwise> AND MEMBER_NICKNAME LIKE '%' || #{query} ||'%' </otherwise>
-
 </choose>
-
 </select>
 
 
 <select id="selectSearchList" resultType="hobee.semi.project.board.model.dto.Board">
-
 SELECT BOARD_NO, BOARD_TITLE, MEMBER_NICKNAME, BOARD_VIEW_COUNT,
-
 (SELECT COUNT(*) FROM "COMMENT" C WHERE C.BOARD_NO = B.BOARD_NO) COMMENT_COUNT,
-
 (SELECT COUNT(*) FROM "BOARD_LIKE" L WHERE L.BOARD_NO = B.BOARD_NO) LIKE_COUNT,
-
 <![CDATA[
-
 CASE
-
 WHEN SYSDATE - BOARD_WRITE_DATE < 1 / 24 / 60 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24 * 60 * 60) || '초 전'
-
 WHEN SYSDATE - BOARD_WRITE_DATE < 1 / 24 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24 * 60) || '분 전'
-
 WHEN SYSDATE - BOARD_WRITE_DATE < 1 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24) || '시간 전'
-
 ELSE TO_CHAR(B.BOARD_WRITE_DATE, 'YYYY-MM-DD')
-
-END BOARD_WRITE_DATE
-
-]]>
-
+END BOARD_WRITE_DATE]]>
 FROM "BOARD" B
-
 JOIN "MEMBER" USING(MEMBER_NO)
-
 WHERE BOARD_DEL_FL = 'N'
-
 AND BOARD_CODE = #{boardCode}
-
 <choose>
-
 <when test='key == "t"'> AND BOARD_TITLE LIKE '%' || #{query} ||'%' </when>
-
 <when test='key == "c"'> AND BOARD_CONTENT LIKE '%' || #{query} ||'%' </when>
-
 <when test='key == "tc"'> AND (BOARD_CONTENT LIKE '%' || #{query} ||'%' OR BOARD_TITLE LIKE '%' || #{query} ||'%') </when>
-
 <otherwise> AND MEMBER_NICKNAME LIKE '%' || #{query} ||'%' </otherwise>
-
 </choose>
-
 ORDER BY BOARD_NO DESC
+</select>
 
+
+<select id="selectFreeBestList" resultType="hobee.semi.project.board.model.dto.Board">
+	SELECT BOARD_NO, BOARD_TITLE
+	FROM "BOARD"
+	WHERE BOARD_CODE = ${boardCode}
+	AND BOARD_DEL_FL = 'N'
+</select>
+
+<select id="selectNoticeList" resultType="hobee.semi.project.board.model.dto.Board">
+	SELECT BOARD_NO, BOARD_TITLE
+    FROM "BOARD"
+    WHERE BOARD_CODE = #{noticeBoardCode}
+    AND BOARD_DEL_FL = 'N'
+    ORDER BY BOARD_WRITE_DATE DESC	
 </select>
 
 

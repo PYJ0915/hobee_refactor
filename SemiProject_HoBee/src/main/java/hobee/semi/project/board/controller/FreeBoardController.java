@@ -1,5 +1,6 @@
 package hobee.semi.project.board.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.board.model.service.FreeBoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +27,9 @@ public class FreeBoardController {
 				Model model,
 				@RequestParam Map<String, Object> paramMap) {
 		
-		int boardCode = 1;
+		int boardCode = 3;
+		int noticeBoardCode = 1;
+		
 		
 		
 		// 조회 서비스 호출 후 결과 반환
@@ -51,12 +55,25 @@ public class FreeBoardController {
 			
 		}
 		
+		List<Board> freeBestList = service.freeBestList(boardCode);
+		
+		List<Board> noticeList = service.noticeList(noticeBoardCode);
+		
+		
 		// model에 결과 값 등록
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));
 		model.addAttribute("boardCode", boardCode);
+		model.addAttribute("freeBestList", freeBestList);
+		model.addAttribute("noticeList", noticeList);
 		
 		
 		return "board/freeBoard";
 	}
+	
+	
+	
+	
+	
+	
 }
