@@ -167,7 +167,7 @@ INSERT INTO QUESTION VALUES (9, '취미라도 나중에 써먹을 수 있으면 
 INSERT INTO QUESTION VALUES (10, '게임이든 뭐든 순위가 나오면 괜히 열심히 하게 된다.');
 INSERT INTO QUESTION VALUES (11, '움직일 때 생각이 정리되거나 아이디어가 떠오르는 편이다.');
 INSERT INTO QUESTION VALUES (12, '취미는 눈에 보이는 결과가 있어야 실감 난다.');
-INSERT INTO QUESTION VALUES (13, '무엇을 하느냐보다, 누구와 했는지가 더 중요할 때가 있다.');
+INSERT INTO QUESTION VALUES (13, '무엇을 하느냐보다, 누구와 하느냐가 더 중요하게 느껴지는 편이다.');
 INSERT INTO QUESTION VALUES (14, '취미와 자기 관리의 경계가 꼭 나뉘어야 할 필요는 없다고 생각한다.');
 INSERT INTO QUESTION VALUES (15, '알아보고 비교하는 과정 자체가 즐겁다.');
 
