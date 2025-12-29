@@ -3,7 +3,9 @@
 <mapper namespace="hobee.semi.project.member.model.mapper.MemberMapper">
 
 		<select id="loginMember" resultType="MemberDTO">
-			SELECT MEMBER_NO,MEMBER_EMAIL,MEMBER_ID,MEMBER_PW,MEMBER_NICKNAME,MEMBER_TEL,MEMBER_ADDRESS
+			SELECT
+			MEMBER_NO,MEMBER_EMAIL,MEMBER_ID,MEMBER_PW,MEMBER_NICKNAME,
+			MEMBER_TEL,MEMBER_ADDRESS,ENROLL_DATE,AUTHOR_LEVEL,MEMBER_DEL_FL
 			FROM "MEMBER"
 			WHERE MEMBER_ID = #{memberId}
 		</select>

@@ -2,36 +2,50 @@ package hobee.semi.project.member.controller;
 
 
 
+import java.net.http.HttpResponse;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.member.model.service.MemberService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("member")
-@SessionAttributes("{loginMember}") // 세션 스코프에 로그인 한 회원정보 저장
+@SessionAttributes({"loginMember"}) // 세션 스코프에 로그인 한 회원정보 저장
 public class MemberController {
 
+	private final MemberService service;
+	
+	
+	// 로그인 페이지
 	@GetMapping("loginPage")
 	public String loginPage() {
 		return"member/loginPage";
 	}
 	
-	private final MemberService service;
 	
+	// 로그인 
 	@PostMapping("loginPage")
 	public String login(@ModelAttribute MemberDTO inputMember/*로그인 창에 쓴 값(그릇) */,
-					Model model,/*값들을 들고 클라이언트 이동(바구니)*/
-					RedirectAttributes ra
+					Model model,/*값을 들고 클라이언트 이동(바구니)*/
+					RedirectAttributes ra,
+					@RequestParam(value = "saveId", required = false) String saveId/*saveId 값*/,
+					HttpServletResponse resp /*쿠기를 클라이언트로 옮기기 위해 */
 			) {
 		
 		try {
@@ -39,11 +53,33 @@ public class MemberController {
 			// member 모든 값이 들어가져 있음
 			MemberDTO loginMember = service.loginMember(inputMember);
 			
-			if(loginMember == null) {
-				ra.addFlashAttribute("message","로그인 실패");
+			log.debug("로그인 회원 loginMember 상태 : " + loginMember);
+			log.debug("체크박스 saveId 상태 : " + saveId);
+			
+			if(loginMember != null) {
+				model.addAttribute("loginMember", loginMember);
+				
+				// 쿠키 객체 생성(회원 정보 관리하기 위해(입장권 번호))
+				Cookie cookie = new Cookie("saveId",loginMember.getMemberId());
+				
+				// 사이트 모두 가능
+				cookie.setPath("/");
+				
+				if(saveId != null) {// 체크함
+					cookie.setMaxAge(60*60*24*30);  // 30일동안 생존 이후 삭제
+				}
+				else {
+					cookie.setMaxAge(0); // 실패 시 0초 생존 
+				}
+				
+				// 클라이언트로 이동
+				resp.addCookie(cookie);
+				
 			}else {
-				ra.addFlashAttribute("loginMember", loginMember);
+				ra.addFlashAttribute("message", "아이디 또는 비밀번호가 일치하지 않습니다.");
+				return "redirect:/member/loginPage"; // 로그인 실패시 로그인 페이지로 이동
 			}
+			
 			
 			
 			
@@ -52,6 +88,12 @@ public class MemberController {
 		}
 		
 		
-		return"redirect:/";
+		return "redirect:/";
+	}
+	
+	// 회원 가입 페이지
+	@GetMapping("signupPage")
+	public String signup() {
+		return "member/signupPage";
 	}
 }
