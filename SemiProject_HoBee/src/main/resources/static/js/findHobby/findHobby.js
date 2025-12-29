@@ -1,8 +1,7 @@
-const name = document.querySelector(".name-input").value;
+const inputName = document.querySelector(".name-input");
 
 document.querySelector(".start-btn").addEventListener("click", () => {
 
-  location.href = "/findHobby/start";
+  location.href = "/findHobby/start?inputName=" + inputName.value;
 
 });
-
