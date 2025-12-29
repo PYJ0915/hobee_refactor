@@ -242,3 +242,9 @@ a:hover {
 }
 
 
+
+/* 게시글 내용 볼드체 강조하는 CSS */
+.list-table tbody td:nth-of-type(2) a {
+    font-weight: bold;
+    color: #000; /* 조금 더 진한 색상으로 강조 가능 */
+}

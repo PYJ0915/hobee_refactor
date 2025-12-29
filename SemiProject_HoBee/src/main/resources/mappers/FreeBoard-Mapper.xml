@@ -14,7 +14,7 @@ AND BOARD_CODE = #{boardCode}
 </select>
 
 
-<select id="selectBoardList" resultType="hobee.semi.project.board.model.dto.Board">
+<select id="selectBoardList" resultType="Board">
 SELECT BOARD_NO, BOARD_TITLE, MEMBER_NICKNAME, BOARD_VIEW_COUNT,
 (SELECT COUNT(*) FROM "COMMENT" C WHERE C.BOARD_NO = B.BOARD_NO) COMMENT_COUNT,
 (SELECT COUNT(*) FROM "BOARD_LIKE" L WHERE L.BOARD_NO = B.BOARD_NO) LIKE_COUNT,
@@ -51,7 +51,7 @@ AND BOARD_CODE = #{boardCode}
 </select>
 
 
-<select id="selectSearchList" resultType="hobee.semi.project.board.model.dto.Board">
+<select id="selectSearchList" resultType="Board">
 SELECT BOARD_NO, BOARD_TITLE, MEMBER_NICKNAME, BOARD_VIEW_COUNT,
 (SELECT COUNT(*) FROM "COMMENT" C WHERE C.BOARD_NO = B.BOARD_NO) COMMENT_COUNT,
 (SELECT COUNT(*) FROM "BOARD_LIKE" L WHERE L.BOARD_NO = B.BOARD_NO) LIKE_COUNT,
@@ -76,14 +76,17 @@ ORDER BY BOARD_NO DESC
 </select>
 
 
-<select id="selectFreeBestList" resultType="hobee.semi.project.board.model.dto.Board">
-	SELECT BOARD_NO, BOARD_TITLE
-	FROM "BOARD"
-	WHERE BOARD_CODE = ${boardCode}
-	AND BOARD_DEL_FL = 'N'
+<select id="selectFreeBestList" resultType="Board">
+    SELECT BOARD_NO, BOARD_TITLE, 
+    (SELECT COUNT(*) FROM "BOARD_LIKE" L 
+     WHERE L.BOARD_NO = B.BOARD_NO) AS LIKE_COUNT
+    FROM "BOARD" B
+    WHERE BOARD_CODE = 3 
+    AND BOARD_DEL_FL = 'N'
+    ORDER BY LIKE_COUNT DESC
 </select>
 
-<select id="selectNoticeList" resultType="hobee.semi.project.board.model.dto.Board">
+<select id="selectNoticeList" resultType="Board">
 	SELECT BOARD_NO, BOARD_TITLE
     FROM "BOARD"
     WHERE BOARD_CODE = #{noticeBoardCode}
