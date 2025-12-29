@@ -14,11 +14,12 @@
       <a href="/findHobby/main" class="nav-item">취미 탐색</a>
     </nav>
 
+
     <!-- 비로그인 상태 인증 영역 -->
     <th:block th:if="${session.loginMember} == null">
       <div class="header-auth">
         <a href="/member/loginPage" class="login-btn">로그인</a>
-        <a href="#" class="signup-btn">회원가입</a>
+        <a href="/member/signupPage" class="signup-btn">회원가입</a>
       </div>
     </th:block>
 
@@ -44,7 +45,6 @@
         로그아웃
       </a>
 
-    </div>
     </th:block>
 
 

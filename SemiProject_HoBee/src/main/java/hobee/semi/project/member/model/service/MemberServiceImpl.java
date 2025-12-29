@@ -26,23 +26,23 @@ public class MemberServiceImpl implements MemberService{
 		// db에서 암화화된 비밀번호를 가져와서 로그인한 비밀번호랑 비교
 		
 		// 암호화 비번(게시판 등 사용 가능하기 때문에 비번만 가지고 오지말고 다 갖고오기)
-		MemberDTO member = mapper.loginMember(inputMember);
+		MemberDTO loginMember = mapper.loginMember(inputMember);
 		
 		// input 값 암화화 값 비교 
 		// 일치하지 않을때
-		
-		if(member == null) {
+		if(loginMember == null) {
 			return null; // 로그인 실패 시 null 로 반환
 		}
 		
-		
-		if(!bcrypt.matches(inputMember.getMemberPw(),member.getMemberPw() )) {
+		if(!bcrypt.matches(inputMember.getMemberPw(),loginMember.getMemberPw() )) {
 			return null;
 		}
 		
+		// 비번이 맞을 경우 (보안상 비번은 null로 변경)
+		loginMember.setMemberPw(null);
 		
 		// DB에 저장된 회원 값을 갖고 리턴 즉 로그인 성공 후 세션에 저장
-		return member;
+		return loginMember;
 	}
 	
 
