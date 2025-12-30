@@ -1,140 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-
 <mapper namespace="hobee.semi.project.board.model.mapper.HobbyBoardMapper">
 
-
-
-<select id="getListCount" resultType="_int">
-
-SELECT COUNT(*)
-
-FROM "BOARD"
-
-WHERE BOARD_DEL_FL = 'N'
-
-AND BOARD_CODE = #{boardCode}
-
-</select>
-
-
-<select id="selectBoardList" resultType="hobee.semi.project.board.model.dto.Board">
-
-SELECT BOARD_NO, BOARD_TITLE, MEMBER_NICKNAME, BOARD_VIEW_COUNT,
-
-(SELECT COUNT(*) FROM "COMMENT" C WHERE C.BOARD_NO = B.BOARD_NO) COMMENT_COUNT,
-
-(SELECT COUNT(*) FROM "BOARD_LIKE" L WHERE L.BOARD_NO = B.BOARD_NO) LIKE_COUNT,
-
-<![CDATA[
-
-CASE
-
-WHEN SYSDATE - BOARD_WRITE_DATE < 1 / 24 / 60 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24 * 60 * 60) || '초 전'
-
-WHEN SYSDATE - BOARD_WRITE_DATE < 1 / 24 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24 * 60) || '분 전'
-
-WHEN SYSDATE - BOARD_WRITE_DATE < 1 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24) || '시간 전'
-
-ELSE TO_CHAR(B.BOARD_WRITE_DATE, 'YYYY-MM-DD')
-
-END BOARD_WRITE_DATE
-
-]]>
-
-FROM "BOARD" B
-
-JOIN "MEMBER" USING(MEMBER_NO)
-
-WHERE BOARD_DEL_FL = 'N'
-
-AND BOARD_CODE = #{boardCode}
-
-ORDER BY BOARD_NO DESC
-
-</select>
-
-
-<select id="getSearchCount" resultType="_int">
-
-SELECT COUNT(*)
-
-FROM "BOARD"
-
-<if test='key == "w"'>
-
-JOIN "MEMBER" USING(MEMBER_NO)
-
-</if>
-
-WHERE BOARD_DEL_FL = 'N'
-
-AND BOARD_CODE = #{boardCode}
-
-<choose>
-
-<when test='key == "t"'> AND BOARD_TITLE LIKE '%' || #{query} ||'%' </when>
-
-<when test='key == "c"'> AND BOARD_CONTENT LIKE '%' || #{query} ||'%' </when>
-
-<when test='key == "tc"'> AND (BOARD_CONTENT LIKE '%' || #{query} ||'%' OR BOARD_TITLE LIKE '%' || #{query} ||'%') </when>
-
-<otherwise> AND MEMBER_NICKNAME LIKE '%' || #{query} ||'%' </otherwise>
-
-</choose>
-
-</select>
-
-
-<select id="selectSearchList" resultType="hobee.semi.project.board.model.dto.Board">
-
-SELECT BOARD_NO, BOARD_TITLE, MEMBER_NICKNAME, BOARD_VIEW_COUNT,
-
-(SELECT COUNT(*) FROM "COMMENT" C WHERE C.BOARD_NO = B.BOARD_NO) COMMENT_COUNT,
-
-(SELECT COUNT(*) FROM "BOARD_LIKE" L WHERE L.BOARD_NO = B.BOARD_NO) LIKE_COUNT,
-
-<![CDATA[
-
-CASE
-
-WHEN SYSDATE - BOARD_WRITE_DATE < 1 / 24 / 60 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24 * 60 * 60) || '초 전'
-
-WHEN SYSDATE - BOARD_WRITE_DATE < 1 / 24 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24 * 60) || '분 전'
-
-WHEN SYSDATE - BOARD_WRITE_DATE < 1 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24) || '시간 전'
-
-ELSE TO_CHAR(B.BOARD_WRITE_DATE, 'YYYY-MM-DD')
-
-END BOARD_WRITE_DATE
-
-]]>
-
-FROM "BOARD" B
-
-JOIN "MEMBER" USING(MEMBER_NO)
-
-WHERE BOARD_DEL_FL = 'N'
-
-AND BOARD_CODE = #{boardCode}
-
-<choose>
-
-<when test='key == "t"'> AND BOARD_TITLE LIKE '%' || #{query} ||'%' </when>
-
-<when test='key == "c"'> AND BOARD_CONTENT LIKE '%' || #{query} ||'%' </when>
-
-<when test='key == "tc"'> AND (BOARD_CONTENT LIKE '%' || #{query} ||'%' OR BOARD_TITLE LIKE '%' || #{query} ||'%') </when>
-
-<otherwise> AND MEMBER_NICKNAME LIKE '%' || #{query} ||'%' </otherwise>
-
-</choose>
-
-ORDER BY BOARD_NO DESC
-
-</select>
-
-
+    <select id="getListCount" resultType="_int">
+        SELECT COUNT(*)
+        FROM "BOARD"
+        WHERE BOARD_DEL_FL = 'N'
+        AND BOARD_CODE = #{boardCode}
+    </select>
+
+    <select id="selectBoardList" resultType="Board">
+        SELECT BOARD_NO, BOARD_TITLE, MEMBER_NICKNAME, BOARD_VIEW_COUNT,
+        (SELECT COUNT(*) FROM "COMMENT" C WHERE C.BOARD_NO = B.BOARD_NO) COMMENT_COUNT,
+        (SELECT COUNT(*) FROM "BOARD_LIKE" L WHERE L.BOARD_NO = B.BOARD_NO) LIKE_COUNT,
+        <![CDATA[
+        CASE
+            WHEN SYSDATE - BOARD_WRITE_DATE < 1 / 24 / 60 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24 * 60 * 60) || '초 전'
+            WHEN SYSDATE - BOARD_WRITE_DATE < 1 / 24 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24 * 60) || '분 전'
+            WHEN SYSDATE - BOARD_WRITE_DATE < 1 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24) || '시간 전'
+            ELSE TO_CHAR(B.BOARD_WRITE_DATE, 'YYYY-MM-DD')
+        END BOARD_WRITE_DATE
+        ]]>
+        FROM "BOARD" B
+        JOIN "MEMBER" USING(MEMBER_NO)
+        WHERE BOARD_DEL_FL = 'N'
+        AND BOARD_CODE = #{boardCode}
+        ORDER BY BOARD_NO DESC
+    </select>
+
+    <select id="getSearchCount" resultType="_int">
+        SELECT COUNT(*)
+        FROM "BOARD"
+        JOIN "MEMBER" USING(MEMBER_NO) WHERE BOARD_DEL_FL = 'N'
+        AND BOARD_CODE = #{boardCode}
+        <choose>
+            <when test='key == "t"'> AND BOARD_TITLE LIKE '%' || #{query} ||'%' </when>
+            <when test='key == "c"'> AND BOARD_CONTENT LIKE '%' || #{query} ||'%' </when>
+            <when test='key == "tc"'> AND (BOARD_CONTENT LIKE '%' || #{query} ||'%' OR BOARD_TITLE LIKE '%' || #{query} ||'%') </when>
+            <when test='key == "w"'> AND MEMBER_NICKNAME LIKE '%' || #{query} ||'%' </when>
+        </choose>
+    </select>
+
+    <select id="selectSearchList" resultType="Board">
+        SELECT BOARD_NO, BOARD_TITLE, MEMBER_NICKNAME, BOARD_VIEW_COUNT,
+        (SELECT COUNT(*) FROM "COMMENT" C WHERE C.BOARD_NO = B.BOARD_NO) COMMENT_COUNT,
+        (SELECT COUNT(*) FROM "BOARD_LIKE" L WHERE L.BOARD_NO = B.BOARD_NO) LIKE_COUNT,
+        <![CDATA[
+        CASE
+            WHEN SYSDATE - BOARD_WRITE_DATE < 1 / 24 / 60 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24 * 60 * 60) || '초 전'
+            WHEN SYSDATE - BOARD_WRITE_DATE < 1 / 24 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24 * 60) || '분 전'
+            WHEN SYSDATE - BOARD_WRITE_DATE < 1 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24) || '시간 전'
+            ELSE TO_CHAR(B.BOARD_WRITE_DATE, 'YYYY-MM-DD')
+        END BOARD_WRITE_DATE
+        ]]>
+        FROM "BOARD" B
+        JOIN "MEMBER" USING(MEMBER_NO)
+        WHERE BOARD_DEL_FL = 'N'
+        AND BOARD_CODE = #{boardCode}
+        <choose>
+            <when test='key == "t"'> AND BOARD_TITLE LIKE '%' || #{query} ||'%' </when>
+            <when test='key == "c"'> AND BOARD_CONTENT LIKE '%' || #{query} ||'%' </when>
+            <when test='key == "tc"'> AND (BOARD_CONTENT LIKE '%' || #{query} ||'%' OR BOARD_TITLE LIKE '%' || #{query} ||'%') </when>
+            <when test='key == "w"'> AND MEMBER_NICKNAME LIKE '%' || #{query} ||'%' </when>
+        </choose>
+        ORDER BY BOARD_NO DESC
+    </select>
+
+    <select id="selectHobbyBestList" resultType="Board">
+        SELECT * FROM (
+            SELECT BOARD_NO, BOARD_TITLE, BOARD_VIEW_COUNT,
+                (SELECT COUNT(*) FROM "BOARD_LIKE" L WHERE L.BOARD_NO = B.BOARD_NO) LIKE_COUNT
+            FROM "BOARD" B
+            WHERE BOARD_DEL_FL = 'N'
+            AND BOARD_CODE = #{boardCode}
+            ORDER BY LIKE_COUNT DESC, BOARD_VIEW_COUNT DESC
+        )
+        <![CDATA[ WHERE ROWNUM <= 5 ]]>
+    </select>
+
+    <select id="selectNoticeList" resultType="Board">
+        SELECT * FROM (
+            SELECT BOARD_NO, BOARD_TITLE, 
+                   TO_CHAR(BOARD_WRITE_DATE, 'YYYY-MM-DD') BOARD_WRITE_DATE
+            FROM "BOARD"
+            WHERE BOARD_DEL_FL = 'N'
+            AND BOARD_CODE = #{noticeBoardCode}
+            ORDER BY BOARD_NO DESC
+        )
+        <![CDATA[ WHERE ROWNUM <= 5 ]]>
+    </select>
 
 </mapper>
