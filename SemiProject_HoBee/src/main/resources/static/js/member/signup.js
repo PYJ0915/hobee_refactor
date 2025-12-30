@@ -1,3 +1,147 @@
+// 회원 가입 페이지
+
+
+// 유효성 검사
+// 유효하면 true
+// 유효하지 않으면 false
+const checkObj = {
+    "memberEmail"     : false,
+    "authKey"         : false,
+    "memberPw"        : false,
+    "memberPwConfirm" : false,
+    "memberNickname"  : false,
+    "memberTel"       : false
+};
+
+
+// 이메일 ------------------------------------
+
+const memberEmail = document.querySelector("#memberEmail");     // 이메일
+const emailMessage = document.querySelector("#emailMessage");   // 이메일 span 메세지 
+
+    // 1) 입력된 이메일이 없을 경우
+memberEmail.addEventListener("input", e => {
+
+    const inputEmail = e.target.value; // 입력된 값 가져오기
+
+    // 1) 입력된 이메일이 없을 경우
+    if(inputEmail.trim().length === 0) {
+        emailMessage.innerText = "메일을 받을 수 있는 이메일을 입력해주세요.";
+        emailMessage.classList.remove('confirm', 'error');
+        checkObj.memberEmail = false;
+        return;
+    }
+
+    // 2) 이메일 정규표현식 유효성 ,중복 검사
+    const regExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if(regExp.test(inputEmail)) { // 유효한 경우
+        
+        fetch("/member/checkEmail?memberEmail="+inputEmail) 
+        // ex)http://localhost/member/checkEmail?email=abc@test.com 단순 DB조회라 GET방식 커리스트링 이용 ,즉 파람으로 갖고 오기 위해
+        .then(resp => resp.text()) // text로 받은 이유 단순 이메일 문자라 String으로 받음
+        .then(count =>{
+            if(count == 0){
+                emailMessage.innerText = "사용 가능한 이메일입니다.";
+                emailMessage.classList.add('confirm');
+                emailMessage.classList.remove('error');
+                checkObj.memberEmail = true; // 형식 o / 중복 x
+            }
+            else{
+                emailMessage.innerText = "이미 사용 중인 이메일입니다.";
+                emailMessage.classList.add('error');
+                emailMessage.classList.remove('confirm');
+                checkObj.memberEmail = false;
+            }
+        })
+        
+    }else{
+        emailMessage.innerText = "알맞은 이메일 형식으로 작성해주세요.";
+        emailMessage.classList.add('error');
+        emailMessage.classList.remove('confirm');
+        checkObj.memberEmail = false;
+    }
+   
+    
+});
+
+// 인증 코드 보내기
+const sendAuthKeyBtn = document.querySelector("#sendAuthKeyBtn"); // 인증 버튼
+const authKeyMessage = document.querySelector("#authKeyMessage"); // 인증 span 메세지
+
+sendAuthKeyBtn.addEventListener("click",()=>{
+
+
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // 주소 검색 버튼 클릭 시
 document.querySelector("#searchAddress").addEventListener("click",execDaumPostcode);    
 
@@ -27,9 +171,5 @@ document.querySelector("#searchAddress").addEventListener("click",execDaumPostco
             }
         }).open();
     }
-
-
-
-// 입력창에 아무것도 누르지 않을
-
-
+// 주소 검색 버튼 클릭 시
+document.querySelector("#searchAddress").addEventListener("click",execDaumPostcode);

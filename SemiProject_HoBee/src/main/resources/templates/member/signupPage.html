@@ -1,106 +1,103 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입</title>
 
     <link rel="stylesheet" href="/css/common.css">
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/member/validation">
+
 </head>
 <body>
     <th:block th:replace="~{common/fragments/header}"></th:block>
 
     <main>
-
         <h1>회원가입</h1>
 
-        <form action="/member/signupPage" method="post" id="signup" name="signup">
+        <form action="/member/signUp" method="post" id="signUpForm" name="signUpForm">
             <section>
 
-                <!-- 이메일 -->
                 <h3>이메일</h3>
                 <div class="signUp-input">
-                     <input type="email"  placeholder="이메일" id="memberEmail">
-                     <button>인증</button>
-                 </div>
+                    <input type="email" placeholder="이메일" id="memberEmail" name="memberEmail" autocomplete="off">
+                    <button type="button" id="sendAuthKeyBtn">인증번호 받기</button>
+                </div>
+                <span class="signUp-message" id="emailMessage">메일을 받을 수 있는 이메일을 입력해주세요.</span>
 
-                <!-- 인증코드 -->
                 <h3>인증번호</h3>
-                 <div class="signUp-input">
-                     <input type="text" maxlength="6" placeholder="인증번호" id="signupCode">
-                     <button type="button">확인</button>
-                 </div>
+                <div class="signUp-input">
+                    <input type="text" maxlength="6" placeholder="인증번호" id="authKey" name="authKey" autocomplete="off">
+                    <button type="button" id="checkAuthKeyBtn">인증하기</button>
+                </div>
+                <span class="signUp-message" id="authKeyMessage">인증번호 6자리를 입력해주세요.</span>
 
-                <!-- 아이디 -->
                 <h3>아이디</h3>
                 <div class="signUp-input">
-                    <input type="text" placeholder="아이디" id="signupId">
-                    <button type="button">중복</button>
+                    <input type="text" placeholder="아이디" id="memberId" name="memberId" minlength="6" maxlength="12">
                 </div>
+                <span class="signUp-message" id="idMessage">영어/숫자 6~12 사이로 입력해주세요.</span>
 
-                <!-- 비밀번호 -->
                 <h3>비밀번호</h3>
                 <div class="signUp-input">
-                    <input type="password" placeholder="비밀번호" id="signupPw">
+                    <input type="password" placeholder="비밀번호" id="memberPw" name="memberPw" minlength="6" maxlength="12">
                 </div>
+                <span class="signUp-message" id="pwMessage">영어, 숫자, 특수문자 포함 6~12자 사이로 입력해주세요.</span>
 
-                <!-- 비밀번호 확인 -->
                 <h3>비밀번호 확인</h3>
                 <div class="signUp-input">
-                    <input type="password" placeholder="비밀번호 확인" id="signupPwConfirm">
+                    <input type="password" placeholder="비밀번호 확인" id="memberPwConfirm" name="memberPwConfirm">
                 </div>
 
-                <!-- 이름 -->
                 <h3>이름</h3>
                 <div class="signUp-input">
-                    <input type="text" placeholder="이름(2~8글자)" minlength="2" maxlength="8" id="signupName">
+                    <input type="text" placeholder="이름(2~8글자)" id="memberName" name="memberName">
                 </div>
 
-                <!-- 닉네임 -->
                 <h3>닉네임</h3>
                 <div class="signUp-input">
-                    <input type="text" placeholder="닉네임(2~8글자)" minlength="2" maxlength="8" id="signupNickname">
-                    <button type="button">중복</button>
+                    <input type="text" placeholder="닉네임(2~8글자)" id="memberNickname" name="memberNickname"  minlength="2" maxlength="8">
+                </div>
+                <span class="signUp-message" id="nickMessage">2~8글자 사이로 입력해주세요.</span>
+
+                <h3>취미</h3>
+                <div class="signUp-input">
+                    <input type="text" placeholder="취미(2~8)" id="memberHobby" name="memberHobby"  minlength="2" maxlength="8">
                 </div>
 
-                <!-- 전화번호 -->
                 <h3>전화번호</h3>
                 <div class="signUp-input">
-                    <input type="tel" placeholder="전화번호(숫자만 입력)" id="signupTel">
+                    <input type="tel" placeholder="전화번호(숫자만 입력)" id="memberTel" name="memberTel" maxlength="11">
                 </div>
                 
-                <!-- 주소 -->
-                <h3>주소</h3>
+   
+                <!-- 주소 입력 -->
+                <label for="memberAddress">주소</label>
 
-                <div class="signUp-input">
+                <div class="signUp-input-area">
                 <input type="text" name="memberAddress" placeholder="우편번호" maxlength="6" id="postcode">                       
                 
                 <button type="button" id="searchAddress">검색</button>
                 </div>
 
-                <div class="signUp-input">
+                <div class="signUp-input-area">
                 <input type="text" name="memberAddress" placeholder="도로명/지번 주소" id="address">
                 </div>
 
-                <div class="signUp-input">
+                <div class="signUp-input-area">
                 <input type="text" name="memberAddress" placeholder="상세 주소" id="detailAddress">
                 </div>
 
-                <button id="signupBtn" name="signupBtn">가입하기</button>
+                <button id="signUpBtn">가입하기</button>
 
             </section>
-
-
         </form>
-
     </main>
 
-
-    <!-- 다음 주소 API 추가 -->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    
+    <script src="/js/member/signUp.js"></script>
 
-    <!-- 푸처 추가 -->
     <th:block th:replace="~{common/fragments/footer}"></th:block>
     
 </body>

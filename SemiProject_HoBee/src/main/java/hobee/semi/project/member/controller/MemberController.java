@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -95,5 +96,13 @@ public class MemberController {
 	@GetMapping("signupPage")
 	public String signup() {
 		return "member/signupPage";
+	}
+	
+	// 이메일 중복 검사
+	@ResponseBody
+	@GetMapping("checkEmail")
+	public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
+		return service.checkEmail(memberEmail);
+		
 	}
 }

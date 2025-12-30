@@ -11,5 +11,11 @@ public interface MemberService {
 	 */
 	MemberDTO loginMember(MemberDTO inputMember);
 
+	/** 이메일 중복검사
+	 * @param memberEmail
+	 * @return 숫자
+	 */
+	int checkEmail(String memberEmail);
+
 
 }

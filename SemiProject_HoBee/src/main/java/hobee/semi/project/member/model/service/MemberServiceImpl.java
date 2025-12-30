@@ -44,6 +44,12 @@ public class MemberServiceImpl implements MemberService{
 		// DB에 저장된 회원 값을 갖고 리턴 즉 로그인 성공 후 세션에 저장
 		return loginMember;
 	}
+
+	@Override
+	public int checkEmail(String memberEmail) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 
 }
