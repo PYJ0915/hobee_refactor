@@ -23,6 +23,8 @@ public interface HobbyBoardMapper {
 
 	List<Board> selectNoticeList(int noticeBoardCode, RowBounds rowBounds);
 
+	String selectCategoryName(int categoryCode);
+
 
 
 }

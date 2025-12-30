@@ -89,5 +89,11 @@
         )
         <![CDATA[ WHERE ROWNUM <= 5 ]]>
     </select>
+    
+    <select id="selectCategoryName" resultType="String">
+    	SELECT CATEGORY_NAME
+    	FROM BOARD_CATEGORY
+    	WHERE CATEGORY_CODE = #{categoryCode}
+    </select>
 
 </mapper>
