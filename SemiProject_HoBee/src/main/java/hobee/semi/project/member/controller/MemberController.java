@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import hobee.semi.project.member.model.dto.MemberDTO;
@@ -98,11 +99,20 @@ public class MemberController {
 		return "member/signupPage";
 	}
 	
+<<<<<<< HEAD
 	// 이메일 중복 검사
 	@ResponseBody
 	@GetMapping("checkEmail")
 	public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
 		return service.checkEmail(memberEmail);
 		
+=======
+	@GetMapping("logout")
+	public String logout(SessionStatus sessionStatus) {
+		
+		sessionStatus.setComplete();
+		
+		return "redirect:/";
+>>>>>>> 0bdaff38c27c301f34b3bd5bfacdf1bc151ca1db
 	}
 }
