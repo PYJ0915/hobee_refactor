@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -22,15 +23,26 @@ public class HobbyBoardController {
 	
 	private final HobbyBoardService service;
 	
-	@GetMapping("")
-	public String selectBoardList(@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
-				Model model,
-				@RequestParam Map<String, Object> paramMap) {
+	@GetMapping("{hobbyCode:[0-9]+}") 
+    public String selectBoardList(
+                @PathVariable("hobbyCode") int hobbyCode,
+                @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+                Model model,
+                @RequestParam Map<String, Object> paramMap) {
 		
-		int boardCode = 2;
+		int boardCode = hobbyCode;
 		int noticeBoardCode = 1;
 		
-		
+		String hobbyName = "";
+        switch(hobbyCode) {
+            case 1: hobbyName = "운동·레저"; break;
+            case 2: hobbyName = "자기 계발"; break;
+            case 3: hobbyName = "문화·예술"; break;
+            case 4: hobbyName = "사회 교류"; break;
+            case 5: hobbyName = "수집·소비"; break;
+            default: hobbyName = "취미";
+        }
+        
 		
 		// 조회 서비스 호출 후 결과 반환
 		Map<String, Object> map = null;
@@ -61,9 +73,11 @@ public class HobbyBoardController {
 		
 		
 		// model에 결과 값 등록
+		model.addAttribute("hobbyCode", hobbyCode);
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));
 		model.addAttribute("boardCode", boardCode);
+		model.addAttribute("hobbyName", hobbyName);
 		model.addAttribute("hobbyBestList", hobbyBestList);
 		model.addAttribute("noticeList", noticeList);
 		
