@@ -56,36 +56,3 @@
   padding: 40px;
   line-height: 1.7;
 }
-
-/* Categories */
-.categories {
-  display: flex;
-  justify-content: center;
-  gap: 60px;
-  padding: 60px 0;
-}
-
-.category {
-  text-align: center;
-  cursor: pointer;
-  transition-duration: 0.25s;
-}
-
-.category i {
-  width: 90px;
-  height: 90px;
-  background: #FFF57E;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 34px;
-  color: #452829;
-  margin-bottom: 12px;
-  transition-duration: 0.25s;
-}
-
-.category:hover {
-  transform: scale(1.2);
-}
-

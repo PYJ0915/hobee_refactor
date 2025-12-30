@@ -21,5 +21,9 @@ public class Board {
 	private int memberNo;
 	private int boardCode;
 	
-
+	private String memberNickname;
+	
+	// 목록 조회 시 서브쿼리 필드
+	private int commentCount; // 댓글 수
+	private int likeCount;    // 좋아요 수
 }
