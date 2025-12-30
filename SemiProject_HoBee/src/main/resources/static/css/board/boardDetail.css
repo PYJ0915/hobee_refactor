@@ -1,0 +1,160 @@
+/* 전체 레이아웃 */
+.board-detail-container {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+/* 게시글 영역 */
+.board-detail {
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 40px;
+}
+
+/* 제목 */
+.board-title {
+  font-size: 28px;
+  color: #452829;
+  margin-bottom: 20px;
+}
+
+/* 작성자 */
+.board-writer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.writer-profile {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #ddd;
+}
+
+.writer-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.writer-name {
+  font-weight: bold;
+  color: #452829;
+  text-decoration: none;
+}
+
+.writer-name:hover {
+  text-decoration: underline;
+}
+
+.write-date {
+  font-size: 12px;
+  color: #999;
+}
+
+/* 게시글 내용 */
+.board-content {
+  line-height: 1.8;
+  font-size: 16px;
+  color: #333;
+}
+
+/* 게시글 버튼 */
+.board-actions {
+  margin-top: 30px;
+}
+
+.report-btn {
+  background: none;
+  border: none;
+  color: #c0392b;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* 댓글 영역 */
+.comment-area {
+  margin-top: 50px;
+}
+
+.comment-title {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #452829;
+}
+
+/* 댓글 리스트 */
+.comment-list {
+  list-style: none;
+  padding: 0;
+}
+
+.comment-item {
+  padding: 16px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+/* 댓글 작성자 */
+.comment-writer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.comment-profile {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #ddd;
+}
+
+.comment-name {
+  font-weight: bold;
+  color: #452829;
+  text-decoration: none;
+}
+
+.comment-date {
+  font-size: 12px;
+  color: #999;
+}
+
+.comment-report {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: #c0392b;
+  cursor: pointer;
+}
+
+/* 댓글 내용 */
+.comment-content {
+  margin-left: 46px;
+  margin-top: 8px;
+  line-height: 1.6;
+}
+
+/* 댓글 작성 */
+.comment-write {
+  display: flex;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.comment-write textarea {
+  flex: 1;
+  height: 80px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  resize: none;
+}
+
+.comment-submit {
+  background-color: #452829;
+  color: #FFF57E;
+  border: none;
+  padding: 0 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
