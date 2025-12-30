@@ -65,8 +65,9 @@
         </div>
 
 			<div class="btn-area">
-				<!-- 로그인 상태일 때만 글쓰기 버튼 노출 -->
-				<button id="insertBtn" th:if="${session.loginMember}">글쓰기</button>
+				<!-- 관리자만 글쓰기 버튼 노출 -->
+				<button id="insertBtn" th:if="${session.loginMember?.authorLevel == 1}"
+                data-board-path="notice">글쓰기</button>
 			</div>
 
         <div class="pagination-area">
@@ -123,6 +124,6 @@
 
     <th:block th:replace="~{common/fragments/footer}"></th:block>
 
-    	<script src="/js/board/board.js"></script>
+    <script src="/js/board/board.js"></script>
 </body>
 </html>

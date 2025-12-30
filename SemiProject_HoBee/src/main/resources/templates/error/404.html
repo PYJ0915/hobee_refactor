@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>페이지를 찾을 수 없어요 | Ho-Bee</title>
+
+  <link rel="stylesheet" th:href="@{/css/error.css}">
+</head>
+<body>
+
+<main class="error-container">
+
+  <section class="error-box">
+    <h1 class="error-code">404</h1>
+
+    <p class="error-title">페이지를 찾을 수 없어요</p>
+
+    <p class="error-desc">
+      요청하신 페이지가 존재하지 않거나<br>
+      주소가 잘못 입력되었을 수 있어요.
+    </p>
+
+    <div class="error-divider"></div>
+
+    <div class="error-help">
+      <p>이런 경우에 이 페이지가 보여질 수 있어요</p>
+      <ul>
+        <li>주소가 잘못 입력된 경우</li>
+        <li>페이지가 이동 또는 삭제된 경우</li>
+        <li>일시적인 서버 문제</li>
+      </ul>
+    </div>
+
+    <a href="/" class="error-btn">메인으로 돌아가기</a>
+  </section>
+
+</main>
+
+</body>
+</html>

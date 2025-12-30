@@ -3,7 +3,8 @@
 <mapper namespace="hobee.semi.project.findHobby.model.mapper.FindHobbyMapper">
 
 	<select id="selectQuestionList" resultType="Question">
-		SELECT * FROM "QUESTION"
+		SELECT QUESTION_NO, QUESTION_CONTENT
+		FROM "QUESTION"
 	</select>
 	
 	<select id="selectScore">

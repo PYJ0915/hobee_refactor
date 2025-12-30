@@ -3,22 +3,32 @@
 /*** 내 정보 영역 ***/
 
 /* 전체 컨테이너 */
-.mypage-container {
+.myPage-container {
   display: flex;
   min-height: calc(100vh - 200px);
 }
 
 /* 메인 콘텐츠 */
-.mypage-content {
+.myPage-content {
   flex: 1;
   padding: 60px;
 }
 
 /* 제목 */
-.mypage-title {
+.myPage-title {
   font-size: 28px;
   color: #452829;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
+}
+
+/* 마이페이지 부제 */
+.myPage-subject{
+  display: block;
+  margin-bottom: 30px;
+
+  color: #452829;
+  font-size: 14px;
+  letter-spacing: -1px;
 }
 
 /* 프로필 */
@@ -45,25 +55,48 @@
   cursor: pointer;
 }
 
+.myPage-row{
+  width: 400px;
+  height: 50px;
+  margin-top: 20px;
+
+  display: flex;
+  align-items: end;
+  border-bottom: 2px solid #ddd;
+}
+
+.myPage-row > * {
+  font-size: 18px;
+  font-weight: bold;
+  color: #452829;
+}
+
 /* 폼 */
-.info-form label {
+.myPage-row label, span {
   display: block;
-  margin-bottom: 8px;
+  /*margin-bottom: 8px;*/
   font-weight: bold;
 }
 
-.info-form input {
+.myPage-row input {
   width: 300px;
-  padding: 10px;
-  margin-bottom: 24px;
-  border: 1px solid #ccc;
+  /*padding: 10px;*/
+  /*margin-bottom: 24px;*/
+  border: none;
+  outline: none;
   border-radius: 6px;
+  font-weight: normal;
 }
 
 /* 주소 */
+.address-title {
+  border: none;
+}
+
 .address-area {
   display: flex;
   gap: 10px;
+  margin: 0;
 }
 
 .address-btn {
@@ -80,9 +113,12 @@
   margin-top: 30px;
 }
 
-.submit-btn,
-.cancel-btn {
+.submit-btn {
+  width: 50%;
   padding: 10px 28px;
+
+  font-size: 20px;
+  font-weight: bold;
   border-radius: 6px;
   border: none;
   cursor: pointer;
@@ -93,14 +129,10 @@
   color: #FFF57E;
 }
 
-.cancel-btn {
-  background-color: #ccc;
-  margin-left: 12px;
-}
 
 
 /*** 사이드 메뉴 영역 ***/
-.mypage-side {
+.myPage-side {
   width: 220px;
   padding: 40px 20px;
   border-right: 1px solid #ddd;
