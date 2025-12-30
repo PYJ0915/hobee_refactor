@@ -38,7 +38,7 @@
                 <li>작성된 공지사항이 없습니다.</li>
             </th:block>
             <li th:each="post : ${noticeList}">
-                <a th:href="@{/board/1/{boardNo}(boardNo=${post.boardNo})}" 
+                <a th:href="@{/notice/{boardNo}(boardNo=${post.boardNo})}" 
                    th:text="${post.boardTitle}">공지 제목</a>
                 <span class="notice-date" th:text="${post.boardWriteDate}">2025.12.28</span>
             </li>
@@ -89,7 +89,8 @@
         </div>
 
         <div class="btn-area">
-            <button id="insertBtn" th:if="${session.loginMember}">글쓰기</button>
+            <button id="insertBtn" th:if="${session.loginMember?.authorLevel == 1}"
+        th:data-board-path="|hobby/${hobbyCode}|">글쓰기</button>
         </div>
 
         <div class="pagination-area">

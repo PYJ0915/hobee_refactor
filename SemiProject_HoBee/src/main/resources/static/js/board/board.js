@@ -1,12 +1,11 @@
-/* 글쓰기 버튼 클릭 시 */
 const insertBtn = document.querySelector("#insertBtn");
 
-// 글쓰기 버튼이 존재할 때 (로그인 상태인 경우)
-if(insertBtn != null) {
+if (insertBtn != null) {
     insertBtn.addEventListener('click', () => {
-
-
+        // 클릭된 버튼에서 해당 게시판의 경로를 읽어옴
+        const boardPath = insertBtn.getAttribute("data-board-path");
         
-        location.href = `/editBoard/${boardCode}/insert`;
+        // 최종 URL 생성: /editBoard/notice/insert 또는 /editBoard/hobby/1/insert 등
+        location.href = `/editBoard/${boardPath}/insert`;
     });
 }
