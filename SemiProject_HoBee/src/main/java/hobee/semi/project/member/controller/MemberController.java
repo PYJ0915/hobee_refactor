@@ -2,8 +2,6 @@ package hobee.semi.project.member.controller;
 
 
 
-import java.net.http.HttpResponse;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.member.model.service.MemberService;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("member")
 @SessionAttributes({"loginMember"}) // 세션 스코프에 로그인 한 회원정보 저장
 public class MemberController {
+
+
 
 	private final MemberService service;
 	
@@ -93,26 +92,35 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
+	// 로그아웃
+	@GetMapping("logout")
+	public String logout(SessionStatus sessionStatus) {
+		sessionStatus.setComplete();
+		return "redirect:/";
+	}
+	
 	// 회원 가입 페이지
 	@GetMapping("signupPage")
 	public String signup() {
 		return "member/signupPage";
 	}
 	
-<<<<<<< HEAD
 	// 이메일 중복 검사
 	@ResponseBody
 	@GetMapping("checkEmail")
 	public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
 		return service.checkEmail(memberEmail);
-		
-=======
-	@GetMapping("logout")
-	public String logout(SessionStatus sessionStatus) {
-		
-		sessionStatus.setComplete();
-		
-		return "redirect:/";
->>>>>>> 0bdaff38c27c301f34b3bd5bfacdf1bc151ca1db
 	}
+	
+	// 아이디 중복 검사
+	@ResponseBody
+	@GetMapping("checkId")
+	public int checkId(@RequestParam("memberId") String memberId) {
+		return service.checkId(memberId);
+		
+	}
+	
+	
+
+
 }

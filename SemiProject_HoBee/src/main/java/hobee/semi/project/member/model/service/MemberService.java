@@ -17,5 +17,11 @@ public interface MemberService {
 	 */
 	int checkEmail(String memberEmail);
 
+	/** 아이디 중복 검사
+	 * @param memberId
+	 * @return
+	 */
+	int checkId(String memberId);
+
 
 }

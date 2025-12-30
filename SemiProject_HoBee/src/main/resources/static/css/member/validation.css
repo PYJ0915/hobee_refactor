@@ -1,12 +1,12 @@
 /* 유효성 검사 메시지 기본 스타일 (공통) */
 .signUp-message {
-  color: black;
+  color: grey;
   font-weight: bold;
 }
 
 /* 유효한 경우 (초록색) */
 .confirm {
-    color: greenyellow; 
+    color: green; 
     font-weight: bold;
 }
 

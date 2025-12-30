@@ -6,6 +6,7 @@
 // 유효하지 않으면 false
 const checkObj = {
     "memberEmail"     : false,
+    "memberId"        : false,
     "authKey"         : false,
     "memberPw"        : false,
     "memberPwConfirm" : false,
@@ -14,8 +15,7 @@ const checkObj = {
 };
 
 
-// 이메일 ------------------------------------
-
+// 이메일 ---------------------------------------------------------------------------------------------------------------------
 const memberEmail = document.querySelector("#memberEmail");     // 이메일
 const emailMessage = document.querySelector("#emailMessage");   // 이메일 span 메세지 
 
@@ -38,7 +38,7 @@ memberEmail.addEventListener("input", e => {
     if(regExp.test(inputEmail)) { // 유효한 경우
         
         fetch("/member/checkEmail?memberEmail="+inputEmail) 
-        // ex)http://localhost/member/checkEmail?email=abc@test.com 단순 DB조회라 GET방식 커리스트링 이용 ,즉 파람으로 갖고 오기 위해
+        // ex)http://localhost/member/checkEmail?memberEmail=abc@test.com 단순 DB조회라 GET방식 커리스트링 이용 ,즉 파람으로 갖고 오기 위해
         .then(resp => resp.text()) // text로 받은 이유 단순 이메일 문자라 String으로 받음
         .then(count =>{
             if(count == 0){
@@ -65,16 +65,66 @@ memberEmail.addEventListener("input", e => {
     
 });
 
-// 인증 코드 보내기
-const sendAuthKeyBtn = document.querySelector("#sendAuthKeyBtn"); // 인증 버튼
-const authKeyMessage = document.querySelector("#authKeyMessage"); // 인증 span 메세지
+// 인증 코드 보내기 ------------------------------------------------------------------------------------
+// const sendAuthKeyBtn = document.querySelector("#sendAuthKeyBtn"); // 인증 버튼
+// const authKeyMessage = document.querySelector("#authKeyMessage"); // 인증 span 메세지
 
-sendAuthKeyBtn.addEventListener("click",()=>{
+// sendAuthKeyBtn.addEventListener("click",()=>{});
 
 
+// 아이디 중복 검사 ------------------------------------------------------------------------------------
+
+const memberId = document.querySelector("#memberId");
+const idMessage = document.querySelector("#idMessage");
+
+memberId.addEventListener("input",e=>{
+
+    const inputId = e.target.value; // 입력된 값 가져오기
+
+    // 1) 입력된 아이디가 없을 경우
+    if(inputId.trim().length === 0) {
+        idMessage.innerText = "영어/숫자 6~12 사이로 입력해주세요.";
+        idMessage.classList.remove('confirm', 'error');
+        checkObj.memberId = false;
+        return;
+    }
+
+    // 6~12 글자 제한(왜 하냐 html에서하면 우회하는 사람이 있을 수 있기에)
+    const regExp = /^[a-zA-Z0-9]{6,12}$/;
+
+    if(regExp.test(inputId)){
+
+        fetch("/member/checkId?memberId="+inputId) 
+        .then(resp => resp.text()) // text로 받은 이유 단순 이메일 문자라 String으로 받음
+        .then(count =>{
+     
+                if(count == 0){
+                    idMessage.innerText = "사용 가능한 아이디입니다.";
+                    idMessage.classList.add('confirm');
+                    idMessage.classList.remove('error');
+                    checkObj.memberId = true; // 형식 o / 중복 x
+                }
+                else{
+                    idMessage.innerText = "이미 사용 중인 아이디입니다.";
+                    idMessage.classList.add('error');
+                    idMessage.classList.remove('confirm');
+                    checkObj.memberId = false;
+                }
+            
+        })
+    }else{
+        idMessage.innerText = "영어/숫자 6~12 사이로 입력해주세요.";
+        idMessage.classList.add('error');
+        idMessage.classList.remove('confirm');
+        checkObj.memberId = false;
+    }
 
 
 });
+
+
+
+
 
 
 

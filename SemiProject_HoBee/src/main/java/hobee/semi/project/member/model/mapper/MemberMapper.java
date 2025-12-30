@@ -13,6 +13,18 @@ public interface MemberMapper {
 	 */
 	MemberDTO loginMember(MemberDTO inputMemberinputMember);
 
+	/** 이메일 중복 검사
+	 * @param memberEmail
+	 * @return
+	 */
+	int checkEmail(String memberEmail);
+
+	/** 아이디 중복 검사
+	 * @param memberId
+	 * @return
+	 */
+	int checkId(String memberId);
+
 	
 	
 	
