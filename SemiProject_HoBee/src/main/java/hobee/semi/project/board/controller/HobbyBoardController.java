@@ -35,6 +35,13 @@ public class HobbyBoardController {
 		
 		String categoryName = service.selectCategoryName(categoryCode);
 		
+	    if(categoryName == null) {
+	        // 강제로 hobby/1 주소로 다시 보내버림
+	        return "redirect:/hobby/1";
+	    }
+		
+		
+		
 		// 조회 서비스 호출 후 결과 반환
 		Map<String, Object> map = null;
 		
@@ -67,6 +74,8 @@ public class HobbyBoardController {
 		
 		return "board/hobbyBoard";
 	}
+	
+	
 	
 	
 	

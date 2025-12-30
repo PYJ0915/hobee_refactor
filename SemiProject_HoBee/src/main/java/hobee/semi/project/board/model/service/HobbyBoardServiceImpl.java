@@ -93,15 +93,9 @@ public class HobbyBoardServiceImpl implements HobbyBoardService{
 	@Override
 	public String selectCategoryName(int categoryCode) {
 		
-		String categoryName = mapper.selectCategoryName(categoryCode);
-		
-		if(categoryName == null) {
-			
-		}
 		
 		
-		
-		return categoryName;
+		return mapper.selectCategoryName(categoryCode);
 	}
 	
 	
