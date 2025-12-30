@@ -21,4 +21,5 @@ public class MemberDTO {
 	private int authorLevel;
 	private String memberDelfl;
 	
+
 }
