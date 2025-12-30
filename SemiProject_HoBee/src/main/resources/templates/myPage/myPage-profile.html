@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>프로필 | Ho-Bee</title>
+
+  <link rel="stylesheet" href="/SemiProject_HoBee/src/main/resources/static/css/myPage/myPage-profile.css">
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/css/mypage/profile.css}">
+</head>
+<body>
+
+<!-- 헤더 -->
+<th:block th:replace="~{common/fragments/header}" />
+
+<main class="mypage-container">
+
+  <!-- 사이드 메뉴 -->
+  <th:block th:replace="~{common/fragments/sideMenu}" />
+
+  <!-- 메인 콘텐츠 -->
+  <section class="profile-content">
+
+    <h2 class="page-title">프로필</h2>
+
+    <!-- 프로필 상단 -->
+    <div class="profile-header">
+      <div class="profile-img"></div>
+    </div>
+
+    <!-- 정보 영역 -->
+    <div class="info-group">
+
+      <div class="info-row">
+        <span class="label">이름</span>
+        <span class="value" th:text="${session.loginMember.memberName}">홍길동</span>
+      </div>
+
+      <div class="info-row">
+        <span class="label">닉네임</span>
+        <span class="value" th:text="${session.loginMember.memberNickname}">길동이</span>
+      </div>
+
+      <div class="info-row">
+        <span class="label">취미</span>
+        <div class="hobby-tags">
+          <span class="hobby-tag"
+                th:each="hobby : ${hobbyList}"
+                th:text="${hobby.hobbyName}">
+            러닝
+          </span>
+        </div>
+      </div>
+
+      <div class="info-row column">
+        <span class="label">소개</span>
+        <p class="intro-text" th:text="${member.introduction}">
+          안녕하세요! 새로운 취미를 찾고 있어요.
+        </p>
+      </div>
+
+      <!-- 내가 쓴 글 -->
+      <div class="info-row column">
+        <span class="label">
+          내가 쓴 글 (<span th:text="${myBoardList.size()}">0</span>)
+        </span>
+
+        <!-- 글 없을 때 -->
+        <div class="empty-box"
+             th:if="${#lists.isEmpty(myBoardList)}">
+          현재 없음
+        </div>
+
+        <!-- 글 있을 때 -->
+        <ul class="my-board-list"
+            th:if="${!#lists.isEmpty(myBoardList)}">
+          <li th:each="board : ${myBoardList}">
+            <a th:href="@{/board/detail/{no}(no=${board.boardNo})}"
+               th:text="${board.boardTitle}">
+              게시글 제목
+            </a>
+            <span class="date"
+                  th:text="${#temporals.format(board.boardWriteDate,'yyyy.MM.dd')}">
+              2025.01.01
+            </span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+  </section>
+</main>
+
+<!-- 푸터 -->
+<th:block th:replace="~{common/fragments/footer}" />
+
+</body>
+</html>

@@ -3,24 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <title>내 정보</title>
-
+  <link rel="stylesheet" href="/SemiProject_HoBee/src/main/resources/static/css/myPage/myPage.css">
   <link rel="stylesheet" th:href="@{/css/common.css}">
-  <link rel="stylesheet" th:href="@{/css/mypage.css}">
+  <link rel="stylesheet" th:href="@{/css/myPage.css}">
 </head>
 <body>
 
 <!-- 헤더 -->
 <th:block th:replace="~{common/fragments/header}" />
 
-<main class="mypage-container">
+<main class="myPage-container">
 
   <!-- 사이드 메뉴 -->
   <th:block th:replace="~{common/fragments/mypageSideMenu}" />
 
   <!-- 메인 콘텐츠 -->
-  <section class="mypage-content">
+  <section class="myPage-content">
 
-    <h1 class="mypage-title">내 정보</h1>
+    <h1 class="myPage-title">내 정보</h1>
+    <span class="myPage-subject">내 정보 관리</span>
 
     <!-- 프로필 영역 -->
     <div class="profile-area">
@@ -29,23 +30,42 @@
     </div>
 
     <!-- 정보 수정 폼 -->
-    <form class="info-form">
+    <form action="#" class="info-form" method="POST" name="myPageFrm" id="updateInfo">
 
-      <label>닉네임</label>
-      <input type="text" name="memberNickname">
+      <div class="myPage-row">
+        <label>닉네임</label>
+        <input type="text" name="memberNickname" maxlength="10" id="memberNickname"
+        th:value="${session.loginMember.memberNickname}">
+      </div>
 
-      <label>전화 번호</label>
-      <input type="text" name="memberTel">
+      <div class="myPage-row">
+        <label>전화 번호</label>
+        <input type="text" name="memberTel" maxlength="11" id="memberTel"
+              th:value="${session.loginMember.memberTel}">
+      </div>
 
-      <label>주소</label>
-      <div class="address-area">
-        <input type="text" name="memberAddress">
-        <button type="button" class="address-btn">검색</button>
+      <div class="myPage-row address-title">
+        <span>주소</span>
+      </div>
+
+      <div class="myPage-row address-area">
+        <input type="text" name="memberAddress" placeholder="우편번호" id="postcode"
+        th:value="${postcode}">
+        <button type="button" class="address-btn" style="font-weight: normal;">검색</button>
+      </div>
+
+      <div class="myPage-row address-area">
+        <input type="text" name="memberAddress" placeholder="도로명/지번 주소"
+        id="address" th:value="${address}">
+      </div>
+
+      <div class="myPage-row address-area">
+        <input type="text" name="memberAddress" placeholder="상세 주소"
+        id="detailAddress" th:value="${detailAddress}">
       </div>
 
       <div class="form-btns">
-        <button type="submit" class="submit-btn">변경</button>
-        <button type="button" class="cancel-btn">취소</button>
+        <button type="submit" class="submit-btn">변경하기</button>
       </div>
 
     </form>
@@ -56,6 +76,14 @@
 
 <!-- 푸터 -->
 <th:block th:replace="~{common/fragments/footer}" />
+
+<!-- 다음 주소 API -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+<!--회원 정보 수정 JS-->
+<script src="/SemiProject_HoBee/src/main/resources/static/js/myPage/myPage.js"></script>
+
+
 
 </body>
 </html>
