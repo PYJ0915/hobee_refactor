@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import hobee.semi.project.common.util.Utility;
 import hobee.semi.project.findHobby.model.dto.Hobby;
 import hobee.semi.project.findHobby.model.dto.Question;
 import hobee.semi.project.findHobby.model.dto.QuestionScore;
@@ -33,8 +34,8 @@ public class FindHobbyServiceImpl implements FindHobbyService{
 	@Override
 	public Map<String, Hobby> getHobby(String firstHobby, String secondHobby) {
 		
-		int firstHobbyCode = getHobbyCode(firstHobby);
-		int secondHobbyCode = getHobbyCode(secondHobby);	
+		int firstHobbyCode = Utility.getHobbyCode(firstHobby);
+		int secondHobbyCode = Utility.getHobbyCode(secondHobby);	
 		
 		Hobby firstHb = mapper.getHobby(firstHobbyCode);
 		Hobby secondHb = mapper.getHobby(secondHobbyCode);
@@ -49,29 +50,4 @@ public class FindHobbyServiceImpl implements FindHobbyService{
 		return hobbyMap;
 	}
 	
-	public int getHobbyCode(String hobby) {
-		
-		int hobbyCode = 0;
-		
-		switch (hobby) {
-		case "sports":
-			hobbyCode = 1;
-			break;
-		case "art":
-			hobbyCode = 2;
-			break;
-		case "selfDevelop":
-			hobbyCode = 3;
-			break;
-		case "social":
-			hobbyCode = 4;
-			break;
-		case "shopping":
-			hobbyCode = 5;
-			break;
-		}
-		
-		return hobbyCode;
-	}
-
 }
