@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import hobee.semi.project.common.util.Utility;
 import hobee.semi.project.findHobby.model.dto.Hobby;
 import hobee.semi.project.findHobby.model.dto.Question;
 import hobee.semi.project.findHobby.model.dto.QuestionScore;
@@ -76,22 +77,24 @@ public class FindHobbyController {
 			model.addAttribute("firstHobby", hobbyMap.get("firstHobby"));
 			model.addAttribute("secondHobby", hobbyMap.get("secondHobby"));
 			
+			int firstHobbyCode = Utility.getHobbyCode(firstHobby);
+			
 			String resultMessage = null;
 			
-			switch (firstHobby) {
-			case "sports":
+			switch (firstHobbyCode) {
+			case 1:
 				resultMessage = "몸을 움직일 때 가장 나다운 당신은 가만히 있기보다, 움직일 때 에너지가 채워지는 타입이에요.";
 				break;
-			case "art":
+			case 2:
 				resultMessage = "느끼고 표현할 때 가장 편안해지는 당신은 결과보다 과정과 감정이 더 중요한 타입이에요.";
 				break;
-			case "selfDevelop":
+			case 3:
 				resultMessage = "배우고 성장할 때 가장 만족스러운 당신은 시간을 쓰더라도, 남는 게 있는 걸 좋아하는 타입이에요.";
 				break;
-			case "social":
+			case 4:
 				resultMessage = "사람들과 어울릴 때 가장 즐거운 당신은 함께할수록 에너지가 커지는 타입이에요.";
 				break;
-			case "shopping":
+			case 5:
 				resultMessage = "관심 있는 것을 발견할 때 설레는 당신은 좋아하는 걸 하나씩 쌓아가는 데서 즐거움을 느끼는 타입이에요.";
 				break;
 			}
