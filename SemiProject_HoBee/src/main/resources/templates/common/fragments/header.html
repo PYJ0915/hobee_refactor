@@ -23,23 +23,36 @@
       </div>
     </th:block>
 
-    <!-- 로그인 상태 사용자 영역 -->
-    <th:block th:unless="${session.loginMember == null}">
-    <div class="header-user-loggedin">
 
-      <img
+
+        <!-- <img
         alt="프로필 이미지"
         class="header-profile-img"
 
         th:with="user=#{user.default.image}"
         th:src="${session.loginMember.profileImg ?: user}"
+        > -->
+
+
+    <!-- 로그인 상태 사용자 영역 -->
+    <th:block th:if="${session.loginMember != null}">
+    <div class="header-user-loggedin">
+
+      <a href="#">
+        <img
+        alt="프로필 이미지"
+        class="header-profile-img"
+        th:src="#{user.default.image}"
         >
-      
-      <span class="header-user-name" th:text="${loginMember.memberNickname}">
+      </a>
+
+      <a href="#" id="nickname">
+      <span class="header-user-name" th:text="${session.loginMember.memberNickname}">
         홍길동 님
       </span>
+      </a>
 
-      <a href="/logout" class="header-btn-logout">
+      <a href="/member/logout" class="header-btn-logout">
         로그아웃
       </a>
 
