@@ -14,10 +14,17 @@ public class MemberDTO {
 	private String memberEmail;
 	private String memberId;
 	private String memberPw;
+	private String memberName;
 	private String memberNickname;
 	private String memberTel;
 	private String memberAddress;
 	private String enrollDate;
 	private int authorLevel;
 	private String memberDelfl;
+<<<<<<< HEAD
+=======
+	
+	
+
+>>>>>>> d96064e62bbe5cd93505ab8c3ac0490ebb3287a8
 }

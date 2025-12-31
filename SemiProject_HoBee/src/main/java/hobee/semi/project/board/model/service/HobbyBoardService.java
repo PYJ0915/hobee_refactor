@@ -7,13 +7,15 @@ import hobee.semi.project.board.model.dto.Board;
 
 public interface HobbyBoardService {
 
-	Map<String, Object> selectBoardList(int boardCode, int cp);
+	Map<String, Object> selectBoardList(int categoryCode, int cp);
 
 	Map<String, Object> searchList(Map<String, Object> paramMap, int cp);
 
-	List<Board> hobbyBestList(int boardCode);
+	List<Board> hobbyBestList(int categoryCode);
 
 	List<Board> noticeList(int noticeBoardCode);
+
+	String selectCategoryName(int categoryCode);
 
 
 

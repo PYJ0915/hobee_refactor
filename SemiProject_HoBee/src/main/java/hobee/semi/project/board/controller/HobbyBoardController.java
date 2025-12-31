@@ -23,26 +23,24 @@ public class HobbyBoardController {
 	
 	private final HobbyBoardService service;
 	
-	@GetMapping("{hobbyCode:[0-9]+}") 
+	@GetMapping("{categoryCode:[0-9]+}") 
     public String selectBoardList(
-                @PathVariable("hobbyCode") int hobbyCode,
+                @PathVariable("categoryCode") int categoryCode,
                 @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
                 Model model,
                 @RequestParam Map<String, Object> paramMap) {
 		
-		int boardCode = hobbyCode;
+		
 		int noticeBoardCode = 1;
 		
-		String hobbyName = "";
-        switch(hobbyCode) {
-            case 1: hobbyName = "운동·레저"; break;
-            case 2: hobbyName = "자기 계발"; break;
-            case 3: hobbyName = "문화·예술"; break;
-            case 4: hobbyName = "사회 교류"; break;
-            case 5: hobbyName = "수집·소비"; break;
-            default: hobbyName = "취미";
-        }
-        
+		String categoryName = service.selectCategoryName(categoryCode);
+		
+	    if(categoryName == null) {
+	        // 강제로 hobby/1 주소로 다시 보내버림
+	        return "redirect:/hobby/1";
+	    }
+		
+		
 		
 		// 조회 서비스 호출 후 결과 반환
 		Map<String, Object> map = null;
@@ -50,40 +48,34 @@ public class HobbyBoardController {
 		// 검색이 아닌 경우 --> paramMap 은 {}
 		if(paramMap.get("key") == null) {
 			
-			// 게시글 목록 조회 서비스 호출
-			map = service.selectBoardList(boardCode, cp);
+			map = service.selectBoardList(categoryCode, cp);
 	
-		} else { // 검색인 경우  
-			//--> paramMap에 key라는 k에 접근하면 매핑된 value 반환
-			//--> ex) {key=w, query=짱구}
-			//--> --> w 반환됨
+		} else { 
+
+			paramMap.put("categoryCode", categoryCode);
 			
-			// boardCode를 paramMap에 추가
-			paramMap.put("boardCode", boardCode);
-			// -> paramMap은 {key=w, query=짱구, boardCode=1}
-			
-			// 검색(내가 검색하고 싶은 게시글 목록 조회) 서비스 호출
 			map = service.searchList(paramMap, cp);
 			
 		}
 		
-		List<Board> hobbyBestList = service.hobbyBestList(boardCode);
+		List<Board> hobbyBestList = service.hobbyBestList(categoryCode);
 		
 		List<Board> noticeList = service.noticeList(noticeBoardCode);
 		
 		
 		// model에 결과 값 등록
-		model.addAttribute("hobbyCode", hobbyCode);
-		model.addAttribute("pagination", map.get("pagination"));
-		model.addAttribute("boardList", map.get("boardList"));
-		model.addAttribute("boardCode", boardCode);
-		model.addAttribute("hobbyName", hobbyName);
-		model.addAttribute("hobbyBestList", hobbyBestList);
-		model.addAttribute("noticeList", noticeList);
+		model.addAttribute("categoryCode", categoryCode);   
+        model.addAttribute("hobbyName", categoryName);       
+        model.addAttribute("pagination", map.get("pagination"));
+        model.addAttribute("boardList", map.get("boardList"));
+        model.addAttribute("hobbyBestList", hobbyBestList);
+        model.addAttribute("noticeList", noticeList);
 		
 		
 		return "board/hobbyBoard";
 	}
+	
+	
 	
 	
 	
