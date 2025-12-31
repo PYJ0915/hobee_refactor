@@ -1,5 +1,6 @@
 package hobee.semi.project.board.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
@@ -8,8 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.board.model.service.NoticeBoardService;
+import hobee.semi.project.member.model.dto.MemberDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,7 +32,6 @@ public class NoticeBoardController {
 				@RequestParam Map<String, Object> paramMap) {
 		
 		int boardCode = 1;
-		
 		
 		// 조회 서비스 호출 후 결과 반환
 		Map<String, Object> map = null;
@@ -59,5 +63,39 @@ public class NoticeBoardController {
 		
 		// src/main/resources/templates/board/boardList.html 로 forward
 		return "board/noticeBoard";
+	}
+	
+	@GetMapping("{boardNo:[0-9]+}")
+	public String boardDetail(@PathVariable("boardNo") int boardNo, 
+							@SessionAttribute(value = "loginMember", required = false) MemberDTO loginMember,
+							Model model, RedirectAttributes ra ) {
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("boardNo", boardNo);
+		
+		if(loginMember != null) {
+			map.put("memberNo", loginMember.getMemberNo());
+		}
+		
+		Board board = service.selectBoardDetail(map);
+		
+		String path = null;
+		
+		if(board == null) {
+			path = "redirect:/";
+			ra.addFlashAttribute("message", "게시글이 존재하지 않습니다.");
+		} else {
+			
+			// 조회수 증가 파트
+			
+			// --------------------------
+			path = "board/boardDetail";
+			
+			model.addAttribute("board", board);
+			model.addAttribute("gotoList", "/notice");
+		}
+		
+		return path;
 	}
 }

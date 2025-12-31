@@ -25,6 +25,8 @@ public interface HobbyBoardMapper {
 
 	String selectCategoryName(int categoryCode);
 
+	Board selectBoardDetail(Map<String, Object> map);
+
 
 
 }
