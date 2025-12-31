@@ -14,12 +14,14 @@ public class MemberDTO {
 	private String memberEmail;
 	private String memberId;
 	private String memberPw;
+	private String memberName;
 	private String memberNickname;
 	private String memberTel;
 	private String memberAddress;
 	private String enrollDate;
 	private int authorLevel;
 	private String memberDelfl;
+	
 	
 
 }
