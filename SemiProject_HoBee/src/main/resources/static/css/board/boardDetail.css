@@ -171,7 +171,8 @@
   font-weight: bold;
 }
 
-.like-btn:hover, .reply-btn:hover {
+.like-btn:hover,
+.reply-btn:hover {
   border-radius: 15px;
   color: #452829;
   font-weight: bold;
@@ -210,3 +211,37 @@
 .comment-like-btn i {
   font-size: 14px;
 }
+
+.board-control {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.board-control-right {
+  display: flex;
+  gap: 12px;
+}
+
+/* 공통 버튼 */
+.control-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid #452829;
+  color: #452829;
+  background-color: #FFFFFF;
+  transition-duration: 0.2s;
+}
+
+.control-btn:hover {
+  font-weight: bold;
+}
+
+.delete-btn:hover {
+  color: #E84545;
+}
+  

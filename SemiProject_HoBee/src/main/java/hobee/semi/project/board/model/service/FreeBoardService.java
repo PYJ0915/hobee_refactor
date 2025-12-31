@@ -15,6 +15,8 @@ public interface FreeBoardService {
 
 	List<Board> noticeList(int noticeBoardCode);
 
+	Board selectBoardDetail(Map<String, Object> map);
+
 
 
 }

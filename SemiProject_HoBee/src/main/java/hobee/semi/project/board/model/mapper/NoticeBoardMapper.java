@@ -19,4 +19,6 @@ public interface NoticeBoardMapper {
 
 	List<Board> selectSearchList(Map<String, Object> paramMap, RowBounds rowBounds);
 
+	Board selectBoardDetail(Map<String, Object> map);
+
 }

@@ -76,9 +76,9 @@
 
 .footer {
   width: 100%;
-  max-width: 1850px;
   background-color: #FFF57E;
-  padding: 50px 20px;
+  padding-top: 50px;
+  padding-bottom: 50px;
   text-align: center;
   color: #000;
 }
