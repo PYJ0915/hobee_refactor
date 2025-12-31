@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>내 정보</title>
-  <link rel="stylesheet" href="/SemiProject_HoBee/src/main/resources/static/css/myPage/myPage.css">
-  <link rel="stylesheet" th:href="@{/css/common.css}">
-  <link rel="stylesheet" th:href="@{/css/myPage.css}">
+  
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/myPage/myPage.css">
 </head>
 <body>
 
@@ -15,7 +15,7 @@
 <main class="myPage-container">
 
   <!-- 사이드 메뉴 -->
-  <th:block th:replace="~{common/fragments/mypageSideMenu}" />
+  <th:block th:replace="~{common/fragments/sidemenu}" />
 
   <!-- 메인 콘텐츠 -->
   <section class="myPage-content">
@@ -30,7 +30,7 @@
     </div>
 
     <!-- 정보 수정 폼 -->
-    <form action="#" class="info-form" method="POST" name="myPageFrm" id="updateInfo">
+    <form action="/myPage/updateInfo" class="info-form" method="POST" name="myPageFrm" id="updateInfo">
 
       <div class="myPage-row">
         <label>닉네임</label>
@@ -39,7 +39,7 @@
       </div>
 
       <div class="myPage-row">
-        <label>전화 번호</label>
+        <label>전화번호</label>
         <input type="text" name="memberTel" maxlength="11" id="memberTel"
               th:value="${session.loginMember.memberTel}">
       </div>

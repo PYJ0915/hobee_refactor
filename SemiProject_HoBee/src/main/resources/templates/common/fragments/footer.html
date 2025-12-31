@@ -18,4 +18,12 @@
     <a href="/footer/cs">고객센터</a>
   </div>
 
+
 </footer>
+
+
+  <script th:inline="javascript">
+    const message =  /*[[${message}]]*/ "전달 받은 message";
+  
+    if(message != null) alert(message);
+  </script

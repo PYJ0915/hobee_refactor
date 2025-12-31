@@ -48,6 +48,12 @@ public class MyPageController {
 		return "myPage/myPage-profile";
 	}
 
+	@GetMapping("updateInfo")
+	public String updateInfo() {
+		
+		return "/myPage/myPage-info";
+	}
+	
 	
 	/** 회원 정보 수정
 	 * @param inputMember
@@ -56,7 +62,7 @@ public class MyPageController {
 	 * @param ra
 	 * @return
 	 */
-	@PostMapping("info")
+	@PostMapping("updateInfo")
 	public String updateInfo(@ModelAttribute MemberDTO inputMember,
 							@RequestParam("memberAddress") String[] memberAddress,
 							@SessionAttribute("loginMember") MemberDTO loginMember,
