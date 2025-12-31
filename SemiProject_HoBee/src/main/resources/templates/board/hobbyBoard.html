@@ -24,7 +24,7 @@
             </th:block>
             
             <li th:each="post : ${hobbyBestList}">
-                <a th:href="@{/hobby/{hobbyCode}/{boardNo}(hobbyCode=${hobbyCode}, boardNo=${post.boardNo})}" 
+                <a th:href="@{/hobby/{categoryCode}/{boardNo}(categoryCode=${cat}, boardNo=${post.boardNo})}" 
                    th:text="${post.boardTitle}">제목</a>
                 <span class="rank-count" th:text="${post.likeCount}">0</span>
             </li>
@@ -67,52 +67,57 @@
                         </tr>
                     </th:block>
 
-                    <th:block th:unless="${#lists.isEmpty(boardList)}">
-                        <tr th:each="board : ${boardList}" th:object="${board}">
-                            <td th:text="*{boardNo}">게시글 번호</td>
-                            
-                            <td>
-                                <a th:href="@{/hobby/{hobbyCode}/{boardNo}(hobbyCode=${hobbyCode}, boardNo=*{boardNo}, cp=${pagination.currentPage}, key=${param.key}, query=${param.query})}"
-                                   th:text="*{boardTitle}">게시글 제목</a>
-                                
-                                <th:block th:text="|[*{commentCount}]|">댓글 수</th:block>
-                            </td>
-                            
-                            <td th:text="*{memberNickname}">닉네임</td>
-                            <td th:text="*{boardWriteDate}">작성일</td>
-                            <td th:text="*{boardViewCount}">0</td>
-                            <td th:text="*{likeCount}">0</td>
-                        </tr>
-                    </th:block>
+             <th:block th:unless="${#lists.isEmpty(boardList)}">
+                <tr th:each="board : ${boardList}" th:object="${board}">
+                    <td th:text="*{boardNo}">게시글 번호</td>
+                    
+                    <td>
+                        <a th:unless="${param.key}"
+                           th:href="@{/hobby/{categoryCode}/{boardNo}(categoryCode=${categoryCode}, boardNo=*{boardNo}, cp=${pagination.currentPage})}"
+                           th:text="*{boardTitle}">게시글 제목</a>
+                        
+                        <a th:if="${param.key}"
+                           th:href="@{/hobby/{categoryCode}/{boardNo}(categoryCode=${categoryCode}, boardNo=*{boardNo}, cp=${pagination.currentPage}, key=${param.key}, query=${param.query})}"
+                           th:text="*{boardTitle}">게시글 제목</a>
+                        
+                        <th:block th:text="|[*{commentCount}]|">댓글 수</th:block>
+                    </td>
+                    
+                    <td th:text="*{memberNickname}">닉네임</td>
+                    <td th:text="*{boardWriteDate}">작성일</td>
+                    <td th:text="*{boardViewCount}">0</td>
+                    <td th:text="*{likeCount}">0</td>
+                </tr>
+            </th:block>
                 </tbody>
             </table>
         </div>
 
         <div class="btn-area">
             <button id="insertBtn" th:if="${session.loginMember?.authorLevel == 1}"
-        th:data-board-path="|hobby/${hobbyCode}|">글쓰기</button>
+        th:data-board-path="|hobby/${categoryCode}|">글쓰기</button>
         </div>
 
         <div class="pagination-area">
             <ul class="pagination" th:object="${pagination}">
-                <li><a th:href="@{/hobby/{code}(code=${hobbyCode}, cp=1, key=${param.key}, query=${param.query})}">&lt;&lt;</a></li>
-                <li><a th:href="@{/hobby/{code}(code=${hobbyCode}, cp=*{prevPage}, key=${param.key}, query=${param.query})}">&lt;</a></li>
+                <li><a th:href="@{/hobby/{code}(code=${categoryCode}, cp=1, key=${param.key}, query=${param.query})}">&lt;&lt;</a></li>
+                <li><a th:href="@{/hobby/{code}(code=${categoryCode}, cp=*{prevPage}, key=${param.key}, query=${param.query})}">&lt;</a></li>
 
                 <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
                     <li th:if="${i} == *{currentPage}">
                         <a class="current" th:text="${i}">1</a>
                     </li>
                     <li th:unless="${i} == *{currentPage}">
-                        <a th:href="@{/hobby/{code}(code=${hobbyCode}, cp=${i}, key=${param.key}, query=${param.query})}" th:text="${i}">2</a>
+                        <a th:href="@{/hobby/{code}(code=${categoryCode}, cp=${i}, key=${param.key}, query=${param.query})}" th:text="${i}">2</a>
                     </li>
                 </th:block>
 
-                <li><a th:href="@{/hobby/{code}(code=${hobbyCode}, cp=*{nextPage}, key=${param.key}, query=${param.query})}">&gt;</a></li>
-                <li><a th:href="@{/hobby/{code}(code=${hobbyCode}, cp=*{maxPage}, key=${param.key}, query=${param.query})}">&gt;&gt;</a></li>
+                <li><a th:href="@{/hobby/{code}(code=${categoryCode}, cp=*{nextPage}, key=${param.key}, query=${param.query})}">&gt;</a></li>
+                <li><a th:href="@{/hobby/{code}(code=${categoryCode}, cp=*{maxPage}, key=${param.key}, query=${param.query})}">&gt;&gt;</a></li>
             </ul>
         </div>
 
-        <form th:action="@{/hobby/{code}(code=${hobbyCode})}" method="get" id="boardSearch">
+        <form th:action="@{/hobby/{code}(code=${categoryCode})}" method="get" id="boardSearch">
             <select name="key" id="searchKey">
                 <option value="t" th:selected="${param.key == 't'}">제목</option>
                 <option value="c" th:selected="${param.key == 'c'}">내용</option>
