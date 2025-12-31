@@ -56,6 +56,12 @@ public class MemberServiceImpl implements MemberService{
 	public int checkId(String memberId) {
 		return mapper.checkId(memberId);
 	}
+
+	// 닉네임 중복검사
+	@Override
+	public int checkNickname(String memberNickname) {
+		return mapper.checkNickname(memberNickname);
+	}
 	
 
 }

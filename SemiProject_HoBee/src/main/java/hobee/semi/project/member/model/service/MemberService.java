@@ -23,5 +23,11 @@ public interface MemberService {
 	 */
 	int checkId(String memberId);
 
+	/** 닉네임 중복검사
+	 * @param memberNickname
+	 * @return
+	 */
+	int checkNickname(String memberNickname);
+
 
 }

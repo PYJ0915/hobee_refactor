@@ -25,6 +25,12 @@ public interface MemberMapper {
 	 */
 	int checkId(String memberId);
 
+	/** 닉네임 중복 검사
+	 * @param memberNickname
+	 * @return
+	 */
+	int checkNickname(String memberNickname);
+
 	
 	
 	

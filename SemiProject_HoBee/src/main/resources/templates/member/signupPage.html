@@ -42,6 +42,7 @@
                 <div class="signUp-input">
                     <input type="password" placeholder="비밀번호" id="memberPw" name="memberPw" minlength="6" maxlength="12">
                 </div>
+                <input type="checkbox" onclick="memberPw.type = this.checked ? 'text' : 'password'"> <!-- 비밀번호 체크 -->
                 <span class="signUp-message" id="pwMessage">영어, 숫자, 특수문자 포함 6~12자 사이로 입력해주세요.</span>
 
                 <h3>비밀번호 확인</h3>
@@ -58,11 +59,16 @@
                 <div class="signUp-input">
                     <input type="text" placeholder="닉네임(2~8글자)" id="memberNickname" name="memberNickname"  minlength="2" maxlength="8">
                 </div>
-                <span class="signUp-message" id="nickMessage">2~8글자 사이로 입력해주세요.</span>
+                <span class="signUp-message" id="nickMessage">닉네임을 입력해주세요.</span>
 
                 <h3>취미</h3>
                 <div class="signUp-input">
                     <input type="text" placeholder="취미(2~8)" id="memberHobby" name="memberHobby"  minlength="2" maxlength="8">
+                </div>
+
+                <h3>소개</h3>
+                <div class="signUp-input">
+                    <input type="text" placeholder="소개 글 작성" id="introdution" name="introdution" >
                 </div>
 
                 <h3>전화번호</h3>

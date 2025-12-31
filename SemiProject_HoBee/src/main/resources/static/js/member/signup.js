@@ -83,7 +83,7 @@ memberId.addEventListener("input",e=>{
 
     // 1) 입력된 아이디가 없을 경우
     if(inputId.trim().length === 0) {
-        idMessage.innerText = "영어/숫자 6~12 사이로 입력해주세요.";
+        idMessage.innerText = "아이디를 입력해주세요.";
         idMessage.classList.remove('confirm', 'error');
         checkObj.memberId = false;
         return;
@@ -120,6 +120,55 @@ memberId.addEventListener("input",e=>{
     }
 
 
+});
+
+// 닉네임 중복 검사
+
+const memberNickname = document.querySelector("#memberNickname");
+const nickMessage = document.querySelector("#nickMessage");
+
+memberNickname.addEventListener("input" ,e=>{
+
+    const inputNickname = e.target.value;
+
+    if(inputNickname.trim().length === 0){
+        nickMessage.innerText="닉네임을 입력해주세요"
+        nickMessage.classList.remove('confirm', 'error');
+        checkObj.memberNickname = false;
+        return;
+    }
+
+    const regExp = /^[a-zA-Z가-힣ㄱ-ㅎㅏ-ㅣ]{2,8}$/;
+
+
+    if(regExp.test(inputNickname)){
+
+        fetch("/member/checkNickname?memberNickname="+inputNickname) 
+        .then(resp => resp.text()) // text로 받은 이유 단순 이메일 문자라 String으로 받음
+        .then(count =>{
+     
+                if(count == 0){
+                    nickMessage.innerText = "사용 가능한 닉네임입니다.";
+                    nickMessage.classList.add('confirm');
+                    nickMessage.classList.remove('error');
+                    checkObj.memberNickname = true; // 형식 o / 중복 x
+                }
+                else{
+                    nickMessage.innerText = "이미 사용 중인 닉네임입니다.";
+                    nickMessage.classList.add('error');
+                    nickMessage.classList.remove('confirm');
+                    checkObj.memberNickname = false;
+                }
+            
+
+        })
+    }else{
+        nickMessage.innerText = "2~8 사이로 입력해주세요.";
+        nickMessage.classList.add('error');
+        nickMessage.classList.remove('confirm');
+        checkObj.memberNickname = false;
+    }
+    
 });
 
 

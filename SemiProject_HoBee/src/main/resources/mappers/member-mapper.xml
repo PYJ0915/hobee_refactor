@@ -23,6 +23,15 @@
 			WHERE MEMBER_ID = #{memberId}
 			AND MEMBER_DEL_FL = 'N'
 		</select>
+		
+		<select id="checkNickname" resultType="_int">
+			SELECT COUNT(*)
+			FROM "MEMBER"
+			WHERE MEMBER_NICKNAME = #{memberNickname}
+			AND MEMBER_DEL_FL = 'N'
+		</select>
+		
+		
 
 
 

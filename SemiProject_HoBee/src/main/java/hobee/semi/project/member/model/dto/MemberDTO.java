@@ -21,4 +21,5 @@ public class MemberDTO {
 	private String enrollDate;
 	private int authorLevel;
 	private String memberDelfl;
+	private String introdution;
 }
