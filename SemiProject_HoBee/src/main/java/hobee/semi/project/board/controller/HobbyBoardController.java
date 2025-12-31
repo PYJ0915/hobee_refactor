@@ -30,7 +30,6 @@ public class HobbyBoardController {
                 Model model,
                 @RequestParam Map<String, Object> paramMap) {
 		
-		
 		int noticeBoardCode = 1;
 		
 		String categoryName = service.selectCategoryName(categoryCode);

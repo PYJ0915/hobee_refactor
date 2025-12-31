@@ -182,3 +182,31 @@
   color: #E84545;
   font-weight: bold;
 }
+
+.comment-bottom {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.comment-like-btn {
+  border: none;
+  background: none;
+  font-size: 13px;
+  cursor: pointer;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  transition: color 0.15s ease, font-weight 0.15s ease;
+}
+
+.comment-like-btn:hover {
+  color: #452829;
+  font-weight: bold;
+}
+
+.comment-like-btn i {
+  font-size: 14px;
+}

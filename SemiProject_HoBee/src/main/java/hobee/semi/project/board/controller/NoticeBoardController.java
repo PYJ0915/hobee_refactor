@@ -28,7 +28,6 @@ public class NoticeBoardController {
 		
 		int boardCode = 1;
 		
-		
 		// 조회 서비스 호출 후 결과 반환
 		Map<String, Object> map = null;
 		

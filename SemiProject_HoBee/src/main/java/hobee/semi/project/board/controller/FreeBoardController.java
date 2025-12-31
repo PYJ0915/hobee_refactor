@@ -30,8 +30,6 @@ public class FreeBoardController {
 		int boardCode = 3;
 		int noticeBoardCode = 1;
 		
-		
-		
 		// 조회 서비스 호출 후 결과 반환
 		Map<String, Object> map = null;
 		

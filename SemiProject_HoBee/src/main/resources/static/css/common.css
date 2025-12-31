@@ -25,6 +25,7 @@
   height: 70px;
   transform: scale(1.4); 
   transform-origin: left center;
+  padding-right: 15px;
 }
 
 .header-nav {
@@ -75,6 +76,7 @@
 
 .footer {
   width: 100%;
+  max-width: 1850px;
   background-color: #FFF57E;
   padding: 50px 20px;
   text-align: center;
