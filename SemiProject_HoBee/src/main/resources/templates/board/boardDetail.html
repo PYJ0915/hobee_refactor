@@ -2,40 +2,39 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title th:text="${board.boardTitle}">게시글 상세</title>
+  <title>게시글 상세 | Ho-Bee</title>
 
-  <link rel="stylesheet" href="/SemiProject_HoBee/src/main/resources/static/css/board/boardDetail.css">
-
+  <link rel="stylesheet" href="../../static/css/board/boardDetail.css">
   <link rel="stylesheet" th:href="@{/css/common.css}">
-  <link rel="stylesheet" th:href="@{/css/board/boardDetail.css}">
+  <link rel="stylesheet" th:href="@{/css/board-detail.css}">
+  <script src="https://kit.fontawesome.com/652d962d08.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
 <!-- 헤더 -->
 <th:block th:replace="~{common/fragments/header}" />
 
-<main class="board-detail-container">
+<main class="board-container">
 
   <!-- 게시글 영역 -->
   <section class="board-detail">
 
-    <!-- 제목 + 작성자 -->
-    <div class="board-header">
-      <h1 class="board-title" th:text="${board.boardTitle}">
-        취미 미술 그림 그리기
-      </h1>
+    <!-- 제목 -->
+    <h1 class="board-title" th:text="${board.boardTitle}">
+      취미 미술 그림 그리기
+    </h1>
+    
 
-      <div class="board-writer">
-        <div class="writer-profile"></div>
+    <!-- 작성자 정보 -->
+    <div class="board-writer">
+      <div class="writer-left">
+        <div class="profile-img"></div>
 
-        <!-- 닉네임 클릭 영역 -->
         <div class="writer-info">
-          <a href="#"
-             class="writer-name"
-             th:text="${board.memberNickname}">
+          <a href="#" class="nickname" th:text="${board.memberNickname}">
             사용자닉네임
           </a>
-          <span class="write-date"
+          <span class="date"
                 th:text="${#temporals.format(board.boardWriteDate,'yyyy.MM.dd')}">
             2025.01.01
           </span>
@@ -44,46 +43,52 @@
     </div>
 
     <!-- 게시글 내용 -->
-    <div class="board-content"
-         th:utext="${board.boardContent}">
+    <div class="board-content" th:text="${board.boardContent}">
       게시글 내용 영역
     </div>
 
-    <!-- 게시글 하단 버튼 -->
+    <!-- 게시글 하단 액션 -->
     <div class="board-actions">
-      <button class="report-btn">🚨 게시글 신고</button>
+      <button class="like-btn">
+        <i class="fa-solid fa-thumbs-up"></i> 좋아요 <span>12</span></button>
+      <button class="report-btn">
+        <i class="fa-solid fa-land-mine-on"></i> 신고</button>
     </div>
 
   </section>
 
   <!-- 댓글 영역 -->
-  <section class="comment-area">
+  <section class="comment-section">
 
     <h2 class="comment-title">
       댓글 (<span th:text="${commentList.size()}">0</span>)
     </h2>
 
-    <!-- 댓글 목록 -->
+    <!-- 댓글 리스트 -->
     <ul class="comment-list">
 
       <li class="comment-item"
           th:each="comment : ${commentList}">
 
-        <div class="comment-writer">
-          <div class="comment-profile"></div>
+        <div class="comment-top">
+          <div class="comment-writer">
+            <div class="profile-img small"></div>
 
-          <a href="#"
-             class="comment-name"
-             th:text="${comment.memberNickname}">
-            사용자닉네임
-          </a>
+            <a href="#" class="nickname"
+               th:text="${comment.memberNickname}">
+              사용자닉네임
+            </a>
 
-          <span class="comment-date"
-                th:text="${#temporals.format(comment.commentWriteDate,'yyyy.MM.dd')}">
-            2025.01.01
-          </span>
+            <span class="date"
+                  th:text="${#temporals.format(comment.commentWriteDate,'yyyy.MM.dd')}">
+              2025.01.01
+            </span>
+          </div>
 
-          <button class="comment-report">신고</button>
+          <div class="comment-actions">
+            <button class="reply-btn">답글</button>
+            <button class="report-btn">신고</button>
+          </div>
         </div>
 
         <p class="comment-content"
@@ -97,12 +102,8 @@
 
     <!-- 댓글 작성 -->
     <div class="comment-write">
-
-      <textarea placeholder="댓글을 입력하세요"
-                name="commentContent"></textarea>
-
-      <button class="comment-submit">등록</button>
-
+      <textarea placeholder="댓글을 입력하세요"></textarea>
+      <button class="submit-btn">등록</button>
     </div>
 
   </section>
