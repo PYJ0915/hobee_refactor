@@ -66,10 +66,35 @@ memberEmail.addEventListener("input", e => {
 });
 
 // 인증 코드 보내기 ------------------------------------------------------------------------------------
-// const sendAuthKeyBtn = document.querySelector("#sendAuthKeyBtn"); // 인증 버튼
-// const authKeyMessage = document.querySelector("#authKeyMessage"); // 인증 span 메세지
+const sendAuthKeyBtn = document.querySelector("#sendAuthKeyBtn"); // 인증 버튼
+const authKeyMessage = document.querySelector("#authKeyMessage"); // 인증 span 메세지
 
-// sendAuthKeyBtn.addEventListener("click",()=>{});
+sendAuthKeyBtn.addEventListener("click",()=>{
+
+    // checkOBJ에가 false 일때 == 중복이거나 유효한 이메일이 아닌경우
+    if(!checkObj.memberEmail) {
+        alert("유효한 이메일 작성 후 클릭해 주세요");
+        return;
+    }
+
+    // 비동기로 서버에서 메일보내기 
+    fetch("/email/signup",{
+        method : "POST",
+        headers : {"Content-Type": "application/json"},
+        body : JSON.stringify({ "authEmail" : memberEmail.value })
+    })
+    .then(resp => resp.text())
+    .then(result => {
+        if(result == 1){
+            console.log("인증 번호 발송 성공");
+        }else{
+             console.log("인증 번호 발송 실패");
+        }
+    })
+    
+    
+
+});
 
 
 // 아이디 중복 검사 ------------------------------------------------------------------------------------

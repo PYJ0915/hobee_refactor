@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hobee.semi.project.email.model.mapper.EmailMapper">
+
+	<select id="checkEmail" resultType="_int">
+		SELECT COUNT(*)
+		FROM AUTH_KEY
+		WHERE AUTH_EMAIL = #{authEmail}
+	</select>
+		
+	<update id="updateAuthKey">
+		UPDATE AUTH_KEY SET
+		AUTH_KEY =#{authKey},
+		AUTH_KEY_DATE = SYSDATE
+   	 	WHERE AUTH_EMAIL = #{authEmail}
+	</update>	
+		
+	<insert id="insertAuthKey">
+		INSERT INTO AUTH_KEY (AUTH_KEY_CODE, AUTH_EMAIL, AUTH_KEY, AUTH_KEY_DATE)
+    	VALUES (SEQ_KEY_NO.NEXTVAL, #{authEmail}, #{authKey}, DEFAULT)
+	</insert>
+
+<!-- 
+	<select id="checkAuthKey" resultType="_int">
+        SELECT COUNT(*)
+        FROM AUTH_KEY
+        WHERE AUTH_EMAIL = #{authEmail}
+        AND AUTH_KEY = #{authKey}
+    </select>
+
+ -->
+
+
+
+
+
+</mapper>
