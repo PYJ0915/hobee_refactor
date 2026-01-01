@@ -43,7 +43,7 @@
       </div>
 
       <!-- 게시글 내용 -->
-      <div class="board-content" th:text="${board.boardContent}">
+      <div class="board-content" th:utext="${board.boardContent}">
         게시글 내용 영역
       </div>
 
@@ -51,7 +51,8 @@
       <div class="board-actions">
         <button class="like-btn">
           <i class="fa-solid fa-thumbs-up"></i> 좋아요 <span th:text="${board.likeCount}">12</span></button>
-        <button class="report-btn">
+        <button class="report-btn" id="board-report" th:data-writer="${board.memberNickname}"
+        th:data-login-member-no="${session.loginMember != null ? session.loginMember.memberNo : 0}">
           <i class="fa-solid fa-land-mine-on"></i> 신고</button>
       </div>
 
@@ -82,7 +83,7 @@
 
       </div>
     </div>
-    
+
 
 
     <!-- 댓글 영역
@@ -112,7 +113,8 @@
 
             <div class="comment-actions">
               <button class="reply-btn">답글</button>
-              <button class="report-btn">신고</button>
+              <button class="report-btn" id="comment-report"
+              th:data-writer="${comment.memberNickname}">신고</button>
             </div>
           </div>
 
@@ -142,9 +144,47 @@
 
   </main>
 
+  <!-- 신고 모달 -->
+  <div class="report-modal popup-hidden" id="reportModal">
+
+    <div class="modal-backdrop"></div>
+
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>신고하기</h2>
+        <button class="close-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="report-info">
+          <p><strong>작성자</strong> <span id="reportWriter">홍길동</span></p>
+        </div>
+
+        <h3 class="reason-title">사유 선택</h3>
+
+        <ul class="reason-list">
+          <li><label><input type="radio" name="reason" value="혐오/차별/욕설"> 혐오/차별/욕설 표현입니다.</label></li>
+          <li><label><input type="radio" name="reason" value="스팸/홍보/도배"> 스팸/홍보/도배입니다.</label></li>
+          <li><label><input type="radio" name="reason" value="청소년유해"> 청소년에게 유해한 내용입니다.</label></li>
+          <li><label><input type="radio" name="reason" value="불법정보"> 불법정보를 포함하고 있습니다.</label></li>
+          <li><label><input type="radio" name="reason" value="음란물"> 음란물입니다.</label></li>
+          <li><label><input type="radio" name="reason" value="불쾌한표현"> 불쾌한 표현이 있습니다.</label></li>
+        </ul>
+
+        <textarea class="detail-textarea" placeholder="추가 사유를 입력해주세요 (선택)"></textarea>
+
+        <button class="submit-report-btn">신고하기</button>
+      </div>
+    </div>
+
+  </div>
+
+
   <!-- 푸터 -->
   <th:block th:replace="~{common/fragments/footer}" />
 
+  <script src="/js/board/boardDetail.js"></script>
 </body>
 
 </html>
