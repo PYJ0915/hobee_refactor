@@ -23,4 +23,6 @@ public interface FreeBoardMapper {
 
 	List<Board> selectNoticeList(int noticeBoardCode, RowBounds rowBounds);
 
+	Board selectBoardDetail(Map<String, Object> map);
+
 }

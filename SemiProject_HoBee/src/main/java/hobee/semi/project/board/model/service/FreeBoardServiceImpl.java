@@ -89,6 +89,11 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 	    
 	    return mapper.selectNoticeList(noticeBoardCode, rowBounds);
 	}
+
+	@Override
+	public Board selectBoardDetail(Map<String, Object> map) {
+		return mapper.selectBoardDetail(map);
+	}
 	
 	
 
