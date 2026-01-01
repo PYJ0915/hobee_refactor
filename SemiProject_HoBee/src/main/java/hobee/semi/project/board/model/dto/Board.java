@@ -30,4 +30,5 @@ public class Board {
 	private int categoryCode;   // 카테코리 코드 ( 1 2 3 4 5)
 	private String categoryName; // 카테고리 이름
 	
+	
 }
