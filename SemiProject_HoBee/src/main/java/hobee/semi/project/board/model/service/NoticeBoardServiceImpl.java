@@ -72,6 +72,11 @@ public class NoticeBoardServiceImpl implements NoticeBoardService{
 
         return map;
 	}
+
+	@Override
+	public Board selectBoardDetail(Map<String, Object> map) {
+		return mapper.selectBoardDetail(map);
+	}
 	
 	
 
