@@ -97,6 +97,11 @@ public class HobbyBoardServiceImpl implements HobbyBoardService{
 		
 		return mapper.selectCategoryName(categoryCode);
 	}
+
+	@Override
+	public Board selectBoardDetail(Map<String, Object> map) {
+		return mapper.selectBoardDetail(map);
+	}
 	
 	
 

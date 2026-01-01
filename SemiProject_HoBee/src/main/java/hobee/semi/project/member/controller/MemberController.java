@@ -105,11 +105,21 @@ public class MemberController {
 		return "member/signupPage";
 	}
 	
+<<<<<<< HEAD
 	// 이메일 중복 검사
 	@ResponseBody
 	@GetMapping("checkEmail")
 	public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
 		return service.checkEmail(memberEmail);
+=======
+	// 로그아웃 기능
+	@GetMapping("logout")
+	public String logout(SessionStatus sessionStatus) {
+		
+		sessionStatus.setComplete();
+		
+		return "redirect:/";
+>>>>>>> f0bd8f5db2f0d992e2e99b9a048aa2b0e2171a57
 	}
 	
 	// 아이디 중복 검사

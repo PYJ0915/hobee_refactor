@@ -1,0 +1,247 @@
+/* =========================
+   게시글 상세 페이지
+========================= */
+
+.board-container {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 0 20px;
+  color: #452829;
+}
+
+/* 게시글 영역 */
+.board-detail {
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 40px;
+}
+
+.board-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* 작성자 */
+.board-writer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.writer-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-img {
+  width: 44px;
+  height: 44px;
+  background-color: #ddd;
+  border-radius: 50%;
+}
+
+.profile-img.small {
+  width: 36px;
+  height: 36px;
+}
+
+.writer-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.nickname {
+  font-weight: bold;
+  color: #452829;
+  text-decoration: none;
+}
+
+.nickname:hover {
+  text-decoration: underline;
+}
+
+.date {
+  font-size: 13px;
+  color: #888;
+}
+
+/* 게시글 내용 */
+.board-content {
+  font-size: 16px;
+  line-height: 1.8;
+  margin-bottom: 30px;
+  white-space: pre-line;
+}
+
+/* 게시글 하단 버튼 */
+.board-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.like-btn,
+.report-btn {
+  border: none;
+  background: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition-duration: 0.1s;
+}
+
+.like-btn span {
+  margin-left: 4px;
+}
+
+/* 댓글 */
+.comment-section {
+  margin-top: 50px;
+}
+
+.comment-title {
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+
+.comment-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.comment-item {
+  border-bottom: 1px solid #ddd;
+  padding: 20px 0;
+}
+
+/* 댓글 상단 */
+.comment-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.comment-writer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.comment-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.reply-btn,
+.comment-actions .report-btn {
+  border: none;
+  background: none;
+  font-size: 13px;
+  cursor: pointer;
+  color: #666;
+}
+
+/* 댓글 내용 */
+.comment-content {
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+/* 댓글 작성 */
+.comment-write {
+  display: flex;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.comment-write textarea {
+  flex: 1;
+  height: 80px;
+  resize: none;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.submit-btn {
+  width: 100px;
+  background-color: #452829;
+  color: #FFF57E;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.like-btn:hover,
+.reply-btn:hover {
+  border-radius: 15px;
+  color: #452829;
+  font-weight: bold;
+}
+
+.report-btn:hover {
+  border-radius: 15px;
+  color: #E84545;
+  font-weight: bold;
+}
+
+.comment-bottom {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.comment-like-btn {
+  border: none;
+  background: none;
+  font-size: 13px;
+  cursor: pointer;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  transition: color 0.15s ease, font-weight 0.15s ease;
+}
+
+.comment-like-btn:hover {
+  color: #452829;
+  font-weight: bold;
+}
+
+.comment-like-btn i {
+  font-size: 14px;
+}
+
+.board-control {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.board-control-right {
+  display: flex;
+  gap: 12px;
+}
+
+/* 공통 버튼 */
+.control-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid #452829;
+  color: #452829;
+  background-color: #FFFFFF;
+  transition-duration: 0.2s;
+}
+
+.control-btn:hover {
+  font-weight: bold;
+}
+
+.delete-btn:hover {
+  color: #E84545;
+}
+  
