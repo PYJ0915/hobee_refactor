@@ -245,3 +245,94 @@
   color: #E84545;
 }
   
+/* ===== 신고 모달 ===== */
+.report-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+}
+
+.popup-hidden {display: none !important;}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.modal-box {
+  position: relative;
+  width: 420px;
+  max-height: 80vh;
+  background: #fff;
+  border-radius: 12px;
+  margin: 80px auto;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.report-info {
+  font-size: 14px;
+  color: #555;
+  margin: 15px 0;
+}
+
+.reason-title {
+  margin: 20px 0 10px;
+  font-size: 16px;
+}
+
+.reason-list {
+  list-style: none;
+  padding: 0;
+}
+
+.reason-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.detail-textarea {
+  width: 95%;
+  height: 80px;
+  margin-top: 15px;
+  padding: 10px;
+  resize: none;
+}
+
+.submit-report-btn {
+  width: 100%;
+  margin-top: 20px;
+  background-color: #452829;
+  color: #FFF57E;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.omit {
+  display: inline-block;
+  max-width: 400px;    /* 최대 너비 */
+  overflow: hidden;    /* 넘치는 부분 숨김 */
+  text-overflow: ellipsis; /* 생략 부호 없이 숨김 */
+  white-space: nowrap;
+  vertical-align: bottom;
+}

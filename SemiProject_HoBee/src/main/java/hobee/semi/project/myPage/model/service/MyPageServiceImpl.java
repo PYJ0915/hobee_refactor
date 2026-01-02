@@ -12,10 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
-@Slf4j
+//@Slf4j
 @PropertySource("")
 public class MyPageServiceImpl implements MyPageService {
 
+	@Autowired
 	private MyPageMapper mapper;
 	
 	@Autowired
