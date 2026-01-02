@@ -25,6 +25,7 @@
   width: 100%;
   border-collapse: collapse;
   background-color: #fff;
+  table-layout: fixed;
 }
 
 .report-table thead {
@@ -138,5 +139,11 @@
   background-color: #FFF57E;
   font-weight: bold;
 }
+
+.report-manage {
+  padding: 40px 0;
+}
+
+
 
 
