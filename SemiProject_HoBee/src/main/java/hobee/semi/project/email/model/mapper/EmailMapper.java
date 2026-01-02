@@ -25,4 +25,10 @@ public interface EmailMapper {
 	 */
 	int insertAuthKey(Email email);
 
+	/** 인증번호 확인
+	 * @param authKey
+	 * @return
+	 */
+	int checkAuthKey(Email email);
+
 }

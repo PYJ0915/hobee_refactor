@@ -83,6 +83,19 @@ public class EmailServiceImpl implements EmailService {
 	private String createAuthKey() {
 		return UUID.randomUUID().toString().substring(0,6);
 	}
+
+
+
+	// 인증번호 확인
+	@Override
+	public int checkAuthKey(String authKey,String authEmail) {
+		
+		Email email = new Email();
+		email.setAuthEmail(authEmail);
+		email.setAuthKey(authKey);
+		
+		return mapper.checkAuthKey(email);
+	}
 	
 	
 	

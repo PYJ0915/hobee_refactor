@@ -50,7 +50,6 @@ public class MemberController {
 			) {
 		
 		try {
-			
 			// member 모든 값이 들어가져 있음
 			MemberDTO loginMember = service.loginMember(inputMember);
 			

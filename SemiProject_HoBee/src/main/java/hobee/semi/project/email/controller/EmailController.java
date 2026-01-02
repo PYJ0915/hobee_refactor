@@ -28,11 +28,14 @@ public class EmailController {
 		
 	}
 	
+	// 인증번호 확인
+	@ResponseBody
 	@PostMapping("checkAuthKey")
 	public int checkAuthKey(@RequestBody Email email) {
 		
-	
+		String authKey = email.getAuthKey();
+		String authEmail = email.getAuthEmail();
 		
-		return 0;
+		return service.checkAuthKey(authKey,authEmail);
 	}
 }

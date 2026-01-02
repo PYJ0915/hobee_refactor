@@ -20,7 +20,6 @@
     	VALUES (SEQ_AUTH_KEY_CODE.NEXTVAL, #{authEmail}, #{authKey}, DEFAULT)
 	</insert>
 
-<!-- 
 	<select id="checkAuthKey" resultType="_int">
         SELECT COUNT(*)
         FROM AUTH_KEY
@@ -28,7 +27,7 @@
         AND AUTH_KEY = #{authKey}
     </select>
 
- -->
+
 
 
 

@@ -5,7 +5,7 @@
 // 유효하면 true
 // 유효하지 않으면 false
 const checkObj = {
-    "memberEmail"     : false,
+    "authEmail"     : false,
     "memberId"        : false,
     "authKey"         : false,
     "memberPw"        : false,
@@ -16,11 +16,11 @@ const checkObj = {
 
 
 // 이메일 ---------------------------------------------------------------------------------------------------------------------
-const memberEmail = document.querySelector("#memberEmail");     // 이메일
+const authEmail = document.querySelector("#memberEmail");     // 이메일
 const emailMessage = document.querySelector("#emailMessage");   // 이메일 span 메세지 
 
     // 1) 입력된 이메일이 없을 경우
-memberEmail.addEventListener("input", e => {
+authEmail.addEventListener("input", e => {
 
     const inputEmail = e.target.value; // 입력된 값 가져오기
 
@@ -28,7 +28,7 @@ memberEmail.addEventListener("input", e => {
     if(inputEmail.trim().length === 0) {
         emailMessage.innerText = "메일을 받을 수 있는 이메일을 입력해주세요.";
         emailMessage.classList.remove('confirm', 'error');
-        checkObj.memberEmail = false;
+        checkObj.authEmail = false;
         return;
     }
 
@@ -45,13 +45,14 @@ memberEmail.addEventListener("input", e => {
                 emailMessage.innerText = "사용 가능한 이메일입니다.";
                 emailMessage.classList.add('confirm');
                 emailMessage.classList.remove('error');
-                checkObj.memberEmail = true; // 형식 o / 중복 x
+                checkObj.authEmail = true; // 형식 o / 중복 x
             }
             else{
                 emailMessage.innerText = "이미 사용 중인 이메일입니다.";
                 emailMessage.classList.add('error');
                 emailMessage.classList.remove('confirm');
-                checkObj.memberEmail = false;
+                checkObj.authEmail = false;
+                checkObj.authKey = false;
             }
         })
         
@@ -59,7 +60,8 @@ memberEmail.addEventListener("input", e => {
         emailMessage.innerText = "알맞은 이메일 형식으로 작성해주세요.";
         emailMessage.classList.add('error');
         emailMessage.classList.remove('confirm');
-        checkObj.memberEmail = false;
+        checkObj.authEmail = false;
+        checkObj.authKey = false;
     }
    
     
@@ -70,9 +72,10 @@ const sendAuthKeyBtn = document.querySelector("#sendAuthKeyBtn"); // 인증번�
 const authKeyMessage = document.querySelector("#authKeyMessage"); // 인증 span 메세지
 
 sendAuthKeyBtn.addEventListener("click",()=>{
+    
 
     // checkOBJ에가 false 일때 == 중복이거나 유효한 이메일이 아닌경우
-    if(!checkObj.memberEmail) {
+    if(!checkObj.authEmail) {
         alert("유효한 이메일 작성 후 클릭해 주세요");
         return;
     }   
@@ -81,18 +84,16 @@ sendAuthKeyBtn.addEventListener("click",()=>{
     fetch("/email/signup",{
         method : "POST",
         headers : {"Content-Type": "application/json"},
-        body : JSON.stringify({ "authEmail" : memberEmail.value })
+        body : JSON.stringify({ "authEmail" : authEmail.value })
     })
     .then(resp => resp.text())
     .then(result => {
         if(result == 1){
             console.log("인증 번호 발송 성공");
             alert("인증번호가 발송되었습니다.");
-
         }else{
             console.log("인증 번호 발송 실패");
             alert("인증번호가 발송 실패되었습니다.");
-
         }
     })
 
@@ -105,7 +106,9 @@ const authKey = document.querySelector("#authKey"); // 인증번호
 
 checkAuthKeyBtn.addEventListener("click" , e=>{
 
-    if(authKey.trim() === 0){
+    const inputAuthKey = e.target.value; // 입력한 값 얻어오기
+
+    if(inputAuthKey.value.length() === 0){
         alert("인증번호 작성 후 클릭해주세요.");
         authKeyMessage.classList.remove('confirm', 'error');
         checkObj.authKey = false;
@@ -115,18 +118,22 @@ checkAuthKeyBtn.addEventListener("click" , e=>{
     fetch("/email/checkAuthKey",{
         method : "POST",
         headers : {"Content-Type": "application/json"},
-        body : JSON.stringify({ "authKey" : authKey.value })
+        body : JSON.stringify({ "authKey" : authKey.value ,"authEmail":authEmail.value})
     })
     .then(resp => resp.text())
-    .then(result => {
-        if(result == 1){
+    .then(count => {
+        if(count == 1){
+            console.log("인증번호 일치");
             authKeyMessage.innerText="인증번호가 일치합니다";
             authKeyMessage.classList.add("confirm");
             authKeyMessage.classList.remove("error");
+            checkObj.authKey = true;
         }else{
+            console.log("인증번호 불일치");
             authKeyMessage.innerText="인증번호가 일치하지 않습니다";
             authKeyMessage.classList.add("error");
             authKeyMessage.classList.remove("confirm"); 
+            checkObj.authKey = false;
         }
 
         
