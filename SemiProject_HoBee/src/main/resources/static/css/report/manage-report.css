@@ -1,0 +1,94 @@
+/* =========================
+   관리자 신고 관리 페이지
+========================= */
+
+.admin-report-container {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 20px;
+  color: #452829;
+}
+
+.admin-title {
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+
+.admin-sub {
+  font-size: 14px;
+  margin-bottom: 30px;
+  color: #666;
+}
+
+/* 테이블 */
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+}
+
+.report-table thead {
+  background-color: #FFF57E;
+}
+
+.report-table th,
+.report-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  font-size: 14px;
+}
+
+.report-table th {
+  font-weight: bold;
+}
+
+.report-table td.detail {
+  text-align: left;
+  max-width: 260px;
+  line-height: 1.5;
+}
+
+/* 처리 버튼 */
+.action-cell {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.approve-btn,
+.reject-btn {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* 승인 */
+.approve-btn {
+  background-color: #452829;
+  color: #FFF57E;
+}
+
+/* 거절 */
+.reject-btn {
+  background-color: #eee;
+  color: #452829;
+}
+
+.approve-btn:hover {
+  opacity: 0.9;
+}
+
+.reject-btn:hover {
+  background-color: #ddd;
+}
+
+/* 빈 데이터 */
+.empty {
+  padding: 40px 0;
+  color: #888;
+  text-align: center;
+}

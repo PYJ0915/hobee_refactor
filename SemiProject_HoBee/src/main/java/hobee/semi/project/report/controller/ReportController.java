@@ -1,7 +1,11 @@
 package hobee.semi.project.report.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +30,16 @@ public class ReportController {
 		log.info("비동기로 넘어온 Report : " + insertReport);
 		
 		return service.insertReport(insertReport);
+	}
+	
+	@GetMapping("manageReport")
+	public String manageReport(Model model) {
+		
+		List<Report> reportList = service.selectReportList();
+		
+		model.addAttribute("reportList", reportList);
+		
+		return "report/manage-report";
 	}
 	
 }

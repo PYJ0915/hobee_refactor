@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>신고 관리 | Ho-Bee Admin</title>
+
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/report/manage-report.css">
+</head>
+<body>
+
+<!-- 헤더 -->
+<th:block th:replace="~{common/fragments/header}" />
+
+<main class="admin-report-container">
+
+  <h1 class="admin-title">신고 관리</h1>
+  <p class="admin-sub">사용자 신고 내역을 관리할 수 있습니다.</p>
+
+  <table class="report-table">
+    <thead>
+      <tr>
+        <th>신고 사유</th>
+        <th>상세 내용</th>
+        <th>신고자</th>
+        <th>피신고자</th>
+        <th>신고 날짜</th>
+        <th>처리</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <!-- 신고 목록 반복 -->
+      <tr th:each="report : ${reportList}">
+        <td th:text="${report.reportReason}">
+          욕설 / 비하 표현
+        </td>
+
+        <td class="detail"
+            th:text="${report.reportDetail}">
+          지속적인 욕설과 공격적인 표현을 사용했습니다.
+        </td>
+
+        <td th:text="${report.reporterNickname}">
+          신고자닉네임
+        </td>
+
+        <td th:text="${report.reportedNickname}">
+          피신고자닉네임
+        </td>
+
+        <td th:text="${report.reportDate}">
+          2025.01.01
+        </td>
+
+        <td class="action-cell">
+          <button class="approve-btn">승인</button>
+          <button class="reject-btn">거절</button>
+        </td>
+      </tr>
+
+      <!-- 신고 없을 때 -->
+      <tr th:if="${#lists.isEmpty(reportList)}">
+        <td colspan="6" class="empty">
+          현재 접수된 신고가 없습니다.
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+
+</main>
+
+<!-- 푸터 -->
+<th:block th:replace="~{common/fragments/footer}" />
+
+</body>
+</html>

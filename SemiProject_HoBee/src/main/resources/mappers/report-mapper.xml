@@ -7,4 +7,35 @@
 		VALUES (SEQ_REPORT_NO.NEXTVAL, #{reportReason}, #{reportDetail}, DEFAULT, DEFAULT, #{reporterMemberNo}, #{reportedMemberNo})
 	</insert>
 	
+	<!-- 
+ 		resultMap 태그
+ 		1) 조회된 컬럼명과 DTO의 필드명이 일치하지 않을 때 매핑시켜주는 역할
+ 		2) <collection> 태그를 추가 작성한 후 여러 행 결과가 조회되는 다른 SELECT를 수행한 후
+ 			해당 결과를 지정한 DTO의 필드에 대입
+ 	 -->
+ 	 
+ 	 <!-- resultMap의 collection 태그를 이용한 SQL 호출 시 
+ 	 반환 타입은 반드시 resultType 속성을 이용하여 명시해야함! (추론 X) -->
+ 	 
+ 	 <!-- 
+	 		collection 태그
+	 		: SELECT로 조회된 결과를 컬렉션에 담아 저장된 필드에 세팅
+	 			
+	 		- property : List를 담을 DTO의 필드명
+			- select : 실행할 select 의 id
+			- column : 조회 결과(부모쿼리 수행결과) 중 지정된 컬럼의 값을 파라미터로 전달
+			- javaType : List(컬렉션)의 타입을 지정
+			- ofType : List(컬렉션)의 제네릭(타입제한) 지정
+ 		-->
+ 		
+	<select id="selectReportList">
+		SELECT r.REPORT_NO, r.REPORT_DETAIL,
+		reporter.MEMBER_NICKNAME REPORTER_NICKNAME, reported.MEMBER_NICKNAME REPORTED_NICKNAME, 
+		r.REPORT_REASON, TO_CHAR(REPORT_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') REPORT_DATE
+		FROM REPORT r
+		JOIN MEMBER reporter ON (r.REPORTER_MEMBER_NO = reporter.MEMBER_NO)
+		JOIN MEMBER reported ON (r.REPORTED_MEMBER_NO = reported.MEMBER_NO)
+		WHERE r.REPORT_STATUS = 'PENDING'
+	</select>
+	
 </mapper>
