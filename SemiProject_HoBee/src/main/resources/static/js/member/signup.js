@@ -10,6 +10,7 @@ const checkObj = {
     "authKey"         : false,
     "memberPw"        : false,
     "memberPwConfirm" : false,
+    "memberName"      : false,
     "memberNickname"  : false,
     "memberTel"       : false
 };
@@ -193,15 +194,15 @@ memberId.addEventListener("input",e=>{
 
 // 비밀번호-------------------------------------------------------------------------------------------------
 
-const memberPw = document.querySelector("memberPw");
-const pwMessage = document.querySelector("pwMessage");
+const memberPw = document.querySelector("#memberPw");
+const pwMessage = document.querySelector("#pwMessage");
 
-/^(?=.*[!@#$%^&*()_+|~=`{}\[\]:";'<>?,.\/]).{6,12}$/
 
-memberPw.addEventListener("input" , e=>{
+memberPw.addEventListener("input", e=>{
 
     const inputPw = e.target.value;
 
+    // 입력하지 않은 경우
     if(inputPw.trim().length === 0){
         pwMessage.innerText = "비밀번호를 입력해주세요.";
         pwMessage.classList.remove('confirm', 'error');
@@ -209,10 +210,77 @@ memberPw.addEventListener("input" , e=>{
         return;
     }
 
+    const regExp = /^(?=.*[!@#_-])[a-zA-Z0-9!@#_-]{6,12}$/; // 6~12 특수문자 최소 1개
+
+    // 옮바르게 입력하지 않을 경우
+    if(!regExp.test(inputPw)){
+        pwMessage.innerText = "사용 불가한 비밀번호 입니다";
+        pwMessage.classList.add('error');
+        pwMessage.classList.remove('confirm');
+        checkObj.memberPw = false;
+    }else{
+        pwMessage.innerText = "사용 가능한 비밀번호 입니다. ";
+        pwMessage.classList.add('confirm');
+        pwMessage.classList.remove('error');
+        checkObj.memberPw = true;
+    }
+
+});
+
+// 비밀번호 확인
+
+const memberPwConfirm = document.querySelector("#memberPwConfirm");
+const pwConMessage = document.querySelector("#pwConMessage");
+
+memberPwConfirm.addEventListener("input",e=>{
+
+    const inputPw = memberPw.value; // 비밀번호 확인 시 필요한 비밀번호 값(비교할때 사용)
+
+    if(inputPw !== memberPwConfirm.value){ // 같지 않을 때
+        pwConMessage.innerText = "비밀번호가 같지 않습니다";
+        pwConMessage.classList.add('error');
+        pwConMessage.classList.remove('confirm');
+        checkObj.memberPwConfirm = false;
+    }else{
+        pwConMessage.innerText = "비밀번호가 같습니다";
+        pwConMessage.classList.add('confirm');
+        pwConMessage.classList.remove('error');
+        checkObj.memberPwConfirm = true;
+    }
 });
 
 
+// 이름 -------------------------------------------------------
 
+const memberName = document.querySelector("#memberName");
+const nameMessage = document.querySelector("#nameMessage");
+
+memberName.addEventListener("input",e=>{
+
+    const inputName = e.target.value; // 입력한 값
+
+    if(inputName.trim().length===0){
+        nameMessage.innerText="이름을 입력해주세요";
+        nameMessage.classList.remove('confirm', 'error');
+        checkObj.memberName = false;
+        return; 
+    }
+
+    const regExp = /^[가-힣]{2,5}$/;
+
+    if(!regExp.test(inputName)){
+        nameMessage.innerText = "사용 불가한 이름입니다";
+        nameMessage.classList.add('error');
+        nameMessage.classList.remove('confirm');
+        checkObj.memberName = false;
+    }else{
+        nameMessage.innerText = "사용 가능한 이름입니다.";
+        nameMessage.classList.add('confirm');
+        nameMessage.classList.remove('error');
+        checkObj.memberName = true;
+    }
+    
+});
 
 
 
@@ -226,7 +294,7 @@ memberNickname.addEventListener("input" ,e=>{
     const inputNickname = e.target.value;
 
     if(inputNickname.trim().length === 0){
-        nickMessage.innerText="닉네임을 입력해주세요"
+        nickMessage.innerText="닉네임을 입력해주세요";
         nickMessage.classList.remove('confirm', 'error');
         checkObj.memberNickname = false;
         return;
