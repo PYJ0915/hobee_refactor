@@ -331,7 +331,38 @@ memberNickname.addEventListener("input" ,e=>{
         checkObj.memberNickname = false;
     }
     
+    
 });
+
+// 취미 --------------------------------------------------------------------------------------------------------
+
+const subHobbyData = {
+    "sports": ["축구", "농구", "테니스", "수영", "등산"],
+    "selfDevelop": ["코딩", "외국어", "독서", "재테크", "글쓰기"],
+    "art": ["영화감상", "악기연주", "전시회", "요리", "사진"],
+    "social": ["봉사활동", "파티", "소모임", "반려동물"],
+    "shopping": ["피규어", "맛집탐방", "쇼핑", "술"]
+};
+
+const mainCategoryArea = document.querySelector("#mainCategoryArea");
+const CategoryArea = document.querySelector("#CategoryArea");
+const subTitle = document.querySelector("#subTitle");
+
+
+
+mainCategoryArea.forEach(radio =>{
+    radio.addEventListener("chang",e=>{ // chang -> 체크박스 상태를 확인함 !
+
+        const selectCategory = e.target.value; // 선택한 메인 카테고리 값 가져오기
+
+        CategoryArea.innerHTML = ""; // 세부사항 삭제
+        subTitle.style.display = "bolck"; // 숨겨있던 세부카테고리 나오게함
+
+    })
+
+
+})
+
 
 
 
