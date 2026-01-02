@@ -7,4 +7,26 @@
 		VALUES (SEQ_REPORT_NO.NEXTVAL, #{reportReason}, #{reportDetail}, DEFAULT, DEFAULT, #{reporterMemberNo}, #{reportedMemberNo})
 	</insert>
 	
+	<select id="getReportCount">
+			SELECT COUNT(*)
+			FROM REPORT
+			WHERE REPORT_STATUS = 'PENDING'
+	</select>
+ 		
+	<select id="selectReportList">
+		SELECT r.REPORT_NO, r.REPORT_DETAIL,
+		reporter.MEMBER_NICKNAME REPORTER_NICKNAME, reported.MEMBER_NICKNAME REPORTED_NICKNAME, 
+		r.REPORT_REASON, TO_CHAR(REPORT_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') REPORT_DATE
+		FROM REPORT r
+		JOIN MEMBER reporter ON (r.REPORTER_MEMBER_NO = reporter.MEMBER_NO)
+		JOIN MEMBER reported ON (r.REPORTED_MEMBER_NO = reported.MEMBER_NO)
+		WHERE r.REPORT_STATUS = 'PENDING'
+		ORDER BY r.REPORT_NO
+	</select>
+	
+	<update id="manageReport">
+		UPDATE REPORT SET REPORT_STATUS = #{reportStatus}
+		WHERE REPORT_NO = #{reportNo}
+	</update>
+	
 </mapper>

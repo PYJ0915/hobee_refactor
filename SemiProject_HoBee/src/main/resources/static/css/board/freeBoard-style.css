@@ -145,6 +145,8 @@ a:hover {
     list-style: none;
     display: flex;
     justify-content: center;
+    align-items: center;
+    gap: 6px;
 }
 
 .pagination li {
@@ -156,6 +158,29 @@ a:hover {
     background-color: #FFF57E;
     border-radius: 50%;
     padding: 2px 8px;
+}
+
+.pagination li a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  min-width: 32px;
+  height: 32px;
+
+  font-size: 14px;
+  color: #452829;
+  text-decoration: none;
+
+  border-radius: 6px;
+  padding: 0 8px;
+
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.pagination li a:hover {
+  background-color: #FFF57E;
+  font-weight: bold;
 }
 
 /* 6. 검색 영역 */

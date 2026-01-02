@@ -40,7 +40,7 @@ function showReport(e) {
 document.querySelector(".submit-report-btn").addEventListener("click", () => {
 
   const checkedReason = document.querySelector('input[name="reason"]:checked');
-  const reportDetail = document.querySelector(".detail-textarea").value;
+  let reportDetail = document.querySelector(".detail-textarea");
   const nickname = reportWriter.innerText;
 
   if(checkedReason == null) {
@@ -48,9 +48,17 @@ document.querySelector(".submit-report-btn").addEventListener("click", () => {
     return;
   }
 
+  if(reportedMemberNo == loginMemberNo) {
+    alert("본인 계정은 신고할 수 없습니다.")
+    reportDetail.value = "";
+    checkedReason.checked = false;
+    reportModal.classList.add("popup-hidden");
+    return;
+  }
+
   const obj = {
     "reportReason" : checkedReason.value,
-    "reportDetail" : reportDetail == "" ? null : reportDetail,
+    "reportDetail" : reportDetail.value == "" ? null : reportDetail.value,
     "reporterMemberNo" : loginMemberNo,
     "reportedMemberNo" : reportedMemberNo
   };
@@ -67,6 +75,8 @@ document.querySelector(".submit-report-btn").addEventListener("click", () => {
     if(result > 0) {
       alert(nickname + "님이 신고되었습니다.");
       reportModal.classList.add("popup-hidden");
+      reportDetail.value = "";
+      checkedReason.checked = false;
     } else {
       alert("신고에 실패했습니다. 다시 시도해주세요.");
     }
