@@ -38,7 +38,7 @@
     <th:block th:if="${session.loginMember != null}">
     <div class="header-user-loggedin">
 
-      <a href="#">
+      <a href="/myPage/info">
         <img
         alt="프로필 이미지"
         class="header-profile-img"
@@ -46,7 +46,7 @@
         >
       </a>
 
-      <a href="#" id="nickname">
+      <a href="/myPage/info" id="nickname">
       <span class="header-user-name" th:text="${session.loginMember.memberNickname}">
         홍길동 님
       </span>
