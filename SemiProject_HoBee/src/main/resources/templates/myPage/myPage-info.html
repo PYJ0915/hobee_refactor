@@ -4,8 +4,10 @@
   <meta charset="UTF-8">
   <title>내 정보</title>
   
-  <link rel="stylesheet" href="/css/common.css">
-  <link rel="stylesheet" href="/css/myPage/myPage.css">
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/css/myPage/myPage.css}">
+  <link rel="stylesheet" th:href="@{/css/myPage/myPage-info.css}">
+
 </head>
 <body>
 
@@ -13,6 +15,8 @@
 <th:block th:replace="~{common/fragments/header}" />
 
 <main class="myPage-container">
+
+<div class="myPage-wrapper">
 
   <!-- 사이드 메뉴 -->
   <th:block th:replace="~{common/fragments/sidemenu}" />
@@ -30,7 +34,7 @@
     </div>
 
     <!-- 정보 수정 폼 -->
-    <form action="/myPage/updateInfo" class="info-form" method="POST" name="myPageFrm" id="updateInfo">
+    <form action="#" class="info-form" method="POST" name="myPageFrm" id="updateInfo">
 
       <div class="myPage-row">
         <label>닉네임</label>
@@ -39,7 +43,7 @@
       </div>
 
       <div class="myPage-row">
-        <label>전화번호</label>
+        <label>전화 번호</label>
         <input type="text" name="memberTel" maxlength="11" id="memberTel"
               th:value="${session.loginMember.memberTel}">
       </div>
@@ -72,6 +76,8 @@
 
   </section>
 
+ </div> 
+  
 </main>
 
 <!-- 푸터 -->
@@ -81,7 +87,7 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <!--회원 정보 수정 JS-->
-<script src="/SemiProject_HoBee/src/main/resources/static/js/myPage/myPage.js"></script>
+<script src="/js/myPage/myPage.js"></script>
 
 
 

@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @SessionAttributes({"loginMember"})
 @Controller
 @RequestMapping("myPage")
-@Slf4j
+//@Slf4j
 public class MyPageController {
 
 	@Autowired
@@ -48,10 +48,13 @@ public class MyPageController {
 		return "myPage/myPage-profile";
 	}
 
+	/** 회원 정보 수정 화면 이동
+	 * @return
+	 */
 	@GetMapping("updateInfo")
 	public String updateInfo() {
 		
-		return "/myPage/myPage-info";
+		return "myPage/myPage-info";
 	}
 	
 	
@@ -129,6 +132,8 @@ public class MyPageController {
 			message = "기존 비밀번호를 확인해주세요";
 			path = "changePw";
 		}
+
+		ra.addFlashAttribute("message", message);
 		
 		return "redirect:" + path;
 	}

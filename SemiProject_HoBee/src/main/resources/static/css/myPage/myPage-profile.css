@@ -4,11 +4,12 @@
 
 .mypage-container {
   min-height: calc(100vh - 200px);
-  background-color: #FFF57E;
+  background-color: #ffffff;
 
   display: flex;
-  justify-content: center; /* 핵심 */
-  padding: 40px 0;
+  justify-content: center;
+  gap: 40px;          /* 사이드메뉴 ↔ 카드 간격 */
+  padding: 40px 40px;
 }
 
 /* =========================
@@ -23,6 +24,8 @@
   padding: 60px 80px;
   border-radius: 24px;
 
+  border: 3px solid #FFF57E;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
 }
 
 /* =========================
@@ -66,13 +69,23 @@
 .info-row {
   display: flex;
   align-items: center;
+  padding-bottom: 12px;
   margin-bottom: 24px;
+  border-bottom: 1px solid #eee;
 }
 
 /* 세로형 정보 */
 .info-row.column {
   flex-direction: column;
   align-items: flex-start;
+
+  background-color: #fafafa;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.info-row:last-child {
+  border-bottom: none;
 }
 
 /* 라벨 */
@@ -80,7 +93,13 @@
   width: 120px;
   font-weight: bold;
   color: #452829;
-  flex-shrink: 0;
+  /* flex-shrink: 0; */
+}
+
+.label::before {
+  content: "•";
+  color: #FFF57E;
+  margin-right: 6px;
 }
 
 /* 값 */
