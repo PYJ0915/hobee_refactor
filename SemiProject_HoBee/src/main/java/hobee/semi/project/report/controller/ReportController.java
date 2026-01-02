@@ -1,6 +1,7 @@
 package hobee.semi.project.report.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import hobee.semi.project.report.model.dto.Report;
@@ -33,11 +35,15 @@ public class ReportController {
 	}
 	
 	@GetMapping("manageReport")
-	public String manageReport(Model model) {
+	public String manageReport(@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, 
+							Model model) {
 		
-		List<Report> reportList = service.selectReportList();
+		Map<String, Object> map = null;
 		
-		model.addAttribute("reportList", reportList);
+		map = service.selectReportList(cp);
+		
+		model.addAttribute("reportList", map.get("reportList"));
+		model.addAttribute("pagination", map.get("pagination"));
 		
 		return "report/manage-report";
 	}
