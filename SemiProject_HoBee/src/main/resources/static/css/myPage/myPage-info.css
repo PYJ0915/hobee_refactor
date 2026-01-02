@@ -1,0 +1,163 @@
+/* =========================
+   공통 레이아웃 (profile과 통일)
+========================= */
+
+.myPage-container {
+  display: flex;
+  justify-content: center;
+  background-color: #ffffff;
+  padding: 40px 0;
+}
+
+/* 사이드메뉴 + 카드 wrapper */
+.myPage-wrapper {
+  display: flex;
+  gap: 40px;               /* ⭐ 사이드메뉴와 카드 간격 고정 */
+  width: 100%;
+  max-width: 1200px;       /* profile과 동일 */
+}
+
+/* =========================
+   카드 영역
+========================= */
+
+.myPage-content {
+  flex: 1;
+  max-width: 900px;
+  background-color: #ffffff;
+
+  padding: 60px 80px;
+  border-radius: 24px;
+  border: 3px solid #FFF57E;
+}
+
+/* =========================
+   제목
+========================= */
+
+.myPage-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #452829;
+  margin-bottom: 8px;
+}
+
+.myPage-subject {
+  display: block;
+  color: #888;
+  margin-bottom: 40px;
+}
+
+/* =========================
+   프로필 영역
+========================= */
+
+.profile-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 50px;
+}
+
+.profile-img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background-color: #FFF57E;
+}
+
+.profile-btn {
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+
+  background-color: #452829;
+  color: #FFF57E;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* =========================
+   정보 입력 영역
+========================= */
+
+.info-form {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.myPage-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 26px;
+}
+
+.myPage-row label {
+  width: 120px;
+  font-weight: bold;
+  color: #452829;
+  flex-shrink: 0;
+}
+
+/* ⭐ input → div 느낌 */
+.myPage-row input {
+  flex: 1;
+  padding: 10px 6px;
+  border: none;            /* ❌ 모든 border 제거 */
+  background-color: transparent;
+  font-size: 15px;
+  outline: none;
+}
+
+/* =========================
+   주소 영역
+========================= */
+
+.address-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.address-area input {
+  flex: 1;
+}
+
+/* 주소 검색 버튼 */
+.address-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+
+  background-color: #452829;
+  color: #FFF57E;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* =========================
+   변경하기 버튼 (중앙 + 적당한 크기)
+========================= */
+
+.form-btns {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+}
+
+.submit-btn {
+  width: 240px;            /* ⭐ 크기 축소 */
+  padding: 14px 0;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+
+  background-color: #452829;
+  color: #FFF57E;
+  font-size: 16px;
+  font-weight: bold;
+}

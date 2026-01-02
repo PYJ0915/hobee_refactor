@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <title>프로필 | Ho-Bee</title>
 
-  <link rel="stylesheet" href="/SemiProject_HoBee/src/main/resources/static/css/myPage/myPage-profile.css">
+  <link rel="stylesheet" href="/css/myPage/myPage-profile.css">
   <link rel="stylesheet" th:href="@{/css/common.css}">
-  <link rel="stylesheet" th:href="@{/css/mypage/profile.css}">
+  <link rel="stylesheet" href="/css/myPage/myPage.css">
 </head>
 <body>
 
@@ -54,7 +54,7 @@
 
       <div class="info-row column">
         <span class="label">소개</span>
-        <p class="intro-text" th:text="${member.introduction}">
+        <!-- <p class="intro-text" th:text="${member.introduction}"> -->
           안녕하세요! 새로운 취미를 찾고 있어요.
         </p>
       </div>
@@ -62,25 +62,25 @@
       <!-- 내가 쓴 글 -->
       <div class="info-row column">
         <span class="label">
-          내가 쓴 글 (<span th:text="${myBoardList.size()}">0</span>)
+          <!-- 내가 쓴 글 (<span th:text="${myBoardList.size()}">0</span>) -->
         </span>
 
         <!-- 글 없을 때 -->
-        <div class="empty-box"
-             th:if="${#lists.isEmpty(myBoardList)}">
+        <!-- <div class="empty-box" -->
+             <!-- th:if="${#lists.isEmpty(myBoardList)}"> -->
           현재 없음
         </div>
 
         <!-- 글 있을 때 -->
-        <ul class="my-board-list"
-            th:if="${!#lists.isEmpty(myBoardList)}">
-          <li th:each="board : ${myBoardList}">
-            <a th:href="@{/board/detail/{no}(no=${board.boardNo})}"
-               th:text="${board.boardTitle}">
+        <!-- <ul class="my-board-list" -->
+            <!-- th:if="${!#lists.isEmpty(myBoardList)}"> -->
+          <!-- <li th:each="board : ${myBoardList}"> -->
+            <!-- <a th:href="@{/board/detail/{no}(no=${board.boardNo})}" -->
+               <!-- th:text="${board.boardTitle}"> -->
               게시글 제목
             </a>
-            <span class="date"
-                  th:text="${#temporals.format(board.boardWriteDate,'yyyy.MM.dd')}">
+            <!-- <span class="date" -->
+                  <!-- th:text="${#temporals.format(board.boardWriteDate,'yyyy.MM.dd')}"> -->
               2025.01.01
             </span>
           </li>
