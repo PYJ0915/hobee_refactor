@@ -52,7 +52,8 @@
         <button class="like-btn">
           <i class="fa-solid fa-thumbs-up"></i> 좋아요 <span th:text="${board.likeCount}">12</span></button>
         <button class="report-btn" id="board-report" th:data-writer="${board.memberNickname}"
-        th:data-login-member-no="${session.loginMember != null ? session.loginMember.memberNo : 0}">
+        th:data-login-member-no="${session.loginMember != null ? session.loginMember.memberNo : 0}"
+        th:data-reported-member-no="${board.memberNo}">
           <i class="fa-solid fa-land-mine-on"></i> 신고</button>
       </div>
 
@@ -114,7 +115,8 @@
             <div class="comment-actions">
               <button class="reply-btn">답글</button>
               <button class="report-btn" id="comment-report"
-              th:data-writer="${comment.memberNickname}">신고</button>
+              th:data-writer="${comment.memberNickname}"
+              th:data-reported-member-no="${comment.memberNo}">신고</button>
             </div>
           </div>
 
