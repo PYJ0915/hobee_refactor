@@ -19,4 +19,7 @@ public class Report {
 	private int reporterMemberNo;
 	private int reportedMemberNo;
 	
+	private String reporterNickname;
+	private String reportedNickname;
+	
 }

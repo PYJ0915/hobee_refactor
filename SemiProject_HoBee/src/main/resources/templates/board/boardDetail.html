@@ -51,10 +51,12 @@
       <div class="board-actions">
         <button class="like-btn">
           <i class="fa-solid fa-thumbs-up"></i> 좋아요 <span th:text="${board.likeCount}">12</span></button>
-        <button class="report-btn" id="board-report" th:data-writer="${board.memberNickname}"
-        th:data-login-member-no="${session.loginMember != null ? session.loginMember.memberNo : 0}"
-        th:data-reported-member-no="${board.memberNo}">
-          <i class="fa-solid fa-land-mine-on"></i> 신고</button>
+        <th:block th:unless="${board.boardCode} == 1">
+          <button class="report-btn" id="board-report" th:data-writer="${board.memberNickname}"
+            th:data-login-member-no="${session.loginMember != null ? session.loginMember.memberNo : 0}"
+            th:data-reported-member-no="${board.memberNo}">
+            <i class="fa-solid fa-land-mine-on"></i> 신고</button>
+        </th:block>
       </div>
 
     </section>
