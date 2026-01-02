@@ -70,19 +70,19 @@
              <th:block th:unless="${#lists.isEmpty(boardList)}">
                 <tr th:each="board : ${boardList}" th:object="${board}">
                     <td th:text="*{boardNo}">게시글 번호</td>
-                    
+
                     <td>
                         <a th:unless="${param.key}"
                            th:href="@{/hobby/{categoryCode}/{boardNo}(categoryCode=${categoryCode}, boardNo=*{boardNo}, cp=${pagination.currentPage})}"
                            th:text="*{boardTitle}">게시글 제목</a>
-                        
+
                         <a th:if="${param.key}"
                            th:href="@{/hobby/{categoryCode}/{boardNo}(categoryCode=${categoryCode}, boardNo=*{boardNo}, cp=${pagination.currentPage}, key=${param.key}, query=${param.query})}"
                            th:text="*{boardTitle}">게시글 제목</a>
-                        
+
                         <th:block th:text="|[*{commentCount}]|">댓글 수</th:block>
                     </td>
-                    
+
                     <td th:text="*{memberNickname}">닉네임</td>
                     <td th:text="*{boardWriteDate}">작성일</td>
                     <td th:text="*{boardViewCount}">0</td>
@@ -94,7 +94,7 @@
         </div>
 
         <div class="btn-area">
-            <button id="insertBtn" th:if="${session.loginMember?.authorLevel == 1}"
+            <button id="insertBtn" th:if="${session.loginMember}"
         th:data-board-path="|hobby/${categoryCode}|">글쓰기</button>
         </div>
 
