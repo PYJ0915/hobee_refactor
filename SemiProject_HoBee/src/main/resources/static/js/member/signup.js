@@ -344,24 +344,68 @@ const subHobbyData = {
     "shopping": ["피규어", "맛집탐방", "쇼핑", "술"]
 };
 
-const mainCategoryArea = document.querySelector("#mainCategoryArea");
-const CategoryArea = document.querySelector("#CategoryArea");
-const subTitle = document.querySelector("#subTitle");
+const mainCategoryArea = document.querySelectorAll("#mainCategoryArea input"); // 메인 카테고리
+const CategoryArea = document.querySelector("#CategoryArea"); // 세부 카테고리 도화지
+const subTitle = document.querySelector("#subTitle"); 
 
 
 
 mainCategoryArea.forEach(radio =>{
-    radio.addEventListener("chang",e=>{ // chang -> 체크박스 상태를 확인함 !
+    radio.addEventListener("change",e=>{ // chang -> 체크박스 상태를 확인함 !
 
         const selectCategory = e.target.value; // 선택한 메인 카테고리 값 가져오기
 
         CategoryArea.innerHTML = ""; // 세부사항 삭제
-        subTitle.style.display = "bolck"; // 숨겨있던 세부카테고리 나오게함
+        subTitle.style.display = "block"; // 숨겨있던 세부카테고리 나오게함
+
+        const subList = subHobbyData[selectCategory]; // 선택한 카테고리의 세부 카테고리 배열 가져오가
+
+        if(subList){
+            subList.forEach(hobby =>{
+                // label 요소 만들어 보여주기(세부 카테고리)
+                const label = document.createElement("label");
+                label.innerHTML = `<input type="checkbox" name="hobby" value="${hobby}"> ${hobby}`;
+                CategoryArea.appendChild(label); // CategoryArea안에 생성(차곡차곡)
+            })
+        }
 
     })
 
 
 })
+
+//전화번호 ---------------------------------------------------------------------------------------------
+
+const memberTel = document.querySelector("#memberTel");
+const telMessage = document.querySelector("#telMessage");
+
+memberId.addEventListener("input",e=>{
+
+    const inputTel = e.target.value; // 값 얻어오기
+
+    if(inputTel.trim().length === 0){
+        telMessage.innerText = "전화번호를 입력해주세요";
+        telMessage.classList.remove('confirm', 'error');
+        checkObj.memberTel = false;
+        return;
+    }
+
+    const phoneRegExp = /^010[0-9]{8}$/;
+
+   if(phoneRegExp.test(inputTel)){
+        telMessage.innerText ="옮바른 전화번호 입니다.";
+        telMessage.classList.add('comfirm');
+        telMessage.classList.remove('error');
+        checkObj.memberTel = true;
+   }else{
+        telMessage.innerText ="옮바른지 않은 전화번호 입니다.";
+        telMessage.classList.add('error');
+        telMessage.classList.remove('comfirm');
+        checkObj.memberTel = false;
+   }
+    
+
+});
 
 
 
