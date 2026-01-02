@@ -16,4 +16,6 @@ public interface ReportMapper {
 	
 	List<Report> selectReportList(RowBounds rowBounds);
 
+	int manageReport(Report updateReport);
+
 }

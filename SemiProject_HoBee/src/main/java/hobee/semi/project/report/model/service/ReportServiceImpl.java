@@ -45,5 +45,10 @@ public class ReportServiceImpl implements ReportService{
 		
 		return map;
 	}
+
+	@Override
+	public int manageReport(Report updateReport) {
+		return mapper.manageReport(updateReport);
+	}
 	
 }

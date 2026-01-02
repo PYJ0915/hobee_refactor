@@ -10,6 +10,7 @@
 	<select id="getReportCount">
 			SELECT COUNT(*)
 			FROM REPORT
+			WHERE REPORT_STATUS = 'PENDING'
 	</select>
  		
 	<select id="selectReportList">
@@ -22,5 +23,10 @@
 		WHERE r.REPORT_STATUS = 'PENDING'
 		ORDER BY r.REPORT_NO
 	</select>
+	
+	<update id="manageReport">
+		UPDATE REPORT SET REPORT_STATUS = #{reportStatus}
+		WHERE REPORT_NO = #{reportNo}
+	</update>
 	
 </mapper>
