@@ -19,9 +19,9 @@
     <div class="board-write-area">
         <h1 class="write-title" style="margin-bottom: 30px;">글 쓰기</h1>
         
-        <form action="" method="post">
+        <form action="" method="post" id="boardContent">
             <input type="text" name="boardTitle" class="board-title-input" 
-                   placeholder="제목을 입력하세요" required />
+                   placeholder="제목을 입력하세요" />
             
             <textarea id="summernote" name="boardContent"></textarea>
             
@@ -32,46 +32,14 @@
     </div>
 
     <th:block th:replace="~{common/fragments/footer}"></th:block>
-    <script>
 
+    <script src="/js/board/editBoard.js"></script>
 
-$(document).ready(() => {
-
-    const message = "[[${message}]]"; 
-    if (message !== "" && message !== "null") {
+    <script th:inline="javascript">
+    const message = /*[[${message}]]*/ null;
+    if (message != null) {
         alert(message);
     }
-
-    $('#summernote').summernote({
-        height: 400,
-        lang: 'ko-KR',
-        callbacks: {
-            onImageUpload: (files) => { // 이미지 업로드 콜백
-                uploadImage(files[0], $('#summernote'));
-            }
-        }
-    });
-});
-
-const uploadImage = (file, editor) => {
-    let data = new FormData();
-    data.append("file", file);
-    
-    $.ajax({
-        url: "/editBoard/imageUpload",
-        type: "POST",
-        data: data,
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: (url) => { // 성공 시 콜백
-            $(editor).summernote('insertImage', url);
-        },
-        error: (e) => { // 실패 시 콜백
-            console.log(e);
-        }
-    });
-};
-    </script>
+</script>
 </body>
 </html>
