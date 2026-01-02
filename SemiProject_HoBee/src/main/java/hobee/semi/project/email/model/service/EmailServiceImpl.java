@@ -60,7 +60,7 @@ public class EmailServiceImpl implements EmailService {
 				helper.setTo(authEmail); // 사용자가 입력한 이메일
                 helper.setSubject("[Hobee] 회원가입 인증번호입니다."); // 제목
 				
-                String content = "인증번호 : " + authKey;
+                String content ="인증번호 : "+authKey;
                 helper.setText(content);
                 
                 mailSender.send(mail);

@@ -27,4 +27,12 @@ public class EmailController {
 		return service.checkEmail ("signup",authEmail);
 		
 	}
+	
+	@PostMapping("checkAuthKey")
+	public int checkAuthKey(@RequestBody Email email) {
+		
+	
+		
+		return 0;
+	}
 }

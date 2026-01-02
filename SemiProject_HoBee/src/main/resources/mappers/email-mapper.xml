@@ -16,8 +16,8 @@
 	</update>	
 		
 	<insert id="insertAuthKey">
-		INSERT INTO AUTH_KEY (AUTH_KEY_CODE, AUTH_EMAIL, AUTH_KEY, AUTH_KEY_DATE)
-    	VALUES (SEQ_KEY_NO.NEXTVAL, #{authEmail}, #{authKey}, DEFAULT)
+		INSERT INTO AUTH_KEY
+    	VALUES (SEQ_AUTH_KEY_CODE.NEXTVAL, #{authEmail}, #{authKey}, DEFAULT)
 	</insert>
 
 <!-- 

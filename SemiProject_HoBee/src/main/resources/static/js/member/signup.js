@@ -66,7 +66,7 @@ memberEmail.addEventListener("input", e => {
 });
 
 // 인증 코드 보내기 ------------------------------------------------------------------------------------
-const sendAuthKeyBtn = document.querySelector("#sendAuthKeyBtn"); // 인증 버튼
+const sendAuthKeyBtn = document.querySelector("#sendAuthKeyBtn"); // 인증번호 받기 버튼
 const authKeyMessage = document.querySelector("#authKeyMessage"); // 인증 span 메세지
 
 sendAuthKeyBtn.addEventListener("click",()=>{
@@ -75,7 +75,7 @@ sendAuthKeyBtn.addEventListener("click",()=>{
     if(!checkObj.memberEmail) {
         alert("유효한 이메일 작성 후 클릭해 주세요");
         return;
-    }
+    }   
 
     // 비동기로 서버에서 메일보내기 
     fetch("/email/signup",{
@@ -87,15 +87,52 @@ sendAuthKeyBtn.addEventListener("click",()=>{
     .then(result => {
         if(result == 1){
             console.log("인증 번호 발송 성공");
+            alert("인증번호가 발송되었습니다.");
+
         }else{
-             console.log("인증 번호 발송 실패");
+            console.log("인증 번호 발송 실패");
+            alert("인증번호가 발송 실패되었습니다.");
+
         }
     })
-    
-    
 
 });
 
+
+// 인증코드 확인
+const checkAuthKeyBtn = document.querySelector("#checkAuthKeyBtn"); // 인증하기 버튼
+const authKey = document.querySelector("#authKey"); // 인증번호
+
+checkAuthKeyBtn.addEventListener("click" , e=>{
+
+    if(authKey.trim() === 0){
+        alert("인증번호 작성 후 클릭해주세요.");
+        authKeyMessage.classList.remove('confirm', 'error');
+        checkObj.authKey = false;
+        return;
+    }
+
+    fetch("/email/checkAuthKey",{
+        method : "POST",
+        headers : {"Content-Type": "application/json"},
+        body : JSON.stringify({ "authKey" : authKey.value })
+    })
+    .then(resp => resp.text())
+    .then(result => {
+        if(result == 1){
+            authKeyMessage.innerText="인증번호가 일치합니다";
+            authKeyMessage.classList.add("confirm");
+            authKeyMessage.classList.remove("error");
+        }else{
+            authKeyMessage.innerText="인증번호가 일치하지 않습니다";
+            authKeyMessage.classList.add("error");
+            authKeyMessage.classList.remove("confirm"); 
+        }
+
+        
+    })
+
+});
 
 // 아이디 중복 검사 ------------------------------------------------------------------------------------
 
