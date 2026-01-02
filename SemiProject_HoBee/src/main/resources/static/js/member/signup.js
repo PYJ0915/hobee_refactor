@@ -106,9 +106,9 @@ const authKey = document.querySelector("#authKey"); // 인증번호
 
 checkAuthKeyBtn.addEventListener("click" , e=>{
 
-    const inputAuthKey = e.target.value; // 입력한 값 얻어오기
+    const inputAuthKey = authKey.value; // 입력한 값 얻어오기
 
-    if(inputAuthKey.value.length() === 0){
+    if(inputAuthKey.trim().length === 0){
         alert("인증번호 작성 후 클릭해주세요.");
         authKeyMessage.classList.remove('confirm', 'error');
         checkObj.authKey = false;
@@ -191,7 +191,32 @@ memberId.addEventListener("input",e=>{
 
 });
 
-// 닉네임 중복 검사
+// 비밀번호-------------------------------------------------------------------------------------------------
+
+const memberPw = document.querySelector("memberPw");
+const pwMessage = document.querySelector("pwMessage");
+
+/^(?=.*[!@#$%^&*()_+|~=`{}\[\]:";'<>?,.\/]).{6,12}$/
+
+memberPw.addEventListener("input" , e=>{
+
+    const inputPw = e.target.value;
+
+    if(inputPw.trim().length === 0){
+        pwMessage.innerText = "비밀번호를 입력해주세요.";
+        pwMessage.classList.remove('confirm', 'error');
+        checkObj.memberPw = false;
+        return;
+    }
+
+});
+
+
+
+
+
+
+// 닉네임 중복 검사 ----------------------------------------------------------------------------------------------
 
 const memberNickname = document.querySelector("#memberNickname");
 const nickMessage = document.querySelector("#nickMessage");
