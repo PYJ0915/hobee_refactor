@@ -56,6 +56,9 @@ public class EmailServiceImpl implements EmailService {
 				MimeMessageHelper helper = new MimeMessageHelper(mail, true, "UTF-8"); 
 				//  MimeMessageHelper helper:  위 코드 도와주는 코드(간편하게 메일 보낼 때 도와줌)
 				
+				
+				helper.setFrom("ycm93277211@gmail.com");
+	            
 				// 메일 세팅
 				helper.setTo(authEmail); // 사용자가 입력한 이메일
                 helper.setSubject("[Hobee] 회원가입 인증번호입니다."); // 제목

@@ -5,7 +5,7 @@
 // 유효하면 true
 // 유효하지 않으면 false
 const checkObj = {
-    "authEmail"     : false,
+    "authEmail"       : false,
     "memberId"        : false,
     "authKey"         : false,
     "memberPw"        : false,
@@ -236,16 +236,24 @@ memberPwConfirm.addEventListener("input",e=>{
 
     const inputPw = memberPw.value; // 비밀번호 확인 시 필요한 비밀번호 값(비교할때 사용)
 
-    if(inputPw !== memberPwConfirm.value){ // 같지 않을 때
-        pwConMessage.innerText = "비밀번호가 같지 않습니다";
-        pwConMessage.classList.add('error');
-        pwConMessage.classList.remove('confirm');
+      // 입력하지 않은 경우
+    if(memberPwConfirm.value.trim().length === 0){
+        pwConMessage.innerText = "비밀번호 확인을 입력해주세요.";
+        pwConMessage.classList.remove('confirm', 'error');
         checkObj.memberPwConfirm = false;
-    }else{
-        pwConMessage.innerText = "비밀번호가 같습니다";
+        return;
+    }
+
+    if(memberPw.value === memberPwConfirm.value){
+        pwConMessage.innerText = "비밀번호가 일치합니다.";
         pwConMessage.classList.add('confirm');
         pwConMessage.classList.remove('error');
         checkObj.memberPwConfirm = true;
+    } else {
+        pwConMessage.innerText = "비밀번호가 일치하지 않습니다.";
+        pwConMessage.classList.add('error');
+        pwConMessage.classList.remove('confirm');
+        checkObj.memberPwConfirm = false;
     }
 });
 
@@ -379,7 +387,7 @@ mainCategoryArea.forEach(radio =>{
 const memberTel = document.querySelector("#memberTel");
 const telMessage = document.querySelector("#telMessage");
 
-memberId.addEventListener("input",e=>{
+memberTel.addEventListener("input",e=>{
 
     const inputTel = e.target.value; // 값 얻어오기
 
@@ -394,85 +402,68 @@ memberId.addEventListener("input",e=>{
 
    if(phoneRegExp.test(inputTel)){
         telMessage.innerText ="옮바른 전화번호 입니다.";
-        telMessage.classList.add('comfirm');
+        telMessage.classList.add('confirm');
         telMessage.classList.remove('error');
         checkObj.memberTel = true;
    }else{
         telMessage.innerText ="옮바른지 않은 전화번호 입니다.";
         telMessage.classList.add('error');
-        telMessage.classList.remove('comfirm');
+        telMessage.classList.remove('confirm');
         checkObj.memberTel = false;
    }
     
 
 });
 
+// 가입하기 ------------------------------------------------------------------------------------------------
 
+const signUpForm =document.querySelector("#signUpForm");
 
+// 회원 가입 폼 제출 시
+signUpForm.addEventListener("submit", e => {
 
+    // checkObj의 저장된 값(value) 중
+    // 하나라도 false가 있으면 제출 X
 
+    
+    for(let key in checkObj) { // checkObj 요소의 key 값을 순서대로 꺼내옴
 
+        if( !checkObj[key] ) { // 현재 접근중인 checkObj[key]의 value 값이 false 인 경우 (유효하지 않음)
 
+            let str; // 출력할 메시지를 저장할 변수
 
+            switch(key) {
+                case "memberEmail" :
+                    str = "이메일이 유효하지 않습니다"; break;
+                
+                case "authKey" : 
+                    str = "이메일이 인증되지 않았습니다"; break;
 
+                case "memberId": 
+                    str = "아이디가 유효하지 않습니다"; break;
 
+                case "memberPw": 
+                    str = "비밀번호가 유효하지 않습니다"; break;
+                
+                case "memberPwConfirm" :
+                    str = "비밀번호가 일치하지 않습니다"; break;
 
+                case "memberNickname" :
+                    str = "닉네임이 유효하지 않습니다"; break;
 
+                case "memberTel" :
+                    str = "전화번호가 유효하지 않습니다"; break;
+            }
 
+            alert(str);
 
+            document.getElementById(key).focus(); // 초점 이동
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            e.preventDefault(); // form 태그 기본 이벤트(제출) 막기
+            return;
+        }
+    }
+});
 
 
 

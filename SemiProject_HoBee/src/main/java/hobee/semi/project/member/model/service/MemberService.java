@@ -1,6 +1,8 @@
 package hobee.semi.project.member.model.service;
 
 
+import java.util.List;
+
 import hobee.semi.project.member.model.dto.MemberDTO;
 
 public interface MemberService {
@@ -28,6 +30,12 @@ public interface MemberService {
 	 * @return
 	 */
 	int checkNickname(String memberNickname);
+
+	/** 회원가입
+	 * @param inputMember
+	 * @return
+	 */
+	int signUp(MemberDTO inputMember,List<String>memberAddress,List<String> hobbyCodes);
 
 
 }

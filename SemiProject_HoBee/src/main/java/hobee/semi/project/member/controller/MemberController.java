@@ -2,6 +2,8 @@ package hobee.semi.project.member.controller;
 
 
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -124,6 +126,35 @@ public class MemberController {
 	@GetMapping("checkNickname")
 	public int checNickname(@RequestParam("memberNickname") String memberNickname) {
 		return service.checkNickname(memberNickname);
+	}
+	
+	// 회원가입
+	@PostMapping("signUp")
+	public String signUp(MemberDTO inputMember, 
+			@RequestParam("memberAddress") List<String> memberAddress,
+			@RequestParam(value="hobbyCodes", required=false) List<String> hobbyCodes,
+			RedirectAttributes ra) {
+		
+		
+		
+		int result = service.signUp(inputMember,memberAddress,hobbyCodes); // 회원가입 정보 모두 들어있음
+		
+		String path = "";
+		String message = "";
+		
+		// 성공
+		if(result >0 ) {
+			path="/"; // 메인페이지로 이동
+			message=inputMember.getMemberNickname()+"님 가입을 축하합니다.";
+		}else {
+			path = "signUp"; // 다시 가입 페이지로 
+	        message = "회원 가입에 실패했습니다. 다시 시도해주세요.";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+		
 	}
 	
 	

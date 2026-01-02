@@ -82,7 +82,7 @@ public class EmailConfig {
 		mailSender.setJavaMailProperties(prop); // 앞서 정의해둔 prop에 있는 설정들을 mailSender에  적용
 		
 		return mailSender;
-		// 위 처럼 각종 설정이 적용된 JavaMailSender를 
+		// 위 처럼 각종 설정이 적용된 JavaaMailSender를 
 		// Bean으로 등록하여
 		// Spring 애들리케이션에서 이메일을 보내기 위한 구성을 제공함
 	}

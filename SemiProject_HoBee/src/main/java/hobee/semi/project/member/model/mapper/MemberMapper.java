@@ -1,5 +1,7 @@
 package hobee.semi.project.member.model.mapper;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import hobee.semi.project.member.model.dto.MemberDTO;
@@ -30,6 +32,17 @@ public interface MemberMapper {
 	 * @return
 	 */
 	int checkNickname(String memberNickname);
+
+	/** 회원가입
+	 * @param inputMember
+	 * @return
+	 */
+	int signUp(MemberDTO inputMember);
+
+	/** 여러개 취미 선택
+	 * @param map
+	 */
+	void insertMemberHobby(Map<String, Object> map);
 
 	
 	

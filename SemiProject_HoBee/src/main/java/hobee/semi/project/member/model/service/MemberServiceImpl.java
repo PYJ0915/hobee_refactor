@@ -1,5 +1,10 @@
 package hobee.semi.project.member.model.service;
 
+import java.beans.Encoder;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -61,6 +66,36 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public int checkNickname(String memberNickname) {
 		return mapper.checkNickname(memberNickname);
+	}
+
+	// 회원가입
+	@Override
+	public int signUp(MemberDTO inputMember,List<String> memberAddress,List<String> hobbyCodes) {
+		
+		String encPw = bcrypt.encode(inputMember.getMemberPw()); // 비밀번호 암화해서 넣기
+		inputMember.setMemberPw(encPw);
+		
+		if(memberAddress != null) {
+			String address = String.join("^^^", memberAddress);
+			inputMember.setMemberAddress(address); // ^^^으로 join하고 넣어주기
+		}else {
+			inputMember.setMemberAddress(null); // 필수아님
+		}
+		
+		int result = mapper.signUp(inputMember);
+
+		if(result > 0 && hobbyCodes != null && !hobbyCodes.isEmpty()) {
+	        for(String hobbyCode : hobbyCodes) {
+	            // 매퍼에 넘길 파라미터 맵 생성 (또는 별도의 DTO 사용 가능)
+	            Map<String, Object> map = new HashMap<>();
+	            map.put("memberNo", inputMember.getMemberNo()); // 방금 생성된 시퀀스 번호
+	            map.put("hobbyCode", hobbyCode);
+	            
+	            mapper.insertMemberHobby(map);
+	        }
+	    }
+	    
+	    return result;
 	}
 	
 
