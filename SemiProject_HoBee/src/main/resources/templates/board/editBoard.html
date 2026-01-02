@@ -33,7 +33,15 @@
 
     <th:block th:replace="~{common/fragments/footer}"></th:block>
     <script>
+
+
 $(document).ready(() => {
+
+    const message = "[[${message}]]"; 
+    if (message !== "" && message !== "null") {
+        alert(message);
+    }
+
     $('#summernote').summernote({
         height: 400,
         lang: 'ko-KR',

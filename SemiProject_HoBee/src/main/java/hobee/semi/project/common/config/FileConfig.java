@@ -21,7 +21,7 @@ import jakarta.servlet.MultipartConfigElement;
  */
 @Configuration // 설정 클래스
 @PropertySource("classpath:/config.properties") // 외부에 있는 properties 소스를 잃어 가져오는 어노태이션)
-public class FileConfig {//implements WebMvcConfigurer
+public class FileConfig implements WebMvcConfigurer {
 
 	// 데이터 임계값 설정 ( == config.properties 내용)
 
@@ -60,7 +60,11 @@ public class FileConfig {//implements WebMvcConfigurer
 		factory.setMaxFileSize(DataSize.ofBytes(maxFileSize));
 
 		return factory.createMultipartConfig();
+		
+		
 	}
+	
+
 
 	@Bean
 	public MultipartResolver multipartResolver() {
@@ -82,5 +86,22 @@ public class FileConfig {//implements WebMvcConfigurer
 	 * 
 	 * }
 	 */
+	
+	@Value("${my.board.resource-handler}")
+	private String boardResourceHandler; 
+	
+	@Value("${my.board.resource-location}")
+	private String boardResourceLocation;
+	
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		
+		registry.addResourceHandler(boardResourceHandler)
+		.addResourceLocations(boardResourceLocation);
+		
+		
+	}
+	
+	
 
 }
