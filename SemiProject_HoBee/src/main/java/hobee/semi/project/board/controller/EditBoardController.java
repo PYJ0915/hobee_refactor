@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import hobee.semi.project.board.model.dto.Board;
@@ -56,6 +59,12 @@ public class EditBoardController {
         return "board/editBoard";
     }
 	
+	@PostMapping("/imageUpload")
+    @ResponseBody
+    public String imageUpload(@RequestParam("file") MultipartFile file) throws Exception {
+		
+        return service.imageUpload(file);
+    }
 	
 	
 	/** 자유게시판 / 공지게시판 글작성 기능
@@ -68,12 +77,17 @@ public class EditBoardController {
 			RedirectAttributes ra
 			) throws IllegalStateException, IOException{
 		
-		
+		int boardCode = 0;
+	    switch(boardName) {
+	        case "notice" :  boardCode = 1; break; 
+	        case "hobby" :   boardCode = 2; break; 
+	        case "free" :    boardCode = 3; break;
+	    }
 		
 		// 1. 로그인한 회원 번호를 세팅
 	    inputBoard.setMemberNo(loginMember.getMemberNo());
 	    // 2. 게시판 이름 세팅
-	    inputBoard.setBoardName(boardName);
+	    inputBoard.setBoardCode(boardCode);
 
 	    // 3. 서비스 호출 (비즈니스 로직에서 이미지 DB 매칭 처리)
 	    int boardNo = service.boardInsert(inputBoard);
@@ -83,7 +97,7 @@ public class EditBoardController {
 
 	    if (boardNo > 0) {
 	        message = "게시글이 성공적으로 등록되었습니다.";
-	        path = "redirect:/board/" + boardName + "/" + boardNo; // 상세조회 페이지로
+	        path = "redirect:/" + boardName + "/" + boardNo; // 상세조회 페이지로
 	    } else {
 	        message = "게시글 등록에 실패했습니다. 다시 시도해 주세요.";
 	        path = "redirect:insert";
@@ -112,12 +126,23 @@ public class EditBoardController {
 	        @SessionAttribute("loginMember") MemberDTO loginMember,
 	        RedirectAttributes ra) throws IllegalStateException, IOException {
 
+		int boardCode = 0;
+	    switch(boardName) {
+	        case "notice":  boardCode = 1; break; 
+	        case "hobby":   boardCode = 2; break; 
+	        case "free" :   boardCode = 3; break;
+	    }
+		
+		// 1. 로그인한 회원 번호를 세팅
 	    inputBoard.setMemberNo(loginMember.getMemberNo());
-	    inputBoard.setBoardName(boardName);
+	    // 2. 게시판 이름 세팅
+	    inputBoard.setBoardCode(boardCode);
+
 	    inputBoard.setCategoryCode(categoryCode);
 
-	    int boardNo = service.boardInsert(inputBoard);
 
+	    // 3. 서비스 호출 (비즈니스 로직에서 이미지 DB 매칭 처리)
+	    int boardNo = service.boardInsert(inputBoard);
 	    
 	    String message = null;
 	    String path = null;
@@ -126,8 +151,8 @@ public class EditBoardController {
 	    if (boardNo > 0) {
 	        // 등록 성공 시
 	        message = "게시글이 성공적으로 등록되었습니다.";
-	        // 상세조회 페이지 경로 (예: /board/hobby/1/123)
-	        path = "redirect:/board/" + boardName + "/" + categoryCode + "/" + boardNo;
+	        // 상세조회 페이지 경로 (예: /hobby/1/123)
+	        path = "redirect:/" + boardName + "/" + categoryCode + "/" + boardNo;
 	    } else {
 	        // 등록 실패 시
 	        message = "게시글 등록에 실패했습니다. 다시 시도해 주세요.";

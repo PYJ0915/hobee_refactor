@@ -20,10 +20,10 @@
         <h1 class="write-title" style="margin-bottom: 30px;">글 쓰기</h1>
         
         <form action="" method="post">
-            <input type="text" name="title" class="board-title-input" 
+            <input type="text" name="boardTitle" class="board-title-input" 
                    placeholder="제목을 입력하세요" required />
             
-            <textarea id="summernote" name="content"></textarea>
+            <textarea id="summernote" name="boardContent"></textarea>
             
             <div style="text-align: right; margin-top: 20px;">
                 <button type="submit" class="hobee-btn">등록</button>
@@ -50,7 +50,7 @@ const uploadImage = (file, editor) => {
     data.append("file", file);
     
     $.ajax({
-        url: "/editboard/imageUpload",
+        url: "/editBoard/imageUpload",
         type: "POST",
         data: data,
         cache: false,
