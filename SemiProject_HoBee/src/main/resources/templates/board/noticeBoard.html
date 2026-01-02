@@ -66,7 +66,7 @@
 
 			<div class="btn-area">
 				<!-- 관리자만 글쓰기 버튼 노출 -->
-				<button id="insertBtn" th:if="${session.loginMember?.authorLevel == 1}"
+				<button id="insertBtn" th:if="${session.loginMember?.authorLevel == 2}"
                 data-board-path="notice">글쓰기</button>
 			</div>
 
