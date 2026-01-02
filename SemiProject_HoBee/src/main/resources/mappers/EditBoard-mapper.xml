@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="hobee.semi.project.board.model.mapper.EditBoardMapper">
+
+
+<insert id="boardInsert" useGeneratedKeys="true" parameterType="Board">
+    <selectKey order="BEFORE" resultType="_int" keyProperty="boardNo">
+        SELECT SEQ_BOARD_NO.NEXTVAL FROM DUAL
+    </selectKey>
+    
+    INSERT INTO "BOARD" (
+        BOARD_NO, 
+        BOARD_TITLE, 
+        BOARD_WRITE_DATE, 
+        BOARD_UPDATE_DATE, 
+        BOARD_VIEW_COUNT, 
+        BOARD_DEL_FL, 
+        MEMBER_NO, 
+        BOARD_CODE, 
+        CATEGORY_CODE, 
+        BOARD_CONTENT
+    ) VALUES (
+        #{boardNo}, 
+        #{boardTitle}, 
+        DEFAULT, 
+        DEFAULT, 
+        DEFAULT, 
+        DEFAULT, 
+        #{memberNo}, 
+        #{boardCode},  
+        #{categoryCode}, 
+        #{boardContent}
+    )
+</insert>
+    
+	<insert id="insertImage" parameterType="BoardImg">
+		INSERT INTO "BOARD_IMG"
+		VALUES(SEQ_BOARD_IMG.NEXTVAL,
+			#{boardImgPath},
+			#{boardImgOriginalName},
+			#{boardImgRename},
+			#{boardNo})
+	</insert>
+
+	<update id="updateImageBoardNo">
+		UPDATE "BOARD_IMG" SET
+			BOARD_NO = #{boardNo}
+		WHERE BOARD_IMG_RENAME IN 
+		<foreach collection="fileNames" item="name" open="(" close=")" separator=",">
+			#{name}
+		</foreach>
+	</update>
+
+
+</mapper>
