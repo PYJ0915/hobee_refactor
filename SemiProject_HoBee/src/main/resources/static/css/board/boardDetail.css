@@ -53,11 +53,7 @@
 .nickname {
   font-weight: bold;
   color: #452829;
-  text-decoration: none;
-}
-
-.nickname:hover {
-  text-decoration: underline;
+  margin: 0;
 }
 
 .comment-date {
@@ -87,6 +83,8 @@
   font-size: 14px;
   cursor: pointer;
   transition-duration: 0.1s;
+  color: #000;
+  font-weight: normal;
 }
 
 .like-btn span {
@@ -337,7 +335,7 @@
   vertical-align: bottom;
 }
 
-.like-check{
+.like-checked {
   color: #452829;
   font-weight: bold;
 }

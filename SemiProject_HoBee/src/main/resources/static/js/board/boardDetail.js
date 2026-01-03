@@ -46,18 +46,40 @@ if(loginMemberNo == null) {
     body : JSON.stringify(obj)
   })
   .then(resp => resp.text())
-  .then(result => {
+  .then(count => {
 
-    
+    if(count == -1) {
+      console.log("좋아요 처리 실패");
+      return;
+    }
+
+    const boardLike = document.querySelector(".boardLike");
+
+    // 5. likeCheck 값 0 <-> 1 변환
+    // => 클릭될 때 마다 INSERT/DELETE 동작을 번갈아가면서 할 수 있게끔
+    likeCheck = likeCheck == 0 ? 1 : 0;
+
+    // 6. 좋아요 아이콘 채우기/비우기 변환
+    boardLike.classList.toggle("fa-regular");
+    boardLike.classList.toggle("fa-solid");
+
+    likeBtn.classList.toggle("like-checked");
+   
+    // 7. 게시글 좋아요 수 수정
+    document.querySelector(".like-count").innerText = count;
+
   });
 
 });
 
+// 버튼이 존재할 때만 처리를 해줌으로써 공지게시판에서의 오류 제거
+if(boardReportBtn != null) {
+  boardReportBtn.addEventListener("click", showReport);
+}
 
-
-boardReportBtn.addEventListener("click", showReport);
-// commentReportBtn.addEventListener("click", showReport);
-
+if(commentReportBtn != null) {
+  commentReportBtn.addEventListener("click", showReport);
+}
 document.querySelector(".close-btn").addEventListener("click", () => {
    reportModal.classList.add("popup-hidden"); 
 });
@@ -100,6 +122,14 @@ document.querySelector(".submit-report-btn").addEventListener("click", () => {
 
   if(reportedMemberNo == loginMemberNo) {
     alert("본인 계정은 신고할 수 없습니다.")
+    reportDetail.value = "";
+    checkedReason.checked = false;
+    reportModal.classList.add("popup-hidden");
+    return;
+  }
+
+  if(authorLevel == 2) {
+    alert("관리자 계정은 신고할 수 없습니다.")
     reportDetail.value = "";
     checkedReason.checked = false;
     reportModal.classList.add("popup-hidden");
