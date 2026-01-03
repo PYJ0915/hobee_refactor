@@ -11,7 +11,7 @@ import hobee.semi.project.myPage.model.mapper.MyPageMapper;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 //@Slf4j
 @PropertySource("")
 public class MyPageServiceImpl implements MyPageService {
