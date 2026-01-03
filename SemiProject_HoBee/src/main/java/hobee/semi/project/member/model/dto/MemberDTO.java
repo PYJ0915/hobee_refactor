@@ -1,5 +1,7 @@
 package hobee.semi.project.member.model.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +23,7 @@ public class MemberDTO {
 	private String enrollDate;
 	private int authorLevel;
 	private String memberDelfl;
+	private String memberIntroduction;
 	
-	
-
+	private List<String> hobbyCode;
 }
