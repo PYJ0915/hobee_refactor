@@ -45,7 +45,7 @@
               지속적인 욕설과 공격적인 표현을 사용했습니다.
             </td>
 
-            <td id="nickname" th:text="${report.reporterNickname}">
+            <td th:text="${report.reporterNickname}">
               신고자닉네임
             </td>
 
@@ -58,7 +58,7 @@
             </td>
 
             <td>
-              <button class="watch-btn" th:data-write-content="${report.boardContent ?: report.commentContent}">보기</button> 
+              <button class="watch-btn" th:data-report-no="${report.reportNo}">보기</button> 
             </td>
 
             <td class="action-cell">
@@ -132,7 +132,7 @@
 
       <!-- 작성 정보 -->
       <div class="content-meta">
-        <p class="writer">작성자 : 총모오옷떼</p>
+        <p class="writer">작성자 : 충모오옷떼</p>
       </div>
 
       <!-- 신고된 내용 -->

@@ -24,6 +24,6 @@ public class Report {
 	private String reporterNickname;
 	private String reportedNickname;
 	
-	
+	private String targetContent;
 	
 }

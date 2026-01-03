@@ -55,4 +55,10 @@ public class ReportController {
 		return service.manageReport(updateReport);
 	}
 	
+	@ResponseBody
+	@GetMapping("selectTarget")
+	public Report selectTarget(@RequestParam("reportNo") int reportNo) {
+		return service.selectTarget(reportNo);
+	}
+	
 }
