@@ -16,10 +16,14 @@ public class Report {
 	private String reportDetail;
 	private String reportDate;
 	private String reportStatus;
+	private String targetType;
+	private int targetNo;
 	private int reporterMemberNo;
 	private int reportedMemberNo;
 	
 	private String reporterNickname;
 	private String reportedNickname;
+	
+	private String targetContent;
 	
 }

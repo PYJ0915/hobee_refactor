@@ -5,6 +5,9 @@ const reportWriter = document.querySelector("#reportWriter");
 const reportContent = document.querySelector("#reportContent");
 let reportedMemberNo = null;
 
+let targetType = null;
+let targetNo = null;
+
 // 로그인한 회원의 회원번호
 const loginMemberNo = boardReportBtn.dataset.loginMemberNo;
 
@@ -33,6 +36,9 @@ function showReport(e) {
 
   reportWriter.innerText = writer;
 
+  targetType = e.currentTarget.id == "board-report" ? "B" : "C";
+  targetNo = e.currentTarget.dataset.targetNo;
+  
   reportModal.classList.remove("popup-hidden");
 
 };
@@ -60,8 +66,10 @@ document.querySelector(".submit-report-btn").addEventListener("click", () => {
     "reportReason" : checkedReason.value,
     "reportDetail" : reportDetail.value == "" ? null : reportDetail.value,
     "reporterMemberNo" : loginMemberNo,
-    "reportedMemberNo" : reportedMemberNo
-  };
+    "reportedMemberNo" : reportedMemberNo,
+    "targetType" : targetType,
+    "targetNo" : targetNo
+  };  
 
   console.log(obj);
 
