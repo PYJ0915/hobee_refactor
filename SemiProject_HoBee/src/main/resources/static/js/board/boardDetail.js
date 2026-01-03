@@ -9,10 +9,14 @@ let targetType = null;
 let targetNo = null;
 
 // 로그인한 회원의 회원번호
-const loginMemberNo = boardReportBtn.dataset.loginMemberNo;
-
-boardReportBtn.addEventListener("click", showReport);
+// 버튼이 존재할 때만 처리를 해줌으로써 공지게시판에서의 오류 제거
+if (boardReportBtn != null) {
+    const loginMemberNo = boardReportBtn.dataset.loginMemberNo;
+    boardReportBtn.addEventListener("click", showReport);
+}
 // commentReportBtn.addEventListener("click", showReport);
+
+
 
 document.querySelector(".close-btn").addEventListener("click", () => {
    reportModal.classList.add("popup-hidden"); 
@@ -91,3 +95,37 @@ document.querySelector(".submit-report-btn").addEventListener("click", () => {
   });
 });
 
+const deleteBtn = document.querySelector("#deleteBtn");
+
+if (deleteBtn != null) {
+  deleteBtn.addEventListener("click", () => {
+
+    if (!confirm("삭제 하시겠습니까?")) {
+      alert("취소됨")
+      return;
+    }
+
+    const url = "/editBoard" + location.pathname + "/delete";
+
+    // form태그 생성
+    const form = document.createElement("form");
+    form.action = url;
+    form.method = "POST";
+
+    // cp값을 저장할 input 생성
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "cp";
+
+    // 쿼리스트링에서 원하는 파라미터 얻어오기
+    const params = new URLSearchParams(location.search)
+    const cp = params.get("cp");
+    input.value = cp;
+
+    form.append(input);
+
+    // 화면에 form태그를 추가한 후 제출하기
+    document.querySelector("body").append(form);
+    form.submit();
+  });
+}
