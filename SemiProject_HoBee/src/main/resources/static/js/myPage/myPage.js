@@ -119,3 +119,53 @@ if(updateInfo != null) {
 
 
 }
+
+// ------------------------프로필 이미지 변경--------------------------
+
+const profileImg = document.getElementById("profileImg");  // 미리보기 이미지 img
+const imageInput = document.getElementById("imageInput");  // 이미지 파일 선택 input
+const MAX_SIZE = 1024 * 1024 * 5;//최대 팔일 크기 설정(5MB)
+
+let statusChek = -1;
+let previousImage = profileImg.src;
+let previousFile = null;
+
+//이미지 미리보기 기능
+imageInput.addEventListener("change", ()=>{
+
+  const file = imageInput.files[0];
+
+  if (file){// 파일 선택
+
+    if(file.size <= MAX_SIZE){//허용범위 이내
+
+      const newImgUrl = URL.createObjectURL(file);//임시 URL
+
+      profileImg.src = newImgUrl;
+      statusChek = 1;
+      profileImg = newImgUrl;
+      previousFile = file;
+
+    }else{//허용 범위를 초과
+
+    alert( "파일 크기가 허용  가능한 범위를 초과 하였습니다. 5MB 이하의 이미지를 선택해주세요!" )
+
+    imageInput.value = "";
+
+    profileImg.src = previousImage;
+
+  }
+
+  } else {// 파일 선택 취소
+
+    profileImg.src = previousImage;
+
+  }
+
+  
+
+});
+
+
+
+

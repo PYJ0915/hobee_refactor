@@ -53,6 +53,7 @@
   padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 15px;
 }
 
 .myPage-row{
@@ -106,6 +107,7 @@
   padding: 10px 14px;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 15px;
 }
 
 /* 버튼 */
@@ -166,3 +168,5 @@
   background-color: #FFF57E;
   font-weight: bold;
 }
+
+#imageInput{ display: none;}
