@@ -213,6 +213,24 @@
   <!-- 푸터 -->
   <th:block th:replace="~{common/fragments/footer}" />
 
+   <script th:inline="javascript">
+
+        // - loginMember가 null 인 경우 null 반환
+        const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ "로그인 회원 번호";
+
+        // 현재 게시글 번호를 전역 변수로 저장
+        const boardNo = /*[[${board.boardNo}]]*/ "게시글 번호";
+
+        // 현재 게시판 코드 번호를 전역 변수로 저장
+        const boadCode = /*[[${board.boardCode}]]*/ "게시판 코드 번호";
+
+        // 현재 게시글 좋아요 여부를 전역 변수로 저장
+        let likeCheck = /*[[${board.likeCheck}]]*/ "좋아요 여부";
+
+        const userDefaultIamge = /*[[#{user.default.image}]]*/ "기본이미지";
+
+    </script>
+
   <script src="/js/board/boardDetail.js"></script>
   <script src="/js/board/comment.js"></script>
 </body>
