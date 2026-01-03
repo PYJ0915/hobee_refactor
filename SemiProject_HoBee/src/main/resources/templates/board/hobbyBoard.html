@@ -24,7 +24,7 @@
             </th:block>
             
             <li th:each="post : ${hobbyBestList}">
-                <a th:href="@{/hobby/{categoryCode}/{boardNo}(categoryCode=${cat}, boardNo=${post.boardNo})}" 
+                <a th:href="@{/hobby/{categoryCode}/{boardNo}(categoryCode=${post.categoryCode}, boardNo=${post.boardNo})}" 
                    th:text="${post.boardTitle}">제목</a>
                 <span class="rank-count" th:text="${post.likeCount}">0</span>
             </li>

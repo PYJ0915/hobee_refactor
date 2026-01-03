@@ -17,7 +17,9 @@
     <th:block th:replace="~{common/fragments/header}"></th:block>
     
     <div class="board-write-area">
-        <h1 class="write-title" style="margin-bottom: 30px;">글 쓰기</h1>
+        <h1 class="write-title" th:text="${boardName == 'notice' ? '공지사항 작성' : 
+                                            (boardName == 'free' ? '자유게시판 작성' : 
+                                            (boardName == 'hobby' ? '취미게시판 작성' : '글 작성'))}">글 쓰기</h1>
         
         <form action="" method="post" id="boardContent">
             <input type="text" name="boardTitle" class="board-title-input" 
