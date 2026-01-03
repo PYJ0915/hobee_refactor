@@ -1,0 +1,110 @@
+/* 1. 취미(Hobby) 영역 - 깔끔한 보더박스 스타일 */
+#mainCategoryArea {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+/* 메인 카테고리 라디오 버튼을 버튼처럼 디자인 */
+#mainCategoryArea label {
+    padding: 8px 16px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 30px; /* 둥글게 */
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* 라디오 버튼 선택 시 노란색 포인트 */
+#mainCategoryArea label:has(input:checked) {
+    background-color: #facc15;
+    border-color: #facc15;
+    font-weight: bold;
+}
+
+#mainCategoryArea input { display: none; } /* 실제 라디오 버튼은 숨김 */
+
+/* 세부 취미가 나오는 영역 */
+#CategoryArea {
+    background-color: #f9f9f9;
+    border: 1px dashed #ccc;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    min-height: 60px;
+}
+
+/* 세부 취미 체크박스 스타일 */
+#CategoryArea label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#CategoryArea label:hover {
+    background-color: #fffde7;
+    border-color: #facc15;
+}
+
+/* 2. 소개(Introduction) 영역 - 깔끔한 텍스트박스 */
+#introdution {
+    width: 100% !important; /* 가로폭 꽉 차게 */
+    max-width: 100%;
+    min-height: 200px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 15px;
+    line-height: 1.6;
+    background-color: #ffffff;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    resize: none; /* 크기 조절 금지 */
+}
+
+#introdution:focus {
+    border-color: #facc15;
+    box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.1);
+    outline: none;
+}
+
+/* 3. 기타 포인트 정렬 */
+.signUp-input {
+    margin-bottom: 10px;
+}
+
+.signUp-message {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 20px;
+    display: block;
+}
+
+/* 가입하기 버튼 */
+#signUpBtn {
+    width: 100%;
+    height: 55px;
+    background-color: #332211; /* 캡처이미지의 진한 브라운/블랙 계열 */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 30px;
+}
+
+#signUpBtn:hover {
+    background-color: #000;
+}

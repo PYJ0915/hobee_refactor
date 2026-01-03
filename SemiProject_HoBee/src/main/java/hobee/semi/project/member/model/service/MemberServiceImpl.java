@@ -91,6 +91,8 @@ public class MemberServiceImpl implements MemberService{
 	            map.put("memberNo", inputMember.getMemberNo()); // 방금 생성된 시퀀스 번호
 	            map.put("hobbyCode", hobbyCode);
 	            
+	            
+	            
 	            mapper.insertMemberHobby(map);
 	        }
 	    }

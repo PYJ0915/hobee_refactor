@@ -132,12 +132,12 @@ public class MemberController {
 	@PostMapping("signUp")
 	public String signUp(MemberDTO inputMember, 
 			@RequestParam("memberAddress") List<String> memberAddress,
-			@RequestParam(value="hobbyCodes", required=false) List<String> hobbyCodes,
+			@RequestParam(value="hobbyCode", required=false) List<String> hobbyCode,
 			RedirectAttributes ra) {
 		
 		
 		
-		int result = service.signUp(inputMember,memberAddress,hobbyCodes); // 회원가입 정보 모두 들어있음
+		int result = service.signUp(inputMember,memberAddress,hobbyCode); // 회원가입 정보 모두 들어있음
 		
 		String path = "";
 		String message = "";
@@ -150,6 +150,9 @@ public class MemberController {
 			path = "signUp"; // 다시 가입 페이지로 
 	        message = "회원 가입에 실패했습니다. 다시 시도해주세요.";
 		}
+		
+		log.debug("회원가입시 hobbyCode 상태 : " + hobbyCode);
+
 		
 		ra.addFlashAttribute("message", message);
 		

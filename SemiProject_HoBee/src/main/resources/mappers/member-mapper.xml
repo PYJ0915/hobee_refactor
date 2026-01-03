@@ -31,27 +31,36 @@
 			AND MEMBER_DEL_FL = 'N'
 		</select>
 		
-		<insert id="signUp" useGeneratedKeys="true" keyProperty="memberNo">
-			INSERT INTO "MEMBER"
-			VALUES(SEQ_MEMBER_NO.NEXTVAL, 
-			#{memberId}, 
-        	#{memberPw}, 
-	        #{memberName}, 
-	        #{memberEmail}, 
-	        #{memberNickname}, 
-	        #{memberTel}, 
-	        #{memberAddress}, 
-	        DEFAULT, 
-	        DEFAULT, 
-	        DEFAULT, 
-	        #{memberIntroduction})
+		<insert id="signUp" parameterType="MemberDTO">
+	    <selectKey order="BEFORE" resultType="_int" keyProperty="memberNo">
+	        SELECT SEQ_MEMBER_NO.NEXTVAL FROM DUAL
+	    </selectKey>
+		    INSERT INTO "MEMBER"
+		    VALUES(
+		        #{memberNo}, 
+		        #{memberId}, 
+		        #{memberPw}, 
+		        #{memberName}, 
+		        #{memberEmail}, 
+		        #{memberNickname}, 
+		        #{memberTel}, 
+		        #{memberAddress}, 
+		        DEFAULT, 
+		        DEFAULT, 
+		        DEFAULT, 
+		        #{memberIntroduction}
+	    	)
+		</insert>
+	
+		<insert id="insertMemberHobby">
+	    	INSERT INTO "MEMBER_HOBBY" 
+	    	(MEMBER_NO, HOBBY_CODE)
+	    	VALUES (
+				#{memberNo}, 
+				#{hobbyCode}
+				)
 		</insert>
 		
-		<insert id="insertMemberHobby">
-   	 		INSERT INTO "MEMBER_HOBBY" 
-    		VALUES (#{memberNo}, #{hobbyCode})
-		</insert>
-
 
 
 

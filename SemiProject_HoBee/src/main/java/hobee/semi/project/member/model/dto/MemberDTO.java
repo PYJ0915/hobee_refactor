@@ -25,5 +25,5 @@ public class MemberDTO {
 	private String memberDelfl;
 	private String memberIntroduction;
 	
-	private List<String> hobbyList;
+	private List<String> hobbyCode;
 }

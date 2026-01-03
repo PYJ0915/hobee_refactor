@@ -345,11 +345,29 @@ memberNickname.addEventListener("input" ,e=>{
 // 취미 --------------------------------------------------------------------------------------------------------
 
 const subHobbyData = {
-    "sports": ["축구", "농구", "테니스", "수영", "등산"],
-    "selfDevelop": ["코딩", "외국어", "독서", "재테크", "글쓰기"],
-    "art": ["영화감상", "악기연주", "전시회", "요리", "사진"],
-    "social": ["봉사활동", "파티", "소모임", "반려동물"],
-    "shopping": ["피규어", "맛집탐방", "쇼핑", "술"]
+    "sports": [
+        {id: 101, name: "러닝"}, {id: 102, name: "헬스"}, {id: 103, name: "등산"},
+        {id: 104, name: "사이클"}, {id: 105, name: "볼링"}, {id: 106, name: "탁구"},
+        {id: 107, name: "수영"}, {id: 108, name: "축구"}, {id: 109, name: "야구"}, {id: 110, name: "골프"}
+    ],
+    "art": [
+        {id: 201, name: "드로잉"}, {id: 202, name: "캘리그라피"}, {id: 203, name: "사진 촬영"},
+        {id: 204, name: "영상 편집"}, {id: 205, name: "악기 연주"}, {id: 206, name: "도예/공예"},
+        {id: 207, name: "전시회·공연 관람"}
+    ],
+    "selfDevelop": [
+        {id: 301, name: "독서"}, {id: 302, name: "글쓰기"}, {id: 303, name: "코딩"},
+        {id: 304, name: "외국어 공부"}, {id: 305, name: "요리"}, {id: 306, name: "재테크/투자"}
+    ],
+    "social": [
+        {id: 401, name: "봉사활동"}, {id: 402, name: "북클럽"}, {id: 403, name: "보드게임 모임"},
+        {id: 404, name: "취미 클래스"}, {id: 405, name: "스포츠 동호회"}, {id: 406, name: "스터디 모임"},
+        {id: 407, name: "그룹 운동"}
+    ],
+    "shopping": [
+        {id: 501, name: "피규어/굿즈 수집"}, {id: 502, name: "음반/LP 수집"}, {id: 503, name: "향수 수집"},
+        {id: 504, name: "패션 아이템 수집"}, {id: 505, name: "문구류 수집"}, {id: 506, name: "한정판/콜라보 수집"}
+    ]
 };
 
 const mainCategoryArea = document.querySelectorAll("#mainCategoryArea input"); // 메인 카테고리
@@ -358,28 +376,28 @@ const subTitle = document.querySelector("#subTitle");
 
 
 
-mainCategoryArea.forEach(radio =>{
-    radio.addEventListener("change",e=>{ // chang -> 체크박스 상태를 확인함 !
+mainCategoryArea.forEach(radio => {
+    radio.addEventListener("change", e => { // change :다른 항목을 선택해서 체크 상태 감지
+        const selectCategory = e.target.value; 
 
-        const selectCategory = e.target.value; // 선택한 메인 카테고리 값 가져오기
+        CategoryArea.innerHTML = ""; 
+        subTitle.style.display = "block"; 
 
-        CategoryArea.innerHTML = ""; // 세부사항 삭제
-        subTitle.style.display = "block"; // 숨겨있던 세부카테고리 나오게함
+        const subList = subHobbyData[selectCategory]; 
 
-        const subList = subHobbyData[selectCategory]; // 선택한 카테고리의 세부 카테고리 배열 가져오가
-
-        if(subList){
-            subList.forEach(hobby =>{
-                // label 요소 만들어 보여주기(세부 카테고리)
+        if (subList) {
+            subList.forEach(hobby => { 
                 const label = document.createElement("label");
-                label.innerHTML = `<input type="checkbox" name="hobby" value="${hobby}"> ${hobby}`;
-                CategoryArea.appendChild(label); // CategoryArea안에 생성(차곡차곡)
+                
+                // 1. value에는 DB가 원하는 숫자 ID (${hobby.id})
+                // 2. 화면에는 사용자가 볼 이름 (${hobby.name})
+                label.innerHTML = `
+                    <input type="checkbox" name="hobbyCode" value="${hobby.id}"> ${hobby.name} `; // 취미코드를 이름으로 보여주기 위한 코드
+                
+                CategoryArea.appendChild(label);
             })
         }
-
     })
-
-
 })
 
 //전화번호 ---------------------------------------------------------------------------------------------
@@ -422,48 +440,40 @@ const signUpForm =document.querySelector("#signUpForm");
 // 회원 가입 폼 제출 시
 signUpForm.addEventListener("submit", e => {
 
-    // checkObj의 저장된 값(value) 중
-    // 하나라도 false가 있으면 제출 X
+    for (let key in checkObj) {
 
-    
-    for(let key in checkObj) { // checkObj 요소의 key 값을 순서대로 꺼내옴
+        if (!checkObj[key]) { 
+            let str;
 
-        if( !checkObj[key] ) { // 현재 접근중인 checkObj[key]의 value 값이 false 인 경우 (유효하지 않음)
-
-            let str; // 출력할 메시지를 저장할 변수
-
-            switch(key) {
-                case "memberEmail" :
-                    str = "이메일이 유효하지 않습니다"; break;
-                
-                case "authKey" : 
-                    str = "이메일이 인증되지 않았습니다"; break;
-
-                case "memberId": 
-                    str = "아이디가 유효하지 않습니다"; break;
-
-                case "memberPw": 
-                    str = "비밀번호가 유효하지 않습니다"; break;
-                
-                case "memberPwConfirm" :
-                    str = "비밀번호가 일치하지 않습니다"; break;
-
-                case "memberNickname" :
-                    str = "닉네임이 유효하지 않습니다"; break;
-
-                case "memberTel" :
-                    str = "전화번호가 유효하지 않습니다"; break;
+            switch (key) {
+                case "authEmail":       str = "이메일 유효성 검사를 완료해주세요."; break;
+                case "authKey":         str = "인증번호가 일치하지 않습니다."; break;
+                case "memberId":        str = "아이디가 유효하지 않습니다."; break;
+                case "memberPw":        str = "비밀번호가 유효하지 않습니다."; break;
+                case "memberPwConfirm": str = "비밀번호 확인이 일치하지 않습니다."; break;
+                case "memberName":      str = "이름을 입력해주세요."; break;
+                case "memberNickname":  str = "닉네임이 유효하지 않습니다."; break;
+                case "memberTel":       str = "전화번호가 유효하지 않습니다."; break;
             }
 
             alert(str);
 
-            document.getElementById(key).focus(); // 초점 이동
+            // [핵심 수정] focus 줄 대상을 안전하게 찾기
+            let elementId = key;
+            if (key === "authEmail") elementId = "memberEmail"; // key는 authEmail이지만 id는 memberEmail임
 
-            e.preventDefault(); // form 태그 기본 이벤트(제출) 막기
+            const target = document.getElementById(elementId);
+            if (target) {
+                target.focus();
+            }
+
+            e.preventDefault(); // 어떤 경우에도 유효하지 않으면 제출을 막음!
             return;
         }
     }
 });
+
+
 
 
 
