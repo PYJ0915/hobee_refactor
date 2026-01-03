@@ -98,4 +98,13 @@ public class NoticeBoardController {
 		
 		return path;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

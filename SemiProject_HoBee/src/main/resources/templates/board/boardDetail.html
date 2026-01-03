@@ -72,14 +72,15 @@
           목록
         </a>
 
-        <!-- 본인 게시글일 때만 -->
+        <!-- 본인 게시글일 때만 // 관리자는 모든 글 가능 -->
         <th:block th:if="${session.loginMember != null 
-              and session.loginMember.memberNo == board.memberNo}">
+              and (session.loginMember.memberNo == board.memberNo
+              or session.loginMember.authorLevel == 2)}">
           <button type="button" class="control-btn edit-btn">
             수정
           </button>
 
-          <button type="button" class="control-btn delete-btn">
+          <button type="button" class="control-btn delete-btn" id="deleteBtn">
             삭제
           </button>
         </th:block>

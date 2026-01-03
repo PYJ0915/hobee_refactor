@@ -113,6 +113,14 @@ public class EditBoardServiceImpl implements EditBoardService {
         }
         return list;
     }
+
+	@Override
+	public int boardDelete(Map<String, Object> map) {
+
+		
+		return mapper.boardDelete(map);
+		
+	}
     
     
     
