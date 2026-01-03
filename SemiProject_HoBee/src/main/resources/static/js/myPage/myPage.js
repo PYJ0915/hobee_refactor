@@ -127,7 +127,7 @@ const profileImg = document.getElementById("profileImg");  // 미리보기 이�
 const imageInput = document.getElementById("imageInput");  // 이미지 파일 선택 input
 const MAX_SIZE = 1024 * 1024 * 5;//최대 팔일 크기 설정(5MB)
 
-let statusChek = -1;
+let statusChek = -1;//초기 상태=> 변경사항 없음
 let previousImage = profileImg.src;
 let previousFile = null;
 
@@ -164,6 +164,14 @@ imageInput.addEventListener("change", ()=>{
   }
 });
 
+const profileFrom = document.querySelector(".profile-area");
+//초기 상태 제출 막음
+profileFrom.addEventListener("submit", e => {
+  if(statusChek == -1){ // 변경된 이미지가 없을 때 제출되어, 디비 상에 저장되는 것을 막음. 
+    e.preventDefault();//해당 이벤트의 기본 동작을 막는 메서드
+    alert("이미지를 변경 후 제출 해주세요!");
+  }
+});
 
 
 
