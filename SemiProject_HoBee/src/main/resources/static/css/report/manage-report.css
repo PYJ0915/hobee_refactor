@@ -53,6 +53,7 @@
 .action-cell {
   display: flex;
   justify-content: center;
+  border-bottom: 1px solid #ddd;
   gap: 8px;
 }
 
