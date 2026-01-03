@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/member/validation.css">
-    <link rel="stylesheet" href="/css/member/signup.css">
+    <link rel="stylesheet" th:href="@{/css/member/signup.css}">
 
 </head>
 <body>
@@ -43,7 +43,6 @@
                 <div class="signUp-input">
                     <input type="password" placeholder="비밀번호" id="memberPw" name="memberPw" minlength="6" maxlength="12">
                 </div>
-                <input type="checkbox" onclick="memberPw.type = this.checked ? 'text' : 'password'"> <!-- 비밀번호 체크 -->
                 <span class="signUp-message" id="pwMessage">영어, 숫자, 특수문자 포함 6~12자 사이로 입력해주세요.</span>
 
                 <h3>비밀번호 확인</h3>
@@ -74,7 +73,7 @@
                         <label><input type="radio" name="mainHobby" value="shopping"> 수집·소비</label>
                     </div>
 
-                    <h3 id="subTitle" style="display:none;">세부 취미 선택 (최대 3개)</h3> <!-- display:none : 숨김-->
+                    <h3 id="subTitle" style="display:none;">세부 취미 선택</h3> <!-- display:none : 숨김-->
                     <div id="CategoryArea" class="category"></div>
                 </div>
 
@@ -91,7 +90,7 @@
                 <span class="signUp-message" id="telMessage">전화번호를 입력해주세요.</span>
    
                 <!-- 주소 입력 -->
-                <label for="memberAddress">주소</label>
+                <label for="memberAddress"><h3>주소</h3></label>
 
                 <div class="signUp-input-area">
                 <input type="text" name="memberAddress" placeholder="우편번호" maxlength="6" id="postcode">                       

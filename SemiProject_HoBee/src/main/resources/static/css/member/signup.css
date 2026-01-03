@@ -1,110 +1,168 @@
-/* 1. 취미(Hobby) 영역 - 깔끔한 보더박스 스타일 */
-#mainCategoryArea {
+/* 1. 전체 레이아웃 */
+main {
+    max-width: 800px;
+    margin: 50px auto;
     display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 20px;
-}
-
-/* 메인 카테고리 라디오 버튼을 버튼처럼 디자인 */
-#mainCategoryArea label {
-    padding: 8px 16px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 30px; /* 둥글게 */
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-/* 라디오 버튼 선택 시 노란색 포인트 */
-#mainCategoryArea label:has(input:checked) {
-    background-color: #facc15;
-    border-color: #facc15;
-    font-weight: bold;
-}
-
-#mainCategoryArea input { display: none; } /* 실제 라디오 버튼은 숨김 */
-
-/* 세부 취미가 나오는 영역 */
-#CategoryArea {
-    background-color: #f9f9f9;
-    border: 1px dashed #ccc;
-    border-radius: 12px;
-    padding: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    min-height: 60px;
-}
-
-/* 세부 취미 체크박스 스타일 */
-#CategoryArea label {
-    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 5px;
-    padding: 6px 12px;
-    background: white;
-    border: 1px solid #eee;
-    border-radius: 6px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: 0.2s;
 }
 
-#CategoryArea label:hover {
-    background-color: #fffde7;
-    border-color: #facc15;
+h1 {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 50px;
 }
 
-/* 2. 소개(Introduction) 영역 - 깔끔한 텍스트박스 */
-#introdution {
-    width: 100% !important; /* 가로폭 꽉 차게 */
-    max-width: 100%;
-    min-height: 200px;
-    padding: 20px;
+section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 2. 제목 및 입력창 */
+h3 {
+    width: 500px;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 25px 0 10px;
+    text-align: left;
+}
+
+.signUp-input, .signUp-input-area {
+    width: 500px;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+input[type="text"], input[type="password"], input[type="email"], input[type="tel"], textarea {
+    flex: 1;
+    height: 48px;
+    padding: 0 15px;
     border: 1px solid #ddd;
-    border-radius: 12px;
+    border-radius: 8px;
     font-size: 15px;
-    line-height: 1.6;
-    background-color: #ffffff;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-    resize: none; /* 크기 조절 금지 */
-}
-
-#introdution:focus {
-    border-color: #facc15;
-    box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.1);
     outline: none;
 }
 
-/* 3. 기타 포인트 정렬 */
-.signUp-input {
-    margin-bottom: 10px;
-}
-
+/* 3. 유효성 검사 메시지 */
 .signUp-message {
-    font-size: 12px;
-    color: #999;
-    margin-bottom: 20px;
-    display: block;
+    width: 500px;
+    font-size: 13px;
+    margin-top: 8px;
+    text-align: left;
 }
+.confirm { color: green !important; }
+.error { color: red !important; }
 
-/* 가입하기 버튼 */
-#signUpBtn {
-    width: 100%;
-    height: 55px;
-    background-color: #332211; /* 캡처이미지의 진한 브라운/블랙 계열 */
-    color: #fff;
+/* 4. 버튼 색상 통일 (#332211) */
+button[type="button"], #signUpBtn {
+    background-color: #332211;
+    color: white;
     border: none;
     border-radius: 8px;
-    font-size: 18px;
-    font-weight: bold;
+    font-weight: 600;
     cursor: pointer;
-    margin-top: 30px;
 }
 
-#signUpBtn:hover {
-    background-color: #000;
+button[type="button"] { height: 48px; padding: 0 20px; white-space: nowrap; }
+
+#signUpBtn {
+    width: 500px;
+    height: 60px;
+    font-size: 18px;
+    margin: 50px 0;
 }
+
+/* 5. 취미 영역 (화면 흔들림 방지 및 디자인) */
+
+/* 제목+박스가 들어갈 자리를 미리 확보 (흔들림 방지 핵심) */
+.signUp-input:has(#mainCategoryArea) {
+    flex-direction: column;
+    align-items: center;
+    min-height: 350px; 
+}
+
+#mainCategoryArea {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+/* 👇 (중요) 이 부분이 빠져 있어서 다시 넣었습니다! (버튼 모양 만들기) */
+#mainCategoryArea label {
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    background: white;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+#mainCategoryArea input[type="radio"] { display: none; }
+
+#mainCategoryArea label:has(input:checked) {
+    background-color: #facc15;
+    color: #332211;
+    border-color: #facc15;
+    font-weight: 700;
+}
+/* 👆 여기까지 추가된 부분 */
+
+/* 세부 취미 제목 스타일 */
+#subTitle {
+    width: 100%;
+    text-align: left;
+    margin-top: 15px;
+    height: 20px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* ⭐ 세부 취미 박스 고정 (스크롤바 포함) ⭐ */
+#CategoryArea {
+    width: 100%;
+    height: 200px; /* 높이 고정 */
+    overflow-y: auto; /* 스크롤 생성 */
+    margin-top: 10px;
+    padding: 15px;
+    background-color: #fafafa;
+    border: 1px dashed #ccc;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+/* 스크롤바 디자인 */
+#CategoryArea::-webkit-scrollbar {
+    width: 6px;
+}
+#CategoryArea::-webkit-scrollbar-thumb {
+    background-color: #ddd;
+    border-radius: 10px;
+}
+
+/* 세부 취미 개별 항목 */
+#CategoryArea label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+/* 6. 소개글 */
+#introdution {
+    width: 500px !important;
+    height: 180px !important;
+    padding: 15px !important;
+    resize: none;
+}
+
+/*---------------------------*/
