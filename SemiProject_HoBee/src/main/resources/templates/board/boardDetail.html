@@ -54,7 +54,7 @@
         <th:block th:unless="${board.boardCode} == 1">
           <button class="report-btn" id="board-report" th:data-writer="${board.memberNickname}"
             th:data-login-member-no="${session.loginMember != null ? session.loginMember.memberNo : 0}"
-            th:data-reported-member-no="${board.memberNo}">
+            th:data-reported-member-no="${board.memberNo}" th:data-target-no="${board.boardNo}">
             <i class="fa-solid fa-land-mine-on"></i> 신고</button>
         </th:block>
       </div>
@@ -118,7 +118,8 @@
               <button class="reply-btn">답글</button>
               <button class="report-btn" id="comment-report"
               th:data-writer="${comment.memberNickname}"
-              th:data-reported-member-no="${comment.memberNo}">신고</button>
+              th:data-reported-member-no="${comment.memberNo}"
+              th:data-target-no="${comment.commentNo}">신고</button>
             </div>
           </div>
 

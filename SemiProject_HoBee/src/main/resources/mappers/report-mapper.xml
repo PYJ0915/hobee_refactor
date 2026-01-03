@@ -4,7 +4,7 @@
 
 	<insert id="insertReport">
 		INSERT INTO REPORT 
-		VALUES (SEQ_REPORT_NO.NEXTVAL, #{reportReason}, #{reportDetail}, DEFAULT, DEFAULT, #{reporterMemberNo}, #{reportedMemberNo})
+		VALUES (SEQ_REPORT_NO.NEXTVAL, #{reportReason}, #{reportDetail}, DEFAULT, DEFAULT, #{reporterMemberNo}, #{reportedMemberNo}, #{targetType}, #{targetNo})
 	</insert>
 	
 	<select id="getReportCount">

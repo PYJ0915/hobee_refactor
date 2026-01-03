@@ -42,3 +42,4 @@ function statusUpdate(e) {
 function selectReportList() {
   location.href = "/report/manageReport"
 }
+
