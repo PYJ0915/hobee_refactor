@@ -47,25 +47,7 @@
 
 	</main>
 
-
-	<!--th:inline ="javascript" 왜 사용하냐 자동으로 형변환 해줌!-->
-	<script th:inline="javascript">
-		const message = /*[[${message}]]*/ "전달 받은 message";
-		// "전달 받은 message" 이 부분은 /**/ <- 여기에 값이 없을 경우 undefined 
-		// 그래서 "전달 받은 message" 이걸 적어줘야 오류 안남
-
-		if (message != null) {
-			alert(message);
-		};
-
-	</script>
-
-
 	<th:block th:replace="~{common/fragments/footer}"></th:block>
-
-
-
-
 
 	<!-- js -->
 	<script src="/js/member/login.js" class="footer"></script>

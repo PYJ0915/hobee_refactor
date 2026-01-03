@@ -23,11 +23,11 @@ public class HobbyBoardServiceImpl implements HobbyBoardService{
 	private final HobbyBoardMapper mapper;
 
 	@Override
-	public Map<String, Object> selectBoardList(int boardCode, int cp) {
+	public Map<String, Object> selectBoardList(int categoryCode, int cp) {
 		
 		
 		// 1. 해당 게시판의 전체 게시글 수 조회 (삭제 안 된 것)
-        int listCount = mapper.getListCount(boardCode);
+        int listCount = mapper.getListCount(categoryCode);
 
         // 2. Pagination 객체 생성 (현재 페이지, 전체 게시글 수 전달)
         Pagination pagination = new Pagination(cp, listCount);
@@ -38,7 +38,7 @@ public class HobbyBoardServiceImpl implements HobbyBoardService{
         int offset = (cp - 1) * limit;
         RowBounds rowBounds = new RowBounds(offset, limit);
 
-        List<Board> boardList = mapper.selectBoardList(boardCode, rowBounds);
+        List<Board> boardList = mapper.selectBoardList(categoryCode, rowBounds);
 
         // 4. 결과 담기
         Map<String, Object> map = new HashMap<>();
@@ -74,12 +74,12 @@ public class HobbyBoardServiceImpl implements HobbyBoardService{
 	}
 
 	@Override
-	public List<Board> hobbyBestList(int boardCode) {
+	public List<Board> hobbyBestList(int categoryCode) {
 	    // 상위 5개만 가져오기 위해 RowBounds 사용 (offset: 0, limit: 5)
 	    RowBounds rowBounds = new RowBounds(0, 5);
 	    
 	    // Mapper 호출 시 boardCode와 rowBounds 전달
-	    return mapper.selectHobbyBestList(boardCode, rowBounds);
+	    return mapper.selectHobbyBestList(categoryCode, rowBounds);
 	}
 
 	@Override
@@ -88,6 +88,19 @@ public class HobbyBoardServiceImpl implements HobbyBoardService{
 	    RowBounds rowBounds = new RowBounds(0, 5);
 	    
 	    return mapper.selectNoticeList(noticeBoardCode, rowBounds);
+	}
+
+	@Override
+	public String selectCategoryName(int categoryCode) {
+		
+		
+		
+		return mapper.selectCategoryName(categoryCode);
+	}
+
+	@Override
+	public Board selectBoardDetail(Map<String, Object> map) {
+		return mapper.selectBoardDetail(map);
 	}
 	
 	

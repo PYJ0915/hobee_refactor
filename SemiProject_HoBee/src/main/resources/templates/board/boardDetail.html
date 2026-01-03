@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>게시글 상세 | Ho-Bee</title>
+
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/board/boardDetail.css">
+  <th:block th:replace="~{common/common}" />
+</head>
+
+<body>
+
+  <!-- 헤더 -->
+  <th:block th:replace="~{common/fragments/header}" />
+
+  <main class="board-container">
+
+    <!-- 게시글 영역 -->
+    <section class="board-detail">
+
+      <!-- 제목 -->
+      <h1 class="board-title" th:text="${board.boardTitle}">
+        게시글 제목
+      </h1>
+
+
+      <!-- 작성자 정보 -->
+      <div class="board-writer">
+        <div class="writer-left">
+          <div class="profile-img"></div>
+
+          <div class="writer-info">
+            <a href="#" class="nickname" th:text="${board.memberNickname}">
+              사용자닉네임
+            </a>
+            <span class="date" th:text="${board.boardWriteDate}">
+              2025.01.01
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 게시글 내용 -->
+      <div class="board-content" th:utext="${board.boardContent}">
+        게시글 내용 영역
+      </div>
+
+      <!-- 게시글 하단 액션 -->
+      <div class="board-actions">
+        <button class="like-btn">
+          <i class="fa-solid fa-thumbs-up"></i> 좋아요 <span th:text="${board.likeCount}">12</span></button>
+        <th:block th:unless="${board.boardCode} == 1">
+          <button class="report-btn" id="board-report" th:data-writer="${board.memberNickname}"
+            th:data-login-member-no="${session.loginMember != null ? session.loginMember.memberNo : 0}"
+            th:data-reported-member-no="${board.memberNo}">
+            <i class="fa-solid fa-land-mine-on"></i> 신고</button>
+        </th:block>
+      </div>
+
+    </section>
+
+    <!-- 게시글 하단 컨트롤 버튼 -->
+    <div class="board-control">
+
+      <!-- 왼쪽은 비워두고 오른쪽 정렬 -->
+      <div class="board-control-right">
+
+        <!-- 목록 -->
+        <a th:href="@{${gotoList}}" class="control-btn list-btn">
+          목록
+        </a>
+
+        <!-- 본인 게시글일 때만 -->
+        <th:block th:if="${session.loginMember != null 
+              and session.loginMember.memberNo == board.memberNo}">
+          <button type="button" class="control-btn edit-btn">
+            수정
+          </button>
+
+          <button type="button" class="control-btn delete-btn">
+            삭제
+          </button>
+        </th:block>
+
+      </div>
+    </div>
+
+
+
+    <!-- 댓글 영역
+    <section class="comment-section">
+
+      <h2 class="comment-title">
+        댓글 (<span th:text="${commentList.size()}">0</span>)
+      </h2>
+
+      // 댓글 리스트
+      <ul class="comment-list">
+
+        <li class="comment-item" th:each="comment : ${commentList}">
+
+          <div class="comment-top">
+            <div class="comment-writer">
+              <div class="profile-img small"></div>
+
+              <a href="#" class="nickname" th:text="${comment.memberNickname}">
+                사용자닉네임
+              </a>
+
+              <span class="date" th:text="${comment.commentWriteDate}">
+                2025.01.01
+              </span>
+            </div>
+
+            <div class="comment-actions">
+              <button class="reply-btn">답글</button>
+              <button class="report-btn" id="comment-report"
+              th:data-writer="${comment.memberNickname}"
+              th:data-reported-member-no="${comment.memberNo}">신고</button>
+            </div>
+          </div>
+
+          <p class="comment-content" th:text="${comment.commentContent}">
+            댓글 내용
+          </p>
+
+          <div class="comment-bottom">
+            <button class="comment-like-btn">
+              <i class="fa-solid fa-thumbs-up"></i>
+              <span th:text="${comment.likeCount}">3</span>
+            </button>
+          </div>
+
+        </li>
+
+      </ul>
+
+      // 댓글 작성
+      <div class="comment-write">
+        <textarea placeholder="댓글을 입력하세요"></textarea>
+        <button class="submit-btn">등록</button>
+      </div>
+
+    </section>
+ -->
+
+  </main>
+
+  <!-- 신고 모달 -->
+  <div class="report-modal popup-hidden" id="reportModal">
+
+    <div class="modal-backdrop"></div>
+
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>신고하기</h2>
+        <button class="close-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="report-info">
+          <p><strong>작성자</strong> <span id="reportWriter">홍길동</span></p>
+        </div>
+
+        <h3 class="reason-title">사유 선택</h3>
+
+        <ul class="reason-list">
+          <li><label><input type="radio" name="reason" value="혐오/차별/욕설"> 혐오/차별/욕설 표현입니다.</label></li>
+          <li><label><input type="radio" name="reason" value="스팸/홍보/도배"> 스팸/홍보/도배입니다.</label></li>
+          <li><label><input type="radio" name="reason" value="청소년유해"> 청소년에게 유해한 내용입니다.</label></li>
+          <li><label><input type="radio" name="reason" value="불법정보"> 불법정보를 포함하고 있습니다.</label></li>
+          <li><label><input type="radio" name="reason" value="음란물"> 음란물입니다.</label></li>
+          <li><label><input type="radio" name="reason" value="불쾌한표현"> 불쾌한 표현이 있습니다.</label></li>
+        </ul>
+
+        <textarea class="detail-textarea" placeholder="추가 사유를 입력해주세요 (선택)"></textarea>
+
+        <button class="submit-report-btn">신고하기</button>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- 푸터 -->
+  <th:block th:replace="~{common/fragments/footer}" />
+
+  <script src="/js/board/boardDetail.js"></script>
+</body>
+
+</html>

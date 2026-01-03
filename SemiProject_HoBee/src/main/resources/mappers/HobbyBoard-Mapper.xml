@@ -6,7 +6,7 @@
         SELECT COUNT(*)
         FROM "BOARD"
         WHERE BOARD_DEL_FL = 'N'
-        AND BOARD_CODE = #{boardCode}
+        AND CATEGORY_CODE = #{categoryCode}
     </select>
 
     <select id="selectBoardList" resultType="Board">
@@ -24,7 +24,7 @@
         FROM "BOARD" B
         JOIN "MEMBER" USING(MEMBER_NO)
         WHERE BOARD_DEL_FL = 'N'
-        AND BOARD_CODE = #{boardCode}
+        AND CATEGORY_CODE = #{categoryCode}
         ORDER BY BOARD_NO DESC
     </select>
 
@@ -32,7 +32,7 @@
         SELECT COUNT(*)
         FROM "BOARD"
         JOIN "MEMBER" USING(MEMBER_NO) WHERE BOARD_DEL_FL = 'N'
-        AND BOARD_CODE = #{boardCode}
+        AND CATEGORY_CODE = #{categoryCode}
         <choose>
             <when test='key == "t"'> AND BOARD_TITLE LIKE '%' || #{query} ||'%' </when>
             <when test='key == "c"'> AND BOARD_CONTENT LIKE '%' || #{query} ||'%' </when>
@@ -56,7 +56,7 @@
         FROM "BOARD" B
         JOIN "MEMBER" USING(MEMBER_NO)
         WHERE BOARD_DEL_FL = 'N'
-        AND BOARD_CODE = #{boardCode}
+        AND CATEGORY_CODE = #{categoryCode}
         <choose>
             <when test='key == "t"'> AND BOARD_TITLE LIKE '%' || #{query} ||'%' </when>
             <when test='key == "c"'> AND BOARD_CONTENT LIKE '%' || #{query} ||'%' </when>
@@ -72,7 +72,7 @@
                 (SELECT COUNT(*) FROM "BOARD_LIKE" L WHERE L.BOARD_NO = B.BOARD_NO) LIKE_COUNT
             FROM "BOARD" B
             WHERE BOARD_DEL_FL = 'N'
-            AND BOARD_CODE = #{boardCode}
+            AND CATEGORY_CODE = #{categoryCode}
             ORDER BY LIKE_COUNT DESC, BOARD_VIEW_COUNT DESC
         )
         <![CDATA[ WHERE ROWNUM <= 5 ]]>
@@ -89,5 +89,32 @@
         )
         <![CDATA[ WHERE ROWNUM <= 5 ]]>
     </select>
+    
+    <select id="selectCategoryName" resultType="String">
+    	SELECT CATEGORY_NAME
+    	FROM BOARD_CATEGORY
+    	WHERE CATEGORY_CODE = #{categoryCode}
+    </select>
+    
+    <select id="selectBoardDetail">
+		SELECT BOARD_NO, BOARD_TITLE, BOARD_CODE, BOARD_VIEW_COUNT, BOARD_CONTENT,
+		MEMBER_NO, MEMBER_NICKNAME, 
+		TO_CHAR(BOARD_WRITE_DATE, 'YYYY"년" MM"월" DD"일" HH24:MI:SS') BOARD_WRITE_DATE,
+		TO_CHAR(BOARD_UPDATE_DATE, 'YYYY"년" MM"월" DD"일" HH24:MI:SS') BOARD_UPDATE_DATE,
+		
+		(SELECT COUNT(*)
+		FROM "BOARD_LIKE"
+		WHERE BOARD_NO = #{boardNo}) LIKE_COUNT,
+		
+		(SELECT COUNT(*)
+		FROM "BOARD_LIKE"
+		WHERE BOARD_NO = #{boardNo}
+		AND MEMBER_NO = #{memberNo}) LIKE_CHECK
+		
+		FROM "BOARD"
+		JOIN "MEMBER" USING(MEMBER_NO)
+		WHERE BOARD_DEL_FL = 'N'
+		AND BOARD_NO = #{boardNo}
+	</select>
 
 </mapper>

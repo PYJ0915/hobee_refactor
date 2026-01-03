@@ -98,6 +98,7 @@ public class MemberController {
 		return "member/signupPage";
 	}
 	
+	// 로그아웃 기능
 	@GetMapping("logout")
 	public String logout(SessionStatus sessionStatus) {
 		

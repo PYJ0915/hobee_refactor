@@ -12,6 +12,9 @@
       <a href="/hobby/1" class="nav-item">취미별 게시판</a>
       <a href="/free" class="nav-item">자유 게시판</a>
       <a href="/findHobby/main" class="nav-item">취미 탐색</a>
+      <th:block th:if="${session.loginMember != null and session.loginMember.authorLevel == 2}">
+        <a href="/report/manageReport" class="nav-item">신고 관리</a>
+      </th:block>
     </nav>
 
 
@@ -38,7 +41,7 @@
     <th:block th:if="${session.loginMember != null}">
     <div class="header-user-loggedin">
 
-      <a href="#">
+      <a href="/myPage/info">
         <img
         alt="프로필 이미지"
         class="header-profile-img"
@@ -46,7 +49,7 @@
         >
       </a>
 
-      <a href="#" id="nickname">
+      <a href="/myPage/info" id="nickname">
       <span class="header-user-name" th:text="${session.loginMember.memberNickname}">
         홍길동 님
       </span>

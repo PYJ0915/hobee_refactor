@@ -104,17 +104,21 @@ a:hover {
     white-space: nowrap; /* 헤더 글자 세로 현상 방지 */
 }
 
-/* 테이블 각 칸 너비 설정 */
-.list-table tr > *:nth-of-type(1) { width: 8%; }  /* 글번호 */
-.list-table tr > *:nth-of-type(2) {                /* 제목 */
-    width: 47%; 
-    text-align: left; 
-    padding-left: 20px; 
+
+.list-table tr > *{ text-align: center; }
+.list-table tr > *:nth-of-type(1){ width: 10%; }
+
+.list-table tr > td:nth-of-type(2){
+     width: 50%; 
+     text-align: left;
+     padding-left: 50px;
+     text-decoration: none;
 }
-.list-table tr > *:nth-of-type(3) { width: 15%; } /* 작성자 */
-.list-table tr > *:nth-of-type(4) { width: 12%; } /* 작성일 */
-.list-table tr > *:nth-of-type(5) { width: 9%; }  /* 조회수 */
-.list-table tr > *:nth-of-type(6) { width: 9%; }  /* 좋아요 */
+
+.list-table tr > *:nth-of-type(3){ width: 13%; }
+.list-table tr > *:nth-of-type(4){ width: 10%; }
+.list-table tr > *:nth-of-type(5){ width: 8%; }
+.list-table tr > *:nth-of-type(6){ width: 8%; }
 
 /* 5. 버튼 및 페이지네이션 */
 .btn-area {
@@ -142,6 +146,8 @@ a:hover {
     list-style: none;
     display: flex;
     justify-content: center;
+    align-items: center;
+    gap: 6px;
 }
 
 .pagination li {
@@ -153,6 +159,29 @@ a:hover {
     background-color: #FFF57E;
     border-radius: 50%;
     padding: 2px 8px;
+}
+
+.pagination li a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  min-width: 32px;
+  height: 32px;
+
+  font-size: 14px;
+  color: #452829;
+  text-decoration: none;
+
+  border-radius: 6px;
+  padding: 0 8px;
+
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.pagination li a:hover {
+  background-color: #FFF57E;
+  font-weight: bold;
 }
 
 /* 6. 검색 영역 */
