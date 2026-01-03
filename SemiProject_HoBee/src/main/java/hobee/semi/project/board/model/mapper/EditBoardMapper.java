@@ -16,6 +16,10 @@ public interface EditBoardMapper {
 
 	int updateImageBoardNo(Map<String, Object> map);
 
+	int boardDelete(Map<String, Object> map);
+
+
+
 
 
 }

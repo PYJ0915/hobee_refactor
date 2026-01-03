@@ -1,6 +1,8 @@
 package hobee.semi.project.board.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -164,7 +167,85 @@ public class EditBoardController {
 	    return path;
 	}
 	
+	@RequestMapping(value="/{boardName:[a-zA-Z]+}/{boardNo:[0-9]+}/delete",
+			method= {RequestMethod.POST})
+public String BoardDelete(@PathVariable("boardName") String boardName,
+						@PathVariable("boardNo") int boardNo,
+						@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
+						@SessionAttribute("loginMember") MemberDTO loginMember,
+						RedirectAttributes ra ) { 
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("boardName", boardName);
+		map.put("memberNo", loginMember.getMemberNo());
+		map.put("boardNo", boardNo);
+		map.put("authorLevel", loginMember.getAuthorLevel());
+		map.put("categoryCode", 0);
+		
+		int result = service.boardDelete(map);
+		
+		String path = null;
+		String message = null;
+		
+		if(result > 0) {
+			path = String.format("/%s?cp=%d", boardName, cp);
+							   
+			message = "글 삭제가 완료되었습니다";
+			
+		} else {
+			path = String.format("/%s/%d/?cp=%d", boardName, boardNo, cp);
+			
+			message = "삭제 실패됨 ....";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		
+		return "redirect:" + path;
+		
 	
+	}
+	
+	
+	@RequestMapping(value="/{boardName:[a-zA-Z]+}/{categoryCode:[0-9]+}/{boardNo:[0-9]+}/delete",
+			method= {RequestMethod.POST})
+public String hobbyBoardDelete(@PathVariable("boardName") String boardName,
+						@PathVariable("categoryCode") int categoryCode,
+						@PathVariable("boardNo") int boardNo,
+						@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
+						@SessionAttribute("loginMember") MemberDTO loginMember,
+						RedirectAttributes ra ) { 
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("boardName", boardName);
+		map.put("categoryCode", categoryCode);
+		map.put("memberNo", loginMember.getMemberNo());
+		map.put("boardNo", boardNo);
+		map.put("authorLevel", loginMember.getAuthorLevel());
+		
+		int result = service.boardDelete(map);
+		
+		String path = null;
+		String message = null;
+		
+		if(result > 0) {
+			path = String.format("/hobby/%d?cp=%d", categoryCode, cp);
+							   // /hobby/1/?cp=1
+			message = "글 삭제가 완료되었습니다";
+			
+		} else {
+			path = String.format("/hobby/%d/%d?cp=%d", categoryCode, boardNo, cp);
+							   // /hobby/1/24?cp=1
+			message = "삭제 실패됨 ....";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		
+		return "redirect:" + path;
+		
+	
+	}
 	
 	
 	

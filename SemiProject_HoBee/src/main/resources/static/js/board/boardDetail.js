@@ -41,8 +41,15 @@ if(loginMemberNo == null) {
   }
 
   fetch(url, {
-    method : "POST"
+    method : "POST",
+    headers : {"Content-Type" : "application/json"},
+    body : JSON.stringify(obj)
   })
+  .then(resp => resp.text())
+  .then(result => {
+
+    
+  });
 
 });
 
@@ -127,4 +134,39 @@ document.querySelector(".submit-report-btn").addEventListener("click", () => {
     }
   });
 });
+
+const deleteBtn = document.querySelector("#deleteBtn");
+
+if (deleteBtn != null) {
+  deleteBtn.addEventListener("click", () => {
+
+    if (!confirm("삭제 하시겠습니까?")) {
+      alert("취소됨")
+      return;
+    }
+
+    const url = "/editBoard" + location.pathname + "/delete";
+
+    // form태그 생성
+    const form = document.createElement("form");
+    form.action = url;
+    form.method = "POST";
+
+    // cp값을 저장할 input 생성
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "cp";
+
+    // 쿼리스트링에서 원하는 파라미터 얻어오기
+    const params = new URLSearchParams(location.search)
+    const cp = params.get("cp");
+    input.value = cp;
+
+    form.append(input);
+
+    // 화면에 form태그를 추가한 후 제출하기
+    document.querySelector("body").append(form);
+    form.submit();
+  });
+}
 
