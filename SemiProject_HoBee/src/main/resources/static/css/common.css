@@ -1,5 +1,9 @@
 /* header css */
 
+.page-wrapper {
+  min-height: calc(100vh - 425px);
+}
+
 .header {
   width: 100%;
   border-bottom: 1px solid #ddd;
@@ -23,7 +27,7 @@
 
 .header-logo img {
   height: 70px;
-  transform: scale(1.4); 
+  transform: scale(1.4);
   transform-origin: left center;
   padding-right: 15px;
 }
@@ -144,52 +148,52 @@
 }
 
 .categories a.category {
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
 }
 
 
 
 /* 로그인 후 사용자 영역 */
 .header-user-loggedin {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 /* 프로필 이미지 */
 .header-profile-img {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid #cccccc;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #cccccc;
 }
 
 /* 사용자 이름 */
 .header-user-name {
-    font-size: 16px;
-    font-weight: 500;
-    color: #333333;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333333;
 }
 
 /* 로그아웃 버튼 */
 .header-btn-logout {
-    padding: 6px 14px;
-    background-color: #4b2f2f;
-    color: #ffffff;
-    font-size: 14px;
-    border-radius: 6px;
-    text-decoration: none;
-    transition: 0.2s ease;
+  padding: 6px 14px;
+  background-color: #4b2f2f;
+  color: #ffffff;
+  font-size: 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: 0.2s ease;
 }
 
 .header-btn-logout:hover {
-    background-color: #593737;
+  background-color: #593737;
 }
 
 #nickname {
