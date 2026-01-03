@@ -336,3 +336,8 @@
   white-space: nowrap;
   vertical-align: bottom;
 }
+
+.like-check{
+  color: #452829;
+  font-weight: bold;
+}

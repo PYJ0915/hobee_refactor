@@ -1,3 +1,4 @@
+const likeBtn = document.querySelector(".like-btn");
 const boardReportBtn = document.querySelector("#board-report");
 const commentReportBtn = document.querySelector("#comment-report");
 const reportModal = document.querySelector("#reportModal");
@@ -8,8 +9,44 @@ let reportedMemberNo = null;
 let targetType = null;
 let targetNo = null;
 
-// 로그인한 회원의 회원번호
-const loginMemberNo = boardReportBtn.dataset.loginMemberNo;
+likeBtn.addEventListener("click", () => {
+
+if(loginMemberNo == null) {
+    
+    if(!confirm("로그인이 필요한 기능입니다. 로그인하시겠습니까?")) return;
+      
+    location.href="/member/loginPage"
+    return;
+
+  }
+
+  let url = null;
+
+  switch(boardCode) {
+    case 1:
+      url = "/notice/like";
+      break;
+    case 2:
+      url = "/hobby/like";
+      break;
+    case 3:
+      url = "/free/like";
+      break;
+  }
+
+  const obj = {
+    "memberNo" : loginMemberNo,
+    "boardNo" : boardNo,
+    "likeCheck" : likeCheck
+  }
+
+  fetch(url, {
+    method : "POST"
+  })
+
+});
+
+
 
 boardReportBtn.addEventListener("click", showReport);
 // commentReportBtn.addEventListener("click", showReport);
@@ -20,7 +57,7 @@ document.querySelector(".close-btn").addEventListener("click", () => {
 
 function showReport(e) {
 
-  if(loginMemberNo == 0) {
+  if(loginMemberNo == null) {
     
     if(!confirm("로그인이 필요한 기능입니다. 로그인하시겠습니까?")) return;
       
