@@ -16,10 +16,22 @@ public class InterceptorConfig implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		
-		registry.addInterceptor(penaltyInterceptor)
-		// 글쓰기, 댓글, 신고, 좋아요 관련 요청만 막기
-		.addPathPatterns("/editBoard/**", "/comment/**", "/report/**", "/free/like", "/notice/like", "/hobby/like") 
-		.excludePathPatterns("/css/**" , "/js/**", "/images/**", "/favicon.ico/**", "/member/login", "/member/logout" );
+		 registry.addInterceptor(penaltyInterceptor)
+         .addPathPatterns("/**")            
+         .excludePathPatterns(
+             // 1️⃣ 로그인 / 로그아웃
+             "/member/login",
+             "/member/logout",
+             // 2️⃣ 제재 안내 페이지 (무한 리다이렉트 방지)
+             "/penalty/**",
+             // 3️⃣ 정적 자원
+             "/css/**",
+             "/js/**",
+             "/images/**",
+             "/favicon.ico",
+             // 4️⃣ 에러 페이지
+             "/error"
+         );
 	}
 	
 }

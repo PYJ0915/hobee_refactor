@@ -24,4 +24,12 @@ public interface ReportMapper {
 
 	int selectReportCount(int memberNo);
 
+	int selectSuspendCount(int memberNo);
+
+	int selectWarningCount(int memberNo);
+
+	String selectPenaltyReasaon(int memberNo);
+
+	int insertPenalty(int memberNo, String penaltyReason, int plusEndDays, String penaltyType);
+
 }

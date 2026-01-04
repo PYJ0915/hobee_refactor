@@ -61,16 +61,63 @@ public class ReportServiceImpl implements ReportService {
 		
 		// 승인을 누른 경우
 		int memberNo = mapper.selectReportedMemberNo(updateReport.getReportNo());
-		
+		// 승인된 신고 개수 조회
 		int count = mapper.selectReportCount(memberNo);
+		// 경고 이력 조회
+		int warningCount = mapper.selectWarningCount(memberNo);
+		// 정지 이력 조회
+		int suspendCount = mapper.selectSuspendCount(memberNo);
 		
-		switch (count) {
-		case 5:
+		// 가장 많은 신고 이유 조회해오기 => 제재 사유
+		String reason =  mapper.selectPenaltyReasaon(memberNo);
+		
+		int plusDays = 0; // WARNING / PERMANENT는 endDate 사용 안 함
+		String type = null;
+		
+		if(count >= 5 && warningCount == 0) {
+			// 경고
+			type = "WARNING";
 			
-			break;
-		case 10:
+			// 제재 테이블에 인서트
+			int resp = mapper.insertPenalty(memberNo, reason, plusDays, type);
 			
-			break;
+			if(resp == 0) {
+				throw new RuntimeException();
+			}
+			
+			return result;
+		}
+		
+		if(count >= (suspendCount + 1) * 10) {
+			// 정지
+			
+			type = "SUSPEND";
+			
+			switch (suspendCount + 1) {
+				case 1:
+					plusDays = 3;
+					break;
+				case 2:
+					plusDays = 7;
+					break;
+				case 3:
+					plusDays = 14;
+					break;
+				case 4:
+					plusDays = 30;
+					break;
+				default:
+					type = "PERMANENT";
+					break;
+			}
+			
+			int resp = mapper.insertPenalty(memberNo, reason, plusDays, type);
+			
+			if(resp == 0) {
+				throw new RuntimeException();
+			}
+			
+			return result;
 		}
 		
 		return result;
