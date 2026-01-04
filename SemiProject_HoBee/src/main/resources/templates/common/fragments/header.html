@@ -17,9 +17,10 @@
       </th:block>
     </nav>
 
+    
 
     <!-- 비로그인 상태 인증 영역 -->
-    <th:block th:if="${session.loginMember} == null">
+    <th:block th:if="${session.loginMember == null}">
       <div class="header-auth">
         <a href="/member/loginPage" class="login-btn">로그인</a>
         <a href="/member/signupPage" class="signup-btn">회원가입</a>
@@ -36,16 +37,26 @@
         th:src="${session.loginMember.profileImg ?: user}"
         > -->
 
+        <!-- <img
+        alt="프로필 이미지"
+        class="header-profile-img"
+        th:src="#{user.default.image}"
+        > -->
+
 
     <!-- 로그인 상태 사용자 영역 -->
     <th:block th:if="${session.loginMember != null}">
     <div class="header-user-loggedin">
 
+      <p th:text="${session.loginMember.profileFullPath}"></p>
+
       <a href="/myPage/info">
         <img
         alt="프로필 이미지"
         class="header-profile-img"
-        th:src="#{user.default.image}"
+
+        th:with="user=#{user.default.image}"
+        th:src="${session.loginMember.profileFullPath ?: user}"
         >
       </a>
 

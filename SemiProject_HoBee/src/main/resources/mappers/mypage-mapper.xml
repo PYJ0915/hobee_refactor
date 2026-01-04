@@ -25,6 +25,15 @@
 		WHERE MEMBER_NO = #{memberNo}
 	</update>	
 	
+	<insert id="profile">
+		INSERT INTO "PROFILE_IMG"
+		VALUES(SEQ_PROFILE_NO.NEXTVAL,
+				#{profilePath},
+				#{profileOriginalName},
+				#{profileRename},
+				DEFAULT,
+				#{memberNo})
+	</insert>
 	
 	
 </mapper>

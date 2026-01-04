@@ -1,11 +1,16 @@
 package hobee.semi.project.myPage.model.service;
 
+import java.io.File;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import hobee.semi.project.common.util.Utility;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.myPage.model.mapper.MyPageMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Transactional
 //@Slf4j
-@PropertySource("")
+@PropertySource("classpath:/config.properties")
 public class MyPageServiceImpl implements MyPageService {
 
 	@Autowired
@@ -21,6 +26,12 @@ public class MyPageServiceImpl implements MyPageService {
 	
 	@Autowired
 	private BCryptPasswordEncoder bcrypt;
+	
+	@Value("${my.profile.web-path}")
+	private String profileWebPath;
+	
+	@Value("${my.profile.folder-path}")
+	private String profileFolderPath;
 	
 	@Override
 	public int updateInfo(MemberDTO inputMember, String[] memberAddress) {
@@ -50,6 +61,51 @@ public class MyPageServiceImpl implements MyPageService {
 		loginMember.setMemberPw(encPw);
 		
 		return mapper.changePw(loginMember);
+	}
+
+
+	@Override
+	public int profile(MultipartFile profileImg, MemberDTO loginMember) throws Exception {
+		
+		String updatePath = null;
+		
+		String rename = null;
+		
+		if(!profileImg.isEmpty()) {
+			
+			rename = Utility.fileRename(profileImg.getOriginalFilename());
+			
+			updatePath = profileWebPath;
+			
+		}
+		
+		MemberDTO member = MemberDTO.builder()
+				.memberNo(loginMember.getMemberNo())
+				.profilePath(updatePath)
+				.profileOriginalName(profileImg.getOriginalFilename())
+				.profileRename(rename)
+				.build();
+		
+		int result = mapper.profile(member);
+		
+		if(result > 0) {
+			
+			if(!profileImg.isEmpty()) {
+				
+				profileImg.transferTo(new File(profileFolderPath + rename));
+				
+			}
+			
+			loginMember.setProfileOriginalName(profileImg.getOriginalFilename());
+			loginMember.setProfilePath(updatePath);
+			loginMember.setProfileRename(rename);
+			
+			// 합쳐진 경로 -> 세션에서 바로 쓸 수 있도록 추가(가상 필드)
+			loginMember.setProfileFullPath(updatePath + rename);
+			
+		}
+		
+		return result;
 	}
 	
 }

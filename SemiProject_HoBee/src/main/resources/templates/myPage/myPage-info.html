@@ -28,12 +28,13 @@
     <span class="myPage-subject">내 정보 관리</span>
 
     <!-- 프로필 영역 -->
-    <form action="" class="profile-area">
+    <form action="profile" method="post" class="profile-area"
+          enctype="multipart/form-data">
       
       <div class="profile-img">
 
         <img th:with="user=#{user.default.image}"
-                th:src="${user}"
+                th:src="${session.loginMember.profileFullPath ?: user}"
                 id="profileImg"
                 class="profile-img">
 
@@ -43,7 +44,7 @@
 
        <input type="file" name="profileImg" id="imageInput" accept="image/*">
 
-       <button type="button" class="profile-btn">변경하기</button>
+       <button type="submit" class="profile-btn">변경하기</button>
 
     </form>
 

@@ -50,21 +50,16 @@ public class FileConfig implements WebMvcConfigurer {
 		// 파일 업로드 임계값
 		factory.setFileSizeThreshold(DataSize.ofBytes(fileSizeThreshold));
 
-		// 임시 저장 폴더 경로
-		factory.setLocation(location);
+		// 임시 저장 폴더 경로 factory.setLocation(location);
 
 		// HTTP 요청당 파일 최대 크기
 		factory.setMaxRequestSize(DataSize.ofBytes(maxRequestSize));
 
-		// 개별 파일당 최대 크기
-		factory.setMaxFileSize(DataSize.ofBytes(maxFileSize));
+		// 개별 파일당 최대 크기 factory.setMaxFileSize(DataSize.ofBytes(maxFileSize));
 
 		return factory.createMultipartConfig();
-		
-		
-	}
-	
 
+	}
 
 	@Bean
 	public MultipartResolver multipartResolver() {
@@ -77,31 +72,34 @@ public class FileConfig implements WebMvcConfigurer {
 
 	/*
 	 * @Override public void addResourceHandlers(ResourceHandlerRegistry registry) {
-	 * 
-	 * 
 	 * registry.addResourceHandler("클라이언트 요청 주소")
-	 * .addResourceLocations("서버 컴퓨터 경로");
-	 * 
-	 * 
-	 * 
-	 * }
+	 * .addResourceLocations("서버 컴퓨터 경로"); }
 	 */
-	
+
 	@Value("${my.board.resource-handler}")
-	private String boardResourceHandler; 
-	
+	private String boardResourceHandler;
+
 	@Value("${my.board.resource-location}")
 	private String boardResourceLocation;
-	
+
+	// -------------------------------------------
+
+	// 프로필 이미지 관련 경로
+	@Value("${my.profile.resource-handler}")
+	private String profileResourceHandler;
+	// /myPage/profile/**
+
+	@Value("${my.profile.resource-location}")
+	private String profileResourceLocation;
+	// file:///C:/uploadFiles/profile/
+
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		
-		registry.addResourceHandler(boardResourceHandler)
-		.addResourceLocations(boardResourceLocation);
-		
-		
+
+		registry.addResourceHandler(boardResourceHandler).addResourceLocations(boardResourceLocation);
+
+		registry.addResourceHandler(profileResourceHandler).addResourceLocations(profileResourceLocation);
+
 	}
-	
-	
 
 }

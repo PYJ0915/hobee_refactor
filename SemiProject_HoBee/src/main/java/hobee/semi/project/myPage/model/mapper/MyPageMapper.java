@@ -25,4 +25,10 @@ public interface MyPageMapper {
 	 */
 	int changePw(MemberDTO loginMember);
 
+	/**프로필 이미지 변경 SQL 실행
+	 * @param member
+	 * @return
+	 */
+	int profile(MemberDTO member);
+
 }

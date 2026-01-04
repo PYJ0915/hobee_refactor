@@ -6,10 +6,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import hobee.semi.project.member.model.dto.MemberDTO;
@@ -136,6 +139,31 @@ public class MyPageController {
 		ra.addFlashAttribute("message", message);
 		
 		return "redirect:" + path;
+	}
+	
+	@PostMapping("profile")
+	public String profile(@RequestParam("profileImg") MultipartFile profileImg,
+						  @SessionAttribute(value="loginMember", required=false) MemberDTO loginMember,
+						  RedirectAttributes ra) throws Exception {
+		
+		int result = service.profile(profileImg, loginMember);
+		
+		String message = null;
+		
+		if(result > 0) {
+			
+			message = "프로필 이미지 변경 성공!" ;
+			
+		}else {
+			
+			message = "프로필 이미지 변경 실패ㅜㅜ";
+			
+		}
+		
+		ra.addFlashAttribute("message",message);
+		
+		return "redirect:info";
+		
 	}
 	
 }
