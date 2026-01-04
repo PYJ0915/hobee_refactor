@@ -319,6 +319,16 @@ public String hobbyBoardDelete(@PathVariable("boardName") String boardName,
 	
 	
 	
+	/** 게시글 수정 적용
+	 * @param boardName
+	 * @param boardNo
+	 * @param categoryCode
+	 * @param inputBoard
+	 * @param cp
+	 * @param loginMember
+	 * @param ra
+	 * @return
+	 */
 	@PostMapping(value = {
 		    "/{boardName:[a-zA-Z]+}/{boardNo:[0-9]+}/update",
 		    "/{boardName:[a-zA-Z]+}/{categoryCode:[0-9]+}/{boardNo:[0-9]+}/update"
