@@ -22,13 +22,18 @@
                                             (boardName == 'hobby' ? '취미게시판 작성' : '글 작성'))}">글 쓰기</h1>
         
         <form action="" method="post" id="boardContent">
+            <input type="hidden" name="boardNo" th:value="${board?.boardNo}">
+            <input type="hidden" name="categoryCode" th:value="${board?.categoryCode}">
+
             <input type="text" name="boardTitle" class="board-title-input" 
-                   placeholder="제목을 입력하세요" />
+                   placeholder="제목을 입력하세요" th:value="${board?.boardTitle}"/>
             
-            <textarea id="summernote" name="boardContent"></textarea>
+            <textarea id="summernote" name="boardContent"
+            th:utext="${board?.boardContent}"></textarea>
             
             <div style="text-align: right; margin-top: 20px;">
-                <button type="submit" class="hobee-btn">등록</button>
+                <button type="submit" class="hobee-btn"
+                th:text="${board == null ? '등록' : '수정'}">등록</button>
             </div>
         </form>
     </div>
@@ -36,12 +41,6 @@
     <th:block th:replace="~{common/fragments/footer}"></th:block>
 
     <script src="/js/board/editBoard.js"></script>
-
-    <script th:inline="javascript">
-    {const message = /*[[${message}]]*/ null;
-    if (message != null) {
-        alert(message);
-    }}
 </script>
 </body>
 </html>

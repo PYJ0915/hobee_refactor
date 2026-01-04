@@ -67,6 +67,20 @@
     )
 	</update>
 	
+	<update id="boardUpdate">
+		UPDATE "BOARD" SET
+		BOARD_TITLE = #{boardTitle},
+		BOARD_CONTENT = #{boardContent}
+		WHERE BOARD_NO = #{boardNo}
+		<if test="categoryCode != null and categoryCode != 0">
+		AND CATEGORY_CODE = #{categoryCode}
+		</if>
+		AND (
+        MEMBER_NO = #{memberNo}
+        OR 
+        #{authorLevel} = 2
+        )
+	</update>
 	
 	
 

@@ -81,7 +81,7 @@
         <th:block th:if="${session.loginMember != null 
               and (session.loginMember.memberNo == board.memberNo
               or session.loginMember.authorLevel == 2)}">
-          <button type="button" class="control-btn edit-btn">
+          <button type="button" class="control-btn edit-btn" id="updateBtn">
             수정
           </button>
 
@@ -240,7 +240,12 @@
     </script>
 
   <script src="/js/board/boardDetail.js"></script>
+<<<<<<< HEAD
+
+
+=======
   
+>>>>>>> 66494b1849aaaa4e07fe43215abf1aaea22354d0
   <script src="/js/board/comment.js"></script>
 </body>
 

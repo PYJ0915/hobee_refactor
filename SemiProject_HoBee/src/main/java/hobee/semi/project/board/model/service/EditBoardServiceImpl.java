@@ -121,19 +121,18 @@ public class EditBoardServiceImpl implements EditBoardService {
 		return mapper.boardDelete(map);
 		
 	}
+
+	/** 게시글 수정 
+	 *
+	 */
+	@Override
+	public int boardUpdate(Board inputBoard) {
+
+		return mapper.boardUpdate(inputBoard);
+	}
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     
     
     

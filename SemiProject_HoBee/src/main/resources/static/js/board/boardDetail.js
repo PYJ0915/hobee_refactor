@@ -200,3 +200,18 @@ if (deleteBtn != null) {
   });
 }
 
+
+const updateBtn = document.querySelector("#updateBtn");
+
+if (updateBtn != null) { // 수정 버튼 존재 시
+
+  updateBtn.addEventListener("click", () => {
+
+    location.href = "/editBoard" 
+    + location.pathname 
+    + "/update" 
+    + location.search;
+    
+  });
+
+}
