@@ -61,6 +61,40 @@
 				)
 		</insert>
 		
+		<select id="checkName">
+			SELECT COUNT(*)
+			FROM "MEMBER"
+			WHERE MEMBER_EMAIL = #{memberEmail}
+			AND MEMBER_DEL_FL = 'N'
+			AND MEMBER_NAME = #{memberName}
+		</select>
+		
+		<select id="checkTel">
+			SELECT COUNT(*)
+			FROM "MEMBER"
+			WHERE MEMBER_EMAIL = #{memberEmail}
+			AND MEMBER_DEL_FL = 'N'
+			AND MEMBER_TEL = #{memberTel}
+		</select>
+		
+		<select id="findId" resultType="string">
+		    SELECT MEMBER_ID
+		    FROM "MEMBER"
+		    WHERE MEMBER_NAME = #{memberName}
+		    AND MEMBER_TEL = #{memberTel}
+		    AND MEMBER_EMAIL = #{memberEmail}
+		    AND MEMBER_DEL_FL = 'N'
+		</select>
+		
+		<update id="pwChange">
+			UPDATE "MEMBER" SET
+    		MEMBER_PW = #{memberPw}
+   			WHERE MEMBER_EMAIL = #{memberEmail}
+   		 	AND MEMBER_DEL_FL = 'N'
+		</update>
+		
+		
+		
 
 
 

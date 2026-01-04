@@ -58,7 +58,7 @@ input[type="text"], input[type="password"], input[type="email"], input[type="tel
 
 /* 4. 버튼 색상 통일 (#332211) */
 button[type="button"], #signUpBtn {
-    background-color: #332211;
+    background-color: #452829;
     color: white;
     border: none;
     border-radius: 8px;
@@ -104,9 +104,9 @@ button[type="button"] { height: 48px; padding: 0 20px; white-space: nowrap; }
 #mainCategoryArea input[type="radio"] { display: none; }
 
 #mainCategoryArea label:has(input:checked) {
-    background-color: #facc15;
-    color: #332211;
-    border-color: #facc15;
+    background-color: #fff57e;
+    color: #452829;
+    border-color: #fff57e;
     font-weight: 700;
 }
 /* 👆 여기까지 추가된 부분 */

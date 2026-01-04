@@ -37,5 +37,29 @@ public interface MemberService {
 	 */
 	int signUp(MemberDTO inputMember,List<String>memberAddress,List<String> hobbyCode);
 
+	/** 아이디 찾기 (가입된 이름 찾기)
+	 * @param inputMember
+	 * @return
+	 */
+	int checkName(MemberDTO inputMember);
+
+	/** 아이디 찾기 (가입된 전화번호 찾기)
+	 * @param inputMember
+	 * @return
+	 */
+	int checkTel(MemberDTO inputMember);
+
+	/** 아이디 찾기 결과 창으로 이동
+	 * @param inputMember
+	 * @return
+	 */
+	String findId(MemberDTO inputMember);
+
+	/** 새 비밀번호
+	 * @param inputMember
+	 * @return
+	 */
+	int pwChange(MemberDTO inputMember);
+
 
 }
