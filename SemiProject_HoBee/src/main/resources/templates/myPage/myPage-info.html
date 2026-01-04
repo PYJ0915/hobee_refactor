@@ -68,6 +68,25 @@
         id="detailAddress" th:value="${detailAddress}">
       </div>
 
+      <div class="myPage-row column">
+      <label class="section-label">취미</label>
+
+      <!-- 메인 취미 카테고리 -->
+      <div id="mainCategoryArea" class="hobby-main"></div>
+
+      <!-- 세부 취미 -->
+      <h4 id="subTitle" style="display:none;">세부 취미 선택</h4>
+      <div id="CategoryArea" class="hobby-sub"></div>
+      </div>
+
+      <div class="myPage-row column">
+      <label class="section-label">소개</label>
+
+      <textarea name="memberIntroduction" id="introduction" class="intro-textarea"
+                placeholder="소개 글 작성" th:text="${session.loginMember.memberIntroduction}">
+      </textarea>
+      </div>
+
       <div class="form-btns">
         <button type="submit" class="submit-btn">변경하기</button>
       </div>
@@ -85,6 +104,11 @@
 
 <!-- 다음 주소 API -->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+<script th:inline="javascript">
+  window.selectedHobbyList = [[${session.loginMember.hobbyCode}]];
+</script>
+
 
 <!--회원 정보 수정 JS-->
 <script src="/js/myPage/myPage.js"></script>

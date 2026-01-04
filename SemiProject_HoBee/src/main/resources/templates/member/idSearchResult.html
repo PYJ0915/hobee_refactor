@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>아이디 찾기 결과</title>
+
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" th:href="@{/css/member/idSearchResult.css}">
+</head>
+<body>
+  <th:block th:replace="~{common/fragments/header}"></th:block>
+
+<main>
+    <h1>아이디 찾기 결과</h1>
+
+    <section class="result-container">
+        <div class="result-box">
+            <p>가입하신 정보와 일치하는 아이디는 다음과 같습니다.</p>
+            <h2 th:text="${foundId}">user01</h2>
+        </div>
+        
+        <div class="btn-group">
+            <a th:href="@{/member/loginPage}" class="main-btn">로그인 하러가기</a>
+            <a th:href="@{/member/pwSearch}" class="sub-link">비밀번호를 잊으셨나요?</a>
+        </div>
+    </section>
+</main>
+  
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    
+    <th:block th:replace="~{common/fragments/footer}"></th:block>
+    
+</body>
+</html>
