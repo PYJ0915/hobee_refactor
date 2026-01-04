@@ -15,8 +15,8 @@ import hobee.semi.project.report.model.mapper.ReportMapper;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class ReportServiceImpl implements ReportService{
-	
+public class ReportServiceImpl implements ReportService {
+
 	@Autowired
 	private ReportMapper mapper;
 
@@ -27,33 +27,59 @@ public class ReportServiceImpl implements ReportService{
 
 	@Override
 	public Map<String, Object> selectReportList(int cp) {
-		
+
 		int listCount = mapper.getReportCount();
-		
+
 		Pagination pagination = new Pagination(cp, listCount);
-		
+
 		int limit = pagination.getLimit();
 		int offset = (cp - 1) * limit;
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		
+
 		List<Report> reportList = mapper.selectReportList(rowBounds);
-		
+
 		Map<String, Object> map = new HashMap<>();
-		
+
 		map.put("pagination", pagination);
 		map.put("reportList", reportList);
-		
+
 		return map;
 	}
 
 	@Override
 	public int manageReport(Report updateReport) {
-		return mapper.manageReport(updateReport);
+		
+		int result = mapper.manageReport(updateReport);
+		
+		if(result == 0) {
+			return 0;
+		}
+		
+		if(updateReport.getReportStatus().equals("REJECTED")) {
+			return result;
+		}
+		
+		// 승인을 누른 경우
+		int memberNo = mapper.selectReportedMemberNo(updateReport.getReportNo());
+		
+		int count = mapper.selectReportCount(memberNo);
+		
+		switch (count) {
+		case 5:
+			
+			break;
+		case 10:
+			
+			break;
+		}
+		
+		return result;
+		
 	}
 
 	@Override
 	public Report selectTarget(int reportNo) {
 		return mapper.selectTarget(reportNo);
 	}
-	
+
 }

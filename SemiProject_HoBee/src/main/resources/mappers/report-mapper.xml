@@ -60,6 +60,16 @@
 		WHERE r.REPORT_NO = #{reportNo}
 	</select>
 
+	<select id="selectReportedMemberNo">
+		SELECT REPORTED_MEMBER_NO
+		FROM "REPORT"
+		WHERE REPORT_NO = #{reportNo}
+	</select>
 
+	<select id="selectReportCount">
+		SELECT COUNT(*) FROM "REPORT"
+		WHERE REPORTED_MEMBER_NO = #{memberNo}
+		AND REPORT_STATUS = 'APPROVED'
+	</select>
 
 </mapper>

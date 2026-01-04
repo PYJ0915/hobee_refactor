@@ -20,4 +20,8 @@ public interface ReportMapper {
 
 	Report selectTarget(int reportNo);
 
+	int selectReportedMemberNo(int reportNo);
+
+	int selectReportCount(int memberNo);
+
 }
