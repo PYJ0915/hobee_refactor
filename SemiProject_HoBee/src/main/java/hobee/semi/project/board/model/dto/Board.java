@@ -40,10 +40,6 @@ public class Board {
 	
 	private List<Comment> commentList; // 댓글 목록 by 상민
 	
-<<<<<<< HEAD
-	private int authorLevel; // 권한레벨
-=======
 	private int authorLevel; // 관리자 신고를 막기 위한 권한 등급
->>>>>>> 66494b1849aaaa4e07fe43215abf1aaea22354d0
 	
 }

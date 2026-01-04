@@ -200,7 +200,6 @@ if (deleteBtn != null) {
   });
 }
 
-<<<<<<< HEAD
 
 const updateBtn = document.querySelector("#updateBtn");
 
@@ -216,5 +215,3 @@ if (updateBtn != null) { // 수정 버튼 존재 시
   });
 
 }
-=======
->>>>>>> 66494b1849aaaa4e07fe43215abf1aaea22354d0
