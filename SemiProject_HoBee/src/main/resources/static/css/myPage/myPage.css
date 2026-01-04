@@ -39,6 +39,16 @@
   margin-bottom: 40px;
 }
 
+/* 삭제버튼 */
+form[name='profileForm']{position: relative;}
+
+#deleteImage{
+  position: absolute;
+  top: 0px;
+  right: 240px;
+  cursor: pointer;
+}
+
 .profile-img {
   width: 120px;
   height: 120px;

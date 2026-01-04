@@ -28,8 +28,8 @@
     <span class="myPage-subject">내 정보 관리</span>
 
     <!-- 프로필 영역 -->
-    <form action="profile" method="post" class="profile-area"
-          enctype="multipart/form-data">
+    <form action="profile" method="post" name="profileForm" id="profile" 
+          enctype="multipart/form-data" class="profile-area">
       
       <div class="profile-img">
 
@@ -40,11 +40,16 @@
 
       </div>
 
+       <span id="deleteImage">x</span>
+
+      <div class="profile-btn-area">
        <label for="imageInput" class="profile-btn">이미지 선택</label>
 
        <input type="file" name="profileImg" id="imageInput" accept="image/*">
-
+      
        <button type="submit" class="profile-btn">변경하기</button>
+       </div>
+       
 
     </form>
 

@@ -93,12 +93,25 @@ public class FileConfig implements WebMvcConfigurer {
 	private String profileResourceLocation;
 	// file:///C:/uploadFiles/profile/
 
+	@Value("${my.profile.web-path}")
+	private String profileWebPath;
+	// MyPageServiceImpl
+
+	@Value("${my.profile.folder-path}")
+	private String profileFolderPath;
+	// MyPageServiceImpl
+
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-		registry.addResourceHandler(boardResourceHandler).addResourceLocations(boardResourceLocation);
+		registry.addResourceHandler(boardResourceHandler)
+		.addResourceLocations(boardResourceLocation);
 
-		registry.addResourceHandler(profileResourceHandler).addResourceLocations(profileResourceLocation);
+		registry.addResourceHandler(profileResourceHandler)
+		.addResourceLocations(profileResourceLocation);
+
+		registry.addResourceHandler("profileWebPath")
+		.addResourceLocations("profileFolderPath");
 
 	}
 

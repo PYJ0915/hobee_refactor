@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.member.model.mapper.MemberMapper;
+import hobee.semi.project.profileImg.model.dto.ProfileDTO;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -98,6 +99,13 @@ public class MemberServiceImpl implements MemberService{
 	    }
 	    
 	    return result;
+	}
+	
+	//최신 프로필 이미지 조회
+	@Override
+	public ProfileDTO selectLatestProfile(int memberNo) {
+		ProfileDTO profile = mapper.selectLatestProfile(memberNo);
+		return profile;
 	}
 	
 

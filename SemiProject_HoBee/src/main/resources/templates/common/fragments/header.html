@@ -48,7 +48,8 @@
     <th:block th:if="${session.loginMember != null}">
     <div class="header-user-loggedin">
 
-      <p th:text="${session.loginMember.profileFullPath}"></p>
+      <img class="header-profile-img"
+     th:src="${session.loginMember.profileFullPath}" />
 
       <a href="/myPage/info">
         <img

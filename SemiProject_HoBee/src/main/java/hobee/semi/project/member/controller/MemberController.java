@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.member.model.service.MemberService;
+import hobee.semi.project.profileImg.model.dto.ProfileDTO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -59,6 +60,19 @@ public class MemberController {
 			log.debug("체크박스 saveId 상태 : " + saveId);
 			
 			if(loginMember != null) {
+				
+				//--------------------------------------------------
+				//최신 프로필 이미지 조회
+//				ProfileDTO profile =
+//		                service.selectLatestProfile(loginMember.getMemberNo());
+//
+//		        if(profile != null) {
+//		            loginMember.setProfileFullPath(
+//		                profile.getProfilePath() + profile.getProfileRename()
+//		            );
+//		        }
+				//--------------------------------------------------
+		        
 				model.addAttribute("loginMember", loginMember);
 				
 				// 쿠키 객체 생성(회원 정보 관리하기 위해(입장권 번호))
