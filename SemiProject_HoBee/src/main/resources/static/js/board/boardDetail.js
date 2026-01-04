@@ -1,3 +1,4 @@
+const likeBtn = document.querySelector(".like-btn");
 const boardReportBtn = document.querySelector("#board-report");
 const commentReportBtn = document.querySelector("#comment-report");
 const reportModal = document.querySelector("#reportModal");
@@ -8,23 +9,84 @@ let reportedMemberNo = null;
 let targetType = null;
 let targetNo = null;
 
-// 로그인한 회원의 회원번호
+likeBtn.addEventListener("click", () => {
+
+if(loginMemberNo == null) {
+    
+    if(!confirm("로그인이 필요한 기능입니다. 로그인하시겠습니까?")) return;
+      
+    location.href="/member/loginPage"
+    return;
+
+  }
+
+  let url = null;
+
+  switch(boardCode) {
+    case 1:
+      url = "/notice/like";
+      break;
+    case 2:
+      url = "/hobby/like";
+      break;
+    case 3:
+      url = "/free/like";
+      break;
+  }
+
+  const obj = {
+    "memberNo" : loginMemberNo,
+    "boardNo" : boardNo,
+    "likeCheck" : likeCheck
+  }
+
+  fetch(url, {
+    method : "POST",
+    headers : {"Content-Type" : "application/json"},
+    body : JSON.stringify(obj)
+  })
+  .then(resp => resp.text())
+  .then(count => {
+
+    if(count == -1) {
+      console.log("좋아요 처리 실패");
+      return;
+    }
+
+    const boardLike = document.querySelector(".boardLike");
+
+    // 5. likeCheck 값 0 <-> 1 변환
+    // => 클릭될 때 마다 INSERT/DELETE 동작을 번갈아가면서 할 수 있게끔
+    likeCheck = likeCheck == 0 ? 1 : 0;
+
+    // 6. 좋아요 아이콘 채우기/비우기 변환
+    boardLike.classList.toggle("fa-regular");
+    boardLike.classList.toggle("fa-solid");
+
+    likeBtn.classList.toggle("like-checked");
+   
+    // 7. 게시글 좋아요 수 수정
+    document.querySelector(".like-count").innerText = count;
+
+  });
+
+});
+
 // 버튼이 존재할 때만 처리를 해줌으로써 공지게시판에서의 오류 제거
-if (boardReportBtn != null) {
-    const loginMemberNo = boardReportBtn.dataset.loginMemberNo;
-    boardReportBtn.addEventListener("click", showReport);
+if(boardReportBtn != null) {
+  boardReportBtn.addEventListener("click", showReport);
 }
-// commentReportBtn.addEventListener("click", showReport);
 
-
-
+if(commentReportBtn != null) {
+  commentReportBtn.addEventListener("click", showReport);
+}
 document.querySelector(".close-btn").addEventListener("click", () => {
    reportModal.classList.add("popup-hidden"); 
 });
 
 function showReport(e) {
 
-  if(loginMemberNo == 0) {
+  if(loginMemberNo == null) {
     
     if(!confirm("로그인이 필요한 기능입니다. 로그인하시겠습니까?")) return;
       
@@ -60,6 +122,14 @@ document.querySelector(".submit-report-btn").addEventListener("click", () => {
 
   if(reportedMemberNo == loginMemberNo) {
     alert("본인 계정은 신고할 수 없습니다.")
+    reportDetail.value = "";
+    checkedReason.checked = false;
+    reportModal.classList.add("popup-hidden");
+    return;
+  }
+
+  if(authorLevel == 2) {
+    alert("관리자 계정은 신고할 수 없습니다.")
     reportDetail.value = "";
     checkedReason.checked = false;
     reportModal.classList.add("popup-hidden");
@@ -130,6 +200,7 @@ if (deleteBtn != null) {
   });
 }
 
+<<<<<<< HEAD
 
 const updateBtn = document.querySelector("#updateBtn");
 
@@ -145,3 +216,5 @@ if (updateBtn != null) { // 수정 버튼 존재 시
   });
 
 }
+=======
+>>>>>>> 66494b1849aaaa4e07fe43215abf1aaea22354d0

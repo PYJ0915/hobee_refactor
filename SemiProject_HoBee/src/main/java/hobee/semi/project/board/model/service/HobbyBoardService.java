@@ -19,6 +19,10 @@ public interface HobbyBoardService {
 
 	Board selectBoardDetail(Map<String, Object> map);
 
+	int boardLike(Map<String, Integer> map);
+
+	int updateViewCount(int boardNo);
+
 
 
 }
