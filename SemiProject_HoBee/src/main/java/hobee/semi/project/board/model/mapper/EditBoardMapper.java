@@ -18,6 +18,8 @@ public interface EditBoardMapper {
 
 	int boardDelete(Map<String, Object> map);
 
+	int boardUpdate(Board inputBoard);
+
 
 
 

@@ -16,4 +16,6 @@ public interface EditBoardService {
 
 	int boardDelete(Map<String, Object> map);
 
+	int boardUpdate(Board inputBoard);
+
 }
