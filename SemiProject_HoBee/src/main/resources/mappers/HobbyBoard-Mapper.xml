@@ -108,10 +108,10 @@
 					ofType="Comment"></collection>
 	</resultMap>
     
-    
+    <!-- 게시글 상세조회 SQL -->
     <select id="selectBoardDetail" resultMap="board_rm">
 		SELECT BOARD_NO, BOARD_TITLE, BOARD_CODE, BOARD_VIEW_COUNT, BOARD_CONTENT,
-		MEMBER_NO, MEMBER_NICKNAME, 
+		MEMBER_NO, MEMBER_NICKNAME, AUTHOR_LEVEL,
 		TO_CHAR(BOARD_WRITE_DATE, 'YYYY"년" MM"월" DD"일" HH24:MI:SS') BOARD_WRITE_DATE,
 		TO_CHAR(BOARD_UPDATE_DATE, 'YYYY"년" MM"월" DD"일" HH24:MI:SS') BOARD_UPDATE_DATE,
 		
@@ -147,7 +147,37 @@
 		CONNECT BY PRIOR COMMENT_NO = COMMENT_NO2
 		ORDER SIBLINGS BY COMMENT_NO
 	</select>
+	
+	<!-- 좋아요 삭제 SQL -->
+	<delete id="deleteBoardLike">
+ 		DELETE FROM "BOARD_LIKE"
+ 		WHERE MEMBER_NO = #{memberNo}
+ 		AND BOARD_NO = #{boardNo}
+ 	</delete>
+ 	
+ 	<!-- 좋아요 삽입 SQL -->
+ 	<insert id="insertBoardLike">
+ 		INSERT INTO "BOARD_LIKE"
+ 		VALUES(#{memberNo}, #{boardNo})
+ 	</insert>
+ 	
+ 	<!-- 좋아요 개수 조회 SQL -->
+ 	<select id="selectLikeCount">
+ 		SELECT COUNT(*) FROM "BOARD_LIKE"
+ 		WHERE BOARD_NO = #{boardNo}
+ 	</select>
 
+	<!-- 조회수 1 증가 -->
+	<update id="updateViewCount">
+ 		UPDATE "BOARD" SET BOARD_VIEW_COUNT = BOARD_VIEW_COUNT + 1
+ 		WHERE BOARD_NO = #{boardNo}
+ 	</update>
+ 	
+ 	<!-- 조회수 조회 -->
+ 	<select id="selectViewCount">
+ 		SELECT BOARD_VIEW_COUNT FROM "BOARD"
+ 		WHERE BOARD_NO = #{boardNo}
+ 	</select>
 
 </mapper>
 

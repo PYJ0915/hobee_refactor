@@ -102,6 +102,39 @@ public class HobbyBoardServiceImpl implements HobbyBoardService{
 	public Board selectBoardDetail(Map<String, Object> map) {
 		return mapper.selectBoardDetail(map);
 	}
+
+	@Override
+	public int boardLike(Map<String, Integer> map) {
+		
+		int result = 0;
+
+		if (map.get("likeCheck") == 1) {
+			result = mapper.deleteBoardLike(map);
+
+		} else {
+			result = mapper.insertBoardLike(map);
+		}
+		
+		// 좋아요를 삭제하거나 삽입 성공했다면 좋아요 개수 조회해서 반환
+		if (result > 0) {
+			return mapper.selectLikeCount(map.get("boardNo"));
+		}
+
+		return -1;
+	}
+
+	@Override
+	public int updateViewCount(int boardNo) {
+		
+		// 1. 조회 수 1 증가 (UPDATE)
+		int result = mapper.updateViewCount(boardNo);
+		
+		if(result > 0) {
+			return mapper.selectViewCount(boardNo);
+		}
+		
+		return -1;
+	}
 	
 	
 
