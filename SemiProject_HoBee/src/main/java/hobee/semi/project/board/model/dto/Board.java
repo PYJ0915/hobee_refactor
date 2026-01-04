@@ -36,6 +36,10 @@ public class Board {
 
 	public int likeCheck; // 좋아요 체크 여부
 	
+	
+	
 	private List<Comment> commentList; // 댓글 목록 by 상민
+	
+	private int authorLevel; // 권한레벨
 	
 }
