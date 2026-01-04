@@ -1,5 +1,7 @@
 package hobee.semi.project.board.controller;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,14 +10,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.board.model.service.HobbyBoardService;
 import hobee.semi.project.member.model.dto.MemberDTO;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -82,7 +90,7 @@ public class HobbyBoardController {
 	public String boardDetail(@PathVariable("boardNo") int boardNo,
 							@PathVariable("categoryCode") int categoryCode,
 							@SessionAttribute(value = "loginMember", required = false) MemberDTO loginMember,
-							Model model, RedirectAttributes ra ) {
+							Model model, RedirectAttributes ra, HttpServletRequest req, HttpServletResponse resp ) {
 		
 		Map<String, Object> map = new HashMap<>();
 		
@@ -103,7 +111,63 @@ public class HobbyBoardController {
 			
 			// 조회수 증가 파트
 			
+			// 조회 수가 증가해야하는 경우
+			if(loginMember == null || board.getMemberNo() != loginMember.getMemberNo()) {
+				
+				Cookie[] cookies = req.getCookies();
+				
+				Cookie c = null;
+				
+				for(Cookie temp : cookies) {
+					
+					// 쿠키 중에 "readBoardNo" 가 존재할 때
+					if(temp.getName().equals("readBoardNo")) {
+						c = temp;
+						break;
+					}
+					
+				}
+				
+				int result = 0; // 조회수 증가 결과 저장 변수
+				
+				if(c == null) {
+					// "readBoardNo" 가 쿠키에 없을 때
+					c = new Cookie("readBoardNo", "[" + boardNo + "]");
+					
+					result = service.updateViewCount(boardNo);
+				} else {
+					
+					if(c.getValue().indexOf("[" + boardNo + "]") == -1) {
+						
+						c.setValue(c.getValue() + "[" + boardNo + "]");
+						result = service.updateViewCount(boardNo);
+						
+					}
+				}
+				
+				if(result > 0) {
+					
+					board.setBoardViewCount(result);
+					
+					c.setPath("/");
+					
+					LocalDateTime now = LocalDateTime.now();
+					
+					LocalDateTime nextDayMidnight = now.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+					
+					long secondsUntilNextDay = Duration.between(now, nextDayMidnight).getSeconds();
+					
+					c.setMaxAge((int)secondsUntilNextDay);
+					
+					resp.addCookie(c); // 응답 객체를 이용해서 클라이언트에게 전달
+					
+				}
+				
+			}
+			
+			
 			// --------------------------
+			
 			path = "board/boardDetail";
 			
 			model.addAttribute("board", board);
@@ -113,7 +177,11 @@ public class HobbyBoardController {
 		return path;
 	}
 	
-	
+	@ResponseBody
+	@PostMapping("like")
+	public int boardLike(@RequestBody Map<String, Integer> map) {
+		return service.boardLike(map);
+	}
 	
 	
 	

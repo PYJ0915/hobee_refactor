@@ -18,4 +18,6 @@ public interface ReportMapper {
 
 	int manageReport(Report updateReport);
 
+	Report selectTarget(int reportNo);
+
 }
