@@ -44,6 +44,30 @@ public interface MemberMapper {
 	 */
 	void insertMemberHobby(Map<String, Object> map);
 
+	/**아이디 찾기(이름)
+	 * @param inputMember
+	 * @return
+	 */
+	int checkName(MemberDTO inputMember);
+
+	/** 아이디 찾기 (전화번호)
+	 * @param inputMember
+	 * @return
+	 */
+	int checkTel(MemberDTO inputMember);
+
+	/** 아이디 찾기 결과 창으로 이동
+	 * @param inputMember
+	 * @return
+	 */
+	String findId(MemberDTO inputMember);
+
+	/** 새 비빌번호 변경
+	 * @param inputMember
+	 * @return
+	 */
+	int pwChange(MemberDTO inputMember);
+
 	
 	
 	

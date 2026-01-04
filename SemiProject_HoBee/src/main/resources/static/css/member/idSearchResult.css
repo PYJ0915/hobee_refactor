@@ -1,0 +1,87 @@
+/* 1. 메인 레이아웃 */
+main {
+    max-width: 800px;
+    margin: 50px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 50px;
+    color: black;
+}
+
+/* 2. 결과 컨테이너 (너비 500px 고정) */
+.result-container {
+    width: 500px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 결과 박스 스타일 */
+.result-box {
+    width: 100%;
+    padding: 40px 20px;
+    background-color: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.result-box p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.result-box h2 {
+    font-size: 24px;
+    font-weight: 800;
+    color: #452829;
+    word-break: break-all;
+}
+
+/* 3. 버튼 및 링크 그룹 */
+.btn-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* 로그인 하러가기 버튼 (메인 버튼 스타일) */
+.main-btn {
+    width: 100%;
+    height: 60px;
+    background-color: #452829;
+    color: white;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none; /* a태그 밑줄 제거 */
+    transition: background-color 0.2s;
+}
+
+.main-btn:hover {
+    background-color: #2d1a1b;
+}
+
+/* 비밀번호 찾기 보조 링크 */
+.sub-link {
+    font-size: 15px;
+    color: #888;
+    text-decoration: underline;
+}
+
+.sub-link:hover {
+    color: #452829;
+}

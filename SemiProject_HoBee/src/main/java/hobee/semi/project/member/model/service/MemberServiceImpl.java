@@ -99,6 +99,48 @@ public class MemberServiceImpl implements MemberService{
 	    
 	    return result;
 	}
+
+	// 아이디 찾기(이름 일치)
+	@Override
+	public int checkName(MemberDTO inputMember) {
+		
+		int result = mapper.checkEmail(inputMember.getMemberEmail()); // 해당 이메일 있으면 1
+		
+		if(result == 0) { // 해당 이메일이 없을 경우
+			return -1;
+		}
+		return mapper.checkName(inputMember);
+	}
+
+	// 아이디 찾기(전화번호  일치)
+	@Override
+	public int checkTel(MemberDTO inputMember) {
+		int result = mapper.checkEmail(inputMember.getMemberEmail()); // 해당 이메일 있으면 1
+		
+		if(result == 0) { // 해당 이메일이 없을 경우
+			return -1;
+		}
+		return  mapper.checkTel(inputMember);
+	}
+
+	// 아이디 찾기 결과 값 창으로 이동
+	@Override
+	public String findId(MemberDTO inputMember) {
+
+		return mapper.findId(inputMember);
+	}
+
+	// 새 비밀번호
+	@Override
+	public int pwChange(MemberDTO inputMember) {
+		
+		String encPw = bcrypt.encode(inputMember.getMemberPw()); // inputPw 암호화 하기
+		
+		inputMember.setMemberPw(encPw); // 암호화 하고 짚어 넣기
+		
+		
+		return mapper.pwChange(inputMember);
+	}
 	
 
 }
