@@ -43,19 +43,38 @@
 
       <div class="info-row">
         <span class="label">취미</span>
-        <div class="hobby-tags">
+        <!-- 취미 있을 때 -->
+        <div class="hobby-tags"
+             th:if="${!#lists.isEmpty(hobbyList)}">
           <span class="hobby-tag"
                 th:each="hobby : ${hobbyList}"
                 th:text="${hobby.hobbyName}">
             러닝
           </span>
         </div>
+
+        <!-- 취미 없을 때 -->
+        <span class="value"
+              th:if="${#lists.isEmpty(hobbyList)}">
+          선택한 취미가 없습니다
+        </span>
       </div>
 
       <div class="info-row column">
         <span class="label">소개</span>
-        <!-- <p class="intro-text" th:text="${member.introduction}"> -->
+        <!-- 소개글 있을 때 -->
+        <p class="intro-text"
+           th:if="${session.loginMember.memberIntroduction != null
+                    and !#strings.isEmpty(session.loginMember.memberIntroduction)}"
+           th:text="${session.loginMember.memberIntroduction}">
           안녕하세요! 새로운 취미를 찾고 있어요.
+        </p>
+
+        <!-- 소개글 없을 때 -->
+        <p class="intro-text"
+           th:if="${session.loginMember.memberIntroduction == null
+                    or #strings.isEmpty(session.loginMember.memberIntroduction)}">
+          등록된 소개글이 없습니다.
         </p>
       </div>
 
@@ -68,7 +87,7 @@
         <!-- 글 없을 때 -->
         <!-- <div class="empty-box" -->
              <!-- th:if="${#lists.isEmpty(myBoardList)}"> -->
-          현재 없음
+          현재 작성한 글이 없습니다.
         </div>
 
         <!-- 글 있을 때 -->
@@ -77,17 +96,20 @@
           <!-- <li th:each="board : ${myBoardList}"> -->
             <!-- <a th:href="@{/board/detail/{no}(no=${board.boardNo})}" -->
                <!-- th:text="${board.boardTitle}"> -->
-              게시글 제목
+              <!-- 게시글 제목 -->
             </a>
             <!-- <span class="date" -->
                   <!-- th:text="${#temporals.format(board.boardWriteDate,'yyyy.MM.dd')}"> -->
-              2025.01.01
+              <!-- 2025.01.01 -->
             </span>
           </li>
         </ul>
       </div>
 
+
     </div>
+
+    
 
   </section>
 </main>
