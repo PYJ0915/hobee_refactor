@@ -1,4 +1,9 @@
 /* 전체 레이아웃 중앙 정렬 */
+
+.page-wrapper {
+  min-height: calc(100vh - 565px);
+}
+
 main {
     display: flex;
     flex-direction: column;
