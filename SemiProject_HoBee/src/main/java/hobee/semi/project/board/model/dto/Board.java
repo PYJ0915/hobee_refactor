@@ -36,8 +36,6 @@ public class Board {
 
 	public int likeCheck; // 좋아요 체크 여부
 	
-	
-	
 	private List<Comment> commentList; // 댓글 목록 by 상민
 	
 	private int authorLevel; // 관리자 신고를 막기 위한 권한 등급
