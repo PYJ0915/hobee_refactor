@@ -15,10 +15,11 @@ import hobee.semi.project.common.util.Utility;
 import hobee.semi.project.findHobby.model.dto.Hobby;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.myPage.model.mapper.MyPageMapper;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
-//@Slf4j
+@Slf4j
 @PropertySource("classpath:/config.properties")
 public class MyPageServiceImpl implements MyPageService {
 
@@ -101,28 +102,37 @@ public class MyPageServiceImpl implements MyPageService {
 	@Override
 	public int profile(MultipartFile profileImg, MemberDTO loginMember) throws Exception {
 		
+		log.info("service profileImg : " + profileImg.getOriginalFilename());//데이터 확인
+		
 		String updatePath = null;
 		
 		String rename = null;
+		
+		String profilePath = profileWebPath;
 		
 		if(!profileImg.isEmpty()) {
 			
 			rename = Utility.fileRename(profileImg.getOriginalFilename());
 			
-			updatePath = profileWebPath;
+			updatePath = profileWebPath + rename;
 			
 		}
 		
 		MemberDTO member = MemberDTO.builder()
 				.memberNo(loginMember.getMemberNo())
-				.profilePath(updatePath)
+				.profilePath(profilePath)
 				.profileOriginalName(profileImg.getOriginalFilename())
 				.profileRename(rename)
+				.profileFullPath(updatePath)
 				.build();
 		
 		int result = mapper.profile(member);
 		
-		if(result > 0) {
+		
+		
+		if(result > 0) {//???서비스 상에서 있는 레코드를 변경했는지, 없어서 레코드를 추가 했는지 알아됨. 
+			
+			log.info("SQL문 수행 성공");
 			
 			if(!profileImg.isEmpty()) {
 				
@@ -131,11 +141,15 @@ public class MyPageServiceImpl implements MyPageService {
 			}
 			
 			loginMember.setProfileOriginalName(profileImg.getOriginalFilename());
-			loginMember.setProfilePath(updatePath);
+			loginMember.setProfilePath(profilePath);
 			loginMember.setProfileRename(rename);
 			
 			// 합쳐진 경로 -> 세션에서 바로 쓸 수 있도록 추가(가상 필드)
-			loginMember.setProfileFullPath(updatePath + rename);
+			loginMember.setProfileFullPath(profilePath + rename);
+			
+			log.info("loginMember.getProfileFullPath() : " + loginMember.getProfileFullPath());
+			log.info("updatePath : " + updatePath);
+			//정상 -> C:/hobeeFiles/profileImg/20260105175402_00001.png
 			
 		}
 		return result;

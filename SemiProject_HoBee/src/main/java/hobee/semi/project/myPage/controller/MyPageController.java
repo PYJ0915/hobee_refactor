@@ -20,11 +20,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import hobee.semi.project.findHobby.model.dto.Hobby;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.myPage.model.service.MyPageService;
+import lombok.extern.slf4j.Slf4j;
 
 @SessionAttributes({"loginMember"})
 @Controller
 @RequestMapping("myPage")
-//@Slf4j
+@Slf4j
 public class MyPageController {
 
 	@Autowired
@@ -152,8 +153,10 @@ public class MyPageController {
 	
 	@PostMapping("profile")
 	public String profile(@RequestParam("profileImg") MultipartFile profileImg,
-						  @SessionAttribute(value="loginMember", required=false) MemberDTO loginMember,
+						  @SessionAttribute("loginMember") MemberDTO loginMember,
 						  RedirectAttributes ra) throws Exception {
+		
+		log.info("controller profileImg : " + profileImg.getOriginalFilename());//데이터 받은 거 확인됨.
 		
 		int result = service.profile(profileImg, loginMember);
 		
@@ -162,6 +165,8 @@ public class MyPageController {
 		if(result > 0) {
 			
 			message = "프로필 이미지 변경 성공!" ;
+			
+			log.info(message);
 			
 		}else {
 			

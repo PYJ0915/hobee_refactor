@@ -28,8 +28,11 @@
     <span class="myPage-subject">내 정보 관리</span>
 
     <!-- 프로필 영역 -->
-    <form action="profile" method="post" name="profileForm" id="profile" 
+    <section class="myPage-main">
+    <form action="profile" method="POST" name="profileFrm" id="profile" 
           enctype="multipart/form-data" class="profile-area">
+
+      <span id="deleteImage">x</span>
       
       <div class="profile-img">
 
@@ -40,18 +43,15 @@
 
       </div>
 
-       <span id="deleteImage">x</span>
-
       <div class="profile-btn-area">
        <label for="imageInput" class="profile-btn">이미지 선택</label>
 
        <input type="file" name="profileImg" id="imageInput" accept="image/*">
       
        <button type="submit" class="profile-btn">변경하기</button>
-       </div>
-       
-
+       </div>   
     </form>
+    </section>
 
     <!-- 정보 수정 폼 -->
     <form action="#" class="info-form" method="POST" name="myPageFrm" id="updateInfo">
@@ -126,7 +126,7 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <script th:inline="javascript">
-  window.selectedHobbyList = [[${session.loginMember.hobbyCode}]];
+  const selectedHobbyList = /*[[${session.loginMember.hobbyCode}]]*/"취미 코드";
 </script>
 
 

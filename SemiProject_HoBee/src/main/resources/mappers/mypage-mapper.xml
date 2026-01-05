@@ -26,7 +26,8 @@
 		WHERE MEMBER_NO = #{memberNo}
 	</update>	
 	
-	<insert id="profile">
+	<!--프로필변경-->
+<!--	<insert id="profile">
 		INSERT INTO "PROFILE_IMG"
 		VALUES(SEQ_PROFILE_NO.NEXTVAL,
 				#{profilePath},
@@ -34,21 +35,32 @@
 				#{profileRename},
 				DEFAULT,
 				#{memberNo})
-	</insert>
+	</insert>-->
 	
-	<insert id="upsertProfileImg">
+	<!--프로필변경-->
+	<insert id="profile">
 	MERGE INTO PROFILE_IMG p
-	USING (SELECT #{memberNo} AS MEMBER_NO,
-				 #{profilePath} AS PROFILE_PATH,
-	 			#{profileRename} AS PROFILE_RENAME
-	 			FROM dual) s
+	USING (SELECT #{profilePath} AS PROFILE_PATH,
+				  #{profileOriginalName} AS PROFILE_ORIGINAL_NAME,
+	 			  #{profileRename} AS PROFILE_RENAME,
+	 			  #{memberNo} AS MEMBER_NO
+	 	   FROM DUAL) s
  	ON (p.MEMBER_NO = s.MEMBER_NO)
-	WHEN MATCHED THEN UPDATE SET p.PROFILE_PATH = s.PROFILE_PATH,
-						 p.PROFILE_RENAME = s.PROFILE_RENAME,
-						 p.PROFILE_DATE = SYSDATE
+	WHEN MATCHED THEN 
+	UPDATE SET p.PROFILE_PATH = s.PROFILE_PATH,
+			   p.PROFILE_ORIGINAL_NAME = s.PROFILE_ORIGINAL_NAME,
+			   p.PROFILE_RENAME = s.PROFILE_RENAME,
+			   p.PROFILE_UPDATE_DATE = SYSDATE
 	WHEN NOT MATCHED THEN
-		INSERT (MEMBER_NO, PROFILE_PATH, PROFILE_RENAME, PROFILE_DATE)
-		VALUES (s.MEMBER_NO, s.PROFILE_PATH, s.PROFILE_RENAME, SYSDATE)
+		INSERT(PROFILE_NO, PROFILE_PATH, PROFILE_ORIGINAL_NAME, PROFILE_RENAME, PROFILE_UPDATE_DATE, MEMBER_NO)
+		VALUES(SEQ_PROFILE_NO.NEXTVAL,
+				s.PROFILE_PATH,
+				s.PROFILE_ORIGINAL_NAME,
+				s.PROFILE_RENAME,
+				SYSDATE,
+				s.MEMBER_NO)
+	</insert>	
+		
 	<!-- 선택한 취미 목록 조회 -->
 	<select id="selectHobbyList"
         parameterType="list"

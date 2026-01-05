@@ -40,7 +40,7 @@
 }
 
 /* 삭제버튼 */
-form[name='profileForm']{position: relative;}
+form[name='profileFrm']{position: relative;}
 
 #deleteImage{
   position: absolute;
