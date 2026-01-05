@@ -7,7 +7,7 @@
 		UPDATE "MEMBER" SET
 		MEMBER_NICKNAME = #{memberNickname},
 		MEMBER_TEL = #{memberTel},
-		MEMBER_ADDRESS = #{memberAddress}
+		MEMBER_ADDRESS = #{memberAddress},
 		MEMBER_INTRODUCTION = #{memberIntroduction}
 		WHERE MEMBER_NO = #{memberNo}
 	</update>
