@@ -105,17 +105,17 @@
 			WHERE REPORTED_MEMBER_NO = #{memberNo}
 			GROUP BY REPORT_REASON
 		)
-		WHERE RNK = 1;
+		WHERE RNK = 1
 	</select>
 	
 	<insert id="insertPenalty">
 		INSERT INTO PENALTY VALUES 
-		(SEQ_PENALTY_NO.NEXTVAL, #{penaltyType}, SYSDATE,
+		(SEQ_PENALTY_NO.NEXTVAL, #{type}, SYSDATE,
 		CASE
- 			WHEN #{penaltyType} IN ('WARNING', 'PERMANENT') THEN NULL
-  			ELSE SYSDATE + #{plusEndDays}
+ 			WHEN #{type} IN ('WARNING', 'PERMANENT') THEN NULL
+  			ELSE SYSDATE + #{plusDays}
 		END,
-  		#{penaltyReason}, DEFAULT, #{memberNo}
+  		#{reason}, DEFAULT, #{memberNo}
 		)
 	</insert>
 
