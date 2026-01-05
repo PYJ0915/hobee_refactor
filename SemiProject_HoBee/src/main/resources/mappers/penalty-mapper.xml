@@ -33,5 +33,40 @@
 		WHERE
 		PENALTY_NO = #{penaltyNo}
 	</update>
+	
+	<select id="getPenaltyCount">
+		SELECT COUNT(*)
+		FROM PENALTY
+		WHERE PENALTY_STATUS = 'ACTIVE'
+		AND PENALTY_TYPE != 'WARNING'
+	</select>
+	
+	<select id="selectPenaltyList">
+		SELECT *
+		FROM (
+			SELECT
+			PENALTY_NO,
+			PENALTY_TYPE,
+			PENALTY_START_DATE,
+			PENALTY_END_DATE,
+			PENALTY_REASON,
+			PENALTY_STATUS,
+			MEMBER_NO,
+			MEMBER_NICKNAME
+			FROM PENALTY
+			JOIN MEMBER USING (MEMBER_NO)
+			WHERE PENALTY_STATUS = 'ACTIVE'
+			ORDER BY
+				CASE
+					WHEN PENALTY_TYPE = 'PERMANENT' THEN 1
+					WHEN PENALTY_TYPE = 'SUSPEND' THEN 2
+				END,
+			PENALTY_NO DESC )
+	</select>
+	
+	<update id="managePenalty">
+		UPDATE PENALTY SET PENALTY_STATUS = 'EXPIRED', PENALTY_END_DATE = SYSDATE
+		WHERE PENALTY_NO = #{penaltyNo} 
+	</update>
 
 </mapper>
