@@ -8,6 +8,7 @@
 		MEMBER_NICKNAME = #{memberNickname},
 		MEMBER_TEL = #{memberTel},
 		MEMBER_ADDRESS = #{memberAddress}
+		MEMBER_INTRODUCTION = #{memberIntroduction}
 		WHERE MEMBER_NO = #{memberNo}
 	</update>
 
@@ -25,6 +26,31 @@
 		WHERE MEMBER_NO = #{memberNo}
 	</update>	
 	
+	<!-- 선택한 취미 목록 조회 -->
+	<select id="selectHobbyList"
+        parameterType="list"
+        resultType="Hobby">
+		SELECT HOBBY_CODE, HOBBY_NAME
+    		FROM HOBBY
+    		WHERE HOBBY_CODE IN
+    		<foreach collection="list" item="code"
+             open="(" separator="," close=")">
+        #{code}
+		</foreach>
+	</select>
+
+	<!-- 기존 취미 삭제 -->
+	<delete id="deleteMemberHobby">
+  		DELETE FROM MEMBER_HOBBY
+  		WHERE MEMBER_NO = #{memberNo}
+	</delete>
+
+	<!-- 취미 추가 -->
+	<insert id="insertMemberHobby">
+  		INSERT INTO MEMBER_HOBBY (MEMBER_NO, HOBBY_CODE)
+  		VALUES <foreach collection="hobbyCode" item="code" separator=",">
+  		(#{memberNo}, #{hobbyCode}) </foreach>
+	</insert>
 	
 	
 </mapper>

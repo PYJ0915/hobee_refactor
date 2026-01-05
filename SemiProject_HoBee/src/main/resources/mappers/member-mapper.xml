@@ -31,9 +31,70 @@
 			AND MEMBER_DEL_FL = 'N'
 		</select>
 		
+		<insert id="signUp" parameterType="MemberDTO">
+	    <selectKey order="BEFORE" resultType="_int" keyProperty="memberNo">
+	        SELECT SEQ_MEMBER_NO.NEXTVAL FROM DUAL
+	    </selectKey>
+		    INSERT INTO "MEMBER"
+		    VALUES(
+		        #{memberNo}, 
+		        #{memberId}, 
+		        #{memberPw}, 
+		        #{memberName}, 
+		        #{memberEmail}, 
+		        #{memberNickname}, 
+		        #{memberTel}, 
+		        #{memberAddress}, 
+		        DEFAULT, 
+		        DEFAULT, 
+		        DEFAULT, 
+		        #{memberIntroduction}
+	    	)
+		</insert>
+	
+		<insert id="insertMemberHobby">
+	    	INSERT INTO "MEMBER_HOBBY" 
+	    	(MEMBER_NO, HOBBY_CODE)
+	    	VALUES (
+				#{memberNo}, 
+				#{hobbyCode}
+				)
+		</insert>
 		
-
-
+		<select id="checkName">
+			SELECT COUNT(*)
+			FROM "MEMBER"
+			WHERE MEMBER_EMAIL = #{memberEmail}
+			AND MEMBER_DEL_FL = 'N'
+			AND MEMBER_NAME = #{memberName}
+		</select>
+		
+		<select id="checkTel">
+			SELECT COUNT(*)
+			FROM "MEMBER"
+			WHERE MEMBER_EMAIL = #{memberEmail}
+			AND MEMBER_DEL_FL = 'N'
+			AND MEMBER_TEL = #{memberTel}
+		</select>
+		
+		<select id="findId" resultType="string">
+		    SELECT MEMBER_ID
+		    FROM "MEMBER"
+		    WHERE MEMBER_NAME = #{memberName}
+		    AND MEMBER_TEL = #{memberTel}
+		    AND MEMBER_EMAIL = #{memberEmail}
+		    AND MEMBER_DEL_FL = 'N'
+		</select>
+		
+		<update id="pwChange">
+			UPDATE "MEMBER" SET
+    		MEMBER_PW = #{memberPw}
+   			WHERE MEMBER_EMAIL = #{memberEmail}
+   		 	AND MEMBER_DEL_FL = 'N'
+		</update>
+		
+		
+		
 
 
 

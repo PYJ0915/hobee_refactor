@@ -83,8 +83,8 @@ a:hover {
     background-color: #452829;
 
     font-weight: bold;
-    color: #FFF57E;
-    border: 2px solid #FFF57E;
+    color: white;
+    border: 2px solid white;
     border-radius: 5px;
 
     cursor: pointer;
@@ -169,7 +169,7 @@ a:hover {
     width: 100px;
 
     font-weight: bold;
-    background-color: #FFF57E;
+    background-color: white;
     border: none;
     color: #452829;
 

@@ -21,4 +21,14 @@ public interface NoticeBoardMapper {
 
 	Board selectBoardDetail(Map<String, Object> map);
 
+	int deleteBoardLike(Map<String, Integer> map);
+
+	int insertBoardLike(Map<String, Integer> map);
+
+	int selectLikeCount(Integer boardNo);
+
+	int updateViewCount(int boardNo);
+
+	int selectViewCount(int boardNo);
+
 }
