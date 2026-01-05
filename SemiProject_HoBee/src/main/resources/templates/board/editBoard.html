@@ -22,8 +22,10 @@
                                             (boardName == 'hobby' ? '취미게시판 작성' : '글 작성'))}">글 쓰기</h1>
         
         <form action="" method="post" id="boardContent">
-            <input type="hidden" name="boardNo" th:value="${board?.boardNo}">
-            <input type="hidden" name="categoryCode" th:value="${board?.categoryCode}">
+            <input type="hidden" name="boardNo" th:if="${board != null}" th:value="${board?.boardNo}">
+            <input type="hidden" name="categoryCode" th:value="${board?.categoryCode ?: 1}">
+
+            <input type="hidden" name="categoryCode" th:value="${board?.categoryCode ?: param.categoryCode}">
 
             <input type="text" name="boardTitle" class="board-title-input" 
                    placeholder="제목을 입력하세요" th:value="${board?.boardTitle}"/>
