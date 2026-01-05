@@ -30,7 +30,10 @@
         DEFAULT, 
         #{memberNo}, 
         #{boardCode},  
-        #{categoryCode}, 
+		<choose>
+            <when test="boardCode == 1 or boardCode == 3">NULL</when>
+            <otherwise>#{categoryCode}</otherwise>
+        </choose>,
         #{boardContent}
     )
 </insert>
