@@ -94,7 +94,7 @@
         <ul class="my-board-list"
             th:if="${!#lists.isEmpty(myBoardList)}">
           <li th:each="board : ${myBoardList}">
-            <a th:href="@{/board/detail/{no}(no=${board.boardNo})}"
+            <a th:href="@{/board/{name}(name=*{boardName})/{no}(no=${board.boardNo})}"
                th:text="${board.boardTitle}">
               <!-- 게시글 제목 -->
             </a>
