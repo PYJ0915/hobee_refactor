@@ -6,9 +6,9 @@
   <title>이용 제한 안내 | Ho-Bee</title>
   
   <!-- 공통 -->
-  <link rel="stylesheet" th:href="@{/css/common.css}" />
+  <link rel="stylesheet" href="/css/common.css" />
   <!-- 전용 -->
-  <link rel="stylesheet" th:href="@{/css/penalty/penalty.css}" />
+  <link rel="stylesheet" href="/css/penalty/penalty.css" />
 
 </head>
 
@@ -22,8 +22,8 @@
     <!-- 본문 -->
     <main class="penalty-page" role="main">
       <section class="penalty-card"
-               th:classappend="${penalty.penaltyType} == 'WARNING' ? ' is-warning' :
-                              (${penalty.penaltyType} == 'SUSPEND' ? ' is-suspend' : ' is-permanent')">
+               th:classappend="${penalty.penaltyType} == 'WARNING' ? 'is-warning' :
+                              (${penalty.penaltyType} == 'SUSPEND' ? 'is-suspend' : 'is-permanent')">
 
         <!-- 상단 배지/타이틀 -->
         <div class="penalty-head">
