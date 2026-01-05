@@ -11,6 +11,17 @@ const authEmail = document.querySelector("#memberEmail"); // input이메일
 const emailMessage = document.querySelector("#emailMessage"); // 이메일 메시지
 
 
+// 타이머 초기값(초기화)
+let authTimer; // 타이머 역할을 할 setInterval을 저장할 변수
+
+const initMin = 4; // 타이머 초기값 (분)
+const initSec = 59; // 타이머 초기값 (초)
+const initTime = "05:00";
+
+// 실제 줄어드는 시간을 저장할 변수
+let min = initMin;
+let sec = initSec;
+
 authEmail.addEventListener("input",e=>{
 
     const inputEmail = e.target.value; // 입력된 값 가져오기
@@ -60,14 +71,26 @@ const sendAuthKeyBtn = document.querySelector("#sendAuthKeyBtn"); // 인증번�
 
 
 sendAuthKeyBtn.addEventListener("click",()=>{
-    
 
+    
+    
     // checkOBJ에가 false 일때 == 중복이거나 유효한 이메일이 아닌경우
     if(!checkObj.authEmail) {
         alert("유효한 이메일 작성 후 클릭해 주세요");
         return;
     }   
 
+    // 기존에 돌아가던 타이머 멈추기 (중복 방지)
+    clearInterval(authTimer);
+
+    // 시간 변수 초기화(4:59)
+    min = initMin;
+    sec = initSec;
+
+    // 화면에 즉시 "05:00" 표시만
+    authKeyMessage.innerText = initTime;
+    authKeyMessage.classList.remove("confirm", "error");
+    
     // 비동기로 서버에서 메일보내기 
     fetch("/email/pwSearch",{
         method : "POST",
@@ -79,6 +102,35 @@ sendAuthKeyBtn.addEventListener("click",()=>{
         if(result == 1){
             console.log("인증 번호 발송 성공");
             alert("인증번호가 발송되었습니다.");
+
+            min = initMin;
+            sec = initSec;
+            authKeyMessage.innerText = initTime;
+        
+            // 1초마다 동작함
+            authTimer = setInterval( () => {
+        
+                authKeyMessage.innerText = `${addZero(min)}:${addZero(sec)}`;
+        
+                // 0분 0초인 경우 ("00:00" 출력 후)
+                if(min == 0 && sec == 0) {
+                    checkObj.authKey = false; // 인증 못함
+                    clearInterval(authTimer); // interval 멈춤
+                    authKeyMessage.classList.add('error');
+                    authKeyMessage.classList.remove('confirm');
+                    alert("인증시간이 초과되었습니다.");
+                    return;
+                }
+        
+                // 0초인 경우(0초를 출력한 후)
+                if(sec == 0) {
+                    sec = 60;
+                    min--;
+                }
+        
+                sec--; // 1초 감소
+        
+            } , 1000); // 1초 지연시간  
         }else{
             console.log("인증 번호 발송 실패");
             alert("인증번호가 발송 실패되었습니다.");
@@ -86,6 +138,12 @@ sendAuthKeyBtn.addEventListener("click",()=>{
     })
 
 });
+// 전달 받은 숫자가 10 미만인 경우(한자리) 앞에 0 붙여서 반환
+function addZero(number) {
+    if( number < 10 ) return "0" + number;
+    else              return number;
+}
+
 
 
 // 인증코드 확인 ---------------------------------------------------------------------------
@@ -96,6 +154,7 @@ const authKeyMessage = document.querySelector("#authKeyMessage");
 checkAuthKeyBtn.addEventListener("click" , e=>{
 
     const inputAuthKey = authKey.value; // 입력한 값 얻어오기
+
 
     if(inputAuthKey.trim().length === 0){
         alert("인증번호 작성 후 클릭해주세요.");
@@ -116,6 +175,7 @@ checkAuthKeyBtn.addEventListener("click" , e=>{
             authKeyMessage.innerText="인증번호가 일치합니다";
             authKeyMessage.classList.add("confirm");
             authKeyMessage.classList.remove("error");
+            clearInterval(authTimer); // 인증번호 일치한 경우 멈춤
             checkObj.authKey = true;
         }else{
             console.log("인증번호 불일치");
