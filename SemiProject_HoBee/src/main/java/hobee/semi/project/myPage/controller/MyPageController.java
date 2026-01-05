@@ -139,7 +139,7 @@ public class MyPageController {
 		if(result > 0) {
 			
 			message = "비밀번호가 변경되었습니다";
-			path = "profile";
+			path = "info"; 
 		
 		} else {
 			
