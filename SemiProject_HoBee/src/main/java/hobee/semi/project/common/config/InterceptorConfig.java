@@ -19,17 +19,18 @@ public class InterceptorConfig implements WebMvcConfigurer {
 		 registry.addInterceptor(penaltyInterceptor)
          .addPathPatterns("/**")            
          .excludePathPatterns(
-             // 1️⃣ 로그인 / 로그아웃
+             // 로그인 / 로그아웃
              "/member/login",
              "/member/logout",
-             // 2️⃣ 제재 안내 페이지 (무한 리다이렉트 방지)
+             // 제재 안내 페이지 (무한 리다이렉트 방지)
              "/penalty/**",
-             // 3️⃣ 정적 자원
+             "/footer/**",
+             // 정적 자원
              "/css/**",
              "/js/**",
              "/images/**",
              "/favicon.ico",
-             // 4️⃣ 에러 페이지
+             // 에러 페이지
              "/error"
          );
 	}

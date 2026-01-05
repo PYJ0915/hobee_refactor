@@ -110,13 +110,20 @@
 	
 	<insert id="insertPenalty">
 		INSERT INTO PENALTY VALUES 
-		(SEQ_PENALTY_NO.NEXTVAL, #{type}, SYSDATE,
+		(SEQ_PENALTY_NO.NEXTVAL, #{penaltyType}, SYSDATE,
 		CASE
- 			WHEN #{type} IN ('WARNING', 'PERMANENT') THEN NULL
+ 			WHEN #{penaltyType} IN ('WARNING', 'PERMANENT') THEN NULL
   			ELSE SYSDATE + #{plusDays}
 		END,
-  		#{reason}, DEFAULT, #{memberNo}
+  		#{penaltyReason}, DEFAULT, #{memberNo}
 		)
 	</insert>
+	
+	<select id="selectActivePermanentCount">
+		SELECT COUNT(*) FROM PENALTY
+		WHERE MEMBER_NO = #{memberNo}
+		AND PENALTY_TYPE = 'PERMANENT'
+		AND PENALTY_STATUS = 'ACTIVE' 
+	</select>
 
 </mapper>

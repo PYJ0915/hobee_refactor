@@ -1,6 +1,7 @@
 package hobee.semi.project.report.model.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
@@ -30,6 +31,8 @@ public interface ReportMapper {
 
 	String selectPenaltyReasaon(int memberNo);
 
-	int insertPenalty(int memberNo, String penaltyReason, int plusEndDays, String penaltyType);
+	int insertPenalty(Map<String, Object> map);
+
+	int selectActivePermanentCount(int memberNo);
 
 }

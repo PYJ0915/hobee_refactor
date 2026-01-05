@@ -61,6 +61,14 @@ public class ReportServiceImpl implements ReportService {
 		
 		// 승인을 누른 경우
 		int memberNo = mapper.selectReportedMemberNo(updateReport.getReportNo());
+		
+		// 이미 영구 정지 시 penalty 인서트 방지
+		int permanentCount = mapper.selectActivePermanentCount(memberNo);
+		
+			if (permanentCount > 0) {
+				return result;
+			}
+			
 		// 승인된 신고 개수 조회
 		int count = mapper.selectReportCount(memberNo);
 		// 경고 이력 조회
@@ -69,17 +77,25 @@ public class ReportServiceImpl implements ReportService {
 		int suspendCount = mapper.selectSuspendCount(memberNo);
 		
 		// 가장 많은 신고 이유 조회해오기 => 제재 사유
-		String reason =  mapper.selectPenaltyReasaon(memberNo);
+		String penaltyReason =  mapper.selectPenaltyReasaon(memberNo);
 		
 		int plusDays = 0; // WARNING / PERMANENT는 endDate 사용 안 함
-		String type = null;
+		String penaltyType = null;
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("memberNo", memberNo);
+		map.put("penaltyReason", penaltyReason);
+		
 		
 		if(count >= 5 && warningCount == 0) {
 			// 경고
-			type = "WARNING";
+			penaltyType = "WARNING";
+			
+			map.put("penaltyType", penaltyType);
+			map.put("plusDays", plusDays);
 			
 			// 제재 테이블에 인서트
-			int resp = mapper.insertPenalty(memberNo, reason, plusDays, type);
+			int resp = mapper.insertPenalty(map);
 			
 			if(resp == 0) {
 				throw new RuntimeException();
@@ -91,7 +107,7 @@ public class ReportServiceImpl implements ReportService {
 		if(count >= (suspendCount + 1) * 10) {
 			// 정지
 			
-			type = "SUSPEND";
+			penaltyType = "SUSPEND";
 			
 			switch (suspendCount + 1) {
 				case 1:
@@ -107,11 +123,14 @@ public class ReportServiceImpl implements ReportService {
 					plusDays = 30;
 					break;
 				default:
-					type = "PERMANENT";
+					penaltyType = "PERMANENT";
 					break;
 			}
 			
-			int resp = mapper.insertPenalty(memberNo, reason, plusDays, type);
+			map.put("penaltyType", penaltyType);
+			map.put("plusDays", plusDays);
+			
+			int resp = mapper.insertPenalty(map);
 			
 			if(resp == 0) {
 				throw new RuntimeException();

@@ -10,15 +10,17 @@ import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.penalty.model.dto.Penalty;
 import hobee.semi.project.penalty.model.service.PenaltyService;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping("/penalty")
+@RequestMapping("penalty")
+@Slf4j
 public class PenaltyController {
 
 	@Autowired
-	private PenaltyService penaltyService;
+	private PenaltyService service;
 
-	@GetMapping("/suspend")
+	@GetMapping("suspend")
 	public String suspendPage(HttpSession session, Model model) {
 
 		MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
@@ -28,7 +30,7 @@ public class PenaltyController {
 			return "redirect:/";
 		}
 
-		Penalty penalty = penaltyService.selectPenalty(loginMember.getMemberNo());
+		Penalty penalty = service.selectPenalty(loginMember.getMemberNo());
 
 		// 혹시나 정지 아닌 상태면 메인으로
 		if (penalty == null || !"SUSPEND".equals(penalty.getPenaltyType())) {
@@ -36,10 +38,13 @@ public class PenaltyController {
 		}
 
 		model.addAttribute("penalty", penalty);
+		
+		log.info("penalty : " + penalty);
+		
 		return "penalty/penalty";
 	}
 
-	@GetMapping("/permanent")
+	@GetMapping("permanent")
 	public String permanentPage(HttpSession session, Model model) {
 
 		MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
@@ -48,7 +53,7 @@ public class PenaltyController {
 			return "redirect:/";
 		}
 
-		Penalty penalty = penaltyService.selectPenalty(loginMember.getMemberNo());
+		Penalty penalty = service.selectPenalty(loginMember.getMemberNo());
 
 		if (penalty == null || !"PERMANENT".equals(penalty.getPenaltyType())) {
 			return "redirect:/";

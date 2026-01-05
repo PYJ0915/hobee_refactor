@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title th:text="|이용 제한 안내 | Ho-Bee|">이용 제한 안내 | Ho-Bee</title>
+  <title>이용 제한 안내 | Ho-Bee</title>
   
   <!-- 공통 -->
   <link rel="stylesheet" th:href="@{/css/common.css}" />
   <!-- 전용 -->
-  <link rel="stylesheet" th:href="@{/css/penalty.css}" />
+  <link rel="stylesheet" th:href="@{/css/penalty/penalty.css}" />
 
 </head>
 
@@ -22,25 +22,25 @@
     <!-- 본문 -->
     <main class="penalty-page" role="main">
       <section class="penalty-card"
-               th:classappend="${penaltyType} == 'WARNING' ? ' is-warning' :
-                              (${penaltyType} == 'SUSPEND' ? ' is-suspend' : ' is-permanent')">
+               th:classappend="${penalty.penaltyType} == 'WARNING' ? ' is-warning' :
+                              (${penalty.penaltyType} == 'SUSPEND' ? ' is-suspend' : ' is-permanent')">
 
         <!-- 상단 배지/타이틀 -->
         <div class="penalty-head">
           <div class="badge" aria-hidden="true">
             <span class="badge-dot"></span>
             <span class="badge-text"
-                  th:text="${penaltyType} == 'WARNING' ? '경고' :
-                           (${penaltyType} == 'SUSPEND' ? '정지' : '영구정지')">
+                  th:text="${penalty.penaltyType} == 'WARNING' ? '경고' :
+                           (${penalty.penaltyType} == 'SUSPEND' ? '일시적 계정 이용 제한' : '영구정지')">
               정지
             </span>
           </div>
 
-          <h1 class="title">
+          <h1 class="title" th:text="${penalty.penaltyType} == 'WARNING' ? '경고 안내' : '이용 제한 안내'">
             이용 제한 안내
           </h1>
 
-          <p class="subtitle">
+          <p class="subtitle" th:text="${penalty.penaltyType} == 'WARNING' ? '경고가 누적될 경우 Ho-Bee 운영 정책에 따라 서비스 이용이 제한될 수 있습니다.' : 'Ho-Bee 운영 정책에 따라 현재 계정 이용이 제한되었습니다.'">
             Ho-Bee 운영 정책에 따라 현재 계정 이용이 제한되었습니다.
           </p>
         </div>
@@ -49,14 +49,14 @@
         <div class="penalty-info">
           <div class="info-row">
             <span class="label">제재 사유</span>
-            <span class="value" th:text="${penaltyReason}">부적절한 게시글/댓글 작성</span>
+            <span class="value" th:text="${penalty.penaltyReason}">부적절한 게시글/댓글 작성</span>
           </div>
 
           <div class="info-row">
             <span class="label">제재 유형</span>
             <span class="value"
-                  th:text="${penaltyType} == 'WARNING' ? '경고' :
-                           (${penaltyType} == 'SUSPEND' ? '정지' : '영구정지')">
+                  th:text="${penalty.penaltyType} == 'WARNING' ? '경고' :
+                           (${penalty.penaltyType} == 'SUSPEND' ? '정지' : '영구정지')">
               정지
             </span>
           </div>
@@ -64,16 +64,16 @@
           <div class="info-row">
             <span class="label">시작일</span>
             <span class="value"
-                  th:text="${#temporals.format(penaltyStartDate,'yyyy.MM.dd HH:mm')}">
+                  th:text="${#temporals.format(penalty.penaltyStartDate,'yyyy년 MM월 dd일 HH시 mm분')}">
               2026.01.04 12:00
             </span>
           </div>
 
           <!-- 정지일 때만 종료일 표시 (영구정지면 숨김) -->
-          <div class="info-row" th:if="${penaltyType} == 'SUSPEND'">
+          <div class="info-row" th:if="${penalty.penaltyType} == 'SUSPEND'">
             <span class="label">종료일</span>
             <span class="value"
-                  th:text="${#temporals.format(penaltyEndDate,'yyyy.MM.dd HH:mm')}">
+                  th:text="${#temporals.format(penalty.penaltyEndDate,'yyyy년 MM월 dd일 HH시 mm분')}">
               2026.01.11 12:00
             </span>
           </div>
@@ -82,15 +82,15 @@
 
           <!-- 안내 문구(유형별로 조금 다르게) -->
           <div class="message">
-            <p th:if="${penaltyType} == 'WARNING'">
+            <p th:if="${penalty.penaltyType} == 'WARNING'">
               경고가 누적될 경우 서비스 이용이 제한될 수 있어요. 앞으로는 커뮤니티 가이드를 준수해 주세요.
             </p>
 
-            <p th:if="${penaltyType} == 'SUSPEND'">
+            <p th:if="${penalty.penaltyType} == 'SUSPEND'">
               정지 기간 동안 게시글/댓글 작성 및 일부 기능 이용이 제한돼요. 기간 종료 후 정상 이용 가능합니다.
             </p>
 
-            <p th:if="${penaltyType} == 'PERMANENT'">
+            <p th:if="${penalty.penaltyType} == 'PERMANENT'">
               영구정지 상태로 계정 이용이 불가능해요. 이의 제기가 필요하다면 고객센터로 문의해 주세요.
             </p>
 
@@ -104,25 +104,20 @@
         <!-- 버튼 영역 -->
         <div class="actions">
           <!-- 경고/정지는 메인으로 -->
-          <a th:if="${penaltyType} != 'PERMANENT'" th:href="@{/}" class="btn primary">
+          <a th:if="${penalty.penaltyType} != 'PERMANENT'" th:href="@{/}" class="btn primary">
             메인으로 이동
           </a>
-
-          <!-- 영구정지는 로그인/메인 등 선택 가능 -->
-          <a th:if="${penaltyType} == 'PERMANENT'" th:href="@{/}" class="btn primary">
-            메인으로 이동
-          </a>
-
-          <a th:href="@{/help}" class="btn ghost">
+          
+          <a href="/footer/cs" class="btn ghost">
             고객센터
           </a>
         </div>
 
         <!-- 하단 작은 링크 -->
         <div class="footer-links">
-          <a th:href="@{/terms}" class="mini-link">이용 약관</a>
+          <a href="/footer/terms" class="mini-link">이용 약관</a>
           <span class="dot">·</span>
-          <a th:href="@{/privacy}" class="mini-link">개인정보처리방침</a>
+          <a href="/footer/privacy" class="mini-link">개인정보처리방침</a>
         </div>
       </section>
     </main>
