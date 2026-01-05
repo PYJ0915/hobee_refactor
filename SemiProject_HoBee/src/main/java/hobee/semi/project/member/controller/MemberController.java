@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -160,6 +161,74 @@ public class MemberController {
 		
 	}
 	
+	
+	
+	//-------------------------------------------------------------------------------------
+	
+	// 아이디 찾기 페이지
+	@GetMapping("idSearch")
+	public String idSearchPage() {
+	    return "member/idSearch"; 
+	}
+	
+	// 가입된 이름 찾기
+	@ResponseBody
+	@PostMapping("checkName")
+	public int checkName(@RequestBody MemberDTO inputMember) {
+		return service.checkName(inputMember);	
+	}
+	
+	// 가입된 이름 찾기
+	@ResponseBody
+	@PostMapping("checkTel")
+	public int checkTel(@RequestBody MemberDTO inputMember) {
+		return service.checkTel(inputMember);	
+	}
+	
+	// 아이디 찾기 
+	@PostMapping("idSearch")
+	public String idSearch(MemberDTO inputMember , Model model ,RedirectAttributes ra) {
+		
+		String foundId = service.findId(inputMember);
+		
+		if(foundId == null) {
+			ra.addFlashAttribute("message","일치하는 회원 정보가 없습니다.");
+	        return "redirect:idSearch"; // 실패 시 다시 찾기 페이지로
+	    }
+		
+		model.addAttribute("foundId", foundId); // 타임리프 사용하기 위해 뿌려 주기
+		
+		return "member/idSearchResult"; // 결과 페이지로 이동
+
+	}
+	
+	// 비밀번호 찾기 페이지
+	@GetMapping("pwSearch")
+	public String pwSearchPage() {
+	    return "member/pwSearch"; 
+	}
+	
+	//  새 비밀번호 
+	@PostMapping("pwSearch")
+	public String pwChange(MemberDTO inputMember ,RedirectAttributes ra) { 
+		
+		int result = service.pwChange(inputMember);
+		
+		String message = null;
+	    String path = null;
+
+	    if(result > 0) {
+	        message = "비밀번호가 변경되었습니다.";
+	        path = "redirect:/member/loginPage"; // 로그인 페이지로
+	    } else {
+	        message = "비밀번호 변경에 실패했습니다.";
+	        path = "redirect:/member/pwSearch"; // 현재 페이지로
+	    }
+
+	    ra.addFlashAttribute("message", message);
+	    
+	    return path;
+	}
 	
 
 
