@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.findHobby.model.dto.Hobby;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.myPage.model.service.MyPageService;
@@ -49,8 +50,12 @@ public class MyPageController {
 		
 		List<Hobby> hobbyList =
 			    service.selectHobbyList(loginMember.getHobbyCode());
+		
+		List<Board> boardList = service.selectBoardList(loginMember.getMemberNo());
 
 		model.addAttribute("hobbyList", hobbyList);
+		
+		model.addAttribute("myBoardList", boardList);
 		
 		return "myPage/myPage-profile";
 	}
@@ -134,7 +139,7 @@ public class MyPageController {
 		if(result > 0) {
 			
 			message = "비밀번호가 변경되었습니다";
-			path = "profile";
+			path = "info"; 
 		
 		} else {
 			

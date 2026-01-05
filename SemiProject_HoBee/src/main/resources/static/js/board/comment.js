@@ -23,7 +23,7 @@ const selectCommentList = () => {
       commentRow.classList.add("comment-row");
 
       // 대댓글(자식 댓글)인 경우 "child-comment" 클래스 추가
-      if(comment.parentCommentNo != 0) 
+      if(comment.commentNo2 != 0) 
         commentRow.classList.add("child-comment");
 
       // 만약 삭제된 댓글이지만 자식 댓글이 존재하는 경우
