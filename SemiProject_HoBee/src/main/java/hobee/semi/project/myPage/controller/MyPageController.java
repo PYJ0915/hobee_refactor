@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -107,6 +108,16 @@ public class MyPageController {
 		ra.addFlashAttribute("message", message);
 		
 		return "redirect:info";
+	}
+	
+	@ResponseBody
+	@GetMapping("checkNickname")
+	public int checNickname(@RequestParam("memberNickname") String memberNickname,
+							@SessionAttribute("loginMember") MemberDTO loginMember) {
+		
+		int memberNo = loginMember.getMemberNo();
+		
+		return service.checkNickname(memberNickname, memberNo);
 	}
 	
 	/** 비밀번호 변경 화면 이동

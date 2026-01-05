@@ -16,4 +16,6 @@ public interface MyPageService {
 
 	List<Board> selectBoardList(int memberNo);
 
+	int checkNickname(String memberNickname, int memberNo);
+
 }

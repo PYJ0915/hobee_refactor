@@ -1,6 +1,7 @@
 package hobee.semi.project.myPage.model.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -51,5 +52,7 @@ public interface MyPageMapper {
 	 * @return
 	 */
 	List<Board> selectBoardList(int memberNo);
+
+	int checkNickname(Map<String, Object> map);
 
 }
