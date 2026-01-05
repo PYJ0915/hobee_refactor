@@ -20,4 +20,6 @@ public class Penalty {
 	private String penaltyReason;
 	private String penaltyStatus;
 	private int memberNo;
+	
+	private String memberNickname;
 }

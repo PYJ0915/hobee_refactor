@@ -22,8 +22,8 @@
     <!-- 본문 -->
     <main class="penalty-page" role="main">
       <section class="penalty-card"
-               th:classappend="${penalty.penaltyType} == 'WARNING' ? ' is-warning' :
-                              (${penalty.penaltyType} == 'SUSPEND' ? ' is-suspend' : ' is-permanent')">
+               th:classappend="${penalty.penaltyType} == 'WARNING' ? 'is-warning' :
+                              (${penalty.penaltyType} == 'SUSPEND' ? 'is-suspend' : 'is-permanent')">
 
         <!-- 상단 배지/타이틀 -->
         <div class="penalty-head">

@@ -15,6 +15,9 @@
       <th:block th:if="${session.loginMember != null and session.loginMember.authorLevel == 2}">
         <a href="/report/manageReport" class="nav-item">신고 관리</a>
       </th:block>
+      <th:block th:if="${session.loginMember != null and session.loginMember.authorLevel == 2}">
+        <a href="/penalty/managePenalty" class="nav-item">제재 회원 관리</a>
+      </th:block>
     </nav>
 
 
