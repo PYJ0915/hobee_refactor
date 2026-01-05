@@ -106,7 +106,7 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <script th:inline="javascript">
-  window.selectedHobbyList = [[${session.loginMember.hobbyCode}]];
+  const selectedHobbyList = /*[[${session.loginMember.hobbyCode}]]*/ "취미 리스트";
 </script>
 
 

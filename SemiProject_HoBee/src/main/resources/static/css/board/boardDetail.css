@@ -112,6 +112,11 @@
   padding: 20px 0;
 }
 
+.child-comment {
+  padding-left : 50px;
+	position: relative
+}
+
 /* 댓글 상단 */
 .comment-top {
   display: flex;
