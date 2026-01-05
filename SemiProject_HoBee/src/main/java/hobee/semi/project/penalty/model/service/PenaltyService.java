@@ -6,4 +6,6 @@ public interface PenaltyService {
 
 	Penalty selectPenalty(int memberNo);
 
+	void expirePenalty(int penaltyNo);
+
 }
