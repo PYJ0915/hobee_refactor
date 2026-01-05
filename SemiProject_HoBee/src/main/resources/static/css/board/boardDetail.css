@@ -53,14 +53,10 @@
 .nickname {
   font-weight: bold;
   color: #452829;
-  text-decoration: none;
+  margin: 0;
 }
 
-.nickname:hover {
-  text-decoration: underline;
-}
-
-.date {
+.comment-date {
   font-size: 13px;
   color: #888;
 }
@@ -87,6 +83,8 @@
   font-size: 14px;
   cursor: pointer;
   transition-duration: 0.1s;
+  color: #000;
+  font-weight: normal;
 }
 
 .like-btn span {
@@ -335,4 +333,9 @@
   text-overflow: ellipsis; /* 생략 부호 없이 숨김 */
   white-space: nowrap;
   vertical-align: bottom;
+}
+
+.like-checked {
+  color: #452829;
+  font-weight: bold;
 }

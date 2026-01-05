@@ -1,0 +1,105 @@
+/* 1. 메인 레이아웃 */
+main {
+    max-width: 800px;
+    margin: 50px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 50px;
+    color: black;
+}
+
+section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 2. 아이디 찾기 폼 (너비 500px 고정) */
+#idSearchForm {
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 3. 입력창 섹션 */
+.signUp-input-area {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 25px;
+}
+
+h3 {
+    width: 100%;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 10px;
+    text-align: left;
+}
+
+.signUp-input {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+}
+
+/* 4. 입력 필드 스타일 */
+input[type="text"], 
+input[type="email"], 
+input[type="tel"] {
+    flex: 1;
+    height: 48px;
+    padding: 0 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+}
+
+/* 5. 유효성 검사 메시지 */
+.signUp-message {
+    width: 100%;
+    font-size: 13px;
+    margin-top: 8px;
+    text-align: left;
+}
+
+.confirm { color: green !important; }
+.error { color: red !important; }
+
+/* 6. 버튼 스타일 (회원가입 디자인과 통일) */
+
+/* 인증번호 받기/인증하기 버튼 */
+button[type="button"] {
+    height: 48px;
+    padding: 0 20px;
+    background-color: #452829;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+/* 하단 아이디 찾기 메인 버튼 */
+#idSearchBtn {
+    width: 100%;
+    height: 60px;
+    background-color: #452829;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 30px;
+    cursor: pointer;
+}

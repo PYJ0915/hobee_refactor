@@ -12,4 +12,6 @@ public interface ReportService {
 
 	int manageReport(Report updateReport);
 
+	Report selectTarget(int reportNo);
+
 }

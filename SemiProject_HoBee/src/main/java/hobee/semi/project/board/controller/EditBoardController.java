@@ -1,13 +1,17 @@
 package hobee.semi.project.board.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -20,12 +24,14 @@ import hobee.semi.project.board.model.service.FreeBoardService;
 import hobee.semi.project.board.model.service.HobbyBoardService;
 import hobee.semi.project.board.model.service.NoticeBoardService;
 import hobee.semi.project.member.model.dto.MemberDTO;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("editBoard")
 @RequiredArgsConstructor
 public class EditBoardController {
+
 
 	private final EditBoardService service;
 	private final FreeBoardService freeService;
@@ -163,6 +169,216 @@ public class EditBoardController {
 	    ra.addFlashAttribute("message", message);
 	    return path;
 	}
+	
+	/** 공지게시판 / 자유게시판 삭제 메서드
+	 * @param boardName
+	 * @param boardNo
+	 * @param cp
+	 * @param loginMember
+	 * @param ra
+	 * @return
+	 */
+	@RequestMapping(value="/{boardName:[a-zA-Z]+}/{boardNo:[0-9]+}/delete",
+			method= {RequestMethod.POST})
+public String BoardDelete(@PathVariable("boardName") String boardName,
+						@PathVariable("boardNo") int boardNo,
+						@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
+						@SessionAttribute("loginMember") MemberDTO loginMember,
+						RedirectAttributes ra ) { 
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("boardName", boardName);
+		map.put("memberNo", loginMember.getMemberNo());
+		map.put("boardNo", boardNo);
+		map.put("authorLevel", loginMember.getAuthorLevel());
+		map.put("categoryCode", 0);
+		
+		int result = service.boardDelete(map);
+		
+		String path = null;
+		String message = null;
+		
+		if(result > 0) {
+			path = String.format("/%s?cp=%d", boardName, cp);
+							   
+			message = "글 삭제가 완료되었습니다";
+			
+		} else {
+			path = String.format("/%s/%d/?cp=%d", boardName, boardNo, cp);
+			
+			message = "삭제 실패됨 ....";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		
+		return "redirect:" + path;
+		
+	
+	}
+	
+	
+	/** 취미게시판 삭제 메서드
+	 * @param boardName
+	 * @param categoryCode
+	 * @param boardNo
+	 * @param cp
+	 * @param loginMember
+	 * @param ra
+	 * @return
+	 */
+	@RequestMapping(value="/{boardName:[a-zA-Z]+}/{categoryCode:[0-9]+}/{boardNo:[0-9]+}/delete",
+			method= {RequestMethod.POST})
+public String hobbyBoardDelete(@PathVariable("boardName") String boardName,
+						@PathVariable("categoryCode") int categoryCode,
+						@PathVariable("boardNo") int boardNo,
+						@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
+						@SessionAttribute("loginMember") MemberDTO loginMember,
+						RedirectAttributes ra ) { 
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("boardName", boardName);
+		map.put("categoryCode", categoryCode);
+		map.put("memberNo", loginMember.getMemberNo());
+		map.put("boardNo", boardNo);
+		map.put("authorLevel", loginMember.getAuthorLevel());
+		
+		int result = service.boardDelete(map);
+		
+		String path = null;
+		String message = null;
+		
+		if(result > 0) {
+			path = String.format("/hobby/%d?cp=%d", categoryCode, cp);
+							   // /hobby/1/?cp=1
+			message = "글 삭제가 완료되었습니다";
+			
+		} else {
+			path = String.format("/hobby/%d/%d?cp=%d", categoryCode, boardNo, cp);
+							   // /hobby/1/24?cp=1
+			message = "삭제 실패됨 ....";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		
+		return "redirect:" + path;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	/** 게시글 수정 화면 이동
+	 * @param boardName
+	 * @param boardNo
+	 * @param categoryCode
+	 * @param inputBoard
+	 * @param loginMember
+	 * @param ra
+	 * @return
+	 * @throws Exception
+	 */
+	@GetMapping(value = {
+		    "/{boardName:[a-zA-Z]+}/{boardNo:[0-9]+}/update",
+		    "/{boardName:[a-zA-Z]+}/{categoryCode:[0-9]+}/{boardNo:[0-9]+}/update"
+		})
+		public String boardUpdate(
+		        @PathVariable("boardName") String boardName,
+		        @PathVariable("boardNo") int boardNo,
+		        @PathVariable(value="categoryCode", required=false) Integer categoryCode, // Integer는 null을 포함하기 때문에 사용해야함
+		        @SessionAttribute("loginMember") MemberDTO loginMember,
+		        Model model,
+		        RedirectAttributes ra) throws Exception {
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("boardNo", boardNo);
+		
+		
+		Board board = null;
+
+	    switch(boardName) {
+	        case "notice" : board = notiService.selectBoardDetail(map); break;
+	        case "free"   : board = freeService.selectBoardDetail(map); break;
+	        case "hobby"  : board = hobbyService.selectBoardDetail(map); break;
+	    }
+
+	    
+	    model.addAttribute("board", board);
+	    model.addAttribute("boardName", boardName); 
+	    
+	    return "board/editBoard";
+		
+	
+		
+	}
+	
+	
+	
+	/** 게시글 수정 적용
+	 * @param boardName
+	 * @param boardNo
+	 * @param categoryCode
+	 * @param inputBoard
+	 * @param cp
+	 * @param loginMember
+	 * @param ra
+	 * @return
+	 */
+	@PostMapping(value = {
+		    "/{boardName:[a-zA-Z]+}/{boardNo:[0-9]+}/update",
+		    "/{boardName:[a-zA-Z]+}/{categoryCode:[0-9]+}/{boardNo:[0-9]+}/update"
+		})
+	public String boardUpdate(
+			@PathVariable("boardName") String boardName,
+			@PathVariable("boardNo") int boardNo,
+			@PathVariable(value = "categoryCode", required = false) Integer categoryCode,
+			Board inputBoard,
+			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+			@SessionAttribute("loginMember") MemberDTO loginMember,
+			RedirectAttributes ra
+			) {
+		
+		inputBoard.setBoardNo(boardNo);
+		inputBoard.setMemberNo(loginMember.getMemberNo());
+		inputBoard.setAuthorLevel(loginMember.getAuthorLevel());
+		if(categoryCode != null) {
+			inputBoard.setCategoryCode(categoryCode);
+		}
+		
+		int result = service.boardUpdate(inputBoard);
+		
+		String message = null;
+		String path = null;
+		
+		if(result > 0) {
+			message = "게시글이 수정 되었습니다";
+			
+				    switch(boardName) {
+			        case "notice" : path = String.format("/notice/%d?cp=%d", boardNo, cp); break;
+			        case "free"   : path = String.format("/free/%d?cp=%d", boardNo, cp); break;
+			        case "hobby"  : path = String.format("/hobby/%d/%d?cp=%d", categoryCode, boardNo, cp); break;
+			    }
+				    
+				
+			
+		} else {
+			message = "수정 실패";
+			path = "update";
+			
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+		
+	}
+	
+	
 	
 	
 	

@@ -1,6 +1,7 @@
 package hobee.semi.project.myPage.model.service;
 
 import java.io.File;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,12 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import hobee.semi.project.common.util.Utility;
+import hobee.semi.project.findHobby.model.dto.Hobby;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.myPage.model.mapper.MyPageMapper;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 //@Slf4j
 @PropertySource("classpath:/config.properties")
 public class MyPageServiceImpl implements MyPageService {
@@ -34,6 +35,18 @@ public class MyPageServiceImpl implements MyPageService {
 	private String profileFolderPath;
 	
 	@Override
+	public List<Hobby> selectHobbyList(List<String> hobbyCode) {
+		
+        if (hobbyCode == null || hobbyCode.isEmpty()) {
+            
+        	return List.of();
+        }
+		
+		return mapper.selectHobbyList(hobbyCode);
+	}
+	
+	
+	@Override
 	public int updateInfo(MemberDTO inputMember, String[] memberAddress) {
 
 		if(!inputMember.getMemberAddress().equals(",,")) {
@@ -46,7 +59,28 @@ public class MyPageServiceImpl implements MyPageService {
 			inputMember.setMemberAddress(null);
 		}
 		
-		return mapper.updateInfo(inputMember);
+	    // 닉네임, 전화번호, 소개글 수정
+	    int result = mapper.updateInfo(inputMember);
+	    
+	    if (result == 0) return 0;
+	    
+	    int memberNo = inputMember.getMemberNo();
+
+	    // 기존 취미 전부 삭제
+	    mapper.deleteMemberHobby(memberNo);
+
+	    // 새로 선택한 취미 등록
+	    List<String> hobbyCodeList = inputMember.getHobbyCode();
+
+	    if (hobbyCodeList != null && !hobbyCodeList.isEmpty()) {
+	        
+	    		for (String hobbyCode : hobbyCodeList) {
+	        
+	    			mapper.insertMemberHobby(memberNo, hobbyCode);
+	        }
+	    }
+		
+		return result;
 	}
 	
 	

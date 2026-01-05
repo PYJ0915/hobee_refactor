@@ -17,61 +17,32 @@
     <th:block th:replace="~{common/fragments/header}"></th:block>
     
     <div class="board-write-area">
-        <h1 class="write-title" style="margin-bottom: 30px;">글 쓰기</h1>
+        <h1 class="write-title" th:text="${boardName == 'notice' ? '공지사항 작성' : 
+                                            (boardName == 'free' ? '자유게시판 작성' : 
+                                            (boardName == 'hobby' ? '취미게시판 작성' : '글 작성'))}">글 쓰기</h1>
         
-        <form action="" method="post">
+        <form action="" method="post" id="boardContent">
+            <input type="hidden" name="boardNo" th:if="${board != null}" th:value="${board?.boardNo}">
+            <input type="hidden" name="categoryCode" th:value="${board?.categoryCode ?: 1}">
+
+            <input type="hidden" name="categoryCode" th:value="${board?.categoryCode ?: param.categoryCode}">
+
             <input type="text" name="boardTitle" class="board-title-input" 
-                   placeholder="제목을 입력하세요" required />
+                   placeholder="제목을 입력하세요" th:value="${board?.boardTitle}"/>
             
-            <textarea id="summernote" name="boardContent"></textarea>
+            <textarea id="summernote" name="boardContent"
+            th:utext="${board?.boardContent}"></textarea>
             
             <div style="text-align: right; margin-top: 20px;">
-                <button type="submit" class="hobee-btn">등록</button>
+                <button type="submit" class="hobee-btn"
+                th:text="${board == null ? '등록' : '수정'}">등록</button>
             </div>
         </form>
     </div>
 
     <th:block th:replace="~{common/fragments/footer}"></th:block>
-    <script>
 
-
-$(document).ready(() => {
-
-    const message = "[[${message}]]"; 
-    if (message !== "" && message !== "null") {
-        alert(message);
-    }
-
-    $('#summernote').summernote({
-        height: 400,
-        lang: 'ko-KR',
-        callbacks: {
-            onImageUpload: (files) => { // 이미지 업로드 콜백
-                uploadImage(files[0], $('#summernote'));
-            }
-        }
-    });
-});
-
-const uploadImage = (file, editor) => {
-    let data = new FormData();
-    data.append("file", file);
-    
-    $.ajax({
-        url: "/editBoard/imageUpload",
-        type: "POST",
-        data: data,
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: (url) => { // 성공 시 콜백
-            $(editor).summernote('insertImage', url);
-        },
-        error: (e) => { // 실패 시 콜백
-            console.log(e);
-        }
-    });
-};
-    </script>
+    <script src="/js/board/editBoard.js"></script>
+</script>
 </body>
 </html>

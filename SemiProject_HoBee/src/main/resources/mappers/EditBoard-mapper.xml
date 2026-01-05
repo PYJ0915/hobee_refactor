@@ -30,7 +30,10 @@
         DEFAULT, 
         #{memberNo}, 
         #{boardCode},  
-        #{categoryCode}, 
+		<choose>
+            <when test="boardCode == 1 or boardCode == 3">NULL</when>
+            <otherwise>#{categoryCode}</otherwise>
+        </choose>,
         #{boardContent}
     )
 </insert>
@@ -52,6 +55,37 @@
 			#{name}
 		</foreach>
 	</update>
+	
+	<update id="boardDelete">
+		UPDATE "BOARD" SET
+		BOARD_DEL_FL = 'Y'
+		WHERE BOARD_NO = #{boardNo}
+		<if test="categoryCode != null and categoryCode != 0">
+		AND CATEGORY_CODE = #{categoryCode}
+		</if>
+		AND (
+        MEMBER_NO = #{memberNo}
+        OR 
+        #{authorLevel} = 2
+    )
+	</update>
+	
+	<update id="boardUpdate">
+		UPDATE "BOARD" SET
+		BOARD_TITLE = #{boardTitle},
+		BOARD_CONTENT = #{boardContent}
+		WHERE BOARD_NO = #{boardNo}
+		<if test="categoryCode != null and categoryCode != 0">
+		AND CATEGORY_CODE = #{categoryCode}
+		</if>
+		AND (
+        MEMBER_NO = #{memberNo}
+        OR 
+        #{authorLevel} = 2
+        )
+	</update>
+	
+	
 
 
 </mapper>

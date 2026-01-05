@@ -1,5 +1,7 @@
 package hobee.semi.project.myPage.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,9 +17,9 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import hobee.semi.project.findHobby.model.dto.Hobby;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.myPage.model.service.MyPageService;
-import lombok.extern.slf4j.Slf4j;
 
 @SessionAttributes({"loginMember"})
 @Controller
@@ -47,6 +49,11 @@ public class MyPageController {
 			model.addAttribute("address", arr[1]);
 			model.addAttribute("detailAddress", arr[2]);
 		}
+		
+		List<Hobby> hobbyList =
+			    service.selectHobbyList(loginMember.getHobbyCode());
+
+		model.addAttribute("hobbyList", hobbyList);
 		
 		return "myPage/myPage-profile";
 	}
@@ -87,6 +94,8 @@ public class MyPageController {
 			loginMember.setMemberNickname(inputMember.getMemberNickname());
 			loginMember.setMemberTel(inputMember.getMemberTel());
 			loginMember.setMemberAddress(inputMember.getMemberAddress());
+			loginMember.setMemberIntroduction(inputMember.getMemberIntroduction());
+			loginMember.setHobbyCode(inputMember.getHobbyCode());
 		
 		} else {
 			

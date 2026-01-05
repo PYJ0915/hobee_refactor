@@ -50,5 +50,10 @@ public class ReportServiceImpl implements ReportService{
 	public int manageReport(Report updateReport) {
 		return mapper.manageReport(updateReport);
 	}
+
+	@Override
+	public Report selectTarget(int reportNo) {
+		return mapper.selectTarget(reportNo);
+	}
 	
 }
