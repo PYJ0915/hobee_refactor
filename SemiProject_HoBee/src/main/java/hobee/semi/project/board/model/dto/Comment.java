@@ -20,5 +20,6 @@ public class Comment {
 	private int commentNo2;
 	
 	private String memberNickname;
+	private String profileImg;
 	
 }

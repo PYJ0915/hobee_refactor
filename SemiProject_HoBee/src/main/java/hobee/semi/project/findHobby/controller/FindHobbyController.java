@@ -34,8 +34,7 @@ public class FindHobbyController {
 	}
 	
 	@GetMapping("start")
-	public String findHobbyStart(@RequestParam("inputName") String inputName, HttpSession session) {
-		session.setAttribute("inputName", inputName);
+	public String findHobbyStart() {
 		return "findHobby/question";
 	}
 	
@@ -57,9 +56,6 @@ public class FindHobbyController {
 							HttpSession session, Model model,
 							RedirectAttributes ra ) {
 		
-		String inputName = (String)session.getAttribute("inputName");
-		session.removeAttribute("inputName");
-		
 		Map<String, Hobby> hobbyMap = service.getHobby(firstHobby, secondHobby);
 		
 		String path = null;
@@ -73,7 +69,6 @@ public class FindHobbyController {
 			
 			path = "findHobby/findHobbyEnd";
 			
-			model.addAttribute("inputName", inputName);
 			model.addAttribute("firstHobby", hobbyMap.get("firstHobby"));
 			model.addAttribute("secondHobby", hobbyMap.get("secondHobby"));
 			

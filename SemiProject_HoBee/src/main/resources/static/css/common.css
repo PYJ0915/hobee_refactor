@@ -1,9 +1,5 @@
 /* header css */
 
-.page-wrapper {
-  min-height: calc(100vh - 425px);
-}
-
 .header {
   width: 100%;
   border-bottom: 1px solid #ddd;

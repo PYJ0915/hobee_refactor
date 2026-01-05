@@ -43,7 +43,7 @@ public class FilterConfig {
 		filter.setFilter(new AdminFilter());
 		
 		// 필터 동작할 URL 세팅
-		String[] filteringURL = { "/report/*" };
+		String[] filteringURL = { "/report/manageReport" };
 		
 		// filter.setUrlPatterns( 컬렉션 ) => 배열 -> 컬렉션
 		filter.setUrlPatterns( Arrays.asList(filteringURL) );
