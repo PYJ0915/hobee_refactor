@@ -35,5 +35,20 @@
 				#{memberNo})
 	</insert>
 	
+	<insert id="upsertProfileImg">
+	MERGE INTO PROFILE_IMG p
+	USING (SELECT #{memberNo} AS MEMBER_NO,
+				 #{profilePath} AS PROFILE_PATH,
+	 			#{profileRename} AS PROFILE_RENAME
+	 			FROM dual) s
+ 	ON (p.MEMBER_NO = s.MEMBER_NO)
+	WHEN MATCHED THEN UPDATE SET p.PROFILE_PATH = s.PROFILE_PATH,
+						 p.PROFILE_RENAME = s.PROFILE_RENAME,
+						 p.PROFILE_DATE = SYSDATE
+	WHEN NOT MATCHED THEN
+		INSERT (MEMBER_NO, PROFILE_PATH, PROFILE_RENAME, PROFILE_DATE)
+		VALUES (s.MEMBER_NO, s.PROFILE_PATH, s.PROFILE_RENAME, SYSDATE)
+	</insert>
+	
 	
 </mapper>

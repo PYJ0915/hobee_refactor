@@ -21,7 +21,7 @@ public class Utility {
 		String number = String.format("%05d", seqNum);
 		
 		// 1증가
-		seqNum++; 
+		seqNum++;
 		
 		// 99999 넘어갈 시 1로 초기화
 		if(seqNum == 100000) seqNum = 1;

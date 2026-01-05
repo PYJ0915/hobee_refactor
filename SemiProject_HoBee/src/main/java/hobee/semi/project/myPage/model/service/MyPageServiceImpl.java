@@ -104,7 +104,6 @@ public class MyPageServiceImpl implements MyPageService {
 			loginMember.setProfileFullPath(updatePath + rename);
 			
 		}
-		
 		return result;
 	}
 	

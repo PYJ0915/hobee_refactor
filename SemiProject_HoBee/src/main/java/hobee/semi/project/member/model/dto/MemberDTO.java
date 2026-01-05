@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder 
+@Builder
 public class MemberDTO {
 	private int memberNo;
 	private String memberEmail;
