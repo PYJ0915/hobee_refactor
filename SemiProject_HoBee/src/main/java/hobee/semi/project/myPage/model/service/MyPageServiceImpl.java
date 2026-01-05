@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.findHobby.model.dto.Hobby;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.myPage.model.mapper.MyPageMapper;
@@ -85,6 +86,12 @@ public class MyPageServiceImpl implements MyPageService {
 		loginMember.setMemberPw(encPw);
 		
 		return mapper.changePw(loginMember);
+	}
+	
+	@Override
+	public List<Board> selectBoardList(int memberNo) {
+
+		return mapper.selectBoardList(memberNo);
 	}
 	
 }

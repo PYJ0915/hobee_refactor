@@ -1,7 +1,7 @@
 /**  회원 정보 수정 페이지 **/
 
 const updateInfo = document.querySelector("#updateInfo"); // form 태그
-if (!updateInfo) return; 
+//if (!updateInfo) return; 
 
 // #updateInfo 요소가 존재 할 때만 수행
 if(updateInfo != null) {
