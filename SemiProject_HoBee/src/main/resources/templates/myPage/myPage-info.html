@@ -87,24 +87,22 @@
 
           <h3>취미</h3>
           <div class="signUp-input">
-            <div id="mainCategoryArea">
-              <label><input type="radio" name="mainHobby" value="art"> 문화·예술</label>
-              <label><input type="radio" name="mainHobby" value="selfDevelop"> 자기계발</label>
-              <label><input type="radio" name="mainHobby" value="sports"> 운동·레저</label>
-              <label><input type="radio" name="mainHobby" value="social"> 사회 교류 </label>
-              <label><input type="radio" name="mainHobby" value="shopping"> 수집·소비</label>
-            </div>
 
-            <h3 id="subTitle" style="display:none;">세부 취미 선택</h3> <!-- display:none : 숨김-->
+            <!-- 메인 취미 (JS 렌더링 전용) -->
+            <div id="mainCategoryArea"></div>
+
+            <!-- 🔥 서버 전송용 hidden 취미 코드 -->
+            <div id="hiddenHobbyArea"></div>
+
+            <h3 id="subTitle" style="display:none;">세부 취미 선택</h3>
             <div id="CategoryArea" class="categoryHobby"></div>
           </div>
 
-
           <h3>소개</h3>
-                <div class="signUp-input">
-                    <textarea name="memberIntroduction" id="introdution" placeholder="소개 글 작성" 
-                     style="width: 500px; height: 300px;"></textarea>
-                </div>
+          <div class="signUp-input">
+            <textarea name="memberIntroduction" id="introdution" placeholder="소개 글 작성"
+             th:text="${session.loginMember.memberIntroduction}"></textarea>
+          </div>
 
           <div class="form-btns">
             <button type="submit" class="submit-btn">변경하기</button>
