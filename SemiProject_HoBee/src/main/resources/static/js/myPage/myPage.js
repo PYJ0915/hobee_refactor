@@ -178,43 +178,66 @@ initSelectedHobbies();
 
 
 
+
+    /* 닉네임 유효성 검사 */
+const checkObj = {
+"memberNickname"  : false
+};
+
+
+memberNickname.addEventListener("input",e=>{
+
+const inputNickname = e.target.value; // 입력값 갖고 옴
+
+// 미입력
+if(inputNickname.trim().length === 0) {
+  checkObj.memberNickname = false;
+  return;
+}
+
+// 닉네임 정규식에 맞지 않는 경우
+let regExp = /^[가-힣\w\d]{2,10}$/;
+
+// 정규식이 아닐 경우
+if( !regExp.test(inputNickname)) {
+checkObj.memberNickname = false;
+return;
+}
+
+
+// 닉네임 중복 검사
+fetch("/myPage/checkNickname?memberNickname=" + memberNickname.value)
+.then(resp => resp.text())
+.then(count => {
+  
+  if(count == 1) { // 중복인 경우
+      checkObj.memberNickname = false;
+      return;
+  }else{
+    checkObj.memberNickname = true;
+  }
+
+});    
+
+})
   // form 태그 제출된 경우
   updateInfo.addEventListener("submit", e => {
 
     const memberNickname = document.querySelector("#memberNickname");
     const memberTel = document.querySelector("#memberTel");
     const memberAddress = document.querySelectorAll("[name='memberAddress']");
-
-    /* 닉네임 유효성 검사 */
     
-    // 미입력
-    if(memberNickname.value.trim().length === 0) {
-      alert("닉네임을 입력해주세요");
-      e.preventDefault(); // 제출 막기
-      return;
-    }
 
-    // 닉네임 정규식에 맞지 않는 경우
-    let regExp = /^[가-힣\w\d]{2,10}$/;
 
-    if( !regExp.test(memberNickname.value)) {
-      alert("한글,영어,숫자 2~10글자로 구성해주세요.");
-      e.preventDefault(); // 제출 막기
-      return;
-    }
+    /*  닉네임 최종 유효성 검사 */
+  if (!checkObj.memberNickname) {
+    alert("닉네임이 유효하지 않거나 이미 사용 중입니다.");
+    memberNickname.focus();
+    e.preventDefault(); // 여기서 막아야 실제 전송이 안 됨
+    return;
+  }
 
-    // 닉네임 중복 검사
-    fetch("/myPage/checkNickname?memberNickname=" + memberNickname.value)
-    .then(resp => resp.text())
-    .then(count => {
-        
-        if(count == 1) { // 중복인 경우
-            alert("중복되는 닉네임입니다. 다른 닉네임을 입력해주세요.");
-            e.preventDefault();
-            return;
-        }
 
-    });    
 
     /* 전화번호 유효성 검사 */
 

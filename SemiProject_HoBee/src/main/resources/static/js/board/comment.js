@@ -38,6 +38,7 @@ const selectCommentList = () => {
 
         // 프로필 이미지
         const profileImg = document.createElement("img");
+        profileImg.classList.add("profile-img");
 
         if(comment.profileImg == null)  
           profileImg.src = userDefaultIamge; // 기본 이미지

@@ -19,7 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.member.model.service.MemberService;
-import hobee.semi.project.profileImg.model.dto.ProfileDTO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("member")
 @SessionAttributes({"loginMember"}) // 세션 스코프에 로그인한 회원정보 저장
 public class MemberController {
-	
+
 	
 	
 	private final MemberService service;
