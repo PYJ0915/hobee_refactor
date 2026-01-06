@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="hobee.semi.project.member.model.mapper.MemberMapper">
+	
+		<resultMap type="MemberDTO" id="login_rm">
+			<id property="memberNo" column="MEMBER_NO"/>
+			
+			<collection property="hobbyCode" 
+	 					column="MEMBER_NO"
+	 					select="selectHobbyList"
+	 					javaType="java.util.ArrayList"
+	 					ofType="string" />
+	 					
+		</resultMap>
+	
+		<select id="selectHobbyList" resultType="string">
+			SELECT HOBBY_CODE FROM MEMBER_HOBBY
+			WHERE MEMBER_NO = #{memberNo}
+		</select>		
 
-		<select id="loginMember" resultType="MemberDTO">
+		<select id="loginMember" resultType="MemberDTO" resultMap="login_rm">
 			SELECT
 			MEMBER_NO,MEMBER_EMAIL,MEMBER_ID,MEMBER_PW,MEMBER_NAME,MEMBER_NICKNAME,
-			MEMBER_TEL,MEMBER_ADDRESS,ENROLL_DATE,AUTHOR_LEVEL,MEMBER_DEL_FL
+			MEMBER_TEL,MEMBER_ADDRESS,ENROLL_DATE,AUTHOR_LEVEL,MEMBER_DEL_FL, MEMBER_INTRODUCTION
 			FROM "MEMBER"
 			WHERE MEMBER_ID = #{memberId}
 		</select>

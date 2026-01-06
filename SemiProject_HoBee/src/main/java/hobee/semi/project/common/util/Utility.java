@@ -19,11 +19,17 @@ public class Utility {
 		
 		// 00001 포맷
 		String number = String.format("%05d", seqNum);
-		
+
+
+
+
 		// 1증가
 		seqNum++;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 79cc3ec5ad99f017cacd7a7626df9941fe79abff
 		
 		// 99999 넘어갈 시 1로 초기화
 		if(seqNum == 100000) seqNum = 1;
