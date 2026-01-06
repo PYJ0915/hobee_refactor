@@ -80,6 +80,10 @@ sendAuthKeyBtn.addEventListener("click",()=>{
         return;
     }   
 
+    sendAuthKeyBtn.disabled = true; // 버튼 클릭 막기(true == 비활성화)
+    sendAuthKeyBtn.innerText = "전송 중..."; // 사용자에게 진행 상태 알림               
+    authEmail.readOnly = true;// input창 막기
+
     // 기존에 돌아가던 타이머 멈추기 (중복 방지)
     clearInterval(authTimer);
 
@@ -172,16 +176,32 @@ checkAuthKeyBtn.addEventListener("click" , e=>{
     .then(count => {
         if(count == 1){
             console.log("인증번호 일치");
+
             authKeyMessage.innerText="인증번호가 일치합니다";
             authKeyMessage.classList.add("confirm");
             authKeyMessage.classList.remove("error");
+
             clearInterval(authTimer); // 인증번호 일치한 경우 멈춤
+
+            sendAuthKeyBtn.innerText = "인증완료";
+            sendAuthKeyBtn.disabled = true; // 인증번호 보내기 막기
+
+            authKey.readOnly = true;// input 수정 막기
+            authEmail.readOnly = true; // 이메일 수정 불가
             checkObj.authKey = true;
         }else{
             console.log("인증번호 불일치");
+            
             authKeyMessage.innerText="인증번호가 일치하지 않습니다";
             authKeyMessage.classList.add("error");
             authKeyMessage.classList.remove("confirm"); 
+
+            clearInterval(authTimer); // 인증번호 일치한 경우 멈춤
+
+            sendAuthKeyBtn.disabled = false;
+            authKey.readOnly = false;
+            authEmail.readOnly = false;
+
             checkObj.authKey = false;
         }
 

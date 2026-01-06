@@ -12,6 +12,14 @@
 		WHERE MEMBER_NO = #{memberNo}
 	</update>
 
+	<select id="checkNickname" resultType="_int">
+		SELECT COUNT(*)
+		FROM "MEMBER"
+		WHERE MEMBER_NICKNAME = #{memberNickname}
+		AND MEMBER_DEL_FL = 'N'
+		AND MEMBER_NO != #{memberNo}
+	</select>	
+
 	<!-- 비밀번호 확인 -->
 	<select id="checkPw">
 		SELECT MEMBER_PW

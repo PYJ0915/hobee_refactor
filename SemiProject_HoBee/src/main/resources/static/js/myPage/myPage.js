@@ -205,7 +205,7 @@ initSelectedHobbies();
     }
 
     // 닉네임 중복 검사
-    fetch("/member/checkNickname?memberNickname=" + memberNickname.value)
+    fetch("/myPage/checkNickname?memberNickname=" + memberNickname.value)
     .then(resp => resp.text())
     .then(count => {
         
@@ -215,7 +215,7 @@ initSelectedHobbies();
             return;
         }
 
-    })    
+    });    
 
     /* 전화번호 유효성 검사 */
 
