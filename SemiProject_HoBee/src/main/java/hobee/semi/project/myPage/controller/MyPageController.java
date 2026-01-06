@@ -195,6 +195,8 @@ public class MyPageController {
 		
 		ra.addFlashAttribute("message",message);
 		
+		model.addAttribute(profileDTO);
+		
 		return "redirect:info";
 		
 	}
