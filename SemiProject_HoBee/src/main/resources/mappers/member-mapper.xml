@@ -48,7 +48,8 @@
 		        DEFAULT, 
 		        DEFAULT, 
 		        DEFAULT, 
-		        #{memberIntroduction}
+		        #{memberIntroduction},
+		        #{profileImg}
 	    	)
 		</insert>
 	
