@@ -181,7 +181,7 @@ initSelectedHobbies();
 
     /* 닉네임 유효성 검사 */
 const checkObj = {
-"memberNickname"  : false
+"memberNickname"  : true
 };
 
 
@@ -235,7 +235,7 @@ fetch("/myPage/checkNickname?memberNickname=" + memberNickname.value)
     memberNickname.focus();
     e.preventDefault(); // 여기서 막아야 실제 전송이 안 됨
     return;
-  }
+
 
 
 
