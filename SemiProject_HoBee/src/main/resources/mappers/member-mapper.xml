@@ -18,7 +18,7 @@
 			WHERE MEMBER_NO = #{memberNo}
 		</select>		
 
-		<select id="loginMember" resultType="MemberDTO" resultMap="login_rm">
+		<select id="loginMember" resultMap="login_rm">
 			SELECT
 			MEMBER_NO,MEMBER_EMAIL,MEMBER_ID,MEMBER_PW,MEMBER_NAME,MEMBER_NICKNAME,
 			MEMBER_TEL,MEMBER_ADDRESS,ENROLL_DATE,AUTHOR_LEVEL,MEMBER_DEL_FL, MEMBER_INTRODUCTION
