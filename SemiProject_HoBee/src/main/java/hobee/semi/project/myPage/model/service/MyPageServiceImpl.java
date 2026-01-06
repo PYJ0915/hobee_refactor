@@ -75,12 +75,18 @@ public class MyPageServiceImpl implements MyPageService {
 
 	    // 새로 선택한 취미 등록
 	    List<String> hobbyCodeList = inputMember.getHobbyCode();
-
+	    
+	    Map<String, Object> map = new HashMap<>();
+	    map.put("memberNo", memberNo);
+	    
+	    
 	    if (hobbyCodeList != null && !hobbyCodeList.isEmpty()) {
 	        
 	    		for (String hobbyCode : hobbyCodeList) {
 	        
-	    			mapper.insertMemberHobby(memberNo, hobbyCode);
+	    			map.put("hobbyCode", hobbyCode);
+	    			
+	    			mapper.insertMemberHobby(map);
 	        }
 	    }
 		

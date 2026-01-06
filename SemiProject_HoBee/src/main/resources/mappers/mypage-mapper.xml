@@ -91,8 +91,7 @@
 	<!-- 취미 추가 -->
 	<insert id="insertMemberHobby">
   		INSERT INTO MEMBER_HOBBY (MEMBER_NO, HOBBY_CODE)
-  		VALUES <foreach collection="hobbyCode" item="code" separator=",">
-  		(#{memberNo}, #{hobbyCode}) </foreach>
+  		VALUES (#{memberNo}, #{hobbyCode})
 	</insert>
 	
 	<!-- 게시글 조회 -->

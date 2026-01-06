@@ -20,8 +20,7 @@ public class Utility {
 		// 00001 포맷
 		String number = String.format("%05d", seqNum);
 		
-		// 1증가
-		seqNum++;
+		seqNum++; // 1 증가
 		
 		// 99999 넘어갈 시 1로 초기화
 		if(seqNum == 100000) seqNum = 1;
