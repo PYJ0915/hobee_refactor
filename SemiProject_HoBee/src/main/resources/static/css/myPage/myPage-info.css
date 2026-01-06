@@ -12,9 +12,9 @@
 /* 사이드메뉴 + 카드 wrapper */
 .myPage-wrapper {
   display: flex;
-  gap: 40px;               /* ⭐ 사이드메뉴와 카드 간격 고정 */
+  gap: 40px;
   width: 100%;
-  max-width: 1200px;       /* profile과 동일 */
+  max-width: 1200px;
 }
 
 /* =========================
@@ -25,7 +25,6 @@
   flex: 1;
   max-width: 900px;
   background-color: #ffffff;
-
   padding: 60px 80px;
   border-radius: 24px;
   border: 3px solid #FFF57E;
@@ -72,7 +71,6 @@
   border-radius: 20px;
   border: none;
   cursor: pointer;
-
   background-color: #452829;
   color: #FFF57E;
   font-weight: bold;
@@ -101,11 +99,11 @@
   flex-shrink: 0;
 }
 
-/* ⭐ input → div 느낌 */
+/* input → div 느낌 */
 .myPage-row input {
   flex: 1;
   padding: 10px 6px;
-  border: none;            /* ❌ 모든 border 제거 */
+  border: none;
   background-color: transparent;
   font-size: 15px;
   outline: none;
@@ -126,13 +124,11 @@
   flex: 1;
 }
 
-/* 주소 검색 버튼 */
 .address-btn {
   padding: 8px 16px;
   border-radius: 20px;
   border: none;
   cursor: pointer;
-
   background-color: #452829;
   color: #FFF57E;
   font-weight: bold;
@@ -140,7 +136,7 @@
 }
 
 /* =========================
-   변경하기 버튼 (중앙 + 적당한 크기)
+   변경하기 버튼
 ========================= */
 
 .form-btns {
@@ -150,14 +146,115 @@
 }
 
 .submit-btn {
-  width: 240px;            /* ⭐ 크기 축소 */
+  width: 240px;
   padding: 14px 0;
   border-radius: 14px;
   border: none;
   cursor: pointer;
-
   background-color: #452829;
   color: #FFF57E;
   font-size: 16px;
   font-weight: bold;
+}
+
+/* =========================
+   취미 선택 영역
+========================= */
+
+.signUp-input:has(#mainCategoryArea) {
+  flex-direction: column;
+  align-items: center;
+  min-height: 350px;
+}
+
+/* =========================
+   메인 취미 (radio UX)
+========================= */
+
+#mainCategoryArea {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+/* 메인 취미 전용 */
+#mainCategoryArea .radio-like {
+  display: inline-block;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 30px;
+  background-color: #ffffff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* 선택된 메인 취미 */
+#mainCategoryArea .radio-like.checked {
+  background-color: #fff57e;
+  color: #452829;
+  border-color: #fff57e;
+  font-weight: 700;
+}
+
+/* =========================
+   세부 취미 영역
+========================= */
+
+#subTitle {
+  width: 100%;
+  text-align: left;
+  margin-top: 15px;
+  height: 20px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* 세부 취미 박스 */
+#CategoryArea {
+  width: 100%;
+  height: 200px;
+  overflow-y: auto;
+  margin-top: 10px;
+  padding: 15px;
+  background-color: #fafafa;
+  border: 1px dashed #ccc;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+/* 스크롤바 */
+#CategoryArea::-webkit-scrollbar {
+  width: 6px;
+}
+
+#CategoryArea::-webkit-scrollbar-thumb {
+  background-color: #ddd;
+  border-radius: 10px;
+}
+
+/* 세부 취미 항목 */
+#CategoryArea label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+/* =========================
+   소개글
+========================= */
+
+#introdution {
+  width: 700px !important;
+  height: 180px !important;
+  padding: 15px !important;
+  resize: none;
 }
