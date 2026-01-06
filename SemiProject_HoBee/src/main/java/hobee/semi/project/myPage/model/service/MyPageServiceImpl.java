@@ -1,7 +1,9 @@
 package hobee.semi.project.myPage.model.service;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import hobee.semi.project.common.util.Utility;
+import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.findHobby.model.dto.Hobby;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.myPage.model.mapper.MyPageMapper;
@@ -84,6 +87,16 @@ public class MyPageServiceImpl implements MyPageService {
 		return result;
 	}
 	
+	@Override
+	public int checkNickname(String memberNickname, int memberNo) {
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("memberNickname", memberNickname);
+		map.put("memberNo", memberNo);
+		
+		
+		return mapper.checkNickname(map);
+	}
 	
 	@Override
 	public int changePw(String newPw, String currentPw, MemberDTO loginMember) {
@@ -153,6 +166,12 @@ public class MyPageServiceImpl implements MyPageService {
 			
 		}
 		return result;
+	}
+	
+	@Override
+	public List<Board> selectBoardList(int memberNo) {
+
+		return mapper.selectBoardList(memberNo);
 	}
 	
 }

@@ -2,6 +2,10 @@
    관리자 신고 관리 페이지
 ========================= */
 
+.page-wrapper {
+  min-height: calc(100vh - 425px);
+}
+
 .admin-report-container {
   max-width: 1200px;
   margin: 60px auto;

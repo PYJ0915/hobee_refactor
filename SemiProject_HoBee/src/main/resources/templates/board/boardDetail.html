@@ -99,11 +99,11 @@
     <section class="comment-section">
 
       <h2 class="comment-title">
-        <!-- 댓글 (<span th:text="${commentList.size()}">0</span>) -->
+        댓글 (<span th:text="${board.commentList.size()}">0</span>)
       </h2>
 
       <!-- 댓글 리스트 -->
-      <ul class="comment-list">
+      <ul class="comment-list" id="commentList">
 
         <li class="comment-item" th:each="comment : ${board.commentList}"
             classappend="${comment.commentNo2} != 0 ? child-comment"
@@ -144,7 +144,7 @@
                 <button th:onclick="|deleteComment(*{commentNo})|">삭제</button>
 						  </th:block>        
              
-              <button class="report-btn" id="comment-report"
+              <button class="report-btn comment-report"
               th:data-writer="${comment.memberNickname}"
               th:data-reported-member-no="${comment.memberNo}"
               th:data-target-no="${comment.commentNo}">신고</button>
@@ -157,12 +157,12 @@
             댓글 내용
           </p>
 
-          <div class="comment-bottom">
+         <!--<div class="comment-bottom">
             <button class="comment-like-btn">
               <i class="fa-solid fa-thumbs-up"></i>
               <span th:text="${comment.likeCount}">3</span>
             </button>
-          </div>
+          </div>-->
 
         </li>
 

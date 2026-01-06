@@ -7,10 +7,18 @@
 		UPDATE "MEMBER" SET
 		MEMBER_NICKNAME = #{memberNickname},
 		MEMBER_TEL = #{memberTel},
-		MEMBER_ADDRESS = #{memberAddress}
+		MEMBER_ADDRESS = #{memberAddress},
 		MEMBER_INTRODUCTION = #{memberIntroduction}
 		WHERE MEMBER_NO = #{memberNo}
 	</update>
+
+	<select id="checkNickname" resultType="_int">
+		SELECT COUNT(*)
+		FROM "MEMBER"
+		WHERE MEMBER_NICKNAME = #{memberNickname}
+		AND MEMBER_DEL_FL = 'N'
+		AND MEMBER_NO != #{memberNo}
+	</select>	
 
 	<!-- 비밀번호 확인 -->
 	<select id="checkPw">
@@ -87,5 +95,13 @@
   		(#{memberNo}, #{hobbyCode}) </foreach>
 	</insert>
 	
+	<!-- 게시글 조회 -->
+	<select id="selectBoardList">
+		SELECT BOARD_NO, BOARD_TITLE,
+		TO_CHAR(BOARD_WRITE_DATE, 'YYYY"년" MM"월" DD"일"') BOARD_WRITE_DATE
+		FROM BOARD
+		WHERE MEMBER_NO = #{memberNo}
+		ORDER BY BOARD_NO DESC
+	</select>
 	
 </mapper>

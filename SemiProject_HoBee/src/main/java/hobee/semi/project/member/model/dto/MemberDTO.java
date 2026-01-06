@@ -24,6 +24,7 @@ public class MemberDTO {
 	private int authorLevel;
 	private String memberDelfl;
 	private String memberIntroduction;
+	private String profileImg;
 	
 	private List<String> hobbyCode;
 	

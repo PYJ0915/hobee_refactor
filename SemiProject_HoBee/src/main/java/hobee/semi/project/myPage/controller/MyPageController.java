@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.findHobby.model.dto.Hobby;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.myPage.model.service.MyPageService;
@@ -53,8 +55,12 @@ public class MyPageController {
 		
 		List<Hobby> hobbyList =
 			    service.selectHobbyList(loginMember.getHobbyCode());
+		
+		List<Board> boardList = service.selectBoardList(loginMember.getMemberNo());
 
 		model.addAttribute("hobbyList", hobbyList);
+		
+		model.addAttribute("myBoardList", boardList);
 		
 		return "myPage/myPage-profile";
 	}
@@ -108,6 +114,16 @@ public class MyPageController {
 		return "redirect:info";
 	}
 	
+	@ResponseBody
+	@GetMapping("checkNickname")
+	public int checNickname(@RequestParam("memberNickname") String memberNickname,
+							@SessionAttribute("loginMember") MemberDTO loginMember) {
+		
+		int memberNo = loginMember.getMemberNo();
+		
+		return service.checkNickname(memberNickname, memberNo);
+	}
+	
 	/** 비밀번호 변경 화면 이동
 	 * @return
 	 */
@@ -138,7 +154,7 @@ public class MyPageController {
 		if(result > 0) {
 			
 			message = "비밀번호가 변경되었습니다";
-			path = "profile";
+			path = "info"; 
 		
 		} else {
 			

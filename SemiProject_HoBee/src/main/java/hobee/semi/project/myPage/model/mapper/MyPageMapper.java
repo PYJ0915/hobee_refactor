@@ -1,9 +1,11 @@
 package hobee.semi.project.myPage.model.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.findHobby.model.dto.Hobby;
 import hobee.semi.project.member.model.dto.MemberDTO;
 
@@ -50,5 +52,13 @@ public interface MyPageMapper {
 	 * @param hobbyCode
 	 */
 	void insertMemberHobby(int memberNo, String hobbyCode);
+
+	/** 내가 쓴 게시글 조회 SQL 수행
+	 * @param memberNo
+	 * @return
+	 */
+	List<Board> selectBoardList(int memberNo);
+
+	int checkNickname(Map<String, Object> map);
 
 }
