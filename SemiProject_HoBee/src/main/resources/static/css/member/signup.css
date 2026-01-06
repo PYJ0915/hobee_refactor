@@ -101,20 +101,14 @@ button[type="button"] { height: 48px; padding: 0 20px; white-space: nowrap; }
     cursor: pointer;
 }
 
-#mainCategoryArea .radio-like {
-  border: 2px solid #ddd;
-  padding: 10px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-}
+#mainCategoryArea input[type="radio"] { display: none; }
 
-#mainCategoryArea .radio-like.checked {
-  background-color: #fff57e;
-  color: #452829;
-  border-color: #fff57e;
-  font-weight: 700;
+#mainCategoryArea label:has(input:checked) {
+    background-color: #fff57e;
+    color: #452829;
+    border-color: #fff57e;
+    font-weight: 700;
 }
-
 /* 👆 여기까지 추가된 부분 */
 
 /* 세부 취미 제목 스타일 */
