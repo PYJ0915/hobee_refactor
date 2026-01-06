@@ -90,15 +90,23 @@ public class FreeBoardController {
 	public String myBoardList(
             @RequestParam(value = "cp", required = false, defaultValue = "1") int cp, 
             Model model,
-			@SessionAttribute("loginMember") MemberDTO loginMember) { // paramMap 삭제!
+			@SessionAttribute(value = "loginMember", required = false) MemberDTO loginMember,
+			RedirectAttributes ra) { // paramMap 삭제!
 		
 		int boardCode = 3;
 		
 		
+		
 		Map<String, Object> queryMap = new HashMap<>();
 		queryMap.put("boardCode", boardCode);
-		queryMap.put("memberNo", loginMember.getMemberNo()); 
 		
+		if(loginMember != null) {
+			queryMap.put("memberNo", loginMember.getMemberNo());
+		} else {
+			ra.addFlashAttribute("message", "로그인 후 이용 가능한 서비스입니다.");
+	        // 원래 있던 게시판 목록 주소로 리다이렉트 (예: /hobby/1)
+	        return "redirect:/free";
+		}
 		// 2. 서비스 호출 (생성한 queryMap을 전달)
 		Map<String, Object> map = service.selectMyBoardList(boardCode, cp, queryMap);
 		
