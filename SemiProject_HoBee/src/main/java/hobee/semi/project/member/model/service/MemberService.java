@@ -4,6 +4,7 @@ package hobee.semi.project.member.model.service;
 import java.util.List;
 
 import hobee.semi.project.member.model.dto.MemberDTO;
+import hobee.semi.project.profileImg.model.dto.ProfileDTO;
 
 public interface MemberService {
 
@@ -36,6 +37,12 @@ public interface MemberService {
 	 * @return
 	 */
 	int signUp(MemberDTO inputMember,List<String>memberAddress,List<String> hobbyCode);
+	
+	/**최신 프로필 이미지 조회
+	 * @param memberNo
+	 * @return
+	 */
+	ProfileDTO selectLatestProfile(int memberNo);
 
 	/** 아이디 찾기 (가입된 이름 찾기)
 	 * @param inputMember

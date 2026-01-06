@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.member.model.service.MemberService;
+import hobee.semi.project.profileImg.model.dto.ProfileDTO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -28,11 +29,11 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("member")
-@SessionAttributes({"loginMember"}) // 세션 스코프에 로그인 한 회원정보 저장
+@SessionAttributes({"loginMember"}) // 세션 스코프에 로그인한 회원정보 저장
 public class MemberController {
 
-
-
+	private ProfileDTO profileDto;
+	
 	private final MemberService service;
 	
 	
@@ -60,6 +61,25 @@ public class MemberController {
 			log.debug("체크박스 saveId 상태 : " + saveId);
 			
 			if(loginMember != null) {
+				
+				//--------------------------------------------------
+				//최신 프로필 이미지 조회
+//				ProfileDTO profile =
+//		                service.selectLatestProfile(loginMember.getMemberNo());
+//
+//		        if(profile != null) {
+//		            loginMember.setProfileFullPath(
+//		                profile.getProfilePath() + profile.getProfileRename()
+//		            );
+//		        }
+				//--------------------------------------------------
+		        
+				log.info("memberDTO -> 회원 프로필 이미지 경로 : " + inputMember.getProfileFullPath());
+				log.info("memberDTO -> 회원 프로필 이미지 원본명 : " + inputMember.getProfileOriginalName());				
+				
+				log.info("ProfileDTO -> 회원 프로필 이미지 원본명 : " + profileDto.getProfileOriginalName());
+				log.info("ProfileDTO -> 회원 프로필 이미지 경로: " + profileDto.getProfilePath() + profileDto.getProfileRename());
+				
 				model.addAttribute("loginMember", loginMember);
 				
 				// 쿠키 객체 생성(회원 정보 관리하기 위해(입장권 번호))

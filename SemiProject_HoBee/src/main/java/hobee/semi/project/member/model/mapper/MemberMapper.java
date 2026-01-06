@@ -5,6 +5,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import hobee.semi.project.member.model.dto.MemberDTO;
+import hobee.semi.project.profileImg.model.dto.ProfileDTO;
 
 @Mapper
 public interface MemberMapper {
@@ -44,6 +45,11 @@ public interface MemberMapper {
 	 */
 	void insertMemberHobby(Map<String, Object> map);
 
+	/**최신 프로필 이미지 조회
+	 * @param memberNo
+	 * @return
+	 */
+	ProfileDTO selectLatestProfile(int memberNo);
 	/**아이디 찾기(이름)
 	 * @param inputMember
 	 * @return

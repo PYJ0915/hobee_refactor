@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder 
+@Builder
 public class MemberDTO {
 	private int memberNo;
 	private String memberEmail;
@@ -27,4 +27,11 @@ public class MemberDTO {
 	private String profileImg;
 	
 	private List<String> hobbyCode;
+	
+	private String profilePath;
+	private String profileOriginalName;
+	private String profileRename;
+	
+	//이 필드는 DB 칼럼이 아니라 DTO에서만 존재하는 가상 필드
+	private String profileFullPath;
 }

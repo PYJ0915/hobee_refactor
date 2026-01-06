@@ -8,22 +8,26 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.findHobby.model.dto.Hobby;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.myPage.model.service.MyPageService;
+import lombok.extern.slf4j.Slf4j;
 
 @SessionAttributes({"loginMember"})
 @Controller
 @RequestMapping("myPage")
-//@Slf4j
+@Slf4j
 public class MyPageController {
 
 	@Autowired
@@ -161,6 +165,40 @@ public class MyPageController {
 		ra.addFlashAttribute("message", message);
 		
 		return "redirect:" + path;
+	}
+	
+	@PostMapping("profile")
+	public String profile(@RequestParam("profileImg") MultipartFile profileImg,
+						  @SessionAttribute("loginMember") MemberDTO loginMember,
+						  RedirectAttributes ra) throws Exception {
+		
+		log.info("controller profileImg : " + profileImg.getOriginalFilename());//데이터 받은 거 확인됨.
+		
+		int result = service.profile(profileImg, loginMember);
+		
+		String message = null;
+		
+		if(result > 0) {
+			
+			message = "프로필 이미지 변경 성공!" ;
+			
+			log.info(message);
+			
+		}else {
+			
+			message = "프로필 이미지 변경 실패ㅜㅜ";
+			
+		}
+		
+		ra.addFlashAttribute("message",message);
+		
+		return "redirect:info";
+		
+	}
+	
+	@GetMapping("secession")
+	public String secession() {
+		return "myPage/myPage-secession";
 	}
 	
 }

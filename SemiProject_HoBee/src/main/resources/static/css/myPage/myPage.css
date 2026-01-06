@@ -39,6 +39,16 @@
   margin-bottom: 40px;
 }
 
+/* 삭제버튼 */
+form[name='profileFrm']{position: relative;}
+
+#deleteImage{
+  position: absolute;
+  top: 0px;
+  right: 240px;
+  cursor: pointer;
+}
+
 .profile-img {
   width: 120px;
   height: 120px;
@@ -53,6 +63,7 @@
   padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 15px;
 }
 
 .myPage-row{
@@ -106,6 +117,7 @@
   padding: 10px 14px;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 15px;
 }
 
 /* 버튼 */
@@ -166,3 +178,5 @@
   background-color: #FFF57E;
   font-weight: bold;
 }
+
+#imageInput{ display: none;}

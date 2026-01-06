@@ -30,6 +30,12 @@ public interface MyPageMapper {
 	 */
 	int changePw(MemberDTO loginMember);
 
+	/**프로필 이미지 변경 SQL 실행
+	 * @param member
+	 * @return
+	 */
+	int profile(MemberDTO member);
+	
 	/** 회원 가입 시 선택한 취미 목록 조회 SQL 실행
 	 * @param hobbyCode
 	 * @return

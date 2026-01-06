@@ -28,10 +28,30 @@
     <span class="myPage-subject">내 정보 관리</span>
 
     <!-- 프로필 영역 -->
-    <div class="profile-area">
-      <div class="profile-img"></div>
-      <button type="button" class="profile-btn">변경</button>
-    </div>
+    <section class="myPage-main">
+    <form action="profile" method="POST" name="profileFrm" id="profile" 
+          enctype="multipart/form-data" class="profile-area">
+
+      <span id="deleteImage">x</span>
+      
+      <div class="profile-img">
+
+        <img th:with="user=#{user.default.image}"
+                th:src="${session.loginMember.profileFullPath ?: user}"
+                id="profileImg"
+                class="profile-img">
+
+      </div>
+
+      <div class="profile-btn-area">
+       <label for="imageInput" class="profile-btn">이미지 선택</label>
+
+       <input type="file" name="profileImg" id="imageInput" accept="image/*">
+      
+       <button type="submit" class="profile-btn">변경하기</button>
+       </div>   
+    </form>
+    </section>
 
     <!-- 정보 수정 폼 -->
     <form action="#" class="info-form" method="POST" name="myPageFrm" id="updateInfo">

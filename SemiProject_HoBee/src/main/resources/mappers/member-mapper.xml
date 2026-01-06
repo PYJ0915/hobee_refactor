@@ -61,6 +61,14 @@
 				)
 		</insert>
 		
+		<!--최신 프로필 이미지 조회-->
+		<select id="selectLatestProfile" resultType="ProfileDTO">
+    	SELECT PROFILE_PATH, PROFILE_RENAME
+    	FROM PROFILE_IMG
+    	WHERE MEMBER_NO = #{memberNo}
+    	ORDER BY PROFILE_NO DESC
+    	FETCH FIRST 1 ROW ONLY
+		</select>
 		<select id="checkName">
 			SELECT COUNT(*)
 			FROM "MEMBER"
