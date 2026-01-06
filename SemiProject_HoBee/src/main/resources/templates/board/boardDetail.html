@@ -106,7 +106,7 @@
       <ul class="comment-list" id="commentList">
 
         <li class="comment-item" th:each="comment : ${board.commentList}"
-            classappend="${comment.commentNo2} != 0 ? child-comment"
+            th:classappend="${comment.commentNo2} != 0 ? child-comment"
             th:object="${comment}">
 
             

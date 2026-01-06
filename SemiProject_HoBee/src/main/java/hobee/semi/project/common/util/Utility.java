@@ -22,6 +22,7 @@ public class Utility {
 
 
 
+
 		// 1증가
 		seqNum++;
 
