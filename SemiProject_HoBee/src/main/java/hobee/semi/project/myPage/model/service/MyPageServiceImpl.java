@@ -86,7 +86,7 @@ public class MyPageServiceImpl implements MyPageService {
 	        
 	    			map.put("hobbyCode", hobbyCode);
 	    			
-	    			mapper.insertMemberHobby(map);
+	    		    mapper.insertMemberHobby(map);
 	        }
 	    }
 		

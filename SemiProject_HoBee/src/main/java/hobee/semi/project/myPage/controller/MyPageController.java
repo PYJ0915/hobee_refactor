@@ -55,8 +55,6 @@ public class MyPageController {
 			    service.selectHobbyList(loginMember.getHobbyCode());
 		
 		List<Board> boardList = service.selectBoardList(loginMember.getMemberNo());
-		
-		log.info("hobbyList : " + hobbyList);
 
 		model.addAttribute("hobbyList", hobbyList);
 		
@@ -69,7 +67,19 @@ public class MyPageController {
 	 * @return
 	 */
 	@GetMapping("updateInfo")
-	public String updateInfo() {
+	public String updateInfo(@SessionAttribute("loginMember") MemberDTO loginMember,
+			  				Model model) {
+		
+		String memberAddress = loginMember.getMemberAddress();
+		
+		if(memberAddress != null) {
+			
+			String[] arr = memberAddress.split("\\^\\^\\^");
+			
+			model.addAttribute("postcode", arr[0]);
+			model.addAttribute("address", arr[1]);
+			model.addAttribute("detailAddress", arr[2]);
+		}
 		
 		return "myPage/myPage-info";
 	}
