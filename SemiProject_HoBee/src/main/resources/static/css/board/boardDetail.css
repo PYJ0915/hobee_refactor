@@ -136,7 +136,9 @@
 }
 
 .reply-btn,
-.comment-actions .report-btn {
+.report-btn,
+.edit-btn,
+.del-btn {
   border: none;
   background: none;
   font-size: 13px;
@@ -174,8 +176,9 @@
   font-weight: bold;
 }
 
-.like-btn:hover,
-.reply-btn:hover {
+.edit-btn:hover,
+.reply-btn:hover,
+.del-btn:hover {
   border-radius: 15px;
   color: #452829;
   font-weight: bold;

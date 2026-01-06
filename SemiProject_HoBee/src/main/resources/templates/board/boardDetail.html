@@ -125,9 +125,9 @@
 						  <img class="profile-img small" th:if="*{profileImg}" th:src="*{profileImg}">
               
 
-              <a href="#" class="nickname" th:text="${comment.memberNickname}">
+              <span  class="nickname" th:text="${comment.memberNickname}">
                 사용자닉네임
-              </a>
+              </span>
 
               <span class="comment-date" th:text="${comment.commentWriteDate}">
                 작성일
@@ -138,16 +138,17 @@
               <button class="reply-btn"
                       th:onclick="|showInsertComment(*{commentNo}, this)|">답글</button>
 
-              <th:block th:if="${session.loginMember != null and session.loginMember.memberNo == comment.memberNo}">
-							  <button th:onclick="|showUpdateComment(*{commentNo}, this)|">수정</button>
-							  
-                <button th:onclick="|deleteComment(*{commentNo})|">삭제</button>
-						  </th:block>        
-             
               <button class="report-btn comment-report"
-              th:data-writer="${comment.memberNickname}"
-              th:data-reported-member-no="${comment.memberNo}"
-              th:data-target-no="${comment.commentNo}">신고</button>
+                      th:data-writer="${comment.memberNickname}"
+                      th:data-reported-member-no="${comment.memberNo}"
+                      th:data-target-no="${comment.commentNo}">신고</button>
+
+              <th:block th:if="${session.loginMember != null and session.loginMember.memberNo == comment.memberNo}">
+						
+              <button th:onclick="|showUpdateComment(*{commentNo}, this)|" class="edit-btn">수정</button>
+							
+              <button th:onclick="|deleteComment(*{commentNo})|" class="del-btn">삭제</button>
+						  </th:block>           
             </div>
 
             </th:block>
