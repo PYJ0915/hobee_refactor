@@ -22,6 +22,7 @@ import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.findHobby.model.dto.Hobby;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.myPage.model.service.MyPageService;
+import hobee.semi.project.profileImg.model.dto.ProfileDTO;
 import lombok.extern.slf4j.Slf4j;
 
 @SessionAttributes({"loginMember"})
@@ -170,6 +171,8 @@ public class MyPageController {
 	@PostMapping("profile")
 	public String profile(@RequestParam("profileImg") MultipartFile profileImg,
 						  @SessionAttribute("loginMember") MemberDTO loginMember,
+						  @ModelAttribute ProfileDTO profileDTO,
+						  Model model,
 						  RedirectAttributes ra) throws Exception {
 		
 		log.info("controller profileImg : " + profileImg.getOriginalFilename());//데이터 받은 거 확인됨.

@@ -110,6 +110,12 @@ public class MyPageServiceImpl implements MyPageService {
 		
 		return mapper.changePw(loginMember);
 	}
+	
+	@Override
+	public List<Board> selectBoardList(int memberNo) {
+
+		return mapper.selectBoardList(memberNo);
+	}
 
 
 	@Override
@@ -137,6 +143,7 @@ public class MyPageServiceImpl implements MyPageService {
 				.profileOriginalName(profileImg.getOriginalFilename())
 				.profileRename(rename)
 				.profileFullPath(updatePath)
+				.profileImg(profilePath + rename)
 				.build();
 		
 		int result = mapper.profile(member);
@@ -158,21 +165,23 @@ public class MyPageServiceImpl implements MyPageService {
 			loginMember.setProfileRename(rename);
 			
 			// 합쳐진 경로 -> 세션에서 바로 쓸 수 있도록 추가(가상 필드)
-			loginMember.setProfileImg(profilePath + rename);
+//			loginMember.setProfilePath(profilePath + rename);
+			
 			
 			log.info("loginMember.getProfileFullPath() : " + loginMember.getProfileFullPath());
 			log.info("updatePath : " + updatePath);
 			//정상 -> C:/hobeeFiles/profileImg/20260105175402_00001.png
 			
 		}
+		
+		if(loginMember.getProfileImg().isEmpty()) {
+			int memberDTO = mapper.memberProfile(member);
+		}
+		
 		return result;
 	}
 	
-	@Override
-	public List<Board> selectBoardList(int memberNo) {
 
-		return mapper.selectBoardList(memberNo);
-	}
 	
 }
 
