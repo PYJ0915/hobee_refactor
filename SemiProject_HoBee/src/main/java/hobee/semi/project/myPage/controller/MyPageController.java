@@ -57,6 +57,8 @@ public class MyPageController {
 			    service.selectHobbyList(loginMember.getHobbyCode());
 		
 		List<Board> boardList = service.selectBoardList(loginMember.getMemberNo());
+		
+		log.info("hobbyList : " + hobbyList);
 
 		model.addAttribute("hobbyList", hobbyList);
 		
