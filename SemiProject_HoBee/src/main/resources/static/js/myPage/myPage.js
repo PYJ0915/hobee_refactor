@@ -246,7 +246,7 @@ if (updateInfo != null) {
     const memberTel = document.querySelector("#memberTel");
     const memberAddress = document.querySelectorAll("[name='memberAddress']");
 
-
+    syncSelectedSubHobbies();
 
     /*  닉네임 최종 유효성 검사 */
     if (!checkObj.memberNickname) {
