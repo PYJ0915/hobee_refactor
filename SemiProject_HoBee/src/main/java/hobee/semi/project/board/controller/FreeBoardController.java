@@ -78,6 +78,39 @@ public class FreeBoardController {
 
 		return "board/freeBoard";
 	}
+	
+	/** 내가 작성한 게시물만 보여주는 버튼 구현
+	 * @param cp
+	 * @param model
+	 * @param paramMap
+	 * @param loginMember
+	 * @return
+	 */
+	@GetMapping("myBoard")
+	public String myBoardList(
+            @RequestParam(value = "cp", required = false, defaultValue = "1") int cp, 
+            Model model,
+			@SessionAttribute("loginMember") MemberDTO loginMember) { // paramMap 삭제!
+		
+		int boardCode = 3;
+		
+		
+		Map<String, Object> queryMap = new HashMap<>();
+		queryMap.put("boardCode", boardCode);
+		queryMap.put("memberNo", loginMember.getMemberNo()); 
+		
+		// 2. 서비스 호출 (생성한 queryMap을 전달)
+		Map<String, Object> map = service.selectMyBoardList(boardCode, cp, queryMap);
+		
+		model.addAttribute("pagination", map.get("pagination"));
+	    model.addAttribute("boardList", map.get("boardList"));
+		model.addAttribute("boardCode", boardCode);
+		model.addAttribute("freeBestList", service.freeBestList(boardCode));
+		model.addAttribute("noticeList", service.noticeList(1));
+		
+		// 3. 게시판 목록을 보여주는 HTML 파일명
+		return "board/freeBoard"; 
+	}
 
 	@GetMapping("{boardNo:[0-9]+}")
 	public String boardDetail(@PathVariable("boardNo") int boardNo,

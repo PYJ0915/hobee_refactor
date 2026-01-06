@@ -78,51 +78,6 @@
         </p>
       </div>
 
-      <!-- 내가 쓴 글 -->
-      <div class="info-row column">
-           <span class="label"th:text="|내가 쓴 글(${myBoardList.size()})|"> (0) </span>
-
-        <!-- 글 없을 때 -->
-        <div class="empty-box"
-             th:if="${#lists.isEmpty(myBoardList)}">
-          현재 작성한 글이 없습니다.
-        </div>
-
-        <!-- 글 있을 때 -->
-        <ul class="my-board-list"
-            th:if="${!#lists.isEmpty(myBoardList)}">
-          <li th:each="board : ${myBoardList}">
-            <a th:href="@{/board/{name}(name=*{boardName})/{no}(no=${board.boardNo})}"
-               th:text="${board.boardTitle}">
-              <!-- 게시글 제목 -->
-            </a>
-            <span class="date"
-                  th:text="${board.boardWriteDate}">
-              2025.01.01
-            </span>
-          </li>
-        </ul>
-      </div>
-      <div class="pagination-area" th:if="${!#lists.isEmpty(myBoardList)}">
-    <ul class="pagination" th:object="${pagination}">
-        
-        <li><a th:href="@{/myPage/info(cp=1)}">&lt;&lt;</a></li>
-        <li><a th:href="@{/myPage/info(cp=*{prevPage})}">&lt;</a></li>
-
-        <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
-            <li th:if="${i == currentPage}">
-                <a class="current" th:text="${i}">1</a>
-            </li>
-            <li th:unless="${i == currentPage}">
-                <a th:href="@{/myPage/info(cp=${i})}" th:text="${i}">2</a>
-            </li>
-        </th:block>
-
-        <li><a th:href="@{/myPage/info(cp=*{nextPage})}">&gt;</a></li>
-        <li><a th:href="@{/myPage/info(cp=*{maxPage})}">&gt;&gt;</a></li>
-    </ul>
-      </div>
-    </div>
     
 
   </section>

@@ -133,7 +133,24 @@ a:hover {
     justify-content: flex-end;
 }
 
+.my-btn-area {
+    margin: 5px 0;
+    display: flex;
+    justify-content: flex-start;
+}
+
 .btn-area button {
+    width: 90px;
+    height: 40px;
+    background-color: #452829;
+    color: white;
+    border: 2px solid white;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.my-btn-area button {
     width: 90px;
     height: 40px;
     background-color: #452829;

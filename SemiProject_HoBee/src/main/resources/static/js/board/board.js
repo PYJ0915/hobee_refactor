@@ -1,4 +1,6 @@
 const insertBtn = document.querySelector("#insertBtn");
+const myBoardBtn = document.querySelector("#myBoardBtn");
+const myCommentBtn = document.querySelector("#myCommentBtn");
 
 if (insertBtn != null) {
     insertBtn.addEventListener('click', () => {
@@ -9,3 +11,21 @@ if (insertBtn != null) {
         location.href = `/editBoard/${boardPath}/insert`;
     });
 }
+
+if (myBoardBtn != null) {
+    myBoardBtn.addEventListener('click', () => {
+
+        const currentPath = window.location.pathname;
+
+        location.href = `${currentPath}/myBoard`;
+    })
+};
+
+if (myCommentBtn != null) {
+    myCommentBtn.addEventListener('click', () => {
+
+        const currentPath = window.location.pathname;
+
+        location.href = `${currentPath}/myComment`;
+    })
+};
