@@ -1,0 +1,158 @@
+/* =========================
+   제재 회원 관리 페이지
+========================= */
+
+.page-wrapper {
+  min-height: calc(100vh - 425px);
+}
+
+/* 전체 컨테이너 */
+.manage-container {
+  max-width: 1100px;
+  margin: 60px auto;
+  padding: 0 20px;
+  color: #452829;
+}
+
+/* 제목 */
+.page-title {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.page-desc {
+  font-size: 14px;
+  margin-bottom: 30px;
+  color: #666;
+}
+
+/* 테이블 */
+.manage-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+}
+
+.manage-table thead {
+  background-color: #FFF57E;
+}
+
+.manage-table th,
+.manage-table td {
+  padding: 14px 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.manage-table th {
+  font-weight: bold;
+}
+
+/* 상태 뱃지 */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.badge.suspend {
+  background-color: #FFE08A;
+  color: #7A5200;
+}
+
+.badge.permanent {
+  background-color: #FFD6D6;
+  color: #B00020;
+}
+
+/* 관리 버튼 */
+.action-cell {
+  white-space: nowrap;
+}
+
+.action-btn {
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.action-btn.release {
+  background-color: #452829;
+}
+
+.yellow {
+  color: #FFF57E;
+}
+
+.red {
+  color: #E84545;
+}
+
+.action-btn.release:hover {
+  opacity: 0.9;
+}
+
+/* 비활성 텍스트 */
+.disabled-text {
+  font-size: 13px;
+  color: #aaa;
+}
+
+/* 빈 상태 */
+.empty-row {
+  padding: 40px 0;
+  text-align: center;
+  color: #777;
+}
+
+.pagination-area {
+  margin: 30px 0;
+}
+
+.pagination {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.pagination li {
+  margin: 0 5px;
+}
+
+.current {
+  font-weight: bold;
+  background-color: #FFF57E;
+  border-radius: 50%;
+  padding: 2px 8px;
+}
+
+.pagination li a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  min-width: 32px;
+  height: 32px;
+
+  font-size: 14px;
+  color: #452829;
+  text-decoration: none;
+
+  border-radius: 6px;
+  padding: 0 8px;
+
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.pagination li a:hover {
+  background-color: #FFF57E;
+  font-weight: bold;
+}

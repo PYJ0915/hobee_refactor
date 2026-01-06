@@ -1,5 +1,6 @@
 package hobee.semi.project.board.model.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -19,6 +20,8 @@ public interface EditBoardMapper {
 	int boardDelete(Map<String, Object> map);
 
 	int boardUpdate(Board inputBoard);
+
+	List<String> selectDbImageList();
 
 
 

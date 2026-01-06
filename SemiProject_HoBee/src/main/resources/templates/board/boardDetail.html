@@ -144,7 +144,7 @@
                 <button th:onclick="|deleteComment(*{commentNo})|">삭제</button>
 						  </th:block>        
              
-              <button class="report-btn" id="comment-report"
+              <button class="report-btn comment-report"
               th:data-writer="${comment.memberNickname}"
               th:data-reported-member-no="${comment.memberNo}"
               th:data-target-no="${comment.commentNo}">신고</button>

@@ -1,6 +1,6 @@
 const likeBtn = document.querySelector(".like-btn");
 const boardReportBtn = document.querySelector("#board-report");
-const commentReportBtn = document.querySelector("#comment-report");
+const commentReportBtns = document.querySelectorAll(".comment-report");
 const reportModal = document.querySelector("#reportModal");
 const reportWriter = document.querySelector("#reportWriter");
 const reportContent = document.querySelector("#reportContent");
@@ -77,8 +77,8 @@ if(boardReportBtn != null) {
   boardReportBtn.addEventListener("click", showReport);
 }
 
-if(commentReportBtn != null) {
-  commentReportBtn.addEventListener("click", showReport);
+if(commentReportBtns != null) {
+   commentReportBtns.forEach(commentReportBtn => commentReportBtn.addEventListener("click", showReport));
 }
 document.querySelector(".close-btn").addEventListener("click", () => {
    reportModal.classList.add("popup-hidden"); 

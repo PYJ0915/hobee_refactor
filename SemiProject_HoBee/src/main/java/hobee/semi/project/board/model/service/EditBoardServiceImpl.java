@@ -130,6 +130,11 @@ public class EditBoardServiceImpl implements EditBoardService {
 
 		return mapper.boardUpdate(inputBoard);
 	}
+
+	@Override
+	public List<String> selectDbImgList() {
+		return mapper.selectDbImageList();
+	}
     
     
 

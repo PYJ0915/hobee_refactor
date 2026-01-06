@@ -20,7 +20,7 @@
     <h1>취미 탐색 결과 🎯</h1>
 
     <p class="result-name">
-      <strong th:text="${inputName}">홍길동</strong>님에게
+      <strong id="inputName">홍길동</strong>님에게
       잘 어울리는 취미를 추천해드릴게요!
     </p>
 
@@ -85,5 +85,6 @@
 <!-- 푸터 -->
 <th:block th:replace="~{common/fragments/footer}" />
 
+<script src="/js/findHobby/findHobbyEnd.js"></script>
 </body>
 </html>
