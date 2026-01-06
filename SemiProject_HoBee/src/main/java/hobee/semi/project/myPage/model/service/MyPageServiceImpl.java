@@ -1,6 +1,8 @@
 package hobee.semi.project.myPage.model.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -74,6 +76,16 @@ public class MyPageServiceImpl implements MyPageService {
 		return result;
 	}
 	
+	@Override
+	public int checkNickname(String memberNickname, int memberNo) {
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("memberNickname", memberNickname);
+		map.put("memberNo", memberNo);
+		
+		
+		return mapper.checkNickname(map);
+	}
 	
 	@Override
 	public int changePw(String newPw, String currentPw, MemberDTO loginMember) {
