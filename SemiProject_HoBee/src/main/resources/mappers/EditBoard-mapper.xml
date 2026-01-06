@@ -85,7 +85,11 @@
         )
 	</update>
 	
-	
-
+	<!-- DB 이미지 파일명 목록 조회 -->
+	<select id="selectDbImageList">
+		SELECT PROFILE_RENAME "rename" FROM PROFILE_IMG
+		UNION
+		SELECT BOARD_IMG_RENAME "rename" FROM BOARD_IMG
+	</select>
 
 </mapper>
