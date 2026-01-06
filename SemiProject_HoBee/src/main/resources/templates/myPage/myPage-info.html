@@ -1,139 +1,136 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <title>내 정보</title>
-  
+
   <link rel="stylesheet" th:href="@{/css/common.css}">
   <link rel="stylesheet" th:href="@{/css/myPage/myPage.css}">
   <link rel="stylesheet" th:href="@{/css/myPage/myPage-info.css}">
 
 </head>
+
 <body>
 
-<!-- 헤더 -->
-<th:block th:replace="~{common/fragments/header}" />
+  <!-- 헤더 -->
+  <th:block th:replace="~{common/fragments/header}" />
 
-<main class="myPage-container">
+  <main class="myPage-container">
 
-<div class="myPage-wrapper">
+    <div class="myPage-wrapper">
 
-  <!-- 사이드 메뉴 -->
-  <th:block th:replace="~{common/fragments/sidemenu}" />
+      <!-- 사이드 메뉴 -->
+      <th:block th:replace="~{common/fragments/sidemenu}" />
 
-  <!-- 메인 콘텐츠 -->
-  <section class="myPage-content">
+      <!-- 메인 콘텐츠 -->
+      <section class="myPage-content">
 
-    <h1 class="myPage-title">내 정보</h1>
-    <span class="myPage-subject">내 정보 관리</span>
+        <h1 class="myPage-title">내 정보</h1>
+        <span class="myPage-subject">내 정보 관리</span>
 
-    <!-- 프로필 영역 -->
-    <section class="myPage-main">
-    <form action="profile" method="POST" name="profileFrm" id="profile" 
-          enctype="multipart/form-data" class="profile-area">
+        <!-- 프로필 영역 -->
+        <section class="myPage-main">
+          <form action="profile" method="POST" name="profileFrm" id="profile" enctype="multipart/form-data"
+            class="profile-area">
 
-      <span id="deleteImage">x</span>
-      
-      <div class="profile-img">
+            <span id="deleteImage">x</span>
 
-        <img th:with="user=#{user.default.image}"
-                th:src="${session.loginMember.profileImg ?: user}"
-                id="profileImg"
-                class="profile-img">
+            <div class="profile-img">
 
-      </div>
+              <img th:with="user=#{user.default.image}" th:src="${session.loginMember.profileImg ?: user}"
+                id="profileImg" class="profile-img">
 
-      <div class="profile-btn-area">
-       <label for="imageInput" class="profile-btn">이미지 선택</label>
+            </div>
 
-       <input type="file" name="profileImg" id="imageInput" accept="image/*">
-      
-       <button type="submit" class="profile-btn">변경하기</button>
-       </div>   
-    </form>
-    </section>
+            <div class="profile-btn-area">
+              <label for="imageInput" class="profile-btn">이미지 선택</label>
 
-    <!-- 정보 수정 폼 -->
-    <form action="#" class="info-form" method="POST" name="myPageFrm" id="updateInfo">
+              <input type="file" name="profileImg" id="imageInput" accept="image/*">
 
-      <div class="myPage-row">
-        <label>닉네임</label>
-        <input type="text" name="memberNickname" maxlength="10" id="memberNickname"
-        th:value="${session.loginMember.memberNickname}">
-      </div>
+              <button type="submit" class="profile-btn">변경하기</button>
+            </div>
+          </form>
+        </section>
 
-      <div class="myPage-row">
-        <label>전화 번호</label>
-        <input type="text" name="memberTel" maxlength="11" id="memberTel"
+        <!-- 정보 수정 폼 -->
+        <form action="#" class="info-form" method="POST" name="myPageFrm" id="updateInfo">
+
+          <div class="myPage-row">
+            <label>닉네임</label>
+            <input type="text" name="memberNickname" maxlength="10" id="memberNickname"
+              th:value="${session.loginMember.memberNickname}">
+          </div>
+
+          <div class="myPage-row">
+            <label>전화 번호</label>
+            <input type="text" name="memberTel" maxlength="11" id="memberTel"
               th:value="${session.loginMember.memberTel}">
-      </div>
+          </div>
 
-      <div class="myPage-row address-title">
-        <span>주소</span>
-      </div>
+          <div class="myPage-row address-title">
+            <span>주소</span>
+          </div>
 
-      <div class="myPage-row address-area">
-        <input type="text" name="memberAddress" placeholder="우편번호" id="postcode"
-        th:value="${postcode}">
-        <button type="button" class="address-btn" style="font-weight: normal;">검색</button>
-      </div>
+          <div class="myPage-row address-area">
+            <input type="text" name="memberAddress" placeholder="우편번호" id="postcode" th:value="${postcode}">
+            <button type="button" class="address-btn" style="font-weight: normal;">검색</button>
+          </div>
 
-      <div class="myPage-row address-area">
-        <input type="text" name="memberAddress" placeholder="도로명/지번 주소"
-        id="address" th:value="${address}">
-      </div>
+          <div class="myPage-row address-area">
+            <input type="text" name="memberAddress" placeholder="도로명/지번 주소" id="address" th:value="${address}">
+          </div>
 
-      <div class="myPage-row address-area">
-        <input type="text" name="memberAddress" placeholder="상세 주소"
-        id="detailAddress" th:value="${detailAddress}">
-      </div>
+          <div class="myPage-row address-area">
+            <input type="text" name="memberAddress" placeholder="상세 주소" id="detailAddress" th:value="${detailAddress}">
+          </div>
 
-      <div class="myPage-row column">
-      <label class="section-label">취미</label>
+          <h3>취미</h3>
+          <div class="signUp-input">
+            <div id="mainCategoryArea">
+              <label><input type="radio" name="mainHobby" value="art"> 문화·예술</label>
+              <label><input type="radio" name="mainHobby" value="selfDevelop"> 자기계발</label>
+              <label><input type="radio" name="mainHobby" value="sports"> 운동·레저</label>
+              <label><input type="radio" name="mainHobby" value="social"> 사회 교류 </label>
+              <label><input type="radio" name="mainHobby" value="shopping"> 수집·소비</label>
+            </div>
 
-      <!-- 메인 취미 카테고리 -->
-      <div id="mainCategoryArea" class="hobby-main"></div>
-
-      <!-- 세부 취미 -->
-      <h4 id="subTitle" style="display:none;">세부 취미 선택</h4>
-      <div id="CategoryArea" class="hobby-sub"></div>
-      </div>
-
-      <div class="myPage-row column">
-      <label class="section-label">소개</label>
-
-      <textarea name="memberIntroduction" id="introduction" class="intro-textarea"
-                placeholder="소개 글 작성" th:text="${session.loginMember.memberIntroduction}">
-      </textarea>
-      </div>
-
-      <div class="form-btns">
-        <button type="submit" class="submit-btn">변경하기</button>
-      </div>
-
-    </form>
-
-  </section>
-
- </div> 
-  
-</main>
-
-<!-- 푸터 -->
-<th:block th:replace="~{common/fragments/footer}" />
-
-<!-- 다음 주소 API -->
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
-<script th:inline="javascript">
-  const selectedHobbyList = /*[[${session.loginMember.hobbyCode}]]*/ "취미 리스트";
-</script>
+            <h3 id="subTitle" style="display:none;">세부 취미 선택</h3> <!-- display:none : 숨김-->
+            <div id="CategoryArea" class="categoryHobby"></div>
+          </div>
 
 
-<!--회원 정보 수정 JS-->
-<script src="/js/myPage/myPage.js"></script>
+          <h3>소개</h3>
+                <div class="signUp-input">
+                    <textarea name="memberIntroduction" id="introdution" placeholder="소개 글 작성" 
+                     style="width: 500px; height: 300px;"></textarea>
+                </div>
 
+          <div class="form-btns">
+            <button type="submit" class="submit-btn">변경하기</button>
+          </div>
 
+        </form>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- 푸터 -->
+  <th:block th:replace="~{common/fragments/footer}" />
+
+  <!-- 다음 주소 API -->
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+  <script th:inline="javascript">
+    const selectedHobbyList = /*[[${session.loginMember.hobbyCode}]]*/ "취미 리스트";
+  </script>
+
+  <!--회원 정보 수정 JS-->
+  <script src="/js/myPage/myPage.js"></script>
 
 </body>
+
 </html>
