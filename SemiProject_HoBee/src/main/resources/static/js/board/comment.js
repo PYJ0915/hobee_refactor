@@ -20,7 +20,7 @@ const selectCommentList = () => {
 
       // 행(li) 생성 + 클래스 추가
       const commentRow = document.createElement("li");
-      commentRow.classList.add("comment-row");
+      commentRow.classList.add("comment-item");
 
       // 대댓글(자식 댓글)인 경우 "child-comment" 클래스 추가
       if(comment.commentNo2 != 0) 

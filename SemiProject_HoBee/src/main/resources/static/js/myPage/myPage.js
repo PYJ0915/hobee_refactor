@@ -181,7 +181,7 @@ initSelectedHobbies();
 
     /* 닉네임 유효성 검사 */
 const checkObj = {
-"memberNickname"  : false
+"memberNickname"  : true
 };
 
 
