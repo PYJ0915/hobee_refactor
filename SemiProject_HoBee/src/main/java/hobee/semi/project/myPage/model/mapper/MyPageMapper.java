@@ -51,7 +51,7 @@ public interface MyPageMapper {
 	 * @param memberNo
 	 * @param hobbyCode
 	 */
-	void insertMemberHobby(int memberNo, String hobbyCode);
+	void insertMemberHobby(Map<String, Object> map);
 
 	/** 내가 쓴 게시글 조회 SQL 수행
 	 * @param memberNo
