@@ -1,5 +1,6 @@
 package hobee.semi.project.board.model.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -17,5 +18,7 @@ public interface EditBoardService {
 	int boardDelete(Map<String, Object> map);
 
 	int boardUpdate(Board inputBoard);
+
+	List<String> selectDbImgList();
 
 }
