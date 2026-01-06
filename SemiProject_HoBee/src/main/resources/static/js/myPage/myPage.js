@@ -235,8 +235,7 @@ fetch("/myPage/checkNickname?memberNickname=" + memberNickname.value)
     memberNickname.focus();
     e.preventDefault(); // 여기서 막아야 실제 전송이 안 됨
     return;
-
-
+  }
 
 
     /* 전화번호 유효성 검사 */
@@ -278,9 +277,9 @@ fetch("/myPage/checkNickname?memberNickname=" + memberNickname.value)
       e.preventDefault();
     }
 
-  });  
-
+  });   
 }
+
 
 
 
