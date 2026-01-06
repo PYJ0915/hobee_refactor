@@ -22,8 +22,11 @@ public class Utility {
 		
 		// 1증가
 		seqNum++;
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 00939345c19ed866d1e8235bce860c49a5775130
 		
 		// 99999 넘어갈 시 1로 초기화
 		if(seqNum == 100000) seqNum = 1;

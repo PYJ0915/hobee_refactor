@@ -57,7 +57,7 @@
         class="header-profile-img"
 
         th:with="user=#{user.default.image}"
-        th:src="${session.loginMember.profileFullPath ?: user}"
+        th:src="${session.loginMember.profileImg ?: user}"
         >
       </a>
 
