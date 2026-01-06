@@ -35,147 +35,147 @@ if(updateInfo != null) {
       }).open();
   }
 
-  // 서버에서 내려준 기존 취미 코드 (th:inline="javascript")
-  const selectedHobbyList = window.selectedHobbyList || [];
+  /* =========================
+   취미 선택 (메인 1개 / 서브 다중)
+========================= */
 
-  const subHobbyData = {
-    "sports": [
-        {id: 101, name: "러닝"}, {id: 102, name: "헬스"}, {id: 103, name: "등산"},
-        {id: 104, name: "사이클"}, {id: 105, name: "볼링"}, {id: 106, name: "탁구"},
-        {id: 107, name: "수영"}, {id: 108, name: "축구"}, {id: 109, name: "야구"}, {id: 110, name: "골프"}
-    ],
-    "art": [
-        {id: 201, name: "드로잉"}, {id: 202, name: "캘리그라피"}, {id: 203, name: "사진 촬영"},
-        {id: 204, name: "영상 편집"}, {id: 205, name: "악기 연주"}, {id: 206, name: "도예/공예"},
-        {id: 207, name: "전시회·공연 관람"}
-    ],
-    "selfDevelop": [
-        {id: 301, name: "독서"}, {id: 302, name: "글쓰기"}, {id: 303, name: "코딩"},
-        {id: 304, name: "외국어 공부"}, {id: 305, name: "요리"}, {id: 306, name: "재테크/투자"}
-    ],
-    "social": [
-        {id: 401, name: "봉사활동"}, {id: 402, name: "북클럽"}, {id: 403, name: "보드게임 모임"},
-        {id: 404, name: "취미 클래스"}, {id: 405, name: "스포츠 동호회"}, {id: 406, name: "스터디 모임"},
-        {id: 407, name: "그룹 운동"}
-    ],
-    "shopping": [
-        {id: 501, name: "피규어/굿즈 수집"}, {id: 502, name: "음반/LP 수집"}, {id: 503, name: "향수 수집"},
-        {id: 504, name: "패션 아이템 수집"}, {id: 505, name: "문구류 수집"}, {id: 506, name: "한정판/콜라보 수집"}
-    ]
+// 서버에서 내려준 기존 취미 코드 (th:inline="javascript")
+const selectedHobbyList = window.selectedHobbyList || [];
+
+const subHobbyData = {
+  sports: [
+    { id: 101, name: "러닝" }, { id: 102, name: "헬스" }, { id: 103, name: "등산" },
+    { id: 104, name: "사이클" }, { id: 105, name: "볼링" }, { id: 106, name: "탁구" },
+    { id: 107, name: "수영" }, { id: 108, name: "축구" }, { id: 109, name: "야구" }, { id: 110, name: "골프" }
+  ],
+  art: [
+    { id: 201, name: "드로잉" }, { id: 202, name: "캘리그라피" }, { id: 203, name: "사진 촬영" },
+    { id: 204, name: "영상 편집" }, { id: 205, name: "악기 연주" }, { id: 206, name: "도예/공예" },
+    { id: 207, name: "전시회·공연 관람" }
+  ],
+  selfDevelop: [
+    { id: 301, name: "독서" }, { id: 302, name: "글쓰기" }, { id: 303, name: "코딩" },
+    { id: 304, name: "외국어 공부" }, { id: 305, name: "요리" }, { id: 306, name: "재테크/투자" }
+  ],
+  social: [
+    { id: 401, name: "봉사활동" }, { id: 402, name: "북클럽" }, { id: 403, name: "보드게임 모임" },
+    { id: 404, name: "취미 클래스" }, { id: 405, name: "스포츠 동호회" }, { id: 406, name: "스터디 모임" },
+    { id: 407, name: "그룹 운동" }
+  ],
+  shopping: [
+    { id: 501, name: "피규어/굿즈 수집" }, { id: 502, name: "음반/LP 수집" }, { id: 503, name: "향수 수집" },
+    { id: 504, name: "패션 아이템 수집" }, { id: 505, name: "문구류 수집" }, { id: 506, name: "한정판/콜라보 수집" }
+  ]
+};
+
+// 현재 선택된 메인 취미 (1개만)
+let activeMainHobby = null;
+
+// 요소 참조
+const mainCategoryArea = document.querySelector("#mainCategoryArea");
+const categoryArea = document.querySelector("#CategoryArea");
+const subTitle = document.querySelector("#subTitle");
+
+function getMainHobbyName(key) {
+  const map = {
+    art: "문화·예술",
+    selfDevelop: "자기계발",
+    sports: "운동·레저",
+    social: "사회 교류",
+    shopping: "수집·소비"
   };
+  return map[key];
+}
 
-  const activeMainHobbySet = new Set();
+/* =========================
+   메인 취미 렌더링 (radio UX)
+========================= */
+function renderMainHobbies() {
+  mainCategoryArea.innerHTML = "";
 
-  const mainCategoryArea = document.querySelector("#mainCategoryArea");
+  Object.keys(subHobbyData).forEach(key => {
+    const isActive = activeMainHobby === key;
 
-  function getMainHobbyName(key) {
-    const map = {
-      art: "문화·예술",
-      selfDevelop: "자기계발",
-      sports: "운동·레저",
-      social: "사회 교류",
-      shopping: "수집·소비"
-    };
-    return map[key] || key;
-  }
+    const div = document.createElement("div");
+    div.className = "main-hobby-item";
 
-  function renderMainHobbies() {
-    mainCategoryArea.innerHTML = "";
+    div.innerHTML = `
+      <label class="radio-like ${isActive ? "checked" : ""}">
+        ${getMainHobbyName(key)}
+      </label>
+    `;
 
-    Object.keys(subHobbyData).forEach(key => {
-      const isActive = activeMainHobbySet.has(key);
+    div.querySelector(".radio-like").addEventListener("click", () => {
 
-      const div = document.createElement("div");
-      div.className = "main-hobby-item";
+      // 이미 선택된 경우 → radio UX (아무 변화 없음)
+      if (activeMainHobby === key) return;
 
-      div.innerHTML = `
-        <label class="radio-like ${isActive ? "checked" : ""}">
-          <input type="radio" hidden>
-          ${getMainHobbyName(key)}
-        </label>
-        ${
-          isActive
-            ? `<button type="button" class="remove-btn" data-key="${key}">✕</button>`
-            : ""
-        }
-      `;
-
-      // 메인 취미 선택
-      div.querySelector(".radio-like").addEventListener("click", () => {
-        activeMainHobbySet.add(key);
-        renderSubHobbies(key);
-        renderMainHobbies();
-      });
-
-      // 메인 취미 제거
-      const removeBtn = div.querySelector(".remove-btn");
-      if (removeBtn) {
-        removeBtn.addEventListener("click", e => {
-          e.stopPropagation();
-          activeMainHobbySet.delete(key);
-          removeSubHobbiesByMain(key);
-          renderMainHobbies();
-        });
-      }
-
-      mainCategoryArea.appendChild(div);
-    });
-  }
-
-  
-  const categoryArea = document.querySelector("#CategoryArea");
-  const subTitle = document.querySelector("#subTitle");
-
-  function renderSubHobbies(mainKey) {
-    subTitle.style.display = "block";
-
-    subHobbyData[mainKey].forEach(hobby => {
-      // 이미 있으면 다시 생성 X
-      if (document.querySelector(`[data-hobby-id="${hobby.id}"]`)) return;
-
-      const label = document.createElement("label");
-      label.dataset.hobbyId = hobby.id;
-
-      const checked = selectedHobbyList.includes(hobby.id) ? "checked" : "";
-
-      label.innerHTML = `
-        <input type="checkbox" name="hobbyCode" value="${hobby.id}" ${checked}>
-        ${hobby.name}
-      `;
-
-      categoryArea.appendChild(label);
-    });
-  }
-
-  function removeSubHobbiesByMain(mainKey) {
-    subHobbyData[mainKey].forEach(hobby => {
-      const el = document.querySelector(`[data-hobby-id="${hobby.id}"]`);
-      if (el) el.remove();
-    });
-
-    if (categoryArea.children.length === 0) {
+      // 기존 서브 취미 전부 제거
+      categoryArea.innerHTML = "";
       subTitle.style.display = "none";
-    }
-  }
 
-  function initSelectedHobbies() {
-    Object.entries(subHobbyData).forEach(([key, list]) => {
-      const hasSelected = list.some(h =>
-        selectedHobbyList.includes(h.id)
-      );
+      // 메인 취미 변경
+      activeMainHobby = key;
 
-      if (hasSelected) {
-        activeMainHobbySet.add(key);
-        renderSubHobbies(key);
-      }
+      // 새 서브 취미 렌더링
+      renderSubHobbies(key);
+
+      // 메인 취미 다시 렌더링
+      renderMainHobbies();
     });
 
-    renderMainHobbies();
-  }
+    mainCategoryArea.appendChild(div);
+  });
+}
 
+/* =========================
+   서브 취미 렌더링 (checkbox)
+========================= */
+function renderSubHobbies(mainKey) {
+  subTitle.style.display = "block";
+
+  subHobbyData[mainKey].forEach(hobby => {
+
+    // 중복 생성 방지
+    if (document.querySelector(`[data-hobby-id="${hobby.id}"]`)) return;
+
+    const label = document.createElement("label");
+    label.dataset.hobbyId = hobby.id;
+
+    const checked = selectedHobbyList.includes(hobby.id) ? "checked" : "";
+
+    label.innerHTML = `
+      <input type="checkbox" name="hobbyCode" value="${hobby.id}" ${checked}>
+      ${hobby.name}
+    `;
+
+    categoryArea.appendChild(label);
+  });
+}
+
+/* =========================
+   초기 선택 복원
+========================= */
+function initSelectedHobbies() {
+
+  // 기존 취미 코드 기준으로 메인 취미 1개만 복원
+  Object.entries(subHobbyData).some(([key, list]) => {
+    const hasSelected = list.some(h =>
+      selectedHobbyList.includes(h.id)
+    );
+
+    if (hasSelected) {
+      activeMainHobby = key;
+      renderSubHobbies(key);
+      return true; // 첫 번째 메인 취미만 선택
+    }
+  });
+
+  renderMainHobbies();
+}
+
+// 초기 실행
 initSelectedHobbies();
-
-
 
 
 
@@ -331,7 +331,6 @@ if(changePw != null) { // 제출 되었을 때(변경 버튼 클릭)
     } 
   });
 };
-
 
 
 // ------------------------프로필 이미지 변경--------------------------
