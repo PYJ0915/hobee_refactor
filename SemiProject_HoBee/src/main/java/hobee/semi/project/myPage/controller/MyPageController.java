@@ -180,6 +180,11 @@ public class MyPageController {
 		
 	}
 	
+	@GetMapping("secession")
+	public String secession() {
+		return "myPage/myPage-secession";
+	}
+	
 }
 
 
