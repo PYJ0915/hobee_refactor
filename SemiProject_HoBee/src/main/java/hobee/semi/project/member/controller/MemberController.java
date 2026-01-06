@@ -76,9 +76,6 @@ public class MemberController {
 				log.info("memberDTO -> 회원 프로필 이미지 경로 : " + inputMember.getProfileFullPath());
 				log.info("memberDTO -> 회원 프로필 이미지 원본명 : " + inputMember.getProfileOriginalName());				
 				
-				log.info("ProfileDTO -> 회원 프로필 이미지 원본명 : " + profileDto.getProfileOriginalName());
-				log.info("ProfileDTO -> 회원 프로필 이미지 경로: " + profileDto.getProfilePath() + profileDto.getProfileRename());
-				
 				model.addAttribute("loginMember", loginMember);
 				
 				// 쿠키 객체 생성(회원 정보 관리하기 위해(입장권 번호))

@@ -21,6 +21,7 @@ public class Utility {
 		String number = String.format("%05d", seqNum);
 
 
+
 		// 1증가
 		seqNum++;
 
