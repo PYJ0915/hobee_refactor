@@ -158,7 +158,7 @@ public class MyPageServiceImpl implements MyPageService {
 			loginMember.setProfileRename(rename);
 			
 			// 합쳐진 경로 -> 세션에서 바로 쓸 수 있도록 추가(가상 필드)
-			loginMember.setProfileFullPath(profilePath + rename);
+			loginMember.setProfileImg(profilePath + rename);
 			
 			log.info("loginMember.getProfileFullPath() : " + loginMember.getProfileFullPath());
 			log.info("updatePath : " + updatePath);
