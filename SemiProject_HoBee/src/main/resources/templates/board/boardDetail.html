@@ -29,7 +29,12 @@
       <!-- 작성자 정보 -->
       <div class="board-writer">
         <div class="writer-left">
-          <div class="profile-img"></div>
+          <div>
+            <img alt="프로필 이미지" 
+            th:with="user=#{user.default.image}"
+            th:src="${board.profileImg ?: user}"
+            class="profile-img">
+          </div>
 
           <div class="writer-info">
             <p class="nickname" th:text="${board.memberNickname}">
