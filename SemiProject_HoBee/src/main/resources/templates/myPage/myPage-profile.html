@@ -25,7 +25,15 @@
 
     <!-- 프로필 상단 -->
     <div class="profile-header">
-      <div class="profile-img"></div>
+      <div class="profile-img">
+        <img
+        alt="프로필 이미지"
+        class="profile-img"
+
+        th:with="user=#{user.default.image}"
+        th:src="${session.loginMember.profileImg ?: user}"
+        >
+      </div>
     </div>
 
     <!-- 정보 영역 -->

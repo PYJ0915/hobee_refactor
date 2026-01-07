@@ -5,15 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>회원 탈퇴</title>
 
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/css/myPage/myPage.css}">
+  <link rel="stylesheet" th:href="@{/css/myPage/myPage-secession.css}">
+
 </head>
+
 <body>
 
-  <main>
+  <!-- 헤더 -->
+  <th:block th:replace="~{common/fragments/header}" />
 
+  <main  class="myPage-container">
 
+    <div class="myPage-wrapper">
+  
+      <!-- 사이드 메뉴 -->
+      <th:block th:replace="~{common/fragments/sidemenu}" />
 
       <!-- 마이페이지 본문(오른쪽) -->
-      <section class="myPage-main">
+      <section class="myPage-content">
 
         <h1 class="myPage-title">회원 탈퇴</h1>
         <span class="myPage-subject">
@@ -70,16 +81,14 @@
 
 				</form>
 
-
-
-
       </section>
-
-    </section>
+    
+    </div>
 
   </main>
 
-
+  <!-- 푸터 -->
+  <th:block th:replace="~{common/fragments/footer}" />
   
 
   <script src="/js/myPage/myPage.js"></script>
