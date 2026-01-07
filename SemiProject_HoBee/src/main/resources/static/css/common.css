@@ -49,10 +49,12 @@
 .nav-item:hover {
   background-color: #FFF57E;
   color: #452829;
+  text-decoration: none;
 }
 
 .header-auth {
   display: flex;
+  align-items: center;
   gap: 8px;
 }
 
@@ -192,6 +194,7 @@
 
 .header-btn-logout:hover {
   background-color: #593737;
+  text-decoration: none;
 }
 
 #nickname {
