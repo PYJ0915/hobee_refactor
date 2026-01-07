@@ -23,4 +23,6 @@ public interface MyPageService {
 
 	int checkNickname(String memberNickname, int memberNo);
 
+	int secession(String memberPw, int memberNo);
+
 }

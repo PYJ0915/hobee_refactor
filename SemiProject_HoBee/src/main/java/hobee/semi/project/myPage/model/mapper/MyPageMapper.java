@@ -67,5 +67,8 @@ public interface MyPageMapper {
 	int insertProfile(MemberDTO member);
 
 	int updateProfile(MemberDTO member);
+	
+	//회원 탈퇴
+	int secession(int memberNo);
 
 }

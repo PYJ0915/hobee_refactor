@@ -200,4 +200,17 @@ public class MyPageServiceImpl implements MyPageService {
 
 		return updateProfile;
 	}
+	
+	//회원 탈퇴
+	@Override
+	public int secession(String memberPw, int memberNo) {
+		
+		String encPw = mapper.checkPw(memberNo);
+		
+		if (!bcrypt.matches(memberPw, encPw)) {
+			return 0;
+		}
+		
+		return mapper.secession(memberNo);
+	}
 }
