@@ -7,6 +7,7 @@ import java.util.List;
 import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.findHobby.model.dto.Hobby;
 import hobee.semi.project.member.model.dto.MemberDTO;
+import hobee.semi.project.profileImg.model.dto.ProfileDTO;
 
 public interface MyPageService {
 

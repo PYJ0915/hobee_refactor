@@ -50,6 +50,7 @@ public interface MemberMapper {
 	 * @return
 	 */
 	ProfileDTO selectLatestProfile(int memberNo);
+	
 	/**아이디 찾기(이름)
 	 * @param inputMember
 	 * @return
