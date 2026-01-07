@@ -44,8 +44,10 @@
 ========================= */
 
 .profile-header {
+  padding-left: 10%;
+
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   margin-bottom: 40px;
 }
 
