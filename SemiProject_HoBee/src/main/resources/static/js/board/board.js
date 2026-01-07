@@ -1,4 +1,6 @@
 const insertBtn = document.querySelector("#insertBtn");
+const myBoardBtn = document.querySelector("#myBoardBtn");
+const myCommentBtn = document.querySelector("#myCommentBtn");
 
 if (insertBtn != null) {
     insertBtn.addEventListener('click', () => {
@@ -9,3 +11,17 @@ if (insertBtn != null) {
         location.href = `/editBoard/${boardPath}/insert`;
     });
 }
+
+if (myBoardBtn != null) {
+    myBoardBtn.addEventListener('click', () => {
+
+        const boardPath = myBoardBtn.getAttribute("data-board-path");
+        const target = "/myBoard";
+
+        if(boardPath.includes(target)){
+            return;
+        }
+
+        location.href = `/${boardPath}/myBoard`;
+    })
+};

@@ -136,3 +136,91 @@
   color: #444;
 }
 
+/* =========================
+   내가 쓴 글
+========================= */
+
+.empty-box {
+  margin-top: 12px;
+  padding: 20px;
+  background-color: #f1f1f1;
+  text-align: center;
+  color: #777;
+  border-radius: 10px;
+}
+
+/* 글 목록 */
+.my-board-list {
+  margin-top: 12px;
+  width: 100%;
+}
+
+.my-board-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 12px 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.my-board-list a {
+  color: #452829;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.my-board-list a:hover {
+  text-decoration: underline;
+}
+
+.date {
+  font-size: 12px;
+  color: #888;
+}
+
+.pagination-area {
+  margin: 30px 0;
+}
+
+.pagination {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.pagination li {
+  margin: 0 5px;
+}
+
+.current {
+  font-weight: bold;
+  background-color: #FFF57E;
+  border-radius: 50%;
+  padding: 2px 8px;
+}
+
+.pagination li a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  min-width: 32px;
+  height: 32px;
+
+  font-size: 14px;
+  color: #452829;
+  text-decoration: none;
+
+  border-radius: 6px;
+  padding: 0 8px;
+
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.pagination li a:hover {
+  background-color: #FFF57E;
+  font-weight: bold;
+}
