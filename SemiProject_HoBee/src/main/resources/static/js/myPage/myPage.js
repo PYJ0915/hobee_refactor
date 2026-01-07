@@ -87,7 +87,7 @@ if (updateInfo != null) {
     }[key];
   }
 
-  /* 🔥 현재 선택된 서브 취미 → hidden input으로 누적 */
+  /* 현재 선택된 서브 취미 → hidden input으로 누적 */
   function syncSelectedSubHobbies() {
     const checked = document.querySelectorAll('#CategoryArea input:checked');
 
@@ -117,8 +117,7 @@ if (updateInfo != null) {
       label.addEventListener("click", () => {
         if (activeMainHobby === key) return;
 
-        syncSelectedSubHobbies(); // ⭐ 핵심
-
+        syncSelectedSubHobbies(); // 
         categoryArea.innerHTML = "";
         subTitle.style.display = "none";
 
@@ -136,11 +135,14 @@ if (updateInfo != null) {
 
     subHobbyData[mainKey].forEach(hobby => {
       const label = document.createElement("label");
-      label.innerHTML = `
-        <input type="checkbox" value="${hobby.id}"
-          ${selectedHobbyList.includes(hobby.id) ? "checked" : ""}>
-        ${hobby.name}
-      `;
+      const checkbox = document.createElement("input");
+
+      checkbox.type = "checkbox";
+      checkbox.value = hobby.id;
+      checkbox.checked = selectedHobbyList.includes(hobby.id); // ⭐ 핵심
+
+      label.appendChild(checkbox);
+      label.append(` ${hobby.name}`);
       categoryArea.appendChild(label);
     });
   }
@@ -164,6 +166,7 @@ if (updateInfo != null) {
     });
 
     renderMainHobbies();
+    syncSelectedSubHobbies();
   }
 
   initSelectedHobbies();
