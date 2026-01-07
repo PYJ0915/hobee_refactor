@@ -35,4 +35,6 @@ public interface ReportMapper {
 
 	int selectActivePermanentCount(int memberNo);
 
+	int todayReportCount(Map<String, Object> map);
+
 }

@@ -34,7 +34,7 @@
           <div class="writer-info">
             <p class="nickname" th:text="${board.memberNickname}">
               사용자닉네임
-            </p >
+            </p>
             <span class="date" th:text="${board.boardWriteDate}">
               2025.01.01
             </span>
@@ -106,59 +106,61 @@
       <ul class="comment-list" id="commentList">
 
         <li class="comment-item" th:each="comment : ${board.commentList}"
-            th:classappend="${comment.commentNo2} != 0 ? child-comment"
-            th:object="${comment}">
+          th:classappend="${comment.commentNo2} != 0 ? child-comment" th:object="${comment}">
 
-            
+
           <div class="comment-top">
-              
-            <th:block th:if="*{commentDelFl} == 'Y'">
-              삭제된 댓글입니다.
-            </th:block>  
+
+            <th:block th:if="*{commentDelFl} == 'Y'"  >
+              <p class="comment-content" 
+              th:classappend="*{commentDelFl} == 'Y' ? ' deleted'">삭제된 댓글입니다.</p>
+            </th:block>
 
             <th:block th:if="*{commentDelFl} == 'N'">
-            <div class="comment-writer">
-              
-              <!-- 프로필 이미지 없을 경우 -->
-						  <img class="profile-img small" th:unless="*{profileImg}" th:src="#{user.default.image}">
-						  <!-- 프로필 이미지 있을 경우 -->
-						  <img class="profile-img small" th:if="*{profileImg}" th:src="*{profileImg}">
-              
+              <div class="comment-writer">
 
-              <span  class="nickname" th:text="${comment.memberNickname}">
-                사용자닉네임
-              </span>
+                <!-- 프로필 이미지 없을 경우 -->
+                <img class="profile-img small" th:unless="*{profileImg}" th:src="#{user.default.image}">
+                <!-- 프로필 이미지 있을 경우 -->
+                <img class="profile-img small" th:if="*{profileImg}" th:src="*{profileImg}">
 
-              <span class="comment-date" th:text="${comment.commentWriteDate}">
-                작성일
-              </span>
-            </div>
 
-            <div class="comment-actions">
-              <button class="reply-btn"
-                      th:onclick="|showInsertComment(*{commentNo}, this)|">답글</button>
+                <span class="nickname" th:text="${comment.memberNickname}">
+                  사용자닉네임
+                </span>
 
-              <button class="report-btn comment-report"
-                      th:data-writer="${comment.memberNickname}"
-                      th:data-reported-member-no="${comment.memberNo}"
-                      th:data-target-no="${comment.commentNo}">신고</button>
+                <span class="comment-date" th:text="${comment.commentWriteDate}">
+                  작성일
+                </span>
 
-              <th:block th:if="${session.loginMember != null and session.loginMember.memberNo == comment.memberNo}">
-						
-              <button th:onclick="|showUpdateComment(*{commentNo}, this)|" class="edit-btn">수정</button>
-							
-              <button th:onclick="|deleteComment(*{commentNo})|" class="del-btn">삭제</button>
-						  </th:block>           
-            </div>
+              </div>
 
-            </th:block>
+              <div class="comment-actions top-actions">
+
+                <button class="reply-btn" th:onclick="|showInsertComment(*{commentNo}, this)|">답글</button>
+
+                <button class="report-btn comment-report" th:data-writer="${comment.memberNickname}"
+                  th:data-reported-member-no="${comment.memberNo}" th:data-target-no="${comment.commentNo}"
+                  th:data-comment-author-level="${comment.authorLevel}">신고</button>
+
+              </div>
+              </th:block>
+            
           </div>
 
+          <th:block th:if="*{commentDelFl} == 'N'">
           <p class="comment-content" th:text="${comment.commentContent}">
             댓글 내용
           </p>
 
-         <!--<div class="comment-bottom">
+          <div class="comment-actions bottom-actions"
+            th:if="${session.loginMember != null and session.loginMember.memberNo == comment.memberNo}">
+            <button th:onclick="|deleteComment(*{commentNo})|" class="del-btn fa-solid fa-trash"></button>
+            <button th:onclick="|showUpdateComment(*{commentNo}, this)|" class="edit-btn fa-solid fa-pen"></button>
+          </div>
+          </th:block>
+
+          <!--<div class="comment-bottom">
             <button class="comment-like-btn">
               <i class="fa-solid fa-thumbs-up"></i>
               <span th:text="${comment.likeCount}">3</span>
@@ -176,7 +178,7 @@
       </div>
 
     </section>
- 
+
 
   </main>
 
@@ -220,25 +222,25 @@
   <!-- 푸터 -->
   <th:block th:replace="~{common/fragments/footer}" />
 
-   <script th:inline="javascript">
+  <script th:inline="javascript">
 
-        // - loginMember가 null 인 경우 null 반환
-        const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ "로그인 회원 번호";
+    // - loginMember가 null 인 경우 null 반환
+    const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ "로그인 회원 번호";
 
-        const authorLevel = /*[[${board.authorLevel}]]*/ "권한 등급";
+    const boardAuthorLevel = /*[[${board.authorLevel}]]*/ "게시글 작성자 권한 등급";
 
-        // 현재 게시글 번호를 전역 변수로 저장
-        const boardNo = /*[[${board.boardNo}]]*/ "게시글 번호";
+    // 현재 게시글 번호를 전역 변수로 저장
+    const boardNo = /*[[${board.boardNo}]]*/ "게시글 번호";
 
-        // 현재 게시판 코드 번호를 전역 변수로 저장
-        const boardCode = /*[[${board.boardCode}]]*/ "게시판 코드 번호";
+    // 현재 게시판 코드 번호를 전역 변수로 저장
+    const boardCode = /*[[${board.boardCode}]]*/ "게시판 코드 번호";
 
-        // 현재 게시글 좋아요 여부를 전역 변수로 저장
-        let likeCheck = /*[[${board.likeCheck}]]*/ "좋아요 여부";
+    // 현재 게시글 좋아요 여부를 전역 변수로 저장
+    let likeCheck = /*[[${board.likeCheck}]]*/ "좋아요 여부";
 
-        const userDefaultIamge = /*[[#{user.default.image}]]*/ "기본이미지";
+    const userDefaultIamge = /*[[#{user.default.image}]]*/ "기본이미지";
 
-    </script>
+  </script>
 
   <script src="/js/board/boardDetail.js"></script>
 
