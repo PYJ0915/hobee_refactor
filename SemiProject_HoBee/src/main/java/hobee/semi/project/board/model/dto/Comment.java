@@ -22,4 +22,6 @@ public class Comment {
 	private String memberNickname;
 	private String profileImg;
 	
+	private int authorLevel; // 관리자 신고를 막기 위한 권한 등급
+	
 }

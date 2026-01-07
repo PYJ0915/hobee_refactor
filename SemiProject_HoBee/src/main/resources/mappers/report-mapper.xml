@@ -126,4 +126,11 @@
 		AND PENALTY_STATUS = 'ACTIVE' 
 	</select>
 
+	<select id="todayReportCount">
+		SELECT COUNT(*)
+		FROM REPORT
+		WHERE REPORTER_MEMBER_NO = #{memberNo}
+		AND TO_CHAR(REPORT_DATE, 'YYYY-MM-DD') = #{today}
+	</select>
+
 </mapper>
