@@ -171,6 +171,36 @@
    메인 취미 (radio UX)
 ========================= */
 
+/* =========================
+   취미 태그
+========================= */
+
+.hobby-section {
+  margin-top: 5%;
+  width: 700px;
+}
+
+.hobby-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hobby-tag {
+  padding: 6px 14px;
+  border-radius: 20px;
+  background-color: #FFF57E;
+  color: #452829;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.value {
+  color: #ddd;
+  font-size: 15px;
+  font-weight: normal;
+}
+
 #mainCategoryArea {
   width: 100%;
   display: flex;

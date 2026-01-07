@@ -56,9 +56,9 @@ public class MyPageController {
 		
 		List<Board> boardList = service.selectBoardList(loginMember.getMemberNo());
 
-		model.addAttribute("hobbyList", hobbyList);
+		loginMember.setHobbyList(hobbyList);
 		
-		model.addAttribute("myBoardList", boardList);
+		model.addAttribute("hobbyList", hobbyList);
 		
 		return "myPage/myPage-profile";
 	}
