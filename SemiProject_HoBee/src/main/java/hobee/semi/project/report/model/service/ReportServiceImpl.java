@@ -148,4 +148,15 @@ public class ReportServiceImpl implements ReportService {
 		return mapper.selectTarget(reportNo);
 	}
 
+	@Override
+	public int todayReportCount(int memberNo, String today) {
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("memberNo", memberNo);
+		map.put("today", today);
+		
+		return mapper.todayReportCount(map);
+	}
+
 }

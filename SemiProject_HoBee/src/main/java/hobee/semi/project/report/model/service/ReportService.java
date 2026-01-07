@@ -14,4 +14,6 @@ public interface ReportService {
 
 	Report selectTarget(int reportNo);
 
+	int todayReportCount(int memberNo, String today);
+
 }
