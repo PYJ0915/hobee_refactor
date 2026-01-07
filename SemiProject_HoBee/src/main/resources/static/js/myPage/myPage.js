@@ -77,125 +77,14 @@ if (updateInfo != null) {
   const categoryArea = document.querySelector("#CategoryArea");
   const subTitle = document.querySelector("#subTitle");
 
-    const div = document.createElement("div");
-    div.className = "main-hobby-item";
-
-    div.innerHTML = `
-      <label class="radio-like ${isActive ? "checked" : ""}">
-        ${getMainHobbyName(key)}
-      </label>
-    `;
-
-    div.querySelector(".radio-like").addEventListener("click", () => {
-
-      // 이미 선택된 경우 → radio UX (아무 변화 없음)
-      if (activeMainHobby === key) return;
-
-      // 기존 서브 취미 전부 제거
-      categoryArea.innerHTML = "";
-      subTitle.style.display = "none";
-
-      // 메인 취미 변경
-      activeMainHobby = key;
-
-      // 새 서브 취미 렌더링
-      renderSubHobbies(key);
-
-      // 메인 취미 다시 렌더링
-      renderMainHobbies();
-    });
-
-    mainCategoryArea.appendChild(div);
-  });
-}
-
-/* =========================
-   서브 취미 렌더링 (checkbox)
-========================= */
-function renderSubHobbies(mainKey) {
-  subTitle.style.display = "block";
-
-  subHobbyData[mainKey].forEach(hobby => {
-
-    // 중복 생성 방지
-    if (document.querySelector(`[data-hobby-id="${hobby.id}"]`)) return;
-
-    const label = document.createElement("label");
-    label.dataset.hobbyId = hobby.id;
-
-    const checked = selectedHobbyList.includes(hobby.id) ? "checked" : "";
-
-    label.innerHTML = `
-      <input type="checkbox" name="hobbyCode" value="${hobby.id}" ${checked}>
-      ${hobby.name}
-    `;
-
-    categoryArea.appendChild(label);
-  });
-}
-
-/* =========================
-   초기 선택 복원
-========================= */
-function initSelectedHobbies() {
-
-  // 기존 취미 코드 기준으로 메인 취미 1개만 복원
-  Object.entries(subHobbyData).some(([key, list]) => {
-    const hasSelected = list.some(h =>
-      selectedHobbyList.includes(h.id)
-    );
-
-    if (hasSelected) {
-      activeMainHobby = key;
-      renderSubHobbies(key);
-      return true; // 첫 번째 메인 취미만 선택
-    }
-  });
-
-  renderMainHobbies();
-}
-
-// 초기 실행
-initSelectedHobbies();
-
-
-
-    /* 닉네임 유효성 검사 */
-const checkObj = {
-"memberNickname"  : true
-};
-
-
-memberNickname.addEventListener("input",e=>{
-
-const inputNickname = e.target.value; // 입력값 갖고 옴
-
-// 미입력
-if(inputNickname.trim().length === 0) {
-  checkObj.memberNickname = false;
-  return;
-}
-
-// 닉네임 정규식에 맞지 않는 경우
-let regExp = /^[가-힣\w\d]{2,10}$/;
-
-// 정규식이 아닐 경우
-if( !regExp.test(inputNickname)) {
-checkObj.memberNickname = false;
-return;
-}
-
-
-// 닉네임 중복 검사
-fetch("/myPage/checkNickname?memberNickname=" + memberNickname.value)
-.then(resp => resp.text())
-.then(count => {
-  
-  if(count == 1) { // 중복인 경우
-      checkObj.memberNickname = false;
-      return;
-  }else{
-    checkObj.memberNickname = true;
+  function getMainHobbyName(key) {
+    return {
+      art: "문화·예술",
+      selfDevelop: "자기계발",
+      sports: "운동·레저",
+      social: "사회 교류",
+      shopping: "수집·소비"
+    }[key];
   }
 
   /* 🔥 현재 선택된 서브 취미 → hidden input으로 누적 */
@@ -331,13 +220,12 @@ fetch("/myPage/checkNickname?memberNickname=" + memberNickname.value)
     syncSelectedSubHobbies();
 
     /*  닉네임 최종 유효성 검사 */
-  if (!checkObj.memberNickname) {
-    alert("닉네임이 유효하지 않거나 이미 사용 중입니다.");
-    memberNickname.focus();
-    e.preventDefault(); // 여기서 막아야 실제 전송이 안 됨
-    return;
-  }
-
+    if (!checkObj.memberNickname) {
+      alert("닉네임이 유효하지 않거나 이미 사용 중입니다.");
+      memberNickname.focus();
+      e.preventDefault(); // 여기서 막아야 실제 전송이 안 됨
+      return;
+    }
 
     /* 전화번호 유효성 검사 */
 
@@ -378,9 +266,9 @@ fetch("/myPage/checkNickname?memberNickname=" + memberNickname.value)
       e.preventDefault();
     }
 
-  });   
-}
+  });
 
+}
 
 
 
