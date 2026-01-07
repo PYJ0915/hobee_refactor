@@ -30,23 +30,6 @@
       </div>
     </th:block>
 
-
-
-        <!-- <img
-        alt="프로필 이미지"
-        class="header-profile-img"
-
-        th:with="user=#{user.default.image}"
-        th:src="${session.loginMember.profileImg ?: user}"
-        > -->
-
-        <!-- <img
-        alt="프로필 이미지"
-        class="header-profile-img"
-        th:src="#{user.default.image}"
-        > -->
-
-
     <!-- 로그인 상태 사용자 영역 -->
     <th:block th:if="${session.loginMember != null}">
     <div class="header-user-loggedin">

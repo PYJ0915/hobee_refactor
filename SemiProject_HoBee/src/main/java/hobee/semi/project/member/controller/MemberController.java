@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.member.model.service.MemberService;
+import hobee.semi.project.profileImg.model.dto.ProfileDTO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,7 @@ public class MemberController {
 	// 로그인 
 	@PostMapping("loginPage")
 	public String login(@ModelAttribute MemberDTO inputMember/*로그인 창에 쓴 값(그릇) */,
+					    @ModelAttribute ProfileDTO profileDTO,
 					Model model,/*값을 들고 클라이언트 이동(바구니)*/
 					RedirectAttributes ra,
 					@RequestParam(value = "saveId", required = false) String saveId/*saveId 값*/,
@@ -67,14 +69,14 @@ public class MemberController {
 //		                service.selectLatestProfile(loginMember.getMemberNo());
 //
 //		        if(profile != null) {
-//		            loginMember.setProfileFullPath(
+//		            loginMember.setProfileImg(
 //		                profile.getProfilePath() + profile.getProfileRename()
 //		            );
 //		        }
 				//--------------------------------------------------
 		        
-				log.info("memberDTO -> 회원 프로필 이미지 경로 : " + inputMember.getProfileFullPath());
-				log.info("memberDTO -> 회원 프로필 이미지 원본명 : " + inputMember.getProfileOriginalName());				
+				log.info("memberDTO 회원 프로필 이미지 경로 : " + loginMember.getProfileImg());				
+				log.info("memberDTO 회원 닉네임 : " + loginMember.getMemberNickname());
 				
 				model.addAttribute("loginMember", loginMember);
 				

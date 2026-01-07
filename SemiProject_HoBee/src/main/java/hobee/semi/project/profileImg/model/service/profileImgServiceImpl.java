@@ -1,4 +1,4 @@
-package hobee.semi.project.profileImg.service;
+package hobee.semi.project.profileImg.model.service;
 
 import org.springframework.stereotype.Service;
 
