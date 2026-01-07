@@ -56,7 +56,6 @@ public class MyPageController {
 		List<Hobby> hobbyList =
 			    service.selectHobbyList(loginMember.getHobbyCode());
 		
-		List<Board> boardList = service.selectBoardList(loginMember.getMemberNo());
 
 		loginMember.setHobbyList(hobbyList);
 		
