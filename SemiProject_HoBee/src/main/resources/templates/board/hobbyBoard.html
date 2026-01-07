@@ -108,24 +108,47 @@
         th:data-board-path="|hobby/${categoryCode}|">글쓰기</button>
         </div>
 
-        <div class="pagination-area">
-            <ul class="pagination" th:object="${pagination}">
-                <li><a th:href="@{/hobby/{code}(code=${categoryCode}, cp=1, key=${param.key}, query=${param.query})}">&lt;&lt;</a></li>
-                <li><a th:href="@{/hobby/{code}(code=${categoryCode}, cp=*{prevPage}, key=${param.key}, query=${param.query})}">&lt;</a></li>
+<div class="pagination-area">
 
-                <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
-                    <li th:if="${i} == *{currentPage}">
-                        <a class="current" th:text="${i}">1</a>
-                    </li>
-                    <li th:unless="${i} == *{currentPage}">
-                        <a th:href="@{/hobby/{code}(code=${categoryCode}, cp=${i}, key=${param.key}, query=${param.query})}" th:text="${i}">2</a>
-                    </li>
-                </th:block>
+    <ul class="pagination" th:unless="${param.key}" th:object="${pagination}">
+        <li><a th:href="@{''(cp=1)}">&lt;&lt;</a></li>
+        <li><a th:href="@{''(cp=*{prevPage})}">&lt;</a></li>
 
-                <li><a th:href="@{/hobby/{code}(code=${categoryCode}, cp=*{nextPage}, key=${param.key}, query=${param.query})}">&gt;</a></li>
-                <li><a th:href="@{/hobby/{code}(code=${categoryCode}, cp=*{maxPage}, key=${param.key}, query=${param.query})}">&gt;&gt;</a></li>
-            </ul>
-        </div>
+        <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
+            <li th:if="${i} == *{currentPage}">
+                <a class="current" th:text="${i}">1</a>
+            </li>
+            <li th:unless="${i} == *{currentPage}">
+                <a th:href="@{''(cp=${i})}" th:text="${i}">2</a>
+            </li>
+        </th:block>
+
+        <li><a th:href="@{''(cp=*{nextPage})}">&gt;</a></li>
+        <li><a th:href="@{''(cp=*{maxPage})}">&gt;&gt;</a></li>
+    </ul>
+
+    <ul class="pagination" th:if="${param.key}" th:object="${pagination}">
+        <li><a th:href="@{''(cp=1, key=${param.key}, query=${param.query})}">&lt;&lt;</a></li>
+        <li><a th:href="@{''(cp=*{prevPage}, key=${param.key}, query=${param.query})}">&lt;</a></li>
+
+        <th:block th:if="*{startPage lt endPage}" th:each="i : *{#numbers.sequence(startPage, endPage)}">
+            <li th:if="${i} == *{currentPage}">
+                <a class="current" th:text="${i}">1</a>
+            </li>
+            <li th:unless="${i} == *{currentPage}">
+                <a th:href="@{''(cp=${i}, key=${param.key}, query=${param.query})}" th:text="${i}">2</a>
+            </li>
+        </th:block>
+
+        <th:block th:unless="*{startPage lt endPage}">
+            <li><a class="current">1</a></li>
+        </th:block>
+
+        <li><a th:href="@{''(cp=*{nextPage}, key=${param.key}, query=${param.query})}">&gt;</a></li>
+        <li><a th:href="@{''(cp=*{maxPage}, key=${param.key}, query=${param.query})}">&gt;&gt;</a></li>
+    </ul>
+
+</div>
 
         <form th:action="@{/hobby/{code}(code=${categoryCode})}" method="get" id="boardSearch">
             <select name="key" id="searchKey">
