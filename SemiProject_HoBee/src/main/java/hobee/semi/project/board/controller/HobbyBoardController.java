@@ -34,6 +34,55 @@ import lombok.extern.slf4j.Slf4j;
 public class HobbyBoardController {
 	
 	private final HobbyBoardService service;
+
+	/** 내가 작성한 게시물만 보여주는 버튼 구현
+	 * @param cp
+	 * @param model
+	 * @param paramMap
+	 * @param loginMember
+	 * @return
+	 */
+	@GetMapping("{categoryCode:[0-9]+}/myBoard")
+	public String myBoardList(
+			@PathVariable("categoryCode") int categoryCode,
+            @RequestParam(value = "cp", required = false, defaultValue = "1") int cp, 
+            Model model,
+			@SessionAttribute(value = "loginMember", required = false) MemberDTO loginMember,
+			RedirectAttributes ra) {
+		
+		String categoryName = service.selectCategoryName(categoryCode);		
+		
+	    if(categoryName == null) {
+	        // 강제로 hobby/1 주소로 다시 보내버림
+	        return "redirect:/hobby/1";
+	    }
+	    
+	    
+		Map<String, Object> queryMap = new HashMap<>();
+		queryMap.put("categoryCode", categoryCode);
+		// 로그인 여부 체크
+
+		if(loginMember != null) {
+			queryMap.put("memberNo", loginMember.getMemberNo());
+		} else {
+			ra.addFlashAttribute("message", "로그인 후 이용 가능한 서비스입니다.");
+	        // 원래 있던 게시판 목록 주소로 리다이렉트 (예: /hobby/1)
+	        return "redirect:/hobby/" + categoryCode;
+		}
+		
+		// 2. 서비스 호출 (생성한 queryMap을 전달)
+		Map<String, Object> map = service.selectMyBoardList(categoryCode, cp, queryMap);
+		
+		model.addAttribute("categoryCode",categoryCode);
+		model.addAttribute("hobbyName", categoryName);
+		model.addAttribute("pagination", map.get("pagination"));
+	    model.addAttribute("boardList", map.get("boardList"));
+		model.addAttribute("hobbyBestList", service.hobbyBestList(categoryCode));
+		model.addAttribute("noticeList", service.noticeList(1));
+		
+		// 3. 게시판 목록을 보여주는 HTML 파일명
+		return "board/hobbyBoard"; 
+	}
 	
 	@GetMapping("{categoryCode:[0-9]+}") 
     public String selectBoardList(
@@ -86,6 +135,8 @@ public class HobbyBoardController {
 		return "board/hobbyBoard";
 	}
 	
+
+	
 	@GetMapping("{categoryCode:[0-9]+}/{boardNo:[0-9]+}")
 	public String boardDetail(@PathVariable("boardNo") int boardNo,
 							@PathVariable("categoryCode") int categoryCode,
@@ -95,8 +146,7 @@ public class HobbyBoardController {
 		Map<String, Object> map = new HashMap<>();
 		
 		map.put("boardNo", boardNo);
-		
-		if(loginMember != null) {
+		if (loginMember != null) {
 			map.put("memberNo", loginMember.getMemberNo());
 		}
 		

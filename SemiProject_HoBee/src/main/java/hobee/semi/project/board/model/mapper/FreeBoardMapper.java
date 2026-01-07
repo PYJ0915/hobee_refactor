@@ -35,5 +35,9 @@ public interface FreeBoardMapper {
 
 	int selectViewCount(int boardNo);
 
+	int getMyListCount(Map<String, Object> queryMap);
+
+	List<Board> selectMyBoardList(Map<String, Object> queryMap, RowBounds rowBounds);
+
 
 }

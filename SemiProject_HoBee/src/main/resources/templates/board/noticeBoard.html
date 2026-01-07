@@ -66,49 +66,53 @@
 
 			<div class="btn-area">
 				<!-- 관리자만 글쓰기 버튼 노출 -->
+	    	    <button id="myBoardBtn" th:if="${session.loginMember?.authorLevel == 2}"
+              data-board-path="notice">내 글</button>
 				<button id="insertBtn" th:if="${session.loginMember?.authorLevel == 2}"
                 data-board-path="notice">글쓰기</button>
 			</div>
 
-        <div class="pagination-area">
-            <ul class="pagination" th:unless="${param.key}" th:object="${pagination}">
-                <li><a th:href="@{/notice(cp=1)}">&lt;&lt;</a></li>
-                <li><a th:href="@{/notice(cp=*{prevPage})}">&lt;</a></li>
+<div class="pagination-area">
 
-                <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
-                    <li th:if="${i} == *{currentPage}">
-                        <a class="current" th:text="${i}">1</a>
-                    </li>
-                    <li th:unless="${i} == *{currentPage}">
-                        <a th:href="@{/notice(cp=${i})}" th:text="${i}">2</a>
-                    </li>
-                </th:block>
+    <ul class="pagination" th:unless="${param.key}" th:object="${pagination}">
+        <li><a th:href="@{''(cp=1)}">&lt;&lt;</a></li>
+        <li><a th:href="@{''(cp=*{prevPage})}">&lt;</a></li>
 
-                <li><a th:href="@{/notice(cp=*{nextPage})}">&gt;</a></li>
-                <li><a th:href="@{/notice(cp=*{maxPage})}">&gt;&gt;</a></li>
-            </ul>
+        <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
+            <li th:if="${i} == *{currentPage}">
+                <a class="current" th:text="${i}">1</a>
+            </li>
+            <li th:unless="${i} == *{currentPage}">
+                <a th:href="@{''(cp=${i})}" th:text="${i}">2</a>
+            </li>
+        </th:block>
 
-            <ul class="pagination" th:if="${param.key}" th:object="${pagination}">
-                <li><a th:href="@{/notice(cp=1, key=${param.key}, query=${param.query})}">&lt;&lt;</a></li>
-                <li><a th:href="@{/notice(cp=*{prevPage}, key=${param.key}, query=${param.query})}">&lt;</a></li>
+        <li><a th:href="@{''(cp=*{nextPage})}">&gt;</a></li>
+        <li><a th:href="@{''(cp=*{maxPage})}">&gt;&gt;</a></li>
+    </ul>
 
-                <th:block th:if="*{startPage lt endPage}" th:each="i : *{#numbers.sequence(startPage, endPage)}">
-                    <li th:if="${i} == *{currentPage}">
-                        <a class="current" th:text="${i}">1</a>
-                    </li>
-                    <li th:unless="${i} == *{currentPage}">
-                        <a th:href="@{/notice(cp=${i}, key=${param.key}, query=${param.query})}" th:text="${i}">2</a>
-                    </li>
-                </th:block>
+    <ul class="pagination" th:if="${param.key}" th:object="${pagination}">
+        <li><a th:href="@{''(cp=1, key=${param.key}, query=${param.query})}">&lt;&lt;</a></li>
+        <li><a th:href="@{''(cp=*{prevPage}, key=${param.key}, query=${param.query})}">&lt;</a></li>
 
-                <th:block th:unless="*{startPage lt endPage}">
-                    <li><a class="current">1</a></li>
-                </th:block>
+        <th:block th:if="*{startPage lt endPage}" th:each="i : *{#numbers.sequence(startPage, endPage)}">
+            <li th:if="${i} == *{currentPage}">
+                <a class="current" th:text="${i}">1</a>
+            </li>
+            <li th:unless="${i} == *{currentPage}">
+                <a th:href="@{''(cp=${i}, key=${param.key}, query=${param.query})}" th:text="${i}">2</a>
+            </li>
+        </th:block>
 
-                <li><a th:href="@{/notice(cp=*{nextPage}, key=${param.key}, query=${param.query})}">&gt;</a></li>
-                <li><a th:href="@{/notice(cp=*{maxPage}, key=${param.key}, query=${param.query})}">&gt;&gt;</a></li>
-            </ul>
-        </div>
+        <th:block th:unless="*{startPage lt endPage}">
+            <li><a class="current">1</a></li>
+        </th:block>
+
+        <li><a th:href="@{''(cp=*{nextPage}, key=${param.key}, query=${param.query})}">&gt;</a></li>
+        <li><a th:href="@{''(cp=*{maxPage}, key=${param.key}, query=${param.query})}">&gt;&gt;</a></li>
+    </ul>
+
+</div>
 
         <form th:action="@{/notice}" method="get" id="boardSearch">
             <select name="key" id="searchKey">

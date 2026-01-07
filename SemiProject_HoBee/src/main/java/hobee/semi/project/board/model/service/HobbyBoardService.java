@@ -23,6 +23,8 @@ public interface HobbyBoardService {
 
 	int updateViewCount(int boardNo);
 
+	Map<String, Object> selectMyBoardList(int categoryCode, int cp, Map<String, Object> queryMap);
+
 
 
 }

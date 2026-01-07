@@ -71,6 +71,48 @@ public class NoticeBoardController {
 		// src/main/resources/templates/board/boardList.html 로 forward
 		return "board/noticeBoard";
 	}
+	
+	/** 내가 작성한 게시물만 보여주는 버튼 구현
+	 * @param cp
+	 * @param model
+	 * @param paramMap
+	 * @param loginMember
+	 * @return
+	 */
+	@GetMapping("myBoard")
+	public String myBoardList(
+            @RequestParam(value = "cp", required = false, defaultValue = "1") int cp, 
+            Model model,
+			@SessionAttribute(value = "loginMember", required = false) MemberDTO loginMember,
+			RedirectAttributes ra) { 
+		
+		int boardCode = 1;
+		
+		
+		Map<String, Object> queryMap = new HashMap<>();
+		queryMap.put("boardCode", boardCode);
+		
+		if(loginMember != null) {
+			queryMap.put("memberNo", loginMember.getMemberNo());
+		} else {
+			ra.addFlashAttribute("message", "로그인 후 이용 가능한 서비스입니다.");
+	        // 원래 있던 게시판 목록 주소로 리다이렉트 (예: /hobby/1)
+	        return "redirect:/notice";
+		}
+		
+		// 2. 서비스 호출 (생성한 queryMap을 전달)
+		Map<String, Object> map = service.selectMyBoardList(boardCode, cp, queryMap);
+		
+		model.addAttribute("pagination", map.get("pagination"));
+	    model.addAttribute("boardList", map.get("boardList"));
+		model.addAttribute("boardCode", boardCode);
+		
+		// 3. 게시판 목록을 보여주는 HTML 파일명
+		return "board/noticeBoard"; 
+	}
+	
+	
+	
 
 	@GetMapping("{boardNo:[0-9]+}")
 	public String boardDetail(@PathVariable("boardNo") int boardNo,

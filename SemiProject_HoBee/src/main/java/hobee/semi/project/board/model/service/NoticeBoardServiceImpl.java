@@ -111,6 +111,31 @@ public class NoticeBoardServiceImpl implements NoticeBoardService{
 		
 		return -1;
 	}
+
+	@Override
+	public Map<String, Object> selectMyBoardList(int boardCode, int cp, Map<String, Object> queryMap) {
+		
+		// 1. 내가 작성한 게시글 수 조회 (MEMBER_NO 조건 포함)
+		int listCount = mapper.getMyListCount(queryMap);
+
+		// 2. Pagination 객체 생성
+		Pagination pagination = new Pagination(cp, listCount);
+
+		// 3. 특정 페이지의 내 게시글 목록 조회
+		int limit = pagination.getLimit();
+		int offset = (cp - 1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+
+		// Mapper에 selectMyBoardList(queryMap, rowBounds) 추가
+		List<Board> boardList = mapper.selectMyBoardList(queryMap, rowBounds);
+
+		// 4. 결과 담기
+		Map<String, Object> map = new HashMap<>();
+		map.put("pagination", pagination);
+		map.put("boardList", boardList);
+
+		return map;
+	}
 	
 
 	
