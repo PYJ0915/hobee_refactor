@@ -15,17 +15,13 @@ if (insertBtn != null) {
 if (myBoardBtn != null) {
     myBoardBtn.addEventListener('click', () => {
 
-        const currentPath = window.location.pathname;
+        const boardPath = myBoardBtn.getAttribute("data-board-path");
+        const target = "/myBoard";
 
-        location.href = `${currentPath}/myBoard`;
-    })
-};
+        if(boardPath.includes(target)){
+            return;
+        }
 
-if (myCommentBtn != null) {
-    myCommentBtn.addEventListener('click', () => {
-
-        const currentPath = window.location.pathname;
-
-        location.href = `${currentPath}/myComment`;
+        location.href = `/${boardPath}/myBoard`;
     })
 };

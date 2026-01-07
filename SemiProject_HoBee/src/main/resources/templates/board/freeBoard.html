@@ -51,13 +51,7 @@
         </ul>
     </div>
 </div>
-			<div class="my-btn-area">
-				<!-- 로그인 상태일 때만 글쓰기 버튼 노출 -->
-				<button id="myBoardBtn" th:if="${session.loginMember}"
-                data-board-path="free">내 글</button>
-                <button id="myCommentBtn" th:if="${session.loginMember}"
-                data-board-path="free">내 댓글</button>
-			</div>
+
         <div class="list-wrapper">
             <table class="list-table">
                 <thead>
@@ -109,6 +103,8 @@
 
 			<div class="btn-area">
 				<!-- 로그인 상태일 때만 글쓰기 버튼 노출 -->
+                <button id="myBoardBtn" th:if="${session.loginMember}"
+                data-board-path="free">내 글</button>
 				<button id="insertBtn" th:if="${session.loginMember}"
                 data-board-path="free">글쓰기</button>
 			</div>

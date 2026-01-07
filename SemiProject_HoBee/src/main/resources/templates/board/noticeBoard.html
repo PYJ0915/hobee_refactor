@@ -15,13 +15,6 @@
     <section class="board-list">
         <h1 class="board-name">공지게시판</h1>
 
-        	<div class="my-btn-area">
-		    <!-- 로그인 상태일 때만 글쓰기 버튼 노출 -->
-		    <button id="myBoardBtn" th:if="${session.loginMember}"
-              >내 글</button>
-              <button id="myCommentBtn" th:if="${session.loginMember}"
-              >내 댓글</button>
-			</div>
         <div class="list-wrapper">
             <table class="list-table">
                 <thead>
@@ -73,6 +66,8 @@
 
 			<div class="btn-area">
 				<!-- 관리자만 글쓰기 버튼 노출 -->
+	    	    <button id="myBoardBtn" th:if="${session.loginMember?.authorLevel == 2}"
+              data-board-path="notice">내 글</button>
 				<button id="insertBtn" th:if="${session.loginMember?.authorLevel == 2}"
                 data-board-path="notice">글쓰기</button>
 			</div>

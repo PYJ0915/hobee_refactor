@@ -18,6 +18,14 @@ $(document).ready(() => {
             ['insert', ['picture']], // 링크, 이미지, 비디오 -> 링크와 비디오는 구현이 쉽지 않아 삭제
             ['view', ['codeview', 'help']] // 전체화면, 소스코드 보기, 도움말 -> 전체화면 구현이 미흡하고 조잡해 삭제
         ],
+        callbacks: {
+            onImageUpload: function(files) {
+                // 이미지가 업로드되었을 때 실행
+                for (let i = 0; i < files.length; i++) {
+                    uploadImage(files[i], this); 
+                }
+            }
+        }
 
 
     });
