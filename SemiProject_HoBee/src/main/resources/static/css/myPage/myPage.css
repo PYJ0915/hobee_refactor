@@ -52,7 +52,7 @@ form[name='profileFrm']{position: relative;}
 .profile-img {
   width: 120px;
   height: 120px;
-  background-color: #FFF57E;
+  background-color: #fff;
   border-radius: 50%;
 }
 

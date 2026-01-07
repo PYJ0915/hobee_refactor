@@ -52,19 +52,30 @@
 ========================= */
 
 .profile-area {
+
+  padding-left: 9%;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: first baseline; */
+  align-items: self-end;
+  
   gap: 24px;
   margin-bottom: 50px;
 }
 
 .profile-img {
-  width: 140px;
-  height: 140px;
+  width: 121px;
+  height: 120px;
   border-radius: 50%;
-  background-color: #FFF57E;
+  /* background-color: #FFF57E; */
 }
+
+.profile-img > span {
+
+  padding-right: 49%;
+
+}
+
+
 
 .profile-btn {
   padding: 8px 18px;
@@ -73,8 +84,8 @@
   cursor: pointer;
   background-color: #452829;
   color: #FFF57E;
-  font-weight: bold;
-  font-size: 14px;
+  font-weight: normal;
+  font-size: 12px;
 }
 
 /* =========================
@@ -170,6 +181,36 @@
 /* =========================
    메인 취미 (radio UX)
 ========================= */
+
+/* =========================
+   취미 태그
+========================= */
+
+.hobby-section {
+  margin-top: 5%;
+  width: 700px;
+}
+
+.hobby-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hobby-tag {
+  padding: 6px 14px;
+  border-radius: 20px;
+  background-color: #FFF57E;
+  color: #452829;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.value {
+  color: #ddd;
+  font-size: 15px;
+  font-weight: normal;
+}
 
 #mainCategoryArea {
   width: 100%;

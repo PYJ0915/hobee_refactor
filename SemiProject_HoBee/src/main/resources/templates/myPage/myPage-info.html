@@ -34,10 +34,10 @@
           <form action="profile" method="POST" name="profileFrm" id="profile" enctype="multipart/form-data"
             class="profile-area">
 
-            <span id="deleteImage">x</span>
+
 
             <div class="profile-img">
-
+              <span id="deleteImage">x</span>
               <img th:with="user=#{user.default.image}" th:src="${session.loginMember.profileImg ?: user}"
                 id="profileImg" class="profile-img">
 
@@ -85,7 +85,21 @@
             <input type="text" name="memberAddress" placeholder="상세 주소" id="detailAddress" th:value="${detailAddress}">
           </div>
 
-          <h3>취미</h3>
+          <div class="myPage-row hobby-section">
+            <label>취미</label>
+            <!-- 취미 있을 때 -->
+            <div class="hobby-tags" th:if="${!#lists.isEmpty(session.loginMember.hobbyList)}">
+              <span class="hobby-tag" th:each="hobby : ${session.loginMember.hobbyList}" th:text="${hobby.hobbyName}">
+                러닝
+              </span>
+            </div>
+
+
+            <!-- 취미 없을 때 -->
+            <span class="value" th:if="${#lists.isEmpty(session.loginMember.hobbyList)}">
+              선택한 취미가 없습니다
+            </span>
+          </div>
           <div class="signUp-input">
 
             <!-- 메인 취미 (JS 렌더링 전용) -->
@@ -101,7 +115,7 @@
           <h3>소개</h3>
           <div class="signUp-input">
             <textarea name="memberIntroduction" id="introdution" placeholder="소개 글 작성"
-             th:text="${session.loginMember.memberIntroduction}"></textarea>
+              th:text="${session.loginMember.memberIntroduction}"></textarea>
           </div>
 
           <div class="form-btns">

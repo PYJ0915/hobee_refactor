@@ -2,6 +2,7 @@ package hobee.semi.project.member.model.dto;
 
 import java.util.List;
 
+import hobee.semi.project.findHobby.model.dto.Hobby;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,6 +28,7 @@ public class MemberDTO {
 	private String profileImg;
 	
 	private List<String> hobbyCode;
+	private List<Hobby> hobbyList;
 	
 	private String profilePath;
 	private String profileOriginalName;
