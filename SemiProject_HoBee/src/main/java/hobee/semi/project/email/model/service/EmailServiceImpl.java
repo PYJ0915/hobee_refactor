@@ -3,10 +3,13 @@ package hobee.semi.project.email.model.service;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import hobee.semi.project.email.model.dto.Email;
 import hobee.semi.project.email.model.mapper.EmailMapper;
@@ -22,6 +25,8 @@ public class EmailServiceImpl implements EmailService {
 	@Autowired
 	private JavaMailSender mailSender; // 메일 발송 객체(우체국)
 
+	@Autowired
+	private  SpringTemplateEngine templateEngine;
 	// 인증 코드 보내기
 	@Override
 	public int checkEmail(String type, String authEmail) {
@@ -57,11 +62,14 @@ public class EmailServiceImpl implements EmailService {
 
 				// 메일 세팅
 				helper.setTo(authEmail); // 사용자가 입력한 이메일
-				helper.setSubject("[Hobee] 회원가입 인증번호입니다."); // 제목
+				helper.setSubject("[Hobee] 인증번호입니다."); // 제목
 
 				String content = "인증번호 : " + authKey;
+				helper.setFrom("ycm93277211@gmail.com", "Hobee 고객센터");
 				helper.setText(content);
-
+				helper.setText(loadHtml(authKey,type),true);
+				helper.addInline("logo",new ClassPathResource("static/images/logo/logo-header.png"));// 로고
+				
 				mailSender.send(mail);
 
 				return 1;
@@ -72,6 +80,21 @@ public class EmailServiceImpl implements EmailService {
 		}
 
 		return 0;
+	}
+	
+	// HTML 템플릿에 데이터를 넣어서 최종 HTML 생성
+	private String loadHtml(String authKey, String type) {
+
+		// Context : 타임리프에서 제공하는 HTML 템플릿에 
+		// 데이터를 전달하기 위해 사용하는 클래스
+		Context context = new Context();
+		context.setVariable("authKey", authKey);
+		
+		
+		return templateEngine.process("email/authKey" , context);
+		// src/main/resoces/templates/email/signup.html
+		// templateEngine.process : 자바코드로 바꿔줌
+		
 	}
 
 	// 인증번호 발급메서드(난수 생성 6글자)

@@ -460,6 +460,7 @@ const mainCategoryArea = document.querySelectorAll("#mainCategoryArea input"); /
 const CategoryArea = document.querySelector("#CategoryArea"); // 세부 카테고리 도화지
 const subTitle = document.querySelector("#subTitle"); 
 
+let selectedHobbySet = new Set(); // 세부 카테고리 저장소 역할
 
 
 mainCategoryArea.forEach(radio => {
@@ -473,18 +474,33 @@ mainCategoryArea.forEach(radio => {
 
         if (subList) {
             subList.forEach(hobby => { 
-                const label = document.createElement("label");
                 
+                // 현재 그리는 hobby.id가 저장소에 있는지 확인
+                const isChecked = selectedHobbySet.has(String(hobby.id)) ? "checked" : "";
+                // has안에 들어있으면 trun, 없으면 false 선택한 세부 카테고리 저장
+                
+                // 요소 생성
+                const label = document.createElement("label");
+
                 // 1. value에는 DB가 원하는 숫자 ID (${hobby.id})
                 // 2. 화면에는 사용자가 볼 이름 (${hobby.name})
                 label.innerHTML = `
-                    <input type="checkbox" name="hobbyCode" value="${hobby.id}"> ${hobby.name} `; // 취미코드를 이름으로 보여주기 위한 코드
+                    <input type="checkbox" name="hobbyCode" value="${hobby.id}"${isChecked}> ${hobby.name} `; // 취미코드를 이름으로 보여주기 위한 코드
                 
+                const checkbox = label.querySelector('input')
+                checkbox.addEventListener("change" ,e=>{
+                    if(e.target.checked){ // 이벤트 벨류가 체크 되어 있을 때
+                        selectedHobbySet.add(e.target.value);
+                    }else{
+                        selectedHobbySet.delete(e.target.value);
+                    }
+                    console.log("현재 주머니 상태:", Array.from(selectedHobbySet));
+                });
                 CategoryArea.appendChild(label);
-            })
+            });
         }
-    })
-})
+    });
+});
 
 //전화번호 ---------------------------------------------------------------------------------------------
 
@@ -525,6 +541,21 @@ const signUpForm =document.querySelector("#signUpForm");
 
 // 회원 가입 폼 제출 시
 signUpForm.addEventListener("submit", e => {
+
+    
+    // form 태그로 제출시 값이 여러개 일 경우 input으로 보내면 편함
+    const oldHobbys = signUpForm.querySelectorAll("input[name='hobbyCode']");
+    oldHobbys.forEach(input => input.remove());
+
+    // 2. Set 주머니에 담긴 모든 ID를 꺼내서 보이지 않는 input(hidden)으로 생성
+    selectedHobbySet.forEach(hobbyId => {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = "hobbyCode"; // 서버 파라미터 이름
+        input.value = hobbyId;    // 취미 번호
+        signUpForm.appendChild(input); // 폼 안에 합치기
+    });
+
 
     for (let key in checkObj) {
 
