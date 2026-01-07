@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.member.model.service.MemberService;
+import hobee.semi.project.profileImg.model.dto.ProfileDTO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -74,8 +75,8 @@ public class MemberController {
 //		        }
 				//--------------------------------------------------
 		        
-				log.info("memberDTO 회원 프로필 이미지 경로 : " + inputMember.getProfilePath());
-				log.info("memberDTO 회원 프로필 이미지 원본명 : " + inputMember.getProfileOriginalName());				
+				log.info("memberDTO 회원 프로필 이미지 경로 : " + loginMember.getProfileImg());				
+				log.info("memberDTO 회원 닉네임 : " + loginMember.getMemberNickname());
 				
 				model.addAttribute("loginMember", loginMember);
 				

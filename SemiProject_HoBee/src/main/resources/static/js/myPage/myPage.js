@@ -352,7 +352,7 @@ let previousFile = null;  // 이전에 선택된 파일 객체를 저장
 // 이미지 선택 시 미리보기 및 파일 크기 검사
 imageInput.addEventListener("change", () => {
 	
-	console.log(imageInput.files); // FileList (input 태그는 FileList 로 저장)
+	console.log(imageInput.files[0]); // FileList (input 태그는 FileList 로 저장)
 
 	const file = imageInput.files[0]; // 선택한 File 객체 가져오기
 	if (file) { // 파일이 선택된 경우
@@ -414,6 +414,7 @@ deleteImage.addEventListener("click", () => {
 
 // 폼 제출 시 유효성 검사
 profileForm.addEventListener("submit", e => {
+  console.log(imageInput.files[0]);
 	if (profileImg.length = 0) { // 변경 사항이 없는 경우 제출 막기
 		e.preventDefault();
 		alert("이미지 변경 후 제출하세요");

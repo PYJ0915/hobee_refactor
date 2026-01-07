@@ -185,9 +185,10 @@ public class MyPageController {
 		
 		if(result > 0) {
 			
-			message = "프로필 이미지 변경 성공!" ;
+			message = "프로필 이미지 변경 성공!!!!" ;
 			
 			log.info(message);
+			log.info(loginMember.getProfileImg());
 			
 		}else {
 			
@@ -197,9 +198,7 @@ public class MyPageController {
 		
 		ra.addFlashAttribute("message",message);
 		
-		model.addAttribute(profileDTO);
-		
-		return "redirect:info";
+		return "redirect:updateInfo";
 		
 	}
 	

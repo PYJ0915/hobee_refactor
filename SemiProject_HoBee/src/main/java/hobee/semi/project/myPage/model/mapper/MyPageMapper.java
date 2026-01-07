@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.findHobby.model.dto.Hobby;
 import hobee.semi.project.member.model.dto.MemberDTO;
+import hobee.semi.project.profileImg.model.dto.ProfileDTO;
 
 @Mapper
 public interface MyPageMapper {
@@ -63,6 +64,8 @@ public interface MyPageMapper {
 	 */
 	int profile(MemberDTO member);
 	
-	int memberProfile(MemberDTO member);
+	int insertProfile(MemberDTO member);
+
+	int updateProfile(MemberDTO member);
 
 }
