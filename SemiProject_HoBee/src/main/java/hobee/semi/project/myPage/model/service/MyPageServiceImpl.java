@@ -74,22 +74,6 @@ public class MyPageServiceImpl implements MyPageService {
 		// 기존 취미 전부 삭제
 		mapper.deleteMemberHobby(memberNo);
 
-		// 새로 선택한 취미 등록
-		List<String> hobbyCodeList = inputMember.getHobbyCode();
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("memberNo", memberNo);
-
-		if (hobbyCodeList != null && !hobbyCodeList.isEmpty()) {
-
-			for (String hobbyCode : hobbyCodeList) {
-
-				map.put("hobbyCode", hobbyCode);
-
-				mapper.insertMemberHobby(map);
-			}
-		}
-
 	    // 새로 선택한 취미 등록
 	    List<String> hobbyCodeList = inputMember.getHobbyCode();
 	    
