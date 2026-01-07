@@ -24,6 +24,7 @@
 			MEMBER_TEL,MEMBER_ADDRESS,ENROLL_DATE,AUTHOR_LEVEL,MEMBER_DEL_FL, MEMBER_INTRODUCTION, PROFILE_IMG
 			FROM "MEMBER"
 			WHERE MEMBER_ID = #{memberId}
+			AND MEMBER_DEL_FL = 'N'
 		</select>
 		
 		<select id="checkEmail" resultType="_int">

@@ -2,6 +2,13 @@
    회원 탈퇴 페이지 (본문 전용)
    ========================= */
 
+.myPage-container {
+  display: flex;
+  justify-content: center;
+  background-color: #ffffff;
+  padding: 40px 0;
+}
+
 /* 마이페이지 본문 영역 */
 .myPage-content {
   background-color: #ffffff;
@@ -10,8 +17,9 @@
   padding: 50px 60px;
   max-width: 900px;
   min-height: 600px;
-  margin: 0 auto;
+  margin: 0;
   box-sizing: border-box;
+  flex: 1;
 }
 
 /* 제목 */
@@ -114,4 +122,12 @@
 
 .myPage-submit:hover {
   background-color: #2c1515;
+}
+
+.myPage-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  width: 100%;
+  max-width: 1200px;
 }

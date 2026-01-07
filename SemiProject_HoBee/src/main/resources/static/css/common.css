@@ -19,6 +19,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  margin-left: 50px;
 }
 
 .header-logo img {
@@ -31,6 +32,7 @@
 .header-nav {
   display: flex;
   gap: 12px;
+  margin-right: 25px;
 }
 
 .nav-item {
@@ -194,4 +196,9 @@
 
 #nickname {
   text-decoration: none;
+}
+
+
+.header-box{
+  display: flex;
 }

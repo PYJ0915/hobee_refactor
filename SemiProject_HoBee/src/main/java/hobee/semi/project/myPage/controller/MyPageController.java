@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -213,6 +214,37 @@ public class MyPageController {
 	@GetMapping("secession")
 	public String secession() {
 		return "myPage/myPage-secession";
+	}
+	
+	@PostMapping("secession")
+	public String secesstion(@RequestParam("memberPw") String memberPw, 
+			@SessionAttribute("loginMember") MemberDTO loginMember,
+			SessionStatus status, 
+			RedirectAttributes ra) {
+		
+		int memberNo = loginMember.getMemberNo();
+		
+		int result = service.secession(memberPw, memberNo);
+		
+		String message = null;
+		String path = null;
+		
+		if(result > 0) {
+			message = "탈퇴 되었습니다.";
+			path = "/";
+			
+			status.setComplete(); // 세션 비우기(로그아웃 상태 변경)
+			
+		} else {
+			
+			message = "비밀번호 일치하지 않습니다";
+			path = "secession";
+			
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:"+ path;
 	}
 	
 }
