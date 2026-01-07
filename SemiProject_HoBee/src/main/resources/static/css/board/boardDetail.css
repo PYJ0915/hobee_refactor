@@ -110,6 +110,7 @@
 .comment-item {
   border-bottom: 1px solid #ddd;
   padding: 20px 0;
+  position: relative;
 }
 
 .child-comment {
@@ -133,15 +134,32 @@
 .comment-actions {
   display: flex;
   gap: 12px;
+  flex-shrink: 0;
+}
+
+/* 우측 상단 */
+.top-actions {
+  align-items: center;
+}
+
+/* 우측 하단 */
+.bottom-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
 }
 
 .reply-btn,
-.comment-actions .report-btn {
+.report-btn,
+.edit-btn,
+.del-btn {
   border: none;
   background: none;
   font-size: 13px;
   cursor: pointer;
   color: #666;
+  padding: 2px 4px;
+  transition: color 0.15s ease, font-weight 0.15s ease;
 }
 
 /* 댓글 내용 */
@@ -174,7 +192,7 @@
   font-weight: bold;
 }
 
-.like-btn:hover,
+
 .reply-btn:hover {
   border-radius: 15px;
   color: #452829;
@@ -182,6 +200,18 @@
 }
 
 .report-btn:hover {
+  border-radius: 15px;
+  color: #E84545;
+  font-weight: bold;
+}
+
+.edit-btn:hover {
+  border-radius: 15px;
+  color: #A6E3E9;
+  font-weight: bold;
+}
+
+.del-btn:hover {
   border-radius: 15px;
   color: #E84545;
   font-weight: bold;
@@ -247,7 +277,109 @@
 .delete-btn:hover {
   color: #E84545;
 }
+
+/* ===== 답글 입력 영역 ===== */
+.commentInsertContent {
+  display: block;              /* ⭐ flex 영향 차단 */
+  width: calc(100% - 50px);    /* 대댓글 들여쓰기 고려 */
+  height: 100px;
+
+  margin: 12px 0 6px 50px;
+  padding: 10px 12px;
+
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  resize: none;
+
+  background-color: #fafafa;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* 답글 버튼 영역 */
+.comment-btn-area {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+
+  width: calc(100% - 50px);
+  margin-left: 50px;
+  margin-bottom: 10px;
+}
+
+/* 답글 등록 / 취소 버튼 */
+.comment-btn-area button {
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+/* 등록 */
+.reply-insert {
+  border-color: #452829;
+  color: #452829;
+}
+
+
+/* 취소 */
+.comment-btn-area button:last-child:hover {
+  color: #E84545;
+}
+
+/* ===== 댓글 수정 textarea ===== */
+.update-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 12px;
+  margin-top: 10px;
+
+  border: 1px solid #A6E3E9;
+  border-radius: 8px;
+  resize: none;
+
+  background-color: #f7feff;
+  font-size: 14px;
+}
+
+/* 수정 버튼 영역 */
+.comment-item .comment-btn-area {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+/* 수정/취소 버튼 */
+.comment-item .comment-btn-area button {
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+/* 수정 */
+.comment-item .update-insert {
+  border-color: #A6E3E9;
+  color: #2b7a78;
+}
+
+.reply-insert:hover, .update-insert:hover  {
+  font-weight: bold;
+}
+
+/* 취소 */
+.comment-item .comment-btn-area button:last-child:hover {
+  font-weight: bold;
+  color: #E84545;
+}
+
   
+
 /* ===== 신고 모달 ===== */
 .report-modal {
   position: fixed;
@@ -343,4 +475,23 @@
 .like-checked {
   color: #452829;
   font-weight: bold;
+}
+
+/* 수정 중일 때 기존 댓글 숨김 */
+.comment-item.editing .comment-content {
+  display: none;
+}
+
+/* 수정 중일 때 기존 하단 버튼 숨기기 */
+.comment-item.editing .bottom-actions {
+  display: none !important;
+}
+
+.comment-content.deleted {
+  color: #999;
+  font-style: italic;
+}
+
+.comment-item .comment-actions {
+  margin-left: auto;
 }

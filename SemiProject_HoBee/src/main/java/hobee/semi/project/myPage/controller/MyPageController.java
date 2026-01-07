@@ -8,13 +8,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -58,8 +56,6 @@ public class MyPageController {
 			    service.selectHobbyList(loginMember.getHobbyCode());
 		
 		List<Board> boardList = service.selectBoardList(loginMember.getMemberNo());
-		
-		log.info("hobbyList : " + hobbyList);
 
 		model.addAttribute("hobbyList", hobbyList);
 		
@@ -72,7 +68,19 @@ public class MyPageController {
 	 * @return
 	 */
 	@GetMapping("updateInfo")
-	public String updateInfo() {
+	public String updateInfo(@SessionAttribute("loginMember") MemberDTO loginMember,
+			  				Model model) {
+		
+		String memberAddress = loginMember.getMemberAddress();
+		
+		if(memberAddress != null) {
+			
+			String[] arr = memberAddress.split("\\^\\^\\^");
+			
+			model.addAttribute("postcode", arr[0]);
+			model.addAttribute("address", arr[1]);
+			model.addAttribute("detailAddress", arr[2]);
+		}
 		
 		return "myPage/myPage-info";
 	}

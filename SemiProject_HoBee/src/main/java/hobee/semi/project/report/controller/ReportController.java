@@ -61,4 +61,10 @@ public class ReportController {
 		return service.selectTarget(reportNo);
 	}
 	
+	@ResponseBody
+	@GetMapping("todayReportCount")
+	public int todayReportCount(@RequestParam("memberNo") int memberNo, @RequestParam("today") String today) {
+		return service.todayReportCount(memberNo, today);
+	}
+	
 }

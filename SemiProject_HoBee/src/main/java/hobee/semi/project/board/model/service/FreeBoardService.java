@@ -21,6 +21,8 @@ public interface FreeBoardService {
 
 	int updateViewCount(int boardNo);
 
+	Map<String, Object> selectMyBoardList(int boardCode, int cp, Map<String, Object> queryMap);
+
 
 
 }
