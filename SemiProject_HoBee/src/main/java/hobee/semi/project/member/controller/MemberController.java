@@ -1,7 +1,5 @@
 package hobee.semi.project.member.controller;
 
-
-
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -139,8 +137,6 @@ public class MemberController {
 		return service.checkId(memberId);
 		
 	}
-	
-	
 	
 	
 	// 닉네임 중복검사

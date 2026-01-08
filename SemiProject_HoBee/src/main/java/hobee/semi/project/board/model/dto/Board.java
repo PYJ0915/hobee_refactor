@@ -40,4 +40,6 @@ public class Board {
 	
 	private int authorLevel; // 관리자 신고를 막기 위한 권한 등급
 	
+	private String profileImg;
+	
 }
