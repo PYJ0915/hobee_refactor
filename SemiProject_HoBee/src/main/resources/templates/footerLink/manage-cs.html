@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>문의 관리 | Ho-Bee Admin</title>
+
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/footerLink/manage-cs.css">
+</head>
+
+<body>
+
+  <th:block th:replace="~{common/fragments/header}" />
+
+  <div class="page-wrapper">
+    <main class="admin-cs-container">
+
+      <h1 class="admin-title">문의 관리</h1>
+      <p class="admin-sub">사용자 문의를 확인하고 처리할 수 있습니다.</p>
+
+      <table class="cs-table">
+        <thead>
+          <tr>
+            <th>문의 작성일</th>
+            <th>작성자</th>
+            <th>이메일</th>
+            <th>문의 확인</th>
+            <th>처리 상태</th>
+            <th>처리</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr th:each="cs : ${csList}">
+            <!-- 문의 작성일 -->
+            <td th:text="${cs.csWriteDate}">
+              2026-01-08
+            </td>
+
+            <td th:text="${cs.csWriterName}">
+              홍길동
+            </td>
+
+            <td th:text="${cs.csWriterEmail}">
+              test@hobby.com
+            </td>
+
+            <!-- 문의 확인 -->
+            <td>
+              <button class="watch-btn" th:data-cs-no="${cs.csNo}">
+                확인
+              </button>
+            </td>
+
+            <!-- 처리 상태 -->
+            <td>
+              <span class="status" th:classappend="${cs.csCompleteYn == 'Y'} ? 'complete' : 'pending'"
+                th:text="${cs.csCompleteYn == 'Y'} ? '처리 완료' : '미확인'">
+                미확인
+              </span>
+            </td>
+
+            <!-- 처리 -->
+            <td class="action-cell">
+              <button class="complete-btn" th:disabled="${cs.csCompleteYn == 'Y'}" th:data-cs-no="${cs.csNo}">
+                문의 완료
+              </button>
+            </td>
+          </tr>
+
+          <!-- 문의 없을 때 -->
+          <tr th:if="${#lists.isEmpty(csList)}">
+            <td colspan="6" class="empty">
+              접수된 문의가 없습니다.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- 페이지네이션 -->
+      <div class="pagination-area" th:if="${!#lists.isEmpty(csList)}">
+        <ul class="pagination" th:object="${pagination}">
+          <li><a th:href="@{/footer/manageCS(cp=1)}">&lt;&lt;</a></li>
+          <li><a th:href="@{/footer/manageCS(cp=*{prevPage})}">&lt;</a></li>
+
+          <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
+            <li th:if="${i} == *{currentPage}">
+              <a class="current" th:text="${i}"></a>
+            </li>
+            <li th:unless="${i} == *{currentPage}">
+              <a th:href="@{/footer/manageCS(cp=${i})}" th:text="${i}"></a>
+            </li>
+          </th:block>
+
+          <li><a th:href="@{/footer/manageCS(cp=*{nextPage})}">&gt;</a></li>
+          <li><a th:href="@{/footer/manageCS(cp=*{maxPage})}">&gt;&gt;</a></li>
+        </ul>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- 문의 확인 모달 -->
+  <div class="cs-modal-overlay popup-hidden">
+    <div class="cs-modal">
+
+      <div class="modal-header">
+        <span class="content-type">문의 내용</span>
+        <button class="modal-close">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="content-meta">
+          <p class="writer">작성자 : 홍길동</p>
+          <p class="email">이메일 : test@hobby.com</p>
+          <p class="date">문의일 : 2026-01-08</p>
+        </div>
+
+        <div class="cs-content">
+          여기에 문의 전체 내용이 표시됩니다.
+        </div>
+      </div>
+    </div>
+
+  </div>
+  </div>
+
+  <th:block th:replace="~{common/fragments/footer}" />
+
+  <script src="/js/footer/manage-cs.js"></script>
+
+</body>
+
+</html>

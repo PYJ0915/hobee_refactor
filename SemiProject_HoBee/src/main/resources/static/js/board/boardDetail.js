@@ -111,6 +111,10 @@ function showReport(e) {
 // 신고 제출 버튼 클릭 시 
 document.querySelector(".submit-report-btn").addEventListener("click", async () => {
 
+  if(!confirm("해당 내용을 신고하시겠습니까? \n허위 신고 시 서비스 이용에 제한이 있을 수 있습니다.")) {
+    return;
+  }
+
   const checkedReason = document.querySelector('input[name="reason"]:checked');
   let reportDetail = document.querySelector(".detail-textarea");
   const nickname = reportWriter.innerText;

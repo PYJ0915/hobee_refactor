@@ -84,7 +84,7 @@
   padding-top: 50px;
   padding-bottom: 50px;
   text-align: center;
-  color: #000;
+  color: #452829;
 }
 
 .footer-copy {
@@ -108,7 +108,7 @@
 
 .footer-links a {
   text-decoration: none;
-  color: #000;
+  color: #452829;
 }
 
 .footer-links span {
@@ -121,6 +121,7 @@
   justify-content: center;
   gap: 60px;
   padding: 60px 0;
+  color: #452829;
 }
 
 .category {
@@ -184,7 +185,7 @@
 /* 로그아웃 버튼 */
 .header-btn-logout {
   padding: 6px 14px;
-  background-color: #4b2f2f;
+  background-color: #452829;
   color: #ffffff;
   font-size: 14px;
   border-radius: 6px;
@@ -193,7 +194,7 @@
 }
 
 .header-btn-logout:hover {
-  background-color: #593737;
+  background-color: #452829;
   text-decoration: none;
 }
 
