@@ -521,12 +521,12 @@ memberTel.addEventListener("input",e=>{
     const phoneRegExp = /^010[0-9]{8}$/;
 
    if(phoneRegExp.test(inputTel)){
-        telMessage.innerText ="옮바른 전화번호 입니다.";
+        telMessage.innerText ="옳바른 전화번호 입니다.";
         telMessage.classList.add('confirm');
         telMessage.classList.remove('error');
         checkObj.memberTel = true;
    }else{
-        telMessage.innerText ="옮바른지 않은 전화번호 입니다.";
+        telMessage.innerText ="옳바른지 않은 전화번호 입니다.";
         telMessage.classList.add('error');
         telMessage.classList.remove('confirm');
         checkObj.memberTel = false;
