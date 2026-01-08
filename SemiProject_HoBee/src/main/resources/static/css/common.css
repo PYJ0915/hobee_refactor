@@ -1,3 +1,15 @@
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+}
+
+body {
+  font-family: 'Pretendard';
+}
+
 /* header css */
 
 .header {
@@ -37,17 +49,19 @@
 
 .nav-item {
   padding: 8px 14px;
-  border-radius: 20px;
+  border-radius: 30px;
 
   text-decoration: none;
   color: #452829;
   font-size: 16px;
 
+  line-height: 42px;
+
   transition-duration: 0.25s;
 }
 
 .nav-item:hover {
-  background-color: #FFF57E;
+  font-weight: bold;
   color: #452829;
   text-decoration: none;
 }
