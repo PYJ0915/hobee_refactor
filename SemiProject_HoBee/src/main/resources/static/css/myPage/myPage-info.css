@@ -101,6 +101,7 @@
   display: flex;
   align-items: center;
   margin-bottom: 26px;
+  width: 80%;
 }
 
 .myPage-row label {
