@@ -441,7 +441,7 @@ deleteImage.addEventListener("click", () => {
 // 폼 제출 시 유효성 검사
 profileForm.addEventListener("submit", e => {
   console.log(imageInput.files[0]);
-	if (profileImg.length = 0) { // 변경 사항이 없는 경우 제출 막기
+	if (statusCheck === -1) { // 변경 사항이 없는 경우 제출 막기
 		e.preventDefault();
 		alert("이미지 변경 후 제출하세요");
 	}
