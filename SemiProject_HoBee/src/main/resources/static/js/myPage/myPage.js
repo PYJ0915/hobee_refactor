@@ -301,7 +301,7 @@ if (changePw != null) { // 제출 되었을 때(변경 버튼 클릭)
     }
 
     // 새 비밀번호 정규식
-    const regExp = /^[a-zA-Z0-9!@#_-]{6,20}$/;
+    const regExp = /^(?=.*[!@#_-])[a-zA-Z0-9!@#_-]{6,20}$/; // 6~20 특수문자 최소 1개
 
     if (!regExp.test(newPw.value)) {
       alert("새 비밀번호가 유효하지 않습니다");
