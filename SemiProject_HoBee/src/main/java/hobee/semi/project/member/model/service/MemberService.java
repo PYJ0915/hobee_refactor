@@ -36,7 +36,7 @@ public interface MemberService {
 	 * @param inputMember
 	 * @return
 	 */
-	int signUp(MemberDTO inputMember,List<String>memberAddress,List<String> hobbyCode);
+	int signUp(MemberDTO inputMember,String[] memberAddress,List<String> hobbyCode);
 	
 	/**최신 프로필 이미지 조회
 	 * @param memberNo

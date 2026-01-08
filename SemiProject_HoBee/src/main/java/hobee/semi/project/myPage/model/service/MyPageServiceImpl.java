@@ -18,7 +18,6 @@ import hobee.semi.project.common.util.Utility;
 import hobee.semi.project.findHobby.model.dto.Hobby;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.myPage.model.mapper.MyPageMapper;
-import hobee.semi.project.profileImg.model.dto.ProfileDTO;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
