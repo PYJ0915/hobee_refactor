@@ -296,7 +296,7 @@ memberPw.addEventListener("input", e=>{
         return;
     }
 
-    const regExp = /^(?=.*[!@#_-])[a-zA-Z0-9!@#_-]{6,12}$/; // 6~12 특수문자 최소 1개
+    const regExp = /^(?=.*[!@#_-])[a-zA-Z0-9!@#_-]{6,20}$/; // 6~20 특수문자 최소 1개
 
     // 옮바르게 입력하지 않을 경우
     if(!regExp.test(inputPw)){
