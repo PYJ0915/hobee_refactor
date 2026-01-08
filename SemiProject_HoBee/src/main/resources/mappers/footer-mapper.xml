@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hobee.semi.project.footer.model.mapper.FooterMapper">
+
+	<insert id="insertCS">
+		INSERT INTO CS 
+		VALUES(SEQ_CS_NO.NEXTVAL, #{csWriterName}, #{csWriterEmail}, #{csContent}, DEFAULT, DEFAULT)
+	</insert>
+	
+	<select id="getCSCount">
+		SELECT COUNT(*)
+		FROM CS
+	</select>
+	
+	<select id="selectCSList">
+		SELECT CS_NO, CS_WRITER_NAME, CS_WRITER_EMAIL, CS_CONTENT, 
+		TO_CHAR(CS_WRITE_DATE, 'YYYY"년" MM"월" DD"일"') CS_WRITE_DATE, 
+		CS_COMPLETE_YN
+		FROM CS
+		ORDER BY CS_COMPLETE_YN, CS_NO
+	</select>
+	
+	<select id="selectTarget">
+		SELECT CS_NO, CS_WRITER_NAME, CS_WRITER_EMAIL, CS_CONTENT, 
+		TO_CHAR(CS_WRITE_DATE, 'YYYY"년" MM"월" DD"일"') CS_WRITE_DATE
+		FROM CS WHERE CS_NO = #{csNo}
+	</select>
+	
+	<update id="csComplete">
+		UPDATE CS SET CS_COMPLETE_YN = 'Y'
+		WHERE CS_NO = #{csNo}
+	</update>
+</mapper>

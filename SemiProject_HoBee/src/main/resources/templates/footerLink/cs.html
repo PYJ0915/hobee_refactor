@@ -47,15 +47,15 @@
     <section class="contact-section">
         <h2 class="section-title">1:1 문의하기</h2>
 
-        <form class="contact-form">
+        <form action="/footer/cs" method="post" class="contact-form">
             <label>이름</label>
-            <input type="text" placeholder="이름을 입력하세요">
+            <input type="text" name="csWriterName" placeholder="이름을 입력하세요">
 
             <label>이메일</label>
-            <input type="email" placeholder="이메일을 입력하세요">
+            <input type="email" name="csWriterEmail" placeholder="이메일을 입력하세요">
 
             <label>문의 내용</label>
-            <textarea placeholder="문의 내용을 입력하세요"></textarea>
+            <textarea name="csContent" placeholder="문의 내용을 입력하세요"></textarea>
 
             <button type="submit" class="btn-submit">문의 보내기</button>
         </form>
