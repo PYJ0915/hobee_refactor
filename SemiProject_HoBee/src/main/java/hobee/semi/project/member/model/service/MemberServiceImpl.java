@@ -1,6 +1,5 @@
 package hobee.semi.project.member.model.service;
 
-import java.beans.Encoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,12 +70,12 @@ public class MemberServiceImpl implements MemberService{
 
 	// 회원가입
 	@Override
-	public int signUp(MemberDTO inputMember,List<String> memberAddress,List<String> hobbyCodes) {
+	public int signUp(MemberDTO inputMember,String[] memberAddress,List<String> hobbyCodes) {
 		
 		String encPw = bcrypt.encode(inputMember.getMemberPw()); // 비밀번호 암화해서 넣기
 		inputMember.setMemberPw(encPw);
 		
-		if(memberAddress != null) {
+		if(!inputMember.getMemberAddress().equals(",,")) {
 			String address = String.join("^^^", memberAddress);
 			inputMember.setMemberAddress(address); // ^^^으로 join하고 넣어주기
 		}else {

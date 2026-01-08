@@ -149,11 +149,12 @@ public class MemberController {
 	// 회원가입
 	@PostMapping("signUp")
 	public String signUp(MemberDTO inputMember, 
-			@RequestParam("memberAddress") List<String> memberAddress,
+			@RequestParam("memberAddress") String[] memberAddress,
 			@RequestParam(value="hobbyCode", required=false) List<String> hobbyCode,
 			RedirectAttributes ra) {
 		
 		
+		log.info("memberAddress : " + memberAddress);
 		
 		int result = service.signUp(inputMember,memberAddress,hobbyCode); // 회원가입 정보 모두 들어있음
 		
