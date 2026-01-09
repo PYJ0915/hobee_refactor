@@ -1,3 +1,15 @@
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+}
+
+body {
+  font-family: 'Pretendard';
+}
+
 /* header css */
 
 .header {
@@ -19,37 +31,44 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  margin-left: 50px;
 }
 
 .header-logo img {
   height: 70px;
-  transform: scale(1.4); 
+  transform: scale(1.4);
   transform-origin: left center;
+  padding-right: 15px;
 }
 
 .header-nav {
   display: flex;
   gap: 12px;
+  margin-right: 25px;
 }
 
 .nav-item {
   padding: 8px 14px;
-  border-radius: 20px;
+  border-radius: 30px;
 
   text-decoration: none;
   color: #452829;
   font-size: 16px;
 
+  line-height: 42px;
+
   transition-duration: 0.25s;
 }
 
 .nav-item:hover {
-  background-color: #FFF57E;
+  font-weight: bold;
   color: #452829;
+  text-decoration: none;
 }
 
 .header-auth {
   display: flex;
+  align-items: center;
   gap: 8px;
 }
 
@@ -59,11 +78,21 @@
   border-radius: 6px;
   font-size: 13px;
   text-decoration: none;
+  transition: 0.2s ease;
 }
 
 .login-btn {
   background: #452829;
-  color: white;
+  color: #FFF57E;
+}
+
+.login-btn:hover {
+    background-color: #593737;
+    transform: translateY(-2px);
+}
+
+.login-btn:active {
+    transform: scale(0.95);
 }
 
 .signup-btn {
@@ -71,14 +100,23 @@
   color: #452829;
 }
 
+.signup-btn:hover {
+    transform: translateY(-2px);
+}
+
+.signup-btn:active {
+    transform: scale(0.95);
+}
+
 /* footer css */
 
 .footer {
   width: 100%;
   background-color: #FFF57E;
-  padding: 50px 20px;
+  padding-top: 50px;
+  padding-bottom: 50px;
   text-align: center;
-  color: #000;
+  color: #452829;
 }
 
 .footer-copy {
@@ -102,9 +140,118 @@
 
 .footer-links a {
   text-decoration: none;
-  color: #000;
+  color: #452829;
 }
 
 .footer-links span {
   color: #999;
+}
+
+/* Categories */
+.categories {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  padding: 60px 0;
+  color: #452829;
+}
+
+.category {
+  text-align: center;
+  cursor: pointer;
+  transition-duration: 0.25s;
+}
+
+.category i {
+  width: 90px;
+  height: 90px;
+  background: #FFF57E;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 34px;
+  color: #452829;
+  margin-bottom: 12px;
+  transition-duration: 0.25s;
+}
+
+.category:hover {
+  transform: scale(1.2);
+}
+
+.categories a.category {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+
+
+/* 로그인 후 사용자 영역 */
+.header-user-loggedin {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 프로필 이미지 */
+.header-profile-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #cccccc;
+}
+
+/* 사용자 이름 */
+.header-user-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333333;
+}
+
+/* 로그아웃 버튼 */
+.header-btn-logout {
+  padding: 6px 14px;
+  background-color: #452829;
+  color: #ffffff;
+  font-size: 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.header-btn-logout:hover {
+  background-color: #452829;
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
+.btn-submit:active {
+    transform: scale(0.95);
+}
+
+.header-btn-a{
+  transition: 0.2s ease;
+}
+
+.header-btn-logout:hover {
+  transform: translateY(-2px);
+}
+
+.btn-submit:active {
+    transform: scale(0.95);
+}
+
+#nickname {
+  text-decoration: none;
+}
+
+
+.header-box{
+  display: flex;
 }

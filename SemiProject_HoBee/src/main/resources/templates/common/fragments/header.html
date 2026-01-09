@@ -1,0 +1,63 @@
+<header class="header">
+  <div class="header-inner">
+
+    <!-- 로고 -->
+    <a href="/" class="header-logo">
+      <img src="/images/logo/logo-header.png" alt="Ho-bee 로고">
+    </a>
+
+    <!-- 네비게이션 -->
+    <div class="header-box">
+    <nav class="header-nav">
+      <a href="/notice" class="nav-item">공지 게시판</a>
+      <a href="/hobby/1" class="nav-item">취미별 게시판</a>
+      <a href="/free" class="nav-item">자유 게시판</a>
+      <a href="/findHobby/main" class="nav-item">취미 탐색</a>
+      <th:block th:if="${session.loginMember != null and session.loginMember.authorLevel == 2}">
+        <a href="/report/manageReport" class="nav-item">신고 관리</a>
+        <a href="/penalty/managePenalty" class="nav-item">제재 회원 관리</a>
+        <a href="/footer/manageCS" class="nav-item">문의 확인</a>
+      </th:block>
+    </nav>
+
+    
+
+    <!-- 비로그인 상태 인증 영역 -->
+    <th:block th:if="${session.loginMember == null}">
+      <div class="header-auth">
+        <a href="/member/loginPage" class="login-btn">로그인</a>
+        <a href="/member/signupPage" class="signup-btn">회원가입</a>
+      </div>
+    </th:block>
+
+    <!-- 로그인 상태 사용자 영역 -->
+    <th:block th:if="${session.loginMember != null}">
+    <div class="header-user-loggedin">
+
+      <a href="/myPage/info" class="header-btn-a">
+        <img
+        alt="프로필 이미지"
+        class="header-profile-img"
+
+        th:with="user=#{user.default.image}"
+        th:src="${session.loginMember.profileImg ?: user}"
+        >
+      </a>
+
+      <a href="/myPage/info" id="nickname" class="header-btn-a">
+      <span class="header-user-name" th:text="${session.loginMember.memberNickname}">
+        홍길동 님
+      </span>
+      </a>
+
+      <a href="/member/logout" class="header-btn-logout">
+        로그아웃
+      </a>
+
+    </th:block>
+    </div>
+
+  </div>
+
+  </div>
+</header>

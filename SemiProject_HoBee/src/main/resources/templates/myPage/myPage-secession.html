@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원 탈퇴</title>
+
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/css/myPage/myPage.css}">
+  <link rel="stylesheet" th:href="@{/css/myPage/myPage-secession.css}">
+
+</head>
+
+<body>
+
+  <!-- 헤더 -->
+  <th:block th:replace="~{common/fragments/header}" />
+
+  <main  class="myPage-container">
+
+    <div class="myPage-wrapper">
+  
+      <!-- 사이드 메뉴 -->
+      <th:block th:replace="~{common/fragments/sidemenu}" />
+
+      <!-- 마이페이지 본문(오른쪽) -->
+      <section class="myPage-content">
+
+        <h1 class="myPage-title">회원 탈퇴</h1>
+        <span class="myPage-subject">
+          현재 비밀번호가 일치하는 경우 탈퇴할 수 있습니다.
+        </span>
+
+        <!--  -->
+
+        <form action="secession" method="POST" name="myPageFrm" id="secession">
+
+					<div class="myPage-row">
+						<label>비밀번호</label>
+						<input type="password" name="memberPw" id="memberPw" maxlength="30">
+					</div>
+
+
+					<div class="myPage-row info-title">
+						<label>회원 탈퇴 약관</label>
+					</div>
+
+					<pre class="secession-terms">
+제1조 (회원 탈퇴의 신청)
+
+회원은 언제든지 서비스 내 제공되는 탈퇴 절차를 통해 회원 탈퇴를 신청할 수 있으며,
+탈퇴 신청 시 본 약관에 동의한 것으로 간주합니다.
+
+
+
+제2조 (회원 탈퇴의 처리)
+
+1.회사는 회원이 입력한 정보가 본인임이 확인되는 경우, 지체 없이 회원 탈퇴를 처리합니다.
+
+2.회원 탈퇴가 완료되면 해당 계정은 즉시 서비스 이용이 불가능합니다.
+
+
+
+제3조 (회원 정보의 처리)
+
+1.회원 탈퇴 시 회원의 개인정보는 관련 법령 및 개인정보처리방침에 따라 처리됩니다.
+
+2.단, 관계 법령에 따라 보존이 필요한 정보는 해당 기간 동안 보관될 수 있습니다.
+
+
+제4조 (콘텐츠 및 활동 기록의 처리)
+
+1.회원이 서비스 내에 작성한 게시물, 댓글 등 콘텐츠는 삭제되지 않을 수 있으며,
+해당 콘텐츠는 작성자 정보 없이 유지될 수 있습니다.
+
+2.회원은 탈퇴 후 본인이 작성한 콘텐츠의 삭제를 요구할 수 없으며,
+이에 대해 회사는 책임을 지지 않습니다.
+
+
+
+제5조 (회원 탈퇴의 제한)
+
+회원이 다음 각 호에 해당하는 경우, 회사는 회원 탈퇴를 제한하거나 보류할 수 있습니다.
+
+1.진행 중인 신고, 분쟁, 제재 절차가 존재하는 경우
+
+2.서비스 이용과 관련하여 법적 책임이 남아 있는 경우
+
+
+
+제6조 (회원 탈퇴의 철회)
+
+회원 탈퇴가 완료된 이후에는 동일한 계정으로 복구가 불가능하며,
+재가입 시 신규 회원으로 처리됩니다.
+
+
+
+제7조 (면책 조항)
+
+회원 탈퇴로 인해 발생하는 서비스 이용 불가, 데이터 소실 등에 대해
+회사는 관련 법령에 따른 경우를 제외하고 책임을 지지 않습니다.
+
+
+
+*본 회원 탈퇴 약관은 회원이 탈퇴 시 동의한 날로부터 효력이 발생합니다.
+                    </pre>
+
+					<div>
+						<input type="checkbox" name="agree" id="agree">
+						<label for="agree">위 약관을 모두 확인하였으며, 이에 동의합니다.</label>
+					</div>
+
+
+					<button class="myPage-submit">탈퇴</button>
+
+				</form>
+
+      </section>
+    
+    </div>
+
+  </main>
+
+  <!-- 푸터 -->
+  <th:block th:replace="~{common/fragments/footer}" />
+  
+
+  <script src="/js/myPage/myPage.js"></script>
+</body>
+</html>

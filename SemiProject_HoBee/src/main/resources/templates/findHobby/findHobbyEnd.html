@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>취미 탐색 결과</title>
+
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/findHobby/findHobbyEnd.css">
+  <th:block th:replace="~{common/common}"></th:block>
+</head>
+<body>
+
+<!-- 헤더 -->
+<th:block th:replace="~{common/fragments/header}" />
+
+<main class="result-container">
+
+  <!-- 결과 타이틀 -->
+  <section class="result-title">
+    <h1>취미 탐색 결과 🎯</h1>
+
+    <p class="result-name">
+      <strong id="inputName">홍길동</strong>님에게
+      잘 어울리는 취미를 추천해드릴게요!
+    </p>
+
+    <!-- 결과 해석 메시지 -->
+    <div class="result-message">
+      <p th:text="${resultMessage}">
+        몸을 움직일 때 가장 나다운 당신은 가만히 있기보다, 움직일 때 에너지가 채워지는 타입이에요.
+      </p>
+    </div>
+  </section>
+
+  <!-- 상위 취미 분야 -->
+  <section class="top-category">
+
+    <!-- 1위 분야 -->
+    <div class="category-card primary" th:object="${firstHobby}">
+      <h2 th:text="|🏆 1순위 · *{hobbyName}|">🏆 1순위 · 운동 · 레저</h2>
+
+      <ul class="hobby-list">
+        <li th:each="hobby : *{hobbyList}">
+          <span th:text="${hobby.hobbyName}">러닝</span>
+          <i th:class="${hobby.hobbyIcon}"></i>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 2위 분야 -->
+    <div class="category-card secondary" th:object="${secondHobby}">
+      <h2 th:text="|🥈 2순위 · *{hobbyName}|">🥈 2순위 · 문화 · 예술</h2>
+
+      <ul class="hobby-list">
+        <li th:each="hobby : *{hobbyList}">
+          <span th:text="${hobby.hobbyName}">글쓰기</span>
+          <i th:class="${hobby.hobbyIcon}"></i>
+        </li>
+      </ul>
+    </div>
+
+  </section>
+
+  <!-- 안내 문구 -->
+  <section class="result-guide">
+    <p>
+      위 취미들은 <strong>당신의 응답을 기반으로 추천된 결과</strong>입니다.<br>
+      Ho-Bee에서 같은 관심사를 가진 사람들과 함께 즐겨보세요!
+    </p>
+  </section>
+
+  <!-- 버튼 영역 -->
+  <section class="result-buttons">
+    <a href="/findHobby/main" class="btn primary-btn">다시 검사하기</a>
+
+    <th:block th:if="${session.loginMember != null}" class="btn">
+      <a href="/myPage/updateInfo" class="btn secondary-btn">
+        회원 정보 수정
+      </a>
+    </th:block>
+  </section>
+
+</main>
+
+<!-- 푸터 -->
+<th:block th:replace="~{common/fragments/footer}" />
+
+<script src="/js/findHobby/findHobbyEnd.js"></script>
+</body>
+</html>

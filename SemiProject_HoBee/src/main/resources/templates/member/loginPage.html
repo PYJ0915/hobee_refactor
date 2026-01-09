@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org"> <!-- xmlns:th="http://thymeleaf.org" 타임리프 사용 시 붙히기!!!!!-->
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>로그인</title>
+
+	<link rel="stylesheet" href="/css/common.css">
+	<link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="/css/member/login.css">
+
+
+</head>
+
+<body>
+	<th:block th:replace="~{common/fragments/header}"></th:block>
+
+	<div class="page-wrapper">
+
+	<main>
+
+		<h1>로그인</h1>
+		<form action="/member/loginPage" method="post" id="login">
+			<section id="login-container">
+				<div id="login-inputs">
+					<div class="input-group">
+						<h3>아이디</h3>
+						<input type="text" name="memberId" id="memberId" placeholder="아이디">
+					</div>
+					<div class="input-group">
+						<h3>비밀번호</h3>
+						<input type="password" name="memberPw" id="memberPw" placeholder="비밀번호">
+					</div>
+					<label class="save-id">
+						<input type="checkbox" name="saveId" id="saveId"> 아이디 저장
+					</label>
+				</div>
+
+				<button id="login-btn">로그인</button>
+			</section>
+		</form>
+
+	<div class="search-area">
+ 		<a href="/member/idSearch">아이디 찾기</a>
+  		<span class="divider">|</span>
+  	<a href="/member/pwSearch">비밀번호 찾기</a>
+	</div>
+
+	</main>
+	
+</div>
+	<th:block th:replace="~{common/fragments/footer}"></th:block>
+
+	<!-- js -->
+	<script src="/js/member/login.js" class="footer"></script>
+
+
+</body>
+
+</html>

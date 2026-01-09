@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="hobee.semi.project.report.model.mapper.ReportMapper">
+
+	<insert id="insertReport">
+		INSERT INTO REPORT
+		VALUES (SEQ_REPORT_NO.NEXTVAL,
+		#{reportReason}, #{reportDetail}, DEFAULT,
+		DEFAULT,
+		#{reporterMemberNo}, #{reportedMemberNo}, #{targetType},
+		#{targetNo})
+	</insert>
+
+	<select id="getReportCount">
+		SELECT COUNT(*)
+		FROM REPORT
+		WHERE REPORT_STATUS =
+		'PENDING'
+	</select>
+
+	<select id="selectReportList">
+		SELECT r.REPORT_NO, r.REPORT_DETAIL,
+		reporter.MEMBER_NICKNAME REPORTER_NICKNAME, reported.MEMBER_NICKNAME
+		REPORTED_NICKNAME,
+		r.REPORT_REASON, TO_CHAR(REPORT_DATE, 'YYYY"년" MM"월"
+		DD"일"')
+		REPORT_DATE
+		FROM REPORT r
+		JOIN MEMBER
+		reporter ON (r.REPORTER_MEMBER_NO
+		= reporter.MEMBER_NO)
+		JOIN MEMBER
+		reported ON (r.REPORTED_MEMBER_NO =
+		reported.MEMBER_NO)
+		WHERE
+		r.REPORT_STATUS = 'PENDING'
+		ORDER BY
+		r.REPORT_NO
+	</select>
+
+	<update id="manageReport">
+		UPDATE REPORT SET REPORT_STATUS = #{reportStatus}
+		WHERE REPORT_NO = #{reportNo}
+	</update>
+
+	<select id="selectTarget" resultType="Report">
+		SELECT
+		m.MEMBER_NICKNAME
+		reportedNickname,
+		CASE
+		WHEN r.TARGET_TYPE = 'B' THEN b.BOARD_CONTENT
+		WHEN r.TARGET_TYPE = 'C' THEN TO_CLOB(c.COMMENT_CONTENT)
+		END
+		targetContent
+		FROM REPORT r
+		JOIN MEMBER m ON r.REPORTED_MEMBER_NO =
+		m.MEMBER_NO
+		LEFT
+		JOIN BOARD b ON r.TARGET_TYPE = 'B'
+		AND r.TARGET_NO =
+		b.BOARD_NO
+		LEFT
+		JOIN "COMMENT" c ON r.TARGET_TYPE = 'C'
+		AND r.TARGET_NO =
+		c.COMMENT_NO
+		WHERE r.REPORT_NO = #{reportNo}
+	</select>
+
+	<select id="selectReportedMemberNo">
+		SELECT REPORTED_MEMBER_NO
+		FROM "REPORT"
+		WHERE REPORT_NO
+		= #{reportNo}
+	</select>
+
+	<select id="selectReportCount">
+		SELECT COUNT(*) FROM "REPORT"
+		WHERE REPORTED_MEMBER_NO
+		= #{memberNo}
+		AND REPORT_STATUS = 'APPROVED'
+	</select>
+
+	<select id="selectWarningCount">
+		SELECT COUNT(*) FROM PENALTY
+		WHERE MEMBER_NO =
+		#{memberNo}
+		AND PENALTY_TYPE = 'WARNING'
+	</select>
+
+	<select id="selectSuspendCount">
+		SELECT COUNT(*) FROM PENALTY
+		WHERE MEMBER_NO =
+		#{memberNo}
+		AND PENALTY_TYPE = 'SUSPEND'
+	</select>
+
+	<select id="selectPenaltyReasaon">
+		SELECT LISTAGG(REPORT_REASON, ', ')
+			WITHIN GROUP (ORDER BY REPORT_REASON) AS PENALTY_REASON
+		FROM (
+			SELECT REPORT_REASON,
+				DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS RNK
+			FROM REPORT
+			WHERE REPORTED_MEMBER_NO = #{memberNo}
+			GROUP BY REPORT_REASON
+		)
+		WHERE RNK = 1
+	</select>
+	
+	<insert id="insertPenalty">
+		INSERT INTO PENALTY VALUES 
+		(SEQ_PENALTY_NO.NEXTVAL, #{penaltyType}, SYSDATE,
+		CASE
+ 			WHEN #{penaltyType} IN ('WARNING', 'PERMANENT') THEN NULL
+  			ELSE SYSDATE + #{plusDays}
+		END,
+  		#{penaltyReason}, DEFAULT, #{memberNo}
+		)
+	</insert>
+	
+	<select id="selectActivePermanentCount">
+		SELECT COUNT(*) FROM PENALTY
+		WHERE MEMBER_NO = #{memberNo}
+		AND PENALTY_TYPE = 'PERMANENT'
+		AND PENALTY_STATUS = 'ACTIVE' 
+	</select>
+
+	<select id="todayReportCount">
+		SELECT COUNT(*)
+		FROM REPORT
+		WHERE REPORTER_MEMBER_NO = #{memberNo}
+		AND TO_CHAR(REPORT_DATE, 'YYYY-MM-DD') = #{today}
+	</select>
+
+</mapper>

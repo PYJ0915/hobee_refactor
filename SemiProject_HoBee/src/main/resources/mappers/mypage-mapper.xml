@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hobee.semi.project.myPage.model.mapper.MyPageMapper">
+
+	<!-- 회원 정보 수정 -->
+	<update id="updateInfo">
+		UPDATE "MEMBER" SET
+		MEMBER_NICKNAME = #{memberNickname},
+		MEMBER_TEL = #{memberTel},
+		MEMBER_ADDRESS = #{memberAddress},
+		MEMBER_INTRODUCTION = #{memberIntroduction}
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
+
+	<select id="checkNickname" resultType="_int">
+		SELECT COUNT(*)
+		FROM "MEMBER"
+		WHERE MEMBER_NICKNAME = #{memberNickname}
+		AND MEMBER_DEL_FL = 'N'
+		AND MEMBER_NO != #{memberNo}
+	</select>	
+
+	<!-- 비밀번호 확인 -->
+	<select id="checkPw">
+		SELECT MEMBER_PW
+		FROM "MEMBER"
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="changePw">
+		UPDATE "MEMBER" SET
+		MEMBER_PW = #{memberPw}
+		WHERE MEMBER_NO = #{memberNo}
+	</update>	
+	
+	<!--프로필변경-->
+<!--	<insert id="profile">
+		INSERT INTO "PROFILE_IMG"
+		VALUES(SEQ_PROFILE_NO.NEXTVAL,
+				#{profilePath},
+				#{profileOriginalName},
+				#{profileRename},
+				DEFAULT,
+				#{memberNo})
+	</insert>-->	
+		
+	<!-- 선택한 취미 목록 조회 -->
+	<select id="selectHobbyList"
+        parameterType="list"
+        resultType="Hobby">
+		SELECT HOBBY_CODE, HOBBY_NAME
+    		FROM HOBBY
+    		WHERE HOBBY_CODE IN
+    		<foreach collection="list" item="code"
+             open="(" separator="," close=")">
+        #{code}
+		</foreach>
+	</select>
+
+	<!-- 기존 취미 삭제 -->
+	<delete id="deleteMemberHobby">
+  		DELETE FROM MEMBER_HOBBY
+  		WHERE MEMBER_NO = #{memberNo}
+	</delete>
+
+	<!-- 취미 추가 -->
+	<insert id="insertMemberHobby">
+  		INSERT INTO MEMBER_HOBBY (MEMBER_NO, HOBBY_CODE)
+  		VALUES (#{memberNo}, #{hobbyCode})
+	</insert>
+	
+	<!-- 게시글 조회 -->
+	<select id="selectBoardList">
+		SELECT BOARD_NO, BOARD_TITLE,
+		TO_CHAR(BOARD_WRITE_DATE, 'YYYY"년" MM"월" DD"일"') BOARD_WRITE_DATE
+		FROM BOARD
+		WHERE MEMBER_NO = #{memberNo}
+		ORDER BY BOARD_NO DESC
+	</select>
+	
+	<!--프로필변경-->
+	<insert id="profile">
+	MERGE INTO PROFILE_IMG p
+	USING (SELECT #{profilePath} AS PROFILE_PATH,
+				  #{profileOriginalName} AS PROFILE_ORIGINAL_NAME,
+	 			  #{profileRename} AS PROFILE_RENAME,
+	 			  #{memberNo} AS MEMBER_NO
+	 	   FROM DUAL) s
+ 	ON (p.MEMBER_NO = s.MEMBER_NO)
+	WHEN MATCHED THEN 
+	UPDATE SET p.PROFILE_PATH = s.PROFILE_PATH,
+			   p.PROFILE_ORIGINAL_NAME = s.PROFILE_ORIGINAL_NAME,
+			   p.PROFILE_RENAME = s.PROFILE_RENAME
+	WHEN NOT MATCHED THEN
+		INSERT(PROFILE_NO, PROFILE_PATH, PROFILE_ORIGINAL_NAME, PROFILE_RENAME, MEMBER_NO)
+		VALUES(SEQ_PROFILE_NO.NEXTVAL,
+				s.PROFILE_PATH,
+				s.PROFILE_ORIGINAL_NAME,
+				s.PROFILE_RENAME,
+				s.MEMBER_NO)
+	</insert>
+	
+	<insert id="insertProfile">
+	INSERT INTO MEMBER(PROFILE_IMG)
+	VALUES(#{profileFullPath})
+	WHERE MEMBER_NO = #{memberNo}
+	</insert>
+	
+	<update id="updateProfile">
+	UPDATE MEMBER SET
+	PROFILE_IMG = #{profileImg}
+	WHERE MEMBER_NO = #{memberNo}
+	</update>
+	
+	<!-- 회원 탈퇴 -->
+	<update id="secession">
+		UPDATE "MEMBER" SET
+		MEMBER_DEL_FL = 'Y'
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
+	
+</mapper>

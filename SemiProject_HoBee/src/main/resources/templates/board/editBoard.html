@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>글 작성 화면</title>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
+    <th:block th:replace="~{common/common}"></th:block>
+    <link rel="stylesheet" href="/css/board/editBoard-style.css">
+    <link rel="stylesheet" href="/css/common.css">
+</head>
+    
+<body>
+    <th:block th:replace="~{common/fragments/header}"></th:block>
+    
+    <div class="board-write-area">
+<h1 class="write-title">
+    <th:block th:switch="${boardName}">
+        <span th:case="'notice'">공지사항 작성</span>
+        
+        <span th:case="'free'">자유게시판 작성</span>
+        
+        <span th:case="'hobby'">
+            <th:block th:switch="${categoryCode}">
+                <span th:case="1">운동·레저 게시판 작성</span>
+                <span th:case="2">자기 계발 게시판 작성</span>
+                <span th:case="3">문화·예술 게시판 작성</span>
+                <span th:case="4">사회 교류 게시판 작성</span>
+                <span th:case="5">수집·소비 게시판 작성</span>
+                <span th:case="*">취미 게시판 작성</span>
+            </th:block>
+        </span>
+        
+        <span th:case="*">게시판 글 쓰기</span>
+    </th:block>
+</h1>
+        
+        <form action="" method="post" id="boardContent">
+            <input type="hidden" name="boardNo" th:if="${board != null}" th:value="${board?.boardNo}">
+            <input type="hidden" name="categoryCode" th:value="${board?.categoryCode ?: 1}">
+
+            <input type="hidden" name="categoryCode" th:value="${board?.categoryCode ?: param.categoryCode}">
+
+            <input type="text" name="boardTitle" class="board-title-input" 
+                   placeholder="제목을 입력하세요" th:value="${board?.boardTitle}"/>
+            
+            <textarea id="summernote" name="boardContent" placeholder="내용을 입력하세요."
+            th:utext="${board?.boardContent}"></textarea>
+            
+            <div style="text-align: right; margin-top: 20px;">
+                <button type="submit" class="hobee-btn"
+                th:text="${board == null ? '등록' : '수정'}">등록</button>
+            </div>
+        </form>
+    </div>
+
+    <th:block th:replace="~{common/fragments/footer}"></th:block>
+
+    <script src="/js/board/editBoard.js"></script>
+</script>
+</body>
+</html>
