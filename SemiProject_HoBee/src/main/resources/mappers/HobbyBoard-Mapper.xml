@@ -6,7 +6,14 @@
         SELECT COUNT(*)
         FROM "BOARD"
         WHERE BOARD_DEL_FL = 'N'
-        AND CATEGORY_CODE = #{categoryCode}
+        <choose>
+        	<when test="categoryCode != null">
+        		AND CATEGORY_CODE = #{categoryCode}
+        	</when>
+        	<otherwise>
+        		AND BOARD_CODE = #{boardCode}
+        	</otherwise>
+        </choose>
     </select>
 
     <select id="selectBoardList" resultType="Board">

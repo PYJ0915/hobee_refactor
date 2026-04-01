@@ -3,6 +3,7 @@ package hobee.semi.project.board.controller;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
@@ -27,18 +28,32 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping("notice")
+@RequestMapping("board")
 @Slf4j
 @RequiredArgsConstructor
 public class NoticeBoardController {
 
 	private final NoticeBoardService service;
 
-	@GetMapping("")
-	public String selectBoardList(@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
+	@GetMapping({"list/{boardCode:[0-9]+}", "list/{boardCode:[0-9]+}/{categoryCode:[0-9]+}"})
+	public String selectBoardList(
+			@PathVariable("boardCode") int boardCode,
+			@PathVariable(name = "categoryCode", required = false) Integer categoryCode,
+			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, 
+			Model model,
 			@RequestParam Map<String, Object> paramMap) {
-
-		int boardCode = 1;
+		
+		String url = getBoardUrl(boardCode);
+		
+		if(categoryCode != null) {
+			
+			String categoryName = service.selectCategoryName(categoryCode);
+			List<Board> hobbyBestList = service.hobbyBestList(categoryCode);
+			
+			model.addAttribute("categoryCode", categoryCode);   
+	        model.addAttribute("hobbyName", categoryName);
+	        model.addAttribute("hobbyBestList", hobbyBestList);
+		}
 
 		// 조회 서비스 호출 후 결과 반환
 		Map<String, Object> map = null;
@@ -47,7 +62,7 @@ public class NoticeBoardController {
 		if (paramMap.get("key") == null) {
 
 			// 게시글 목록 조회 서비스 호출
-			map = service.selectBoardList(boardCode, cp);
+			map = service.selectBoardList(boardCode, categoryCode, cp);
 
 		} else { // 검색인 경우
 			// --> paramMap에 key라는 k에 접근하면 매핑된 value 반환
@@ -57,21 +72,27 @@ public class NoticeBoardController {
 			// boardCode를 paramMap에 추가
 			paramMap.put("boardCode", boardCode);
 			// -> paramMap은 {key=w, query=짱구, boardCode=1}
+			
+			paramMap.put("categoryCode", categoryCode);
 
 			// 검색(내가 검색하고 싶은 게시글 목록 조회) 서비스 호출
 			map = service.searchList(paramMap, cp);
 
 		}
+		
+		List<Board> noticeList = service.noticeList(1);
 
 		// model에 결과 값 등록
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));
 		model.addAttribute("boardCode", boardCode);
+		model.addAttribute("noticeList", noticeList);
 
 		// src/main/resources/templates/board/boardList.html 로 forward
-		return "board/noticeBoard";
+		return url;
 	}
 	
+
 	/** 내가 작성한 게시물만 보여주는 버튼 구현
 	 * @param cp
 	 * @param model
@@ -208,4 +229,23 @@ public class NoticeBoardController {
 		return service.boardLike(map);
 	}
 
+	private String getBoardUrl(int boardCode) {
+
+		String url = "board/";
+		
+		switch (boardCode) {
+		case 1:
+			url += "noticeBoard";
+			break;
+		case 2:
+			url += "hobbyBoard";
+			break;
+		case 3:
+			url += "freeBoard";
+			break;
+		}
+		
+		return url;
+	}
+	
 }

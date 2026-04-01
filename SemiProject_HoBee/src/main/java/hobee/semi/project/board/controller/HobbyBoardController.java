@@ -36,7 +36,7 @@ public class HobbyBoardController {
 	private final HobbyBoardService service;
 
 	/** 내가 작성한 게시물만 보여주는 버튼 구현
-	 * @param cp
+	 * @param cp  
 	 * @param model
 	 * @param paramMap
 	 * @param loginMember

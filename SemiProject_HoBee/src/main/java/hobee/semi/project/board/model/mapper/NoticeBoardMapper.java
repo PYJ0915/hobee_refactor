@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 import hobee.semi.project.board.model.dto.Board;
@@ -11,9 +12,9 @@ import hobee.semi.project.board.model.dto.Board;
 @Mapper
 public interface NoticeBoardMapper {
 
-	int getListCount(int boardCode);
+	int getListCount(@Param("boardCode") int boardCode, @Param("categoryCode") Integer categoryCode);
 
-	List<Board> selectBoardList(int boardCode, RowBounds rowBounds);
+	List<Board> selectBoardList(@Param("boardCode") int boardCode, @Param("categoryCode") Integer categoryCode, RowBounds rowBounds);
 
 	int getSearchCount(Map<String, Object> paramMap);
 
@@ -34,5 +35,11 @@ public interface NoticeBoardMapper {
 	int getMyListCount(Map<String, Object> queryMap);
 
 	List<Board> selectMyBoardList(Map<String, Object> queryMap, RowBounds rowBounds);
+
+	List<Board> selectHobbyBestList(Integer categoryCode, RowBounds rowBounds);
+
+	List<Board> selectNoticeList(int noticeBoardCode, RowBounds rowBounds);
+
+	String selectCategoryName(Integer categoryCode);
 
 }
