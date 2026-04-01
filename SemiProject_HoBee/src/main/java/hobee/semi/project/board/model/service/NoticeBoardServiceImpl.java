@@ -113,7 +113,7 @@ public class NoticeBoardServiceImpl implements NoticeBoardService{
 	}
 
 	@Override
-	public Map<String, Object> selectMyBoardList(int boardCode, int cp, Map<String, Object> queryMap) {
+	public Map<String, Object> selectMyBoardList(Map<String, Object> queryMap, int cp) {
 		
 		// 1. 내가 작성한 게시글 수 조회 (MEMBER_NO 조건 포함)
 		int listCount = mapper.getMyListCount(queryMap);

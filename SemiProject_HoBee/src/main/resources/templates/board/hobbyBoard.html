@@ -81,11 +81,11 @@
 
                     <td>
                         <a th:unless="${param.key}"
-                           th:href="@{/hobby/{categoryCode}/{boardNo}(categoryCode=${categoryCode}, boardNo=*{boardNo}, cp=${pagination.currentPage})}"
+                           th:href="@{/board/detail/{categoryCode}/{boardNo}(categoryCode=${categoryCode}, boardNo=*{boardNo}, cp=${pagination.currentPage})}"
                            th:text="*{boardTitle}">게시글 제목</a>
 
                         <a th:if="${param.key}"
-                           th:href="@{/hobby/{categoryCode}/{boardNo}(categoryCode=${categoryCode}, boardNo=*{boardNo}, cp=${pagination.currentPage}, key=${param.key}, query=${param.query})}"
+                           th:href="@{/board/detail/{categoryCode}/{boardNo}(categoryCode=${categoryCode}, boardNo=*{boardNo}, cp=${pagination.currentPage}, key=${param.key}, query=${param.query})}"
                            th:text="*{boardTitle}">게시글 제목</a>
 
                         <th:block th:text="|[*{commentCount}]|">댓글 수</th:block>
@@ -103,7 +103,7 @@
 
         <div class="btn-area">
 		    <button id="myBoardBtn" th:if="${session.loginMember}"
-              th:data-board-path="|hobby/${categoryCode}|">내 글</button>
+              th:data-board-path="|board/${boardCode}/${categoryCode}|">내 글</button>
             <button id="insertBtn" th:if="${session.loginMember}"
         th:data-board-path="|hobby/${categoryCode}|">글쓰기</button>
         </div>

@@ -35,24 +35,22 @@ public class NoticeBoardController {
 
 	private final NoticeBoardService service;
 
-	@GetMapping({"list/{boardCode:[0-9]+}", "list/{boardCode:[0-9]+}/{categoryCode:[0-9]+}"})
-	public String selectBoardList(
-			@PathVariable("boardCode") int boardCode,
+	@GetMapping({ "list/{boardCode:[0-9]+}", "list/{boardCode:[0-9]+}/{categoryCode:[0-9]+}" })
+	public String selectBoardList(@PathVariable("boardCode") int boardCode,
 			@PathVariable(name = "categoryCode", required = false) Integer categoryCode,
-			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, 
-			Model model,
+			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
 			@RequestParam Map<String, Object> paramMap) {
-		
+
 		String url = getBoardUrl(boardCode);
-		
-		if(categoryCode != null) {
-			
+
+		if (categoryCode != null) {
+
 			String categoryName = service.selectCategoryName(categoryCode);
 			List<Board> hobbyBestList = service.hobbyBestList(categoryCode);
-			
-			model.addAttribute("categoryCode", categoryCode);   
-	        model.addAttribute("hobbyName", categoryName);
-	        model.addAttribute("hobbyBestList", hobbyBestList);
+
+			model.addAttribute("categoryCode", categoryCode);
+			model.addAttribute("hobbyName", categoryName);
+			model.addAttribute("hobbyBestList", hobbyBestList);
 		}
 
 		// 조회 서비스 호출 후 결과 반환
@@ -72,14 +70,14 @@ public class NoticeBoardController {
 			// boardCode를 paramMap에 추가
 			paramMap.put("boardCode", boardCode);
 			// -> paramMap은 {key=w, query=짱구, boardCode=1}
-			
+
 			paramMap.put("categoryCode", categoryCode);
 
 			// 검색(내가 검색하고 싶은 게시글 목록 조회) 서비스 호출
 			map = service.searchList(paramMap, cp);
 
 		}
-		
+
 		List<Board> noticeList = service.noticeList(1);
 
 		// model에 결과 값 등록
@@ -91,52 +89,59 @@ public class NoticeBoardController {
 		// src/main/resources/templates/board/boardList.html 로 forward
 		return url;
 	}
-	
 
-	/** 내가 작성한 게시물만 보여주는 버튼 구현
+	/**
+	 * 내가 작성한 게시물만 보여주는 버튼 구현
+	 * 
 	 * @param cp
 	 * @param model
 	 * @param paramMap
 	 * @param loginMember
 	 * @return
 	 */
-	@GetMapping("myBoard")
-	public String myBoardList(
-            @RequestParam(value = "cp", required = false, defaultValue = "1") int cp, 
-            Model model,
-			@SessionAttribute(value = "loginMember", required = false) MemberDTO loginMember,
-			RedirectAttributes ra) { 
-		
-		int boardCode = 1;
-		
-		
+	@GetMapping({ "{boardCode:[0-9]+}/myBoard", "{boardCode:[0-9]+}/{categoryCode:[0-9]+}/myBoard" })
+	public String myBoardList(@PathVariable("boardCode") int boardCode,
+			@PathVariable(name = "categoryCode", required = false) Integer categoryCode,
+			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
+			@SessionAttribute(value = "loginMember", required = false) MemberDTO loginMember, RedirectAttributes ra) {
+
+		String url = getBoardUrl(boardCode);
+
 		Map<String, Object> queryMap = new HashMap<>();
+
+		if (categoryCode != null) {
+			String categoryName = service.selectCategoryName(categoryCode);
+
+			queryMap.put("categoryCode", categoryCode);
+
+			model.addAttribute("categoryCode", categoryCode);
+			model.addAttribute("hobbyName", categoryName);
+		}
+
 		queryMap.put("boardCode", boardCode);
-		
-		if(loginMember != null) {
+
+		if (loginMember != null) {
 			queryMap.put("memberNo", loginMember.getMemberNo());
 		} else {
 			ra.addFlashAttribute("message", "로그인 후 이용 가능한 서비스입니다.");
-	        // 원래 있던 게시판 목록 주소로 리다이렉트 (예: /hobby/1)
-	        return "redirect:/notice";
+			// 원래 있던 게시판 목록 주소로 리다이렉트 (예: /hobby/1)
+			return "redirect:/board/list/" + boardCode;
 		}
-		
-		// 2. 서비스 호출 (생성한 queryMap을 전달)
-		Map<String, Object> map = service.selectMyBoardList(boardCode, cp, queryMap);
-		
-		model.addAttribute("pagination", map.get("pagination"));
-	    model.addAttribute("boardList", map.get("boardList"));
-		model.addAttribute("boardCode", boardCode);
-		
-		// 3. 게시판 목록을 보여주는 HTML 파일명
-		return "board/noticeBoard"; 
-	}
-	
-	
-	
 
-	@GetMapping("{boardNo:[0-9]+}")
-	public String boardDetail(@PathVariable("boardNo") int boardNo,
+		// 2. 서비스 호출 (생성한 queryMap을 전달)
+		Map<String, Object> map = service.selectMyBoardList(queryMap, cp);
+
+		model.addAttribute("pagination", map.get("pagination"));
+		model.addAttribute("boardList", map.get("boardList"));
+		model.addAttribute("boardCode", boardCode);
+
+		// 3. 게시판 목록을 보여주는 HTML 파일명
+		return url;
+	}
+
+	@GetMapping({ "detail/{boardNo:[0-9]+}", "detail/{categoryCode:[0-9]+}/{boardNo:[0-9]+}" })
+	public String boardDetail(@PathVariable(name = "categoryCode", required = false) Integer categoryCode,
+			@PathVariable("boardNo") int boardNo,
 			@SessionAttribute(value = "loginMember", required = false) MemberDTO loginMember, Model model,
 			RedirectAttributes ra, HttpServletRequest req, HttpServletResponse resp) {
 
@@ -150,77 +155,17 @@ public class NoticeBoardController {
 
 		Board board = service.selectBoardDetail(map);
 
-		String path = null;
-
 		if (board == null) {
-			path = "redirect:/";
 			ra.addFlashAttribute("message", "게시글이 존재하지 않습니다.");
-		} else {
-
-			// 조회수 증가 파트
-
-			// 조회 수가 증가해야하는 경우
-			if (loginMember == null || board.getMemberNo() != loginMember.getMemberNo()) {
-
-				Cookie[] cookies = req.getCookies();
-
-				Cookie c = null;
-
-				for (Cookie temp : cookies) {
-
-					// 쿠키 중에 "readBoardNo" 가 존재할 때
-					if (temp.getName().equals("readBoardNo")) {
-						c = temp;
-						break;
-					}
-
-				}
-
-				int result = 0; // 조회수 증가 결과 저장 변수
-
-				if (c == null) {
-					// "readBoardNo" 가 쿠키에 없을 때
-					c = new Cookie("readBoardNo", "[" + boardNo + "]");
-
-					result = service.updateViewCount(boardNo);
-				} else {
-
-					if (c.getValue().indexOf("[" + boardNo + "]") == -1) {
-
-						c.setValue(c.getValue() + "[" + boardNo + "]");
-						result = service.updateViewCount(boardNo);
-
-					}
-				}
-
-				if (result > 0) {
-
-					board.setBoardViewCount(result);
-
-					c.setPath("/");
-
-					LocalDateTime now = LocalDateTime.now();
-
-					LocalDateTime nextDayMidnight = now.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
-
-					long secondsUntilNextDay = Duration.between(now, nextDayMidnight).getSeconds();
-
-					c.setMaxAge((int) secondsUntilNextDay);
-
-					resp.addCookie(c); // 응답 객체를 이용해서 클라이언트에게 전달
-
-				}
-
-			}
-
-			// --------------------------
-			path = "board/boardDetail";
-
-			model.addAttribute("board", board);
-			model.addAttribute("gotoList", "/notice");
+			return "redirect:/";
 		}
 
-		return path;
+		handleViewCount(board, boardNo, loginMember, req, resp);
+
+		model.addAttribute("board", board);
+		model.addAttribute("gotoList", "/notice");
+
+		return "board/boardDetail";
 	}
 
 	@ResponseBody
@@ -232,7 +177,7 @@ public class NoticeBoardController {
 	private String getBoardUrl(int boardCode) {
 
 		String url = "board/";
-		
+
 		switch (boardCode) {
 		case 1:
 			url += "noticeBoard";
@@ -244,8 +189,61 @@ public class NoticeBoardController {
 			url += "freeBoard";
 			break;
 		}
-		
+
 		return url;
 	}
-	
+
+	// 조회 수 증가 함수
+	private void handleViewCount(Board board, int boardNo, MemberDTO loginMember, HttpServletRequest req,
+			HttpServletResponse resp) {
+
+		if (loginMember == null || board.getMemberNo() != loginMember.getMemberNo()) {
+
+			Cookie[] cookies = req.getCookies();
+
+			Cookie c = null;
+
+			for (Cookie temp : cookies) {
+				// 쿠키 중에 "readBoardNo" 가 존재할 때
+				if (temp.getName().equals("readBoardNo")) {
+					c = temp;
+					break;
+				}
+			}
+
+			int result = 0; // 조회수 증가 결과 저장 변수
+
+			if (c == null) {
+				// "readBoardNo" 가 쿠키에 없을 때
+				c = new Cookie("readBoardNo", "[" + boardNo + "]");
+				result = service.updateViewCount(boardNo);
+			} else {
+
+				if (c.getValue().indexOf("[" + boardNo + "]") == -1) {
+					c.setValue(c.getValue() + "[" + boardNo + "]");
+					result = service.updateViewCount(boardNo);
+
+				}
+			}
+
+			if (result > 0) {
+				board.setBoardViewCount(result);
+				c.setPath("/");
+				long secondsUntilNextDay = calcSecondsUntilMidnight();
+				c.setMaxAge((int) secondsUntilNextDay);
+				resp.addCookie(c); // 응답 객체를 이용해서 클라이언트에게 전달
+
+			}
+
+		}
+
+	}
+
+	// 자정까지 남은 초 계산 (handleViewCount 안에서 호출)
+	private long calcSecondsUntilMidnight() {
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime nextDayMidnight = now.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+		return Duration.between(now, nextDayMidnight).getSeconds();
+	}
+
 }

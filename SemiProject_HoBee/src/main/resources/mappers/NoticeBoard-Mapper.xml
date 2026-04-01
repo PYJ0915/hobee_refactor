@@ -219,7 +219,14 @@
 		FROM "BOARD" B
 		JOIN "MEMBER" USING(MEMBER_NO)
 		WHERE BOARD_DEL_FL = 'N'
-		AND BOARD_CODE = #{boardCode}
+		<choose>
+			<when test="categoryCode != null">
+				AND CATEGORY_CODE = #{categoryCode}
+			</when>
+			<otherwise>
+				AND BOARD_CODE = #{boardCode}
+			</otherwise>
+		</choose>
 		AND MEMBER_NO = #{memberNo}
 		ORDER BY
 		BOARD_NO DESC
