@@ -12,12 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.board.model.dto.Pagination;
 import hobee.semi.project.board.model.mapper.BoardMapper;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
-@Slf4j
 public class BoardServiceImpl implements BoardService {
 
 	@Autowired

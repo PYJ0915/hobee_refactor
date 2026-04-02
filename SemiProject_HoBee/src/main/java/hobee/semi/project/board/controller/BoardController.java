@@ -25,7 +25,6 @@ import hobee.semi.project.member.model.dto.MemberDTO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -42,7 +41,7 @@ public class BoardController {
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
 			@RequestParam Map<String, Object> paramMap) {
 
-		String url = getBoardUrl(boardCode);
+		String boardName = getBoardName(boardCode);
 
 		// 취미 게시판인 경우 해야할 작업
 		if (categoryCode != null) {
@@ -100,9 +99,10 @@ public class BoardController {
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));
 		model.addAttribute("boardCode", boardCode);
+		model.addAttribute("boardName", boardName);
 
 		// src/main/resources/templates/board/boardList.html 로 forward
-		return url;
+		return "board/boardList";
 	}
 
 	/**
@@ -119,8 +119,6 @@ public class BoardController {
 			@PathVariable(name = "categoryCode", required = false) Integer categoryCode,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
 			@SessionAttribute(value = "loginMember", required = false) MemberDTO loginMember, RedirectAttributes ra) {
-
-		String url = getBoardUrl(boardCode);
 
 		Map<String, Object> queryMap = new HashMap<>();
 
@@ -153,15 +151,17 @@ public class BoardController {
 		model.addAttribute("boardCode", boardCode);
 
 		// 3. 게시판 목록을 보여주는 HTML 파일명
-		return url;
+		return "board/boardList";
 	}
 
 	/**
 	 * 게시글 상세 조회 함수
 	 * 
 	 */
-	@GetMapping({ "detail/{boardNo:[0-9]+}", "detail/{categoryCode:[0-9]+}/{boardNo:[0-9]+}" })
-	public String boardDetail(@PathVariable(name = "categoryCode", required = false) Integer categoryCode,
+	@GetMapping({ "detail/{boardCode:[0-9]+}/{boardNo:[0-9]+}", "detail/{boardCode:[0-9]+}/{categoryCode:[0-9]+}/{boardNo:[0-9]+}" })
+	public String boardDetail(
+			@PathVariable(name = "boardCode", required = false) Integer boardCode,
+			@PathVariable(name = "categoryCode", required = false) Integer categoryCode,
 			@PathVariable("boardNo") int boardNo,
 			@SessionAttribute(value = "loginMember", required = false) MemberDTO loginMember, Model model,
 			RedirectAttributes ra, HttpServletRequest req, HttpServletResponse resp) {
@@ -197,23 +197,26 @@ public class BoardController {
 		return service.boardLike(map);
 	}
 
-	private String getBoardUrl(int boardCode) {
-
-		String url = "board/";
-
+	/** 게시판 코드를 받아 게시판 이름으로 반환해주는 함수
+	 * 
+	 */
+	private String getBoardName(int boardCode) {
+		
+		String boardName = null;
+		
 		switch (boardCode) {
 		case 1:
-			url += "noticeBoard";
+			boardName = "공지 게시판";
 			break;
 		case 2:
-			url += "hobbyBoard";
+			boardName = "취미 게시판";
 			break;
 		case 3:
-			url += "freeBoard";
+			boardName = "자유 게시판";
 			break;
 		}
 
-		return url;
+		return boardName;
 	}
 
 	/**

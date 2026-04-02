@@ -1,0 +1,47 @@
+<th:block th:fragment="rankNoticeSection (hobbyName, boardName, bestList, noticeList)">
+  <div class="rankList-wrapper">
+    <div class="rank-box">
+      <h3 th:text="${hobbyName != null} ? |${hobbyName} Top5| : |${boardName} Top5|"></h3>
+      <ul>
+        <th:block th:if="${#lists.isEmpty(bestList)}">
+          <li>인기 게시글이 없습니다.</li>
+        </th:block>
+
+        <li th:each="post : ${bestList}">
+          <div>
+            <!-- 취미 게시판 아닐 때 -->
+            <a th:if="${boardCode != 2}"
+              th:href="@{/board/detail/{boardCode}/{boardNo}(boardCode=${boardCode}, boardNo=${post.boardNo})}"
+              th:text="${post.boardTitle}"></a>
+
+            <!-- 취미 게시판일 때 -->
+            <a th:if="${boardCode == 2}"
+              th:href="@{/board/detail/{boardCode}/{categoryCode}/{boardNo} (boardCode=${boardCode}, categoryCode=${categoryCode}, boardNo=${post.boardNo})}"
+              th:text="${post.boardTitle}"></a>
+            <span th:text="| [${post.commentCount}]|"> [0]</span>
+          </div>
+
+          <span class="rank-count" th:text="${post.likeCount}">0</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rank-box">
+      <h3>공지사항</h3>
+      <ul>
+        <th:block th:if="${#lists.isEmpty(noticeList)}">
+          <li>작성된 공지사항이 없습니다.</li>
+        </th:block>
+        <li th:each="post : ${noticeList}">
+          <div>
+            <a th:href="@{/board/detail/1/{boardNo}(boardNo=${post.boardNo})}" th:text="${post.boardTitle}">공지
+              제목</a>
+            <span th:text="| [${post.commentCount}]|"> [0]</span>
+          </div>
+
+          <span class="notice-date" th:text="${post.boardWriteDate}">2025.12.28</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</th:block>
