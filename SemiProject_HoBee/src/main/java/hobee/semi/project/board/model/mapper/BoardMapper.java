@@ -10,7 +10,7 @@ import org.apache.ibatis.session.RowBounds;
 import hobee.semi.project.board.model.dto.Board;
 
 @Mapper
-public interface NoticeBoardMapper {
+public interface BoardMapper {
 
 	int getListCount(@Param("boardCode") int boardCode, @Param("categoryCode") Integer categoryCode);
 
@@ -36,7 +36,7 @@ public interface NoticeBoardMapper {
 
 	List<Board> selectMyBoardList(Map<String, Object> queryMap, RowBounds rowBounds);
 
-	List<Board> selectHobbyBestList(Integer categoryCode, RowBounds rowBounds);
+	List<Board> selectBestList(@Param("boardCode") int boardCode, @Param("categoryCode") Integer categoryCode, RowBounds rowBounds);
 
 	List<Board> selectNoticeList(int noticeBoardCode, RowBounds rowBounds);
 

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import hobee.semi.project.board.model.dto.Board;
-import hobee.semi.project.board.model.service.NoticeBoardService;
+import hobee.semi.project.board.model.service.BoardService;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,10 +31,10 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("board")
 @Slf4j
-@RequiredArgsConstructor
-public class NoticeBoardController {
+public class BoardController {
 
-	private final NoticeBoardService service;
+	@Autowired
+	private BoardService service;
 
 	@GetMapping({ "list/{boardCode:[0-9]+}", "list/{boardCode:[0-9]+}/{categoryCode:[0-9]+}" })
 	public String selectBoardList(@PathVariable("boardCode") int boardCode,
@@ -43,14 +44,15 @@ public class NoticeBoardController {
 
 		String url = getBoardUrl(boardCode);
 
+		// 취미 게시판인 경우 해야할 작업
 		if (categoryCode != null) {
 
+			log.debug("취미 게시판 이름 조회 시작");
 			String categoryName = service.selectCategoryName(categoryCode);
-			List<Board> hobbyBestList = service.hobbyBestList(categoryCode);
+			log.debug("취미 게시판 이름 조회 완료 {}", categoryName);
 
 			model.addAttribute("categoryCode", categoryCode);
 			model.addAttribute("hobbyName", categoryName);
-			model.addAttribute("hobbyBestList", hobbyBestList);
 		}
 
 		// 조회 서비스 호출 후 결과 반환
@@ -60,7 +62,9 @@ public class NoticeBoardController {
 		if (paramMap.get("key") == null) {
 
 			// 게시글 목록 조회 서비스 호출
+			log.debug("게시글 목록 조회 시작");
 			map = service.selectBoardList(boardCode, categoryCode, cp);
+			log.debug("게시글 목록 조회 완료 {}", map);
 
 		} else { // 검색인 경우
 			// --> paramMap에 key라는 k에 접근하면 매핑된 value 반환
@@ -73,18 +77,29 @@ public class NoticeBoardController {
 
 			paramMap.put("categoryCode", categoryCode);
 
-			// 검색(내가 검색하고 싶은 게시글 목록 조회) 서비스 호출
+			// 검색(내가 검색한 게시글 목록 조회) 서비스 호출
+			log.debug("검색한 게시글 목록 조회 시작");
 			map = service.searchList(paramMap, cp);
+			log.debug("검색한 게시글 목록 조회 완료 {}", map);
 
 		}
 
-		List<Board> noticeList = service.noticeList(1);
+		// 자유 및 취미 게시판에서 해야하는 작업
+		if (boardCode != 1) {
+			log.debug("인기 게시글 및 공지사항 조회 시작");
+			List<Board> bestList = service.selectBestList(boardCode, categoryCode);
+			List<Board> noticeList = service.noticeList(1);
+			log.debug("인기 게시글 및 공지사항 조회 완료 {}, {}", bestList, noticeList);
+
+			model.addAttribute("bestList", bestList);
+			model.addAttribute("noticeList", noticeList);
+
+		}
 
 		// model에 결과 값 등록
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));
 		model.addAttribute("boardCode", boardCode);
-		model.addAttribute("noticeList", noticeList);
 
 		// src/main/resources/templates/board/boardList.html 로 forward
 		return url;
@@ -129,7 +144,9 @@ public class NoticeBoardController {
 		}
 
 		// 2. 서비스 호출 (생성한 queryMap을 전달)
+		log.debug("내 게시글 목록 조회 시작");
 		Map<String, Object> map = service.selectMyBoardList(queryMap, cp);
+		log.debug("내 게시글 목록 조회 완료 {}", map);
 
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));
@@ -139,6 +156,10 @@ public class NoticeBoardController {
 		return url;
 	}
 
+	/**
+	 * 게시글 상세 조회 함수
+	 * 
+	 */
 	@GetMapping({ "detail/{boardNo:[0-9]+}", "detail/{categoryCode:[0-9]+}/{boardNo:[0-9]+}" })
 	public String boardDetail(@PathVariable(name = "categoryCode", required = false) Integer categoryCode,
 			@PathVariable("boardNo") int boardNo,
@@ -153,7 +174,9 @@ public class NoticeBoardController {
 			map.put("memberNo", loginMember.getMemberNo());
 		}
 
+		log.debug("게시글 상세 조회 시작");
 		Board board = service.selectBoardDetail(map);
+		log.debug("게시글 상세 조회 완료 {}", board);
 
 		if (board == null) {
 			ra.addFlashAttribute("message", "게시글이 존재하지 않습니다.");
@@ -193,14 +216,17 @@ public class NoticeBoardController {
 		return url;
 	}
 
-	// 조회 수 증가 함수
+	/**
+	 * 조회수 증가 함수
+	 * 
+	 */
 	private void handleViewCount(Board board, int boardNo, MemberDTO loginMember, HttpServletRequest req,
 			HttpServletResponse resp) {
 
 		if (loginMember == null || board.getMemberNo() != loginMember.getMemberNo()) {
-
 			Cookie[] cookies = req.getCookies();
-
+			if (cookies == null)
+				cookies = new Cookie[0];
 			Cookie c = null;
 
 			for (Cookie temp : cookies) {
@@ -213,6 +239,7 @@ public class NoticeBoardController {
 
 			int result = 0; // 조회수 증가 결과 저장 변수
 
+			log.debug("조회수 증가 시작");
 			if (c == null) {
 				// "readBoardNo" 가 쿠키에 없을 때
 				c = new Cookie("readBoardNo", "[" + boardNo + "]");
@@ -232,14 +259,18 @@ public class NoticeBoardController {
 				long secondsUntilNextDay = calcSecondsUntilMidnight();
 				c.setMaxAge((int) secondsUntilNextDay);
 				resp.addCookie(c); // 응답 객체를 이용해서 클라이언트에게 전달
-
+				log.debug("조회수 증가 완료");
 			}
 
 		}
 
 	}
 
-	// 자정까지 남은 초 계산 (handleViewCount 안에서 호출)
+	/**
+	 * 자정까지 남은 초 계산 (handleViewCount 안에서 호출)
+	 * 
+	 * @return
+	 */
 	private long calcSecondsUntilMidnight() {
 		LocalDateTime now = LocalDateTime.now();
 		LocalDateTime nextDayMidnight = now.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);

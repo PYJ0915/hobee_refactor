@@ -22,7 +22,7 @@ import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.board.model.service.EditBoardService;
 import hobee.semi.project.board.model.service.FreeBoardService;
 import hobee.semi.project.board.model.service.HobbyBoardService;
-import hobee.semi.project.board.model.service.NoticeBoardService;
+import hobee.semi.project.board.model.service.BoardService;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ public class EditBoardController {
 	private final EditBoardService service;
 	private final FreeBoardService freeService;
 	private final HobbyBoardService hobbyService;
-	private final NoticeBoardService notiService;
+	private final BoardService notiService;
 	
 	
 	/** 자유게시판 및 공지게시판 글작성 화면 조회
@@ -45,12 +45,8 @@ public class EditBoardController {
 	 */
 	@GetMapping("/{boardName:[a-zA-Z]+}/insert")
 	public String boardInsert(@PathVariable("boardName") String boardName) {
-		
-		
 		return "board/editBoard";
 	}
-	
-	
 	
 	/** 취미게시판 글작성 화면 조회
 	 * @param boardName
@@ -61,14 +57,12 @@ public class EditBoardController {
     public String boardInsertHobby(
             @PathVariable("boardName") String boardName,
             @PathVariable("categoryCode") int categoryCode) {
-        
         return "board/editBoard";
     }
 	
 	@PostMapping("/imageUpload")
     @ResponseBody
     public String imageUpload(@RequestParam("file") MultipartFile file) throws Exception {
-		
         return service.imageUpload(file);
     }
 	
@@ -266,13 +260,6 @@ public String hobbyBoardDelete(@PathVariable("boardName") String boardName,
 		
 	}
 	
-	
-	
-	
-	
-	
-	
-	
 	/** 게시글 수정 화면 이동
 	 * @param boardName
 	 * @param boardNo
@@ -312,9 +299,6 @@ public String hobbyBoardDelete(@PathVariable("boardName") String boardName,
 	    model.addAttribute("boardName", boardName); 
 	    
 	    return "board/editBoard";
-		
-	
-		
 	}
 	
 	

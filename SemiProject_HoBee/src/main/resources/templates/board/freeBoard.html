@@ -19,10 +19,10 @@
     <div class="rank-box">
         <h3>자유게시판 TOP 5</h3>
         <ul>
-            <th:block th:if="${#lists.isEmpty(freeBestList)}">
+            <th:block th:if="${#lists.isEmpty(bestList)}">
                 <li>인기 게시글이 없습니다.</li>
             </th:block>
-            <li th:each="post : ${freeBestList}">
+            <li th:each="post : ${bestList}">
                 <div>
                    <a th:href="@{/free/{boardNo}(boardNo=${post.boardNo})}" 
                    th:text="${post.boardTitle}">제목</a>

@@ -19,11 +19,11 @@
     <div class="rank-box">
         <h3 th:text="|${hobbyName} TOP 5|">취미게시판 TOP 5</h3>
         <ul>
-            <th:block th:if="${#lists.isEmpty(hobbyBestList)}">
+            <th:block th:if="${#lists.isEmpty(bestList)}">
                 <li>인기 게시글이 없습니다.</li>
             </th:block>
             
-            <li th:each="post : ${hobbyBestList}">
+            <li th:each="post : ${bestList}">
                 <div>
                 <a th:href="@{/hobby/{categoryCode}/{boardNo}(categoryCode=${post.categoryCode}, boardNo=${post.boardNo})}" 
                    th:text="${post.boardTitle}">제목</a>

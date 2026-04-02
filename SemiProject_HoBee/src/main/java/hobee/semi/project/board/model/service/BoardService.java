@@ -5,7 +5,7 @@ import java.util.Map;
 
 import hobee.semi.project.board.model.dto.Board;
 
-public interface NoticeBoardService {
+public interface BoardService {
 
 	Map<String, Object> selectBoardList(int boardCode,Integer categoryCode, int cp);
 
@@ -21,7 +21,7 @@ public interface NoticeBoardService {
 
 	String selectCategoryName(Integer categoryCode);
 
-	List<Board> hobbyBestList(Integer categoryCode);
+	List<Board> selectBestList(int boardCode, Integer categoryCode);
 
 	List<Board> noticeList(int boardCode);
 
