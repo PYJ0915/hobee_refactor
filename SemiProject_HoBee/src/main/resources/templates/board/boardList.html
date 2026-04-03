@@ -104,9 +104,9 @@
 
         <div class="btn-area">
             <button id="myBoardBtn" th:if="${session.loginMember}"
-                th:data-board-path="|board/${boardCode}/${categoryCode}|">내 글</button>
+                th:data-board-path="${categoryCode != null} ? |board/${boardCode}/${categoryCode}|:|board/${boardCode}|" :>내 글</button>
             <button id="insertBtn" th:if="${session.loginMember}"
-                th:data-board-path="|hobby/${categoryCode}|">글쓰기</button>
+                th:data-board-path="${categoryCode != null} ? |editBoard/${boardCode}/${categoryCode}| : |editBoard/${boardCode}|">글쓰기</button>
         </div>
 
         <div class="pagination-area">

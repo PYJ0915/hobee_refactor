@@ -21,27 +21,13 @@ likeBtn.addEventListener("click", () => {
 
   }
 
-  let url = null;
-
-  switch (boardCode) {
-    case 1:
-      url = "/notice/like";
-      break;
-    case 2:
-      url = "/hobby/like";
-      break;
-    case 3:
-      url = "/free/like";
-      break;
-  }
-
   const obj = {
     "memberNo": loginMemberNo,
     "boardNo": boardNo,
     "likeCheck": likeCheck
   }
 
-  fetch(url, {
+  fetch("/board/like", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(obj)

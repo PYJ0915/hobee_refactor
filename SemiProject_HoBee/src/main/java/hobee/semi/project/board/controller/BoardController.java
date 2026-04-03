@@ -31,6 +31,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("board")
 @Slf4j
 public class BoardController {
+	
+	private static final Map<Integer, String> BOARD_NAME_MAP = Map.of(
+	        1, "공지 게시판",
+	        2, "취미 게시판",
+	        3, "자유 게시판"
+	    );
 
 	@Autowired
 	private BoardService service;
@@ -121,6 +127,8 @@ public class BoardController {
 			@SessionAttribute(value = "loginMember", required = false) MemberDTO loginMember, RedirectAttributes ra) {
 
 		Map<String, Object> queryMap = new HashMap<>();
+		
+		String boardName = getBoardName(boardCode);
 
 		if (categoryCode != null) {
 			String categoryName = service.selectCategoryName(categoryCode);
@@ -149,6 +157,7 @@ public class BoardController {
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));
 		model.addAttribute("boardCode", boardCode);
+		model.addAttribute("boardName", boardName);
 
 		// 3. 게시판 목록을 보여주는 HTML 파일명
 		return "board/boardList";
@@ -186,7 +195,12 @@ public class BoardController {
 		handleViewCount(board, boardNo, loginMember, req, resp);
 
 		model.addAttribute("board", board);
-		model.addAttribute("gotoList", "/notice");
+		
+		String gotoList = categoryCode != null
+			    ? "/board/list/" + boardCode + "/" + categoryCode
+			    : "/board/list/" + boardCode;
+		
+		model.addAttribute("gotoList", gotoList);
 
 		return "board/boardDetail";
 	}
@@ -201,22 +215,7 @@ public class BoardController {
 	 * 
 	 */
 	private String getBoardName(int boardCode) {
-		
-		String boardName = null;
-		
-		switch (boardCode) {
-		case 1:
-			boardName = "공지 게시판";
-			break;
-		case 2:
-			boardName = "취미 게시판";
-			break;
-		case 3:
-			boardName = "자유 게시판";
-			break;
-		}
-
-		return boardName;
+		return BOARD_NAME_MAP.getOrDefault(boardCode, "게시판");
 	}
 
 	/**

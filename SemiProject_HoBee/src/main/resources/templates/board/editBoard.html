@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+	<!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -18,12 +18,12 @@
     
     <div class="board-write-area">
 <h1 class="write-title">
-    <th:block th:switch="${boardName}">
-        <span th:case="'notice'">공지사항 작성</span>
+    <th:block th:switch="${boardCode}">
+        <span th:case="1">공지사항 작성</span>
         
-        <span th:case="'free'">자유게시판 작성</span>
+        <span th:case="3">자유게시판 작성</span>
         
-        <span th:case="'hobby'">
+        <span th:case="2">
             <th:block th:switch="${categoryCode}">
                 <span th:case="1">운동·레저 게시판 작성</span>
                 <span th:case="2">자기 계발 게시판 작성</span>

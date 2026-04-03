@@ -8,7 +8,7 @@ if (insertBtn != null) {
         const boardPath = insertBtn.getAttribute("data-board-path");
         
         // 최종 URL 생성: /editBoard/notice/insert 또는 /editBoard/hobby/1/insert 등
-        location.href = `/editBoard/${boardPath}/insert`;
+        location.href = `/${boardPath}/insert`;
     });
 }
 

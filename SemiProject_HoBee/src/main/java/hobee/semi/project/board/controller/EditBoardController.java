@@ -35,28 +35,17 @@ public class EditBoardController {
 	private BoardService boardService;
 
 	/**
-	 * 자유게시판 및 공지게시판 글작성 화면 조회
+	 * 글작성 화면 조회
 	 * 
 	 * @param boardName
 	 * @return
 	 */
-	@GetMapping("/{boardName:[a-zA-Z]+}/insert")
-	public String boardInsert(@PathVariable("boardName") String boardName) {
+	@GetMapping({ "/{boardCode:[0-9]+}/insert", "/{boardCode:[0-9]+}/{categoryCode:[0-9]+}/insert" })
+	public String boardInsert(@PathVariable("boardCode") int boardCode,
+			@PathVariable(name = "categoryCode", required = false) Integer categoryCode) {
 		return "board/editBoard";
 	}
 
-	/**
-	 * 취미게시판 글작성 화면 조회
-	 * 
-	 * @param boardName
-	 * @param categoryCode
-	 * @return
-	 */
-	@GetMapping("/{boardName:[a-zA-Z]+}/{categoryCode:[0-9]+}/insert")
-	public String boardInsertHobby(@PathVariable("boardName") String boardName,
-			@PathVariable("categoryCode") int categoryCode) {
-		return "board/editBoard";
-	}
 
 	@PostMapping("/imageUpload")
 	@ResponseBody
@@ -69,26 +58,15 @@ public class EditBoardController {
 	 * 
 	 * @return
 	 */
-	@PostMapping("/{boardName:[a-zA-Z]+}/insert")
-	public String boardInsert(@PathVariable("boardName") String boardName, @ModelAttribute Board inputBoard,
+	@PostMapping("/{boardCode:[0-9]+}/insert")
+	public String boardInsert(@PathVariable("boardCode") int boardCode,
+			@ModelAttribute Board inputBoard,
 			@SessionAttribute("loginMember") MemberDTO loginMember, RedirectAttributes ra)
 			throws IllegalStateException, IOException {
-
-		int boardCode = 0;
-		switch (boardName) {
-		case "notice":
-			boardCode = 1;
-			break;
-		case "hobby":
-			boardCode = 2;
-			break;
-		case "free":
-			boardCode = 3;
-			break;
-		}
-
+		
 		// 1. 로그인한 회원 번호를 세팅
 		inputBoard.setMemberNo(loginMember.getMemberNo());
+		
 		// 2. 게시판 이름 세팅
 		inputBoard.setBoardCode(boardCode);
 
@@ -100,7 +78,7 @@ public class EditBoardController {
 
 		if (boardNo > 0) {
 			message = "게시글이 성공적으로 등록되었습니다.";
-			path = "redirect:/" + boardName + "/" + boardNo; // 상세조회 페이지로
+			path = "redirect:/board/detail/" + boardCode + "/" + boardNo; // 상세조회 페이지로
 		} else {
 			message = "게시글 등록에 실패했습니다. 다시 시도해 주세요.";
 			path = "redirect:insert";
@@ -123,24 +101,11 @@ public class EditBoardController {
 	 * @throws IllegalStateException
 	 * @throws IOException
 	 */
-	@PostMapping("/{boardName:[a-zA-Z]+}/{categoryCode:[0-9]+}/insert")
-	public String boardInsertHobby(@PathVariable("boardName") String boardName,
+	@PostMapping("/{boardCode:[0-9]+}/{categoryCode:[0-9]+}/insert")
+	public String boardInsertHobby(@PathVariable("boardCode") int boardCode,
 			@PathVariable("categoryCode") int categoryCode, @ModelAttribute Board inputBoard,
 			@SessionAttribute("loginMember") MemberDTO loginMember, RedirectAttributes ra)
 			throws IllegalStateException, IOException {
-
-		int boardCode = 0;
-		switch (boardName) {
-		case "notice":
-			boardCode = 1;
-			break;
-		case "hobby":
-			boardCode = 2;
-			break;
-		case "free":
-			boardCode = 3;
-			break;
-		}
 
 		// 1. 로그인한 회원 번호를 세팅
 		inputBoard.setMemberNo(loginMember.getMemberNo());
@@ -159,7 +124,7 @@ public class EditBoardController {
 			// 등록 성공 시
 			message = "게시글이 성공적으로 등록되었습니다.";
 			// 상세조회 페이지 경로 (예: /hobby/1/123)
-			path = "redirect:/" + boardName + "/" + categoryCode + "/" + boardNo;
+			path = "redirect:/board/detail/" + boardCode + "/" + categoryCode + "/" + boardNo;
 		} else {
 			// 등록 실패 시
 			message = "게시글 등록에 실패했습니다. 다시 시도해 주세요.";
