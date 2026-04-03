@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -146,13 +147,13 @@ public class EditBoardController {
 	 * @param ra
 	 * @return
 	 */
-	@RequestMapping(value = "/{boardName:[a-zA-Z]+}/{boardNo:[0-9]+}/delete", method = { RequestMethod.POST })
-	public String BoardDelete(@PathVariable("boardName") String boardName, @PathVariable("boardNo") int boardNo,
+	@PostMapping("/{boardCode:[0-9]+}/{boardNo:[0-9]+}/delete")
+	public String BoardDelete(@PathVariable("boardCode") int boardCode, @PathVariable("boardNo") int boardNo,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
 			@SessionAttribute("loginMember") MemberDTO loginMember, RedirectAttributes ra) {
 
 		Map<String, Object> map = new HashMap<>();
-		map.put("boardName", boardName);
+		map.put("boardCode", boardCode);
 		map.put("memberNo", loginMember.getMemberNo());
 		map.put("boardNo", boardNo);
 		map.put("authorLevel", loginMember.getAuthorLevel());
@@ -164,12 +165,12 @@ public class EditBoardController {
 		String message = null;
 
 		if (result > 0) {
-			path = String.format("/%s?cp=%d", boardName, cp);
+			path = String.format("/board/list/%d", boardCode);
 
 			message = "글 삭제가 완료되었습니다";
 
 		} else {
-			path = String.format("/%s/%d/?cp=%d", boardName, boardNo, cp);
+			path = String.format("/board/detail/%d/%d/?cp=%d", boardCode, boardNo, cp);
 
 			message = "삭제 실패됨 ....";
 		}
@@ -188,15 +189,14 @@ public class EditBoardController {
 	 * @param ra
 	 * @return
 	 */
-	@RequestMapping(value = "/{boardName:[a-zA-Z]+}/{categoryCode:[0-9]+}/{boardNo:[0-9]+}/delete", method = {
-			RequestMethod.POST })
-	public String hobbyBoardDelete(@PathVariable("boardName") String boardName,
+	@PostMapping("/{boardCode:[0-9]+}/{categoryCode:[0-9]}+/{boardNo:[0-9]+}/delete")
+	public String hobbyBoardDelete(@PathVariable("boardCode") int boardCode,
 			@PathVariable("categoryCode") int categoryCode, @PathVariable("boardNo") int boardNo,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
 			@SessionAttribute("loginMember") MemberDTO loginMember, RedirectAttributes ra) {
 
 		Map<String, Object> map = new HashMap<>();
-		map.put("boardName", boardName);
+		map.put("boardCode", boardCode);
 		map.put("categoryCode", categoryCode);
 		map.put("memberNo", loginMember.getMemberNo());
 		map.put("boardNo", boardNo);
@@ -208,12 +208,12 @@ public class EditBoardController {
 		String message = null;
 
 		if (result > 0) {
-			path = String.format("/hobby/%d?cp=%d", categoryCode, cp);
+			path = String.format("/board/list/%d/%d?cp=%d", boardCode, categoryCode, cp);
 			// /hobby/1/?cp=1
 			message = "글 삭제가 완료되었습니다";
 
 		} else {
-			path = String.format("/hobby/%d/%d?cp=%d", categoryCode, boardNo, cp);
+			path = String.format("/board/detail/%d/%d/%d?cp=%d", boardCode, categoryCode, boardNo, cp);
 			// /hobby/1/24?cp=1
 			message = "삭제 실패됨 ....";
 		}

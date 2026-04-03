@@ -170,7 +170,11 @@ function resetReport() {
 
 const deleteBtn = document.querySelector("#deleteBtn");
 
+
 if (deleteBtn != null) {
+	
+  const categoryCode = deleteBtn.getAttribute("data-category-code");
+  
   deleteBtn.addEventListener("click", () => {
 
     if (!confirm("삭제 하시겠습니까?")) {
@@ -178,7 +182,13 @@ if (deleteBtn != null) {
       return;
     }
 
-    const url = "/editBoard" + location.pathname + "/delete";
+	let url = null
+	
+	if(categoryCode != null) {
+		url = `/editBoard/${boardCode}/${categoryCode}/${boardNo}/delete`
+	} else {
+		url = `/editBoard/${boardCode}/${boardNo}/delete`
+	}
 
     // form태그 생성
     const form = document.createElement("form");

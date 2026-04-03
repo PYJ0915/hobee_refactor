@@ -195,6 +195,8 @@ public class BoardController {
 		handleViewCount(board, boardNo, loginMember, req, resp);
 
 		model.addAttribute("board", board);
+		model.addAttribute("boardCode", boardCode);
+		model.addAttribute("categoryCode", categoryCode);
 		
 		String gotoList = categoryCode != null
 			    ? "/board/list/" + boardCode + "/" + categoryCode
