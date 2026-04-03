@@ -4,16 +4,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -24,16 +21,18 @@ import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.board.model.service.BoardService;
 import hobee.semi.project.board.model.service.EditBoardService;
 import hobee.semi.project.member.model.dto.MemberDTO;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("editBoard")
+@RequiredArgsConstructor
+@Slf4j	
 public class EditBoardController {
 
-	@Autowired
-	private EditBoardService service;
+	private final EditBoardService service;
 
-	@Autowired
-	private BoardService boardService;
+	private final BoardService boardService;
 
 	/**
 	 * 글작성 화면 조회
@@ -47,7 +46,6 @@ public class EditBoardController {
 		return "board/editBoard";
 	}
 
-
 	@PostMapping("/imageUpload")
 	@ResponseBody
 	public String imageUpload(@RequestParam("file") MultipartFile file) throws Exception {
@@ -60,20 +58,19 @@ public class EditBoardController {
 	 * @return
 	 */
 	@PostMapping("/{boardCode:[0-9]+}/insert")
-	public String boardInsert(@PathVariable("boardCode") int boardCode,
-			@ModelAttribute Board inputBoard,
+	public String boardInsert(@PathVariable("boardCode") int boardCode, @ModelAttribute Board inputBoard,
 			@SessionAttribute("loginMember") MemberDTO loginMember, RedirectAttributes ra)
 			throws IllegalStateException, IOException {
-		
+
 		// 1. 로그인한 회원 번호를 세팅
 		inputBoard.setMemberNo(loginMember.getMemberNo());
-		
+
 		// 2. 게시판 이름 세팅
 		inputBoard.setBoardCode(boardCode);
 
 		// 3. 서비스 호출 (비즈니스 로직에서 이미지 DB 매칭 처리)
 		int boardNo = service.boardInsert(inputBoard);
-
+		
 		String message = null;
 		String path = null;
 
@@ -117,7 +114,7 @@ public class EditBoardController {
 
 		// 3. 서비스 호출 (비즈니스 로직에서 이미지 DB 매칭 처리)
 		int boardNo = service.boardInsert(inputBoard);
-
+		
 		String message = null;
 		String path = null;
 
@@ -189,7 +186,7 @@ public class EditBoardController {
 	 * @param ra
 	 * @return
 	 */
-	@PostMapping("/{boardCode:[0-9]+}/{categoryCode:[0-9]}+/{boardNo:[0-9]+}/delete")
+	@PostMapping("/{boardCode:[0-9]+}/{categoryCode:[0-9]+}/{boardNo:[0-9]+}/delete")
 	public String hobbyBoardDelete(@PathVariable("boardCode") int boardCode,
 			@PathVariable("categoryCode") int categoryCode, @PathVariable("boardNo") int boardNo,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
@@ -215,7 +212,7 @@ public class EditBoardController {
 		} else {
 			path = String.format("/board/detail/%d/%d/%d?cp=%d", boardCode, categoryCode, boardNo, cp);
 			// /hobby/1/24?cp=1
-			message = "삭제 실패됨 ....";
+			message = "게시글 삭제에 실패했습니다. 다시 시도해 주세요.";
 		}
 
 		ra.addFlashAttribute("message", message);
@@ -236,9 +233,9 @@ public class EditBoardController {
 	 * @return
 	 * @throws Exception
 	 */
-	@GetMapping(value = { "/{boardName:[a-zA-Z]+}/{boardNo:[0-9]+}/update",
-			"/{boardName:[a-zA-Z]+}/{categoryCode:[0-9]+}/{boardNo:[0-9]+}/update" })
-	public String boardUpdate(@PathVariable("boardName") String boardName, @PathVariable("boardNo") int boardNo,
+	@GetMapping({ "/{boardCode:[0-9]+}/{boardNo:[0-9]+}/update",
+			"/{boardCode:[0-9]+}/{categoryCode:[0-9]+}/{boardNo:[0-9]+}/update" })
+	public String boardUpdate(@PathVariable("boardCode") int boardCode, @PathVariable("boardNo") int boardNo,
 			@PathVariable(value = "categoryCode", required = false) Integer categoryCode, // Integer는 null을 포함하기 때문에
 																							// 사용해야함
 			@SessionAttribute("loginMember") MemberDTO loginMember, Model model, RedirectAttributes ra)
@@ -252,7 +249,7 @@ public class EditBoardController {
 		board = boardService.selectBoardDetail(map);
 
 		model.addAttribute("board", board);
-		model.addAttribute("boardName", boardName);
+		model.addAttribute("boardCode", boardCode);
 
 		return "board/editBoard";
 	}
@@ -269,9 +266,9 @@ public class EditBoardController {
 	 * @param ra
 	 * @return
 	 */
-	@PostMapping(value = { "/{boardName:[a-zA-Z]+}/{boardNo:[0-9]+}/update",
-			"/{boardName:[a-zA-Z]+}/{categoryCode:[0-9]+}/{boardNo:[0-9]+}/update" })
-	public String boardUpdate(@PathVariable("boardName") String boardName, @PathVariable("boardNo") int boardNo,
+	@PostMapping({ "/{boardCode:[0-9]+}/{boardNo:[0-9]+}/update",
+			"/{boardCode:[0-9]+}/{categoryCode:[0-9]+}/{boardNo:[0-9]+}/update" })
+	public String boardUpdate(@PathVariable("boardCode") int boardCode, @PathVariable("boardNo") int boardNo,
 			@PathVariable(value = "categoryCode", required = false) Integer categoryCode, Board inputBoard,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
 			@SessionAttribute("loginMember") MemberDTO loginMember, RedirectAttributes ra) {
@@ -291,22 +288,18 @@ public class EditBoardController {
 		if (result > 0) {
 			message = "게시글이 수정 되었습니다";
 
-			switch (boardName) {
-			case "notice":
-				path = String.format("/notice/%d?cp=%d", boardNo, cp);
-				break;
-			case "free":
-				path = String.format("/free/%d?cp=%d", boardNo, cp);
-				break;
-			case "hobby":
-				path = String.format("/hobby/%d/%d?cp=%d", categoryCode, boardNo, cp);
-				break;
+			if(categoryCode != null) {
+				path = String.format("/board/detail/%d/%d/%d?cp=%d", boardCode, categoryCode, boardNo, cp);
+			} else {
+				path = String.format("/board/detail/%d/%d?cp=%d", boardCode, boardNo, cp);
 			}
+			
 		} else {
 			message = "수정 실패";
 			path = "update";
 
 		}
+		
 		ra.addFlashAttribute("message", message);
 		return "redirect:" + path;
 	}

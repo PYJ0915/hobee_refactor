@@ -25,10 +25,12 @@ import hobee.semi.project.member.model.dto.MemberDTO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("board")
+@RequiredArgsConstructor
 @Slf4j
 public class BoardController {
 	
@@ -38,8 +40,7 @@ public class BoardController {
 	        3, "자유 게시판"
 	    );
 
-	@Autowired
-	private BoardService service;
+	private final BoardService service;
 
 	@GetMapping({ "list/{boardCode:[0-9]+}", "list/{boardCode:[0-9]+}/{categoryCode:[0-9]+}" })
 	public String selectBoardList(@PathVariable("boardCode") int boardCode,

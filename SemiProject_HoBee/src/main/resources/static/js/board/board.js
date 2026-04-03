@@ -1,6 +1,5 @@
 const insertBtn = document.querySelector("#insertBtn");
 const myBoardBtn = document.querySelector("#myBoardBtn");
-const myCommentBtn = document.querySelector("#myCommentBtn");
 
 if (insertBtn != null) {
     insertBtn.addEventListener('click', () => {

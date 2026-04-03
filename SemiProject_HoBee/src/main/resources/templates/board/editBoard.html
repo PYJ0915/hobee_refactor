@@ -40,7 +40,6 @@
         
         <form action="" method="post" id="boardContent">
             <input type="hidden" name="boardNo" th:if="${board != null}" th:value="${board?.boardNo}">
-            <input type="hidden" name="categoryCode" th:value="${board?.categoryCode ?: 1}">
 
             <input type="hidden" name="categoryCode" th:value="${board?.categoryCode ?: param.categoryCode}">
 
