@@ -27,7 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("editBoard")
 @RequiredArgsConstructor
-@Slf4j	
 public class EditBoardController {
 
 	private final EditBoardService service;
@@ -53,12 +52,14 @@ public class EditBoardController {
 	}
 
 	/**
-	 * 자유게시판 / 공지게시판 글작성 기능
+	 * 게시판 글 작성 기능
 	 * 
 	 * @return
 	 */
-	@PostMapping("/{boardCode:[0-9]+}/insert")
-	public String boardInsert(@PathVariable("boardCode") int boardCode, @ModelAttribute Board inputBoard,
+	@PostMapping({ "/{boardCode:[0-9]+}/insert", "/{boardCode:[0-9]+}/{categoryCode:[0-9]+}/insert" })
+	public String boardInsert(@PathVariable("boardCode") int boardCode,
+			@PathVariable(name = "categoryCode", required = false) Integer categoryCode,
+			@ModelAttribute Board inputBoard,
 			@SessionAttribute("loginMember") MemberDTO loginMember, RedirectAttributes ra)
 			throws IllegalStateException, IOException {
 
@@ -67,6 +68,9 @@ public class EditBoardController {
 
 		// 2. 게시판 이름 세팅
 		inputBoard.setBoardCode(boardCode);
+		
+		// 취미 게시판인 경우 카테고리 코드 세팅
+		if (categoryCode != null) inputBoard.setCategoryCode(categoryCode);
 
 		// 3. 서비스 호출 (비즈니스 로직에서 이미지 DB 매칭 처리)
 		int boardNo = service.boardInsert(inputBoard);
@@ -76,7 +80,13 @@ public class EditBoardController {
 
 		if (boardNo > 0) {
 			message = "게시글이 성공적으로 등록되었습니다.";
-			path = "redirect:/board/detail/" + boardCode + "/" + boardNo; // 상세조회 페이지로
+			
+			if (categoryCode != null) {
+				path = String.format("redirect:/board/detail/%d/%d/%d", boardCode, categoryCode, boardNo);
+			} else {
+				path = String.format("redirect:/board/detail/%d/%d", boardCode, boardNo);
+			}
+			
 		} else {
 			message = "게시글 등록에 실패했습니다. 다시 시도해 주세요.";
 			path = "redirect:insert";
@@ -87,55 +97,9 @@ public class EditBoardController {
 
 	}
 
-	/**
-	 * 취미게시판 글작성 기능
-	 * 
-	 * @param boardName
-	 * @param categoryCode
-	 * @param inputBoard
-	 * @param loginMember
-	 * @param ra
-	 * @return
-	 * @throws IllegalStateException
-	 * @throws IOException
-	 */
-	@PostMapping("/{boardCode:[0-9]+}/{categoryCode:[0-9]+}/insert")
-	public String boardInsertHobby(@PathVariable("boardCode") int boardCode,
-			@PathVariable("categoryCode") int categoryCode, @ModelAttribute Board inputBoard,
-			@SessionAttribute("loginMember") MemberDTO loginMember, RedirectAttributes ra)
-			throws IllegalStateException, IOException {
-
-		// 1. 로그인한 회원 번호를 세팅
-		inputBoard.setMemberNo(loginMember.getMemberNo());
-		// 2. 게시판 이름 세팅
-		inputBoard.setBoardCode(boardCode);
-
-		inputBoard.setCategoryCode(categoryCode);
-
-		// 3. 서비스 호출 (비즈니스 로직에서 이미지 DB 매칭 처리)
-		int boardNo = service.boardInsert(inputBoard);
-		
-		String message = null;
-		String path = null;
-
-		if (boardNo > 0) {
-			// 등록 성공 시
-			message = "게시글이 성공적으로 등록되었습니다.";
-			// 상세조회 페이지 경로 (예: /hobby/1/123)
-			path = "redirect:/board/detail/" + boardCode + "/" + categoryCode + "/" + boardNo;
-		} else {
-			// 등록 실패 시
-			message = "게시글 등록에 실패했습니다. 다시 시도해 주세요.";
-			// 다시 글쓰기 화면으로 (상대 경로 insert)
-			path = "redirect:insert";
-		}
-
-		ra.addFlashAttribute("message", message);
-		return path;
-	}
 
 	/**
-	 * 공지게시판 / 자유게시판 삭제 메서드
+	 * 게시판 삭제 기능
 	 * 
 	 * @param boardName
 	 * @param boardNo
@@ -144,57 +108,16 @@ public class EditBoardController {
 	 * @param ra
 	 * @return
 	 */
-	@PostMapping("/{boardCode:[0-9]+}/{boardNo:[0-9]+}/delete")
-	public String BoardDelete(@PathVariable("boardCode") int boardCode, @PathVariable("boardNo") int boardNo,
+	@PostMapping({"/{boardCode:[0-9]+}/{boardNo:[0-9]+}/delete", "/{boardCode:[0-9]+}/{categoryCode:[0-9]+}/{boardNo:[0-9]+}/delete"})
+	public String BoardDelete(@PathVariable("boardCode") int boardCode,
+			@PathVariable(name = "categoryCode", required = false) Integer categoryCode,
+			@PathVariable("boardNo") int boardNo,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
 			@SessionAttribute("loginMember") MemberDTO loginMember, RedirectAttributes ra) {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("boardCode", boardCode);
-		map.put("memberNo", loginMember.getMemberNo());
-		map.put("boardNo", boardNo);
-		map.put("authorLevel", loginMember.getAuthorLevel());
-		map.put("categoryCode", 0);
-
-		int result = service.boardDelete(map);
-
-		String path = null;
-		String message = null;
-
-		if (result > 0) {
-			path = String.format("/board/list/%d", boardCode);
-
-			message = "글 삭제가 완료되었습니다";
-
-		} else {
-			path = String.format("/board/detail/%d/%d/?cp=%d", boardCode, boardNo, cp);
-
-			message = "삭제 실패됨 ....";
-		}
-		ra.addFlashAttribute("message", message);
-		return "redirect:" + path;
-	}
-
-	/**
-	 * 취미게시판 삭제 메서드
-	 * 
-	 * @param boardName
-	 * @param categoryCode
-	 * @param boardNo
-	 * @param cp
-	 * @param loginMember
-	 * @param ra
-	 * @return
-	 */
-	@PostMapping("/{boardCode:[0-9]+}/{categoryCode:[0-9]+}/{boardNo:[0-9]+}/delete")
-	public String hobbyBoardDelete(@PathVariable("boardCode") int boardCode,
-			@PathVariable("categoryCode") int categoryCode, @PathVariable("boardNo") int boardNo,
-			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
-			@SessionAttribute("loginMember") MemberDTO loginMember, RedirectAttributes ra) {
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("boardCode", boardCode);
-		map.put("categoryCode", categoryCode);
+		map.put("categoryCode", categoryCode != null ? categoryCode : 0);
 		map.put("memberNo", loginMember.getMemberNo());
 		map.put("boardNo", boardNo);
 		map.put("authorLevel", loginMember.getAuthorLevel());
@@ -205,24 +128,32 @@ public class EditBoardController {
 		String message = null;
 
 		if (result > 0) {
-			path = String.format("/board/list/%d/%d?cp=%d", boardCode, categoryCode, cp);
-			// /hobby/1/?cp=1
 			message = "글 삭제가 완료되었습니다";
-
+			
+			if(categoryCode != null) {
+				path = String.format("/board/list/%d/%d?cp=%d", boardCode, categoryCode, cp);
+			} else {
+				path = String.format("/board/list/%d?cp=%d", boardCode, cp);
+			}
+			
 		} else {
-			path = String.format("/board/detail/%d/%d/%d?cp=%d", boardCode, categoryCode, boardNo, cp);
-			// /hobby/1/24?cp=1
 			message = "게시글 삭제에 실패했습니다. 다시 시도해 주세요.";
+			
+			if(categoryCode != null) {
+				path = String.format("/board/detail/%d/%d/%d?cp=%d", boardCode, categoryCode, boardNo, cp);
+			} else {
+				path = String.format("/board/detail/%d/%d/?cp=%d", boardCode, boardNo, cp);
+			}
+			
 		}
-
+		
 		ra.addFlashAttribute("message", message);
-
 		return "redirect:" + path;
-
 	}
 
+
 	/**
-	 * 게시글 수정 화면 이동
+	 * 게시글 수정 화면 조회
 	 * 
 	 * @param boardName
 	 * @param boardNo
@@ -255,7 +186,7 @@ public class EditBoardController {
 	}
 
 	/**
-	 * 게시글 수정 적용
+	 * 게시글 수정 기능
 	 * 
 	 * @param boardName
 	 * @param boardNo
