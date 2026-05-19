@@ -267,7 +267,7 @@ initSelectedHobbies();
     }
 
     // 닉네임 정규식에 맞지 않는 경우
-    let regExp = /^[가-힣\w\d]{2,10}$/;
+    let regExp = /^[a-zA-Z가-힣0-9]{2,8}$/;
 
     // 정규식이 아닐 경우
     if (!regExp.test(inputNickname)) {
