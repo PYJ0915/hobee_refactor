@@ -365,7 +365,7 @@ const showUpdateComment = (commentNo, btn) => {
   commentRow.classList.add("editing");
 
   const contentEl = commentRow.querySelector(".comment-content");
-  const beforeContent = contentEl.innerText;
+  const beforeContent = contentEl.innerHTML.replace(/<br\s*\/?>/g, '\n');
 
   const textarea = document.createElement("textarea");
   textarea.classList.add("update-textarea");
@@ -388,7 +388,7 @@ const showUpdateComment = (commentNo, btn) => {
 
   contentEl.after(textarea, commentBtnArea);
 
-  // UX 보너스 ✨
+  // UX 보너스
   textarea.focus();
 };
 
