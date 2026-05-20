@@ -102,12 +102,18 @@
             </table>
         </div>
 
-        <div class="btn-area">
-            <button id="myBoardBtn" th:if="${session.loginMember}"
-                th:data-board-path="${categoryCode != null} ? |board/${boardCode}/${categoryCode}|:|board/${boardCode}|" :>내 글</button>
-            <button id="insertBtn" th:if="${session.loginMember}"
-                th:data-board-path="${categoryCode != null} ? |editBoard/${boardCode}/${categoryCode}|:|editBoard/${boardCode}|">글쓰기</button>
-        </div>
+		<div th:if="${
+			(boardCode == 1 && session.loginMember != null && session.loginMember.authorLevel == 2)
+			||
+			(boardCode != 1 && session.loginMember != null)
+			}">
+	        <div class="btn-area">
+	            <button id="myBoardBtn"
+	                th:data-board-path="${categoryCode != null} ? |board/${boardCode}/${categoryCode}|:|board/${boardCode}|" :>내 글</button>
+	            <button id="insertBtn"
+	                th:data-board-path="${categoryCode != null} ? |editBoard/${boardCode}/${categoryCode}|:|editBoard/${boardCode}|">글쓰기</button>
+	        </div>
+		</div>
 
         <div class="pagination-area">
 
