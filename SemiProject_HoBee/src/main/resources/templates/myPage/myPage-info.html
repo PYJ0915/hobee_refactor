@@ -58,7 +58,7 @@
 
           <div class="myPage-row">
             <label>닉네임</label>
-            <input type="text" name="memberNickname" maxlength="10" id="memberNickname"
+            <input type="text" name="memberNickname" maxlength="8" id="memberNickname"
               th:value="${session.loginMember.memberNickname}">
           </div>
 
@@ -82,7 +82,7 @@
           </div>
 
           <div class="myPage-row address-area">
-            <input type="text" name="memberAddress" placeholder="상세 주소" id="detailAddress" th:value="${detailAddress}">
+            <input type="text" name="memberAddress" placeholder="상세 주소" id="detailAddress" th:value="${detailAddress ?: ''}">
           </div>
 
           <div class="myPage-row hobby-section">

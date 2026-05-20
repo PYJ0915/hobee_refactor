@@ -5,15 +5,11 @@ import java.util.Map;
 
 import hobee.semi.project.board.model.dto.Board;
 
-public interface FreeBoardService {
+public interface BoardService {
 
-	Map<String, Object> selectBoardList(int boardCode, int cp);
+	Map<String, Object> selectBoardList(int boardCode,Integer categoryCode, int cp);
 
 	Map<String, Object> searchList(Map<String, Object> paramMap, int cp);
-
-	List<Board> freeBestList(int boardCode);
-
-	List<Board> noticeList(int noticeBoardCode);
 
 	Board selectBoardDetail(Map<String, Object> map);
 
@@ -21,8 +17,12 @@ public interface FreeBoardService {
 
 	int updateViewCount(int boardNo);
 
-	Map<String, Object> selectMyBoardList(int boardCode, int cp, Map<String, Object> queryMap);
+	Map<String, Object> selectMyBoardList(Map<String, Object> queryMap, int cp);
 
+	String selectCategoryName(Integer categoryCode);
 
+	List<Board> selectBestList(int boardCode, Integer categoryCode);
+
+	List<Board> noticeList(int boardCode);
 
 }

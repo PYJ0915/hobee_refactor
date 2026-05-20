@@ -117,6 +117,7 @@ const selectCommentList = () => {
 
 const addContent = document.querySelector("#submit-btn"); // button
 const commentContent = document.querySelector("#commentContent"); // textarea
+const commentCount = document.querySelector(".comment-count") // 댓글 개수
 
 // 댓글 등록 버튼 클릭 시
 addContent.addEventListener("click", e => {
@@ -155,7 +156,7 @@ addContent.addEventListener("click", e => {
         alert("댓글이 등록 되었습니다");
         commentContent.value = ""; // 작성한 댓글 내용 지우기
         selectCommentList(); // 댓글 목록을 다시 조회해서 화면에 출력
-
+		commentCount.innerText = parseInt(commentCount.innerText) + 1;
       } else {
         alert("댓글 등록 실패");
       }
@@ -314,7 +315,7 @@ const deleteComment = commentNo => {
       if (result > 0) {
         alert("삭제 되었습니다");
         selectCommentList(); // 다시 조회해서 화면 다시 만들기
-
+		commentCount.innerText = parseInt(commentCount.innerText) - 1;
       } else {
         alert("삭제 실패");
       }
@@ -364,7 +365,7 @@ const showUpdateComment = (commentNo, btn) => {
   commentRow.classList.add("editing");
 
   const contentEl = commentRow.querySelector(".comment-content");
-  const beforeContent = contentEl.innerText;
+  const beforeContent = contentEl.innerHTML.replace(/<br\s*\/?>/g, '\n');
 
   const textarea = document.createElement("textarea");
   textarea.classList.add("update-textarea");
@@ -387,7 +388,7 @@ const showUpdateComment = (commentNo, btn) => {
 
   contentEl.after(textarea, commentBtnArea);
 
-  // UX 보너스 ✨
+  // UX 보너스
   textarea.focus();
 };
 
@@ -408,7 +409,7 @@ const updateCancel = (btn) => {
     // 버튼 영역 제거
     btn.parentElement.remove();
 
-    // ⭐ 기존 댓글 다시 표시
+    // 기존 댓글 다시 표시
     commentRow.classList.remove("editing");
   }
 

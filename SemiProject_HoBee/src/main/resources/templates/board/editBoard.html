@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+	<!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -18,12 +18,12 @@
     
     <div class="board-write-area">
 <h1 class="write-title">
-    <th:block th:switch="${boardName}">
-        <span th:case="'notice'">공지사항 작성</span>
+    <th:block th:switch="${boardCode}">
+        <span th:case="1">공지사항 작성</span>
         
-        <span th:case="'free'">자유게시판 작성</span>
+        <span th:case="3">자유게시판 작성</span>
         
-        <span th:case="'hobby'">
+        <span th:case="2">
             <th:block th:switch="${categoryCode}">
                 <span th:case="1">운동·레저 게시판 작성</span>
                 <span th:case="2">자기 계발 게시판 작성</span>
@@ -40,12 +40,11 @@
         
         <form action="" method="post" id="boardContent">
             <input type="hidden" name="boardNo" th:if="${board != null}" th:value="${board?.boardNo}">
-            <input type="hidden" name="categoryCode" th:value="${board?.categoryCode ?: 1}">
 
             <input type="hidden" name="categoryCode" th:value="${board?.categoryCode ?: param.categoryCode}">
 
             <input type="text" name="boardTitle" class="board-title-input" 
-                   placeholder="제목을 입력하세요" th:value="${board?.boardTitle}"/>
+                   placeholder="제목을 입력하세요" th:value="${board?.boardTitle}" maxlength="80"/>
             
             <textarea id="summernote" name="boardContent" placeholder="내용을 입력하세요."
             th:utext="${board?.boardContent}"></textarea>

@@ -42,17 +42,6 @@ public class MyPageController {
 	public String info(@SessionAttribute("loginMember") MemberDTO loginMember,
 					  Model model) {
 		
-		String memberAddress = loginMember.getMemberAddress();
-		
-		if(memberAddress != null) {
-			
-			String[] arr = memberAddress.split("\\^\\^\\^");
-			
-			model.addAttribute("postcode", arr[0]);
-			model.addAttribute("address", arr[1]);
-			model.addAttribute("detailAddress", arr[2]);
-		}
-		
 		List<Hobby> hobbyList =
 			    service.selectHobbyList(loginMember.getHobbyCode());
 		
@@ -79,7 +68,11 @@ public class MyPageController {
 			
 			model.addAttribute("postcode", arr[0]);
 			model.addAttribute("address", arr[1]);
-			model.addAttribute("detailAddress", arr[2]);
+			
+			if(arr.length > 2) { // 상세주소가 있을 때만 값을 보내기 위함
+				model.addAttribute("detailAddress", arr[2]);
+			}
+			
 		}
 		
 		return "myPage/myPage-info";
@@ -107,7 +100,7 @@ public class MyPageController {
 		
 		if(result > 0) {
 			
-			message = "회원 정보가 수정되었습니다.";
+			message = "회원 정보가 수정이 완료되었습니다.";
 			
 			loginMember.setMemberNickname(inputMember.getMemberNickname());
 			loginMember.setMemberTel(inputMember.getMemberTel());
@@ -117,7 +110,7 @@ public class MyPageController {
 		
 		} else {
 			
-			message = "회원 정보 수정 실패";
+			message = "회원 정보 수정에 실패했습니다.";
 		}
 		
 		ra.addFlashAttribute("message", message);
@@ -193,14 +186,14 @@ public class MyPageController {
 		
 		if(result > 0) {
 			
-			message = "프로필 이미지 변경 성공!!!!" ;
+			message = "프로필 이미지가 변경되었습니다.";
 			
 			log.info(message);
 			log.info(loginMember.getProfileImg());
 			
 		}else {
 			
-			message = "프로필 이미지 변경 실패ㅜㅜ";
+			message = "이미지 업로드 중 오류가 발생했습니다.\n잠시 후 다시 시도해주세요.";
 			
 		}
 		
@@ -229,7 +222,7 @@ public class MyPageController {
 		String path = null;
 		
 		if(result > 0) {
-			message = "탈퇴 되었습니다.";
+			message = "회원 탈퇴가 완료되었습니다.";
 			path = "/";
 			
 			status.setComplete(); // 세션 비우기(로그아웃 상태 변경)
@@ -247,13 +240,3 @@ public class MyPageController {
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-

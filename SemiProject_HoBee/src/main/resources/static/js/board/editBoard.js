@@ -78,7 +78,7 @@ if (form != null) {
             return;
         }
 
-         $('#summernote').val(content);
+         $('#summernote').val(boardContent);
 
     });
 }

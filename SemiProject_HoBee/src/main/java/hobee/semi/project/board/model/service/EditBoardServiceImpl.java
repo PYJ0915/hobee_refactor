@@ -116,8 +116,6 @@ public class EditBoardServiceImpl implements EditBoardService {
 
 	@Override
 	public int boardDelete(Map<String, Object> map) {
-
-		
 		return mapper.boardDelete(map);
 		
 	}
@@ -127,7 +125,6 @@ public class EditBoardServiceImpl implements EditBoardService {
 	 */
 	@Override
 	public int boardUpdate(Board inputBoard) {
-
 		return mapper.boardUpdate(inputBoard);
 	}
 
