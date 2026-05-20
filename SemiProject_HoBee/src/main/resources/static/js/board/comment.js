@@ -409,7 +409,7 @@ const updateCancel = (btn) => {
     // 버튼 영역 제거
     btn.parentElement.remove();
 
-    // ⭐ 기존 댓글 다시 표시
+    // 기존 댓글 다시 표시
     commentRow.classList.remove("editing");
   }
 

@@ -44,7 +44,7 @@
             <input type="hidden" name="categoryCode" th:value="${board?.categoryCode ?: param.categoryCode}">
 
             <input type="text" name="boardTitle" class="board-title-input" 
-                   placeholder="제목을 입력하세요" th:value="${board?.boardTitle}"/>
+                   placeholder="제목을 입력하세요" th:value="${board?.boardTitle}" maxlength="80"/>
             
             <textarea id="summernote" name="boardContent" placeholder="내용을 입력하세요."
             th:utext="${board?.boardContent}"></textarea>
