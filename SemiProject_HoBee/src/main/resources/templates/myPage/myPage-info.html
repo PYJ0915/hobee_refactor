@@ -82,7 +82,7 @@
           </div>
 
           <div class="myPage-row address-area">
-            <input type="text" name="memberAddress" placeholder="상세 주소" id="detailAddress" th:value="${detailAddress}">
+            <input type="text" name="memberAddress" placeholder="상세 주소" id="detailAddress" th:value="${detailAddress ?: ''}">
           </div>
 
           <div class="myPage-row hobby-section">

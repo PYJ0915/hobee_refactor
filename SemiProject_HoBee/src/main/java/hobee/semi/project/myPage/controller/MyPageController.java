@@ -42,17 +42,6 @@ public class MyPageController {
 	public String info(@SessionAttribute("loginMember") MemberDTO loginMember,
 					  Model model) {
 		
-		String memberAddress = loginMember.getMemberAddress();
-		
-		if(memberAddress != null) {
-			
-			String[] arr = memberAddress.split("\\^\\^\\^");
-			
-			model.addAttribute("postcode", arr[0]);
-			model.addAttribute("address", arr[1]);
-			model.addAttribute("detailAddress", arr[2]);
-		}
-		
 		List<Hobby> hobbyList =
 			    service.selectHobbyList(loginMember.getHobbyCode());
 		
@@ -79,7 +68,11 @@ public class MyPageController {
 			
 			model.addAttribute("postcode", arr[0]);
 			model.addAttribute("address", arr[1]);
-			model.addAttribute("detailAddress", arr[2]);
+			
+			if(arr.length > 2) { // 상세주소가 있을 때만 값을 보내기 위함
+				model.addAttribute("detailAddress", arr[2]);
+			}
+			
 		}
 		
 		return "myPage/myPage-info";
@@ -247,13 +240,3 @@ public class MyPageController {
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
