@@ -68,6 +68,20 @@ button[type="button"], #signUpBtn {
 
 button[type="button"] { height: 48px; padding: 0 20px; white-space: nowrap; }
 
+button[type="button"]:disabled {
+    height: 48px;
+    padding: 0 20px;
+    background-color: #b8b1b1;
+    color: #f5f5f5;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: default;
+    white-space: nowrap;
+    opacity: 0.7;
+}
+
+
 #signUpBtn {
     width: 500px;
     height: 60px;
