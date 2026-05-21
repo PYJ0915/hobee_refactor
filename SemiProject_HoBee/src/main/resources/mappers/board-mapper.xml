@@ -273,13 +273,6 @@
         <![CDATA[ WHERE ROWNUM <= 5 ]]>
 	</select>
 
-	<!-- 취미 카테고리 이름 조회 -->
-	<select id="selectCategoryName" resultType="string">
-		SELECT CATEGORY_NAME
-		FROM BOARD_CATEGORY
-		WHERE CATEGORY_CODE = #{categoryCode}
-	</select>
-	
 
 </mapper>
 

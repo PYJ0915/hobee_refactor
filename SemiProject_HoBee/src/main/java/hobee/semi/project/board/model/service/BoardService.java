@@ -19,8 +19,6 @@ public interface BoardService {
 
 	Map<String, Object> selectMyBoardList(Map<String, Object> queryMap, int cp);
 
-	String selectCategoryName(Integer categoryCode);
-
 	List<Board> selectBestList(int boardCode, Integer categoryCode);
 
 	List<Board> noticeList(int boardCode);

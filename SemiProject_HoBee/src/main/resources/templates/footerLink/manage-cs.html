@@ -80,22 +80,7 @@
 
       <!-- 페이지네이션 -->
       <div class="pagination-area" th:if="${!#lists.isEmpty(csList)}">
-        <ul class="pagination" th:object="${pagination}">
-          <li><a th:href="@{/footer/manageCS(cp=1)}">&lt;&lt;</a></li>
-          <li><a th:href="@{/footer/manageCS(cp=*{prevPage})}">&lt;</a></li>
-
-          <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
-            <li th:if="${i} == *{currentPage}">
-              <a class="current" th:text="${i}"></a>
-            </li>
-            <li th:unless="${i} == *{currentPage}">
-              <a th:href="@{/footer/manageCS(cp=${i})}" th:text="${i}"></a>
-            </li>
-          </th:block>
-
-          <li><a th:href="@{/footer/manageCS(cp=*{nextPage})}">&gt;</a></li>
-          <li><a th:href="@{/footer/manageCS(cp=*{maxPage})}">&gt;&gt;</a></li>
-        </ul>
+      	<th:block th:replace="~{common/fragments/pagination :: pagination(${pagination})}" />
       </div>
 
     </main>

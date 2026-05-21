@@ -12,13 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.board.model.dto.Pagination;
 import hobee.semi.project.board.model.mapper.BoardMapper;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
 public class BoardServiceImpl implements BoardService {
 
-	@Autowired
-	private BoardMapper mapper;
+	private final BoardMapper mapper;
 
 	@Override
 	public Map<String, Object> selectBoardList(int boardCode, Integer categoryCode, int cp) {
@@ -130,10 +131,6 @@ public class BoardServiceImpl implements BoardService {
 		return mapper.selectNoticeList(noticeBoardCode, rowBounds);
 	}
 
-	@Override
-	public String selectCategoryName(Integer categoryCode) {
-		return mapper.selectCategoryName(categoryCode);
-	}
 
 	/** rowBounds 만드는 함수 (공통 작업)
 	 * RowBounds(건너뛸 개수, 가져올 개수)

@@ -40,6 +40,4 @@ public interface BoardMapper {
 
 	List<Board> selectNoticeList(int noticeBoardCode, RowBounds rowBounds);
 
-	String selectCategoryName(Integer categoryCode);
-
 }

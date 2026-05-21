@@ -24,7 +24,7 @@
         <!-- TOP / 공지 -->
         <th:block th:if="${boardCode != 1}">
             <th:block
-                th:replace="~{common/fragments/board/rankNoticeSection :: rankNoticeSection(${hobbyName}, ${boardName}, ${bestList}, ${noticeList})}">
+                th:replace="~{common/fragments/rankNoticeSection :: rankNoticeSection(${hobbyName}, ${boardName}, ${bestList}, ${noticeList})}">
             </th:block>
         </th:block>
 
@@ -116,45 +116,7 @@
 		</div>
 
         <div class="pagination-area">
-
-            <ul class="pagination" th:unless="${param.key}" th:object="${pagination}">
-                <li><a th:href="@{''(cp=1)}">&lt;&lt;</a></li>
-                <li><a th:href="@{''(cp=*{prevPage})}">&lt;</a></li>
-
-                <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
-                    <li th:if="${i} == *{currentPage}">
-                        <a class="current" th:text="${i}">1</a>
-                    </li>
-                    <li th:unless="${i} == *{currentPage}">
-                        <a th:href="@{''(cp=${i})}" th:text="${i}">2</a>
-                    </li>
-                </th:block>
-
-                <li><a th:href="@{''(cp=*{nextPage})}">&gt;</a></li>
-                <li><a th:href="@{''(cp=*{maxPage})}">&gt;&gt;</a></li>
-            </ul>
-
-            <ul class="pagination" th:if="${param.key}" th:object="${pagination}">
-                <li><a th:href="@{''(cp=1, key=${param.key}, query=${param.query})}">&lt;&lt;</a></li>
-                <li><a th:href="@{''(cp=*{prevPage}, key=${param.key}, query=${param.query})}">&lt;</a></li>
-
-                <th:block th:if="*{startPage lt endPage}" th:each="i : *{#numbers.sequence(startPage, endPage)}">
-                    <li th:if="${i} == *{currentPage}">
-                        <a class="current" th:text="${i}">1</a>
-                    </li>
-                    <li th:unless="${i} == *{currentPage}">
-                        <a th:href="@{''(cp=${i}, key=${param.key}, query=${param.query})}" th:text="${i}">2</a>
-                    </li>
-                </th:block>
-
-                <th:block th:unless="*{startPage lt endPage}">
-                    <li><a class="current">1</a></li>
-                </th:block>
-
-                <li><a th:href="@{''(cp=*{nextPage}, key=${param.key}, query=${param.query})}">&gt;</a></li>
-                <li><a th:href="@{''(cp=*{maxPage}, key=${param.key}, query=${param.query})}">&gt;&gt;</a></li>
-            </ul>
-
+			<th:block th:replace="~{common/fragments/pagination :: pagination(${pagination})}" />
         </div>
 
         <form th:action="${categoryCode != null} ?
