@@ -1,6 +1,8 @@
 const checkObj = {
     "authEmail"       : false,
     "authKey"         : false,
+	"memberName"      : false,
+	"memberTel"       : false,
     "memberPw"        : false,
     "memberPwConfirm" : false
 };
@@ -68,6 +70,7 @@ authEmail.addEventListener("input",e=>{
 
 // 이메일 인증번호 보내기 -------------------------------------------------------------
 const sendAuthKeyBtn = document.querySelector("#sendAuthKeyBtn"); // 인증번호 보내기 버튼
+const checkAuthKeyBtn = document.querySelector("#checkAuthKeyBtn"); // 인증하기 버튼
 
 
 sendAuthKeyBtn.addEventListener("click",()=>{
@@ -107,6 +110,10 @@ sendAuthKeyBtn.addEventListener("click",()=>{
             console.log("인증 번호 발송 성공");
             alert("인증번호가 발송되었습니다.");
 
+			// 인증번호 전송이 완료되어야 인증 버튼 활성화
+			checkAuthKeyBtn.disabled = false;
+			sendAuthKeyBtn.innerText = "전송완료"; // 사용자에게 진행 상태 알림  
+			
             min = initMin;
             sec = initSec;
             authKeyMessage.innerText = initTime;
@@ -151,7 +158,6 @@ function addZero(number) {
 
 
 // 인증코드 확인 ---------------------------------------------------------------------------
-const checkAuthKeyBtn = document.querySelector("#checkAuthKeyBtn"); // 인증하기 버튼
 const authKey = document.querySelector("#authKey"); // 인증번호
 const authKeyMessage = document.querySelector("#authKeyMessage");
 
@@ -208,6 +214,87 @@ checkAuthKeyBtn.addEventListener("click" , e=>{
         
     })
 
+});
+
+// 이름 -------------------------------------------------------
+
+const memberName = document.querySelector("#memberName");
+const nameMessage = document.querySelector("#nameMessage");
+
+memberName.addEventListener("input",e=>{
+
+    const inputName = e.target.value; // 입력한 값
+
+    fetch("/member/checkName",{
+        method : "POST",
+        headers : {"Content-Type": "application/json"},
+        body : JSON.stringify({ "memberName" : memberName.value ,"memberEmail" : authEmail.value})
+    })
+    .then(resp => resp.text())
+    .then(count => {
+        if(count == 1){
+            nameMessage.innerText="가입 정보와 일치하는 이름입니다.";
+            nameMessage.classList.add("confirm");
+            nameMessage.classList.remove("error");
+            checkObj.memberName = true;
+        }else{
+            console.log("인증번호 불일치");
+            nameMessage.innerText="가입 정보와 일치하지 않는 이름입니다.";
+            nameMessage.classList.add("error");
+            nameMessage.classList.remove("confirm"); 
+            checkObj.memberName = false;
+        }
+
+        
+    })
+    
+});
+
+//전화번호 ---------------------------------------------------------------------------------------------
+
+const memberTel = document.querySelector("#memberTel");
+const telMessage = document.querySelector("#telMessage");
+
+memberTel.addEventListener("input", e => {
+    const inputTel = e.target.value;
+
+    // 1) 입력값이 없을 때
+    if (inputTel.trim().length === 0) {
+        telMessage.innerText = "전화번호를 입력해주세요.";
+        telMessage.classList.remove("confirm", "error");
+        checkObj.memberTel = false;
+        return;
+    }
+
+    // 2) 전화번호 정규식 검사 (하이픈 제외 숫자만 11자리 예시)
+    const regExp = /^01[016789]\d{7,8}$/;
+
+    if (regExp.test(inputTel)) {
+        fetch("/member/checkTel", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ "memberTel": inputTel ,"memberEmail" : authEmail.value})
+        })
+        .then(resp => resp.text())
+        .then(count => {
+            if (count == 1) {
+                telMessage.innerText = "가입 정보와 일치하는 전화번호입니다.";
+                telMessage.classList.add("confirm");
+                telMessage.classList.remove("error");
+                checkObj.memberTel = true;
+            } else {
+                telMessage.innerText = "가입 정보와 일치하지 않는 전화번호입니다.";
+                telMessage.classList.add("error");
+                telMessage.classList.remove("confirm");
+                checkObj.memberTel = false;
+            }
+        });
+    } else {
+        telMessage.innerText = "유효한 전화번호 형식이 아닙니다.";
+        telMessage.classList.add("error");
+        telMessage.classList.remove("confirm");
+        checkObj.memberTel = false;
+    }
 });
 
 // 새 비밀번호-------------------------------------------------------------------------------------------------
@@ -286,7 +373,9 @@ findIdForm.addEventListener("submit", e => {
             switch(key) {
                 case "authEmail": str = "이메일이 유효하지 않습니다."; break;
                 case "authKey": str = "인증번호를 확인해주세요."; break;
-                case "memberPw": str = "비밀번호을 확인해주세요."; break;
+				case "memberName": str = "이름을 확인해주세요."; break;
+				case "memberTel": str = "전화번호를 확인해주세요."; break;
+                case "memberPw": str = "비밀번호를 확인해주세요."; break;
                 case "memberPwConfirm": str = "비밀번호 확인을 확인해주세요."; break;
             }
             alert(str);

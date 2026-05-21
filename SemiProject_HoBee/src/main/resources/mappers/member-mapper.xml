@@ -105,9 +105,7 @@
 		<select id="findId" resultType="string">
 		    SELECT MEMBER_ID
 		    FROM "MEMBER"
-		    WHERE MEMBER_NAME = #{memberName}
-		    AND MEMBER_TEL = #{memberTel}
-		    AND MEMBER_EMAIL = #{memberEmail}
+		    WHERE MEMBER_EMAIL = #{memberEmail}
 		    AND MEMBER_DEL_FL = 'N'
 		</select>
 		

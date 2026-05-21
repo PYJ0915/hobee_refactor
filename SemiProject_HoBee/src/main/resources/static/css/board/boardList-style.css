@@ -91,7 +91,7 @@ a:hover {
 /* 4. 게시글 목록 테이블 영역 */
 .list-wrapper {
     width: 100%;
-    min-height: 590px;
+    min-height: 650px;
 }
 
 .list-table {

@@ -120,13 +120,13 @@ public class MemberServiceImpl implements MemberService{
 		if(result == 0) { // 해당 이메일이 없을 경우
 			return -1;
 		}
+		
 		return  mapper.checkTel(inputMember);
 	}
 
 	// 아이디 찾기 결과 값 창으로 이동
 	@Override
 	public String findId(MemberDTO inputMember) {
-
 		return mapper.findId(inputMember);
 	}
 
@@ -137,7 +137,6 @@ public class MemberServiceImpl implements MemberService{
 		String encPw = bcrypt.encode(inputMember.getMemberPw()); // inputPw 암호화 하기
 		
 		inputMember.setMemberPw(encPw); // 암호화 하고 짚어 넣기
-		
 		
 		return mapper.pwChange(inputMember);
 	}
