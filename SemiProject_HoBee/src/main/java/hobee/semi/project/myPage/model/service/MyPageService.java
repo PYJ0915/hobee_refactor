@@ -15,7 +15,7 @@ public interface MyPageService {
 
 	int changePw(String newPw, String currentPw, MemberDTO loginMember);
 
-	int profile(MultipartFile profileImg, MemberDTO loginMember) throws Exception;
+	int profile(MultipartFile profileImg, boolean isDefault, MemberDTO loginMember) throws Exception;
 	
 	List<Hobby> selectHobbyList(List<String> hobbyCode);
 

@@ -3,18 +3,18 @@
 ========================= */
 
 .myPage-container {
-  display: flex;
-  justify-content: center;
-  background-color: #ffffff;
-  padding: 40px 0;
+	display: flex;
+	justify-content: center;
+	background-color: #ffffff;
+	padding: 40px 0;
 }
 
 /* 사이드메뉴 + 카드 wrapper */
 .myPage-wrapper {
-  display: flex;
-  gap: 40px;
-  width: 100%;
-  max-width: 1200px;
+	display: flex;
+	gap: 40px;
+	width: 100%;
+	max-width: 1200px;
 }
 
 /* =========================
@@ -22,12 +22,12 @@
 ========================= */
 
 .myPage-content {
-  flex: 1;
-  max-width: 900px;
-  background-color: #ffffff;
-  padding: 60px 80px;
-  border-radius: 24px;
-  border: 3px solid #FFF57E;
+	flex: 1;
+	max-width: 900px;
+	background-color: #ffffff;
+	padding: 60px 80px;
+	border-radius: 24px;
+	border: 3px solid #FFF57E;
 }
 
 /* =========================
@@ -35,16 +35,16 @@
 ========================= */
 
 .myPage-title {
-  font-size: 28px;
-  font-weight: bold;
-  color: #452829;
-  margin-bottom: 8px;
+	font-size: 28px;
+	font-weight: bold;
+	color: #452829;
+	margin-bottom: 8px;
 }
 
 .myPage-subject {
-  display: block;
-  color: #888;
-  margin-bottom: 40px;
+	display: block;
+	color: #888;
+	margin-bottom: 40px;
 }
 
 /* =========================
@@ -52,40 +52,108 @@
 ========================= */
 
 .profile-area {
+	display: flex;
+	align-items: center;
 
-  padding-left: 9%;
-  display: flex;
-  /* justify-content: first baseline; */
-  align-items: self-end;
+	gap: 24px;
 
-  gap: 24px;
-  margin-bottom: 50px;
+	margin-bottom: 50px;
+
+	/* input 라인과 대칭 맞춤 */
+	margin-left: 80px;
 }
 
+/* 이미지 */
 .profile-img {
-  width: 121px;
-  height: 120px;
-  border-radius: 50%;
-  /* background-color: #FFF57E; */
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	object-fit: cover;
 }
 
-.profile-img>span {
+/* 버튼 영역 */
+.profile-btn-area {
+	display: flex;
+	gap: 5px;
+	
+	/* 버튼 위치만 아래 정렬 */
+	align-self: flex-end;
 
-  padding-right: 49%;
-
+	/* 이미지 하단 기준 맞춤 */
+	margin-bottom: 8px;
 }
-
 
 
 .profile-btn {
-  padding: 8px 18px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  background-color: #452829;
-  color: #FFF57E;
-  font-weight: normal;
-  font-size: 12px;
+	height: 36px;
+	padding: 0 18px;
+	
+	border-radius: 20px;
+	border: none;
+	
+	background-color: #452829;
+	color: #FFF57E;
+
+	font-size: 13px;
+	font-weight: 500;
+	line-height: 1;
+	font-family: inherit;
+	
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+	cursor: pointer;
+}
+
+/* 파일 input 숨김 */
+#imageInput {
+	display: none;
+}
+
+/* 로딩 오버레이 */
+.profile-img-wrapper {
+	position: relative;
+	display: inline-block;
+}
+
+.profile-loading {
+	display: none;
+	/* 평소엔 숨김 */
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.4);
+	border-radius: 50%;
+	color: white;
+	font-size: 12px;
+	align-items: center;
+	justify-content: center;
+}
+
+.profile-loading.show {
+	display: flex;
+}
+
+/* Toast */
+.toast-msg {
+	position: fixed;
+	bottom: 30px;
+	left: 50%;
+	transform: translateX(-50%) translateY(20px);
+	background: #333;
+	color: white;
+	padding: 10px 24px;
+	border-radius: 99px;
+	font-size: 13px;
+	opacity: 0;
+	transition: opacity 0.3s, transform 0.3s;
+	pointer-events: none;
+	z-index: 9999;
+}
+
+.toast-msg.show {
+	opacity: 1;
+	transform: translateX(-50%) translateY(0);
 }
 
 /* =========================
@@ -93,32 +161,32 @@
 ========================= */
 
 .info-form {
-  max-width: 700px;
-  margin: 0 auto;
+	max-width: 700px;
+	margin: 0 auto;
 }
 
 .myPage-row {
-  display: flex;
-  align-items: center;
-  margin-bottom: 26px;
-  width: 80%;
+	display: flex;
+	align-items: center;
+	margin-bottom: 26px;
+	width: 80%;
 }
 
 .myPage-row label {
-  width: 120px;
-  font-weight: bold;
-  color: #452829;
-  flex-shrink: 0;
+	width: 120px;
+	font-weight: bold;
+	color: #452829;
+	flex-shrink: 0;
 }
 
 /* input → div 느낌 */
 .myPage-row input {
-  flex: 1;
-  padding: 10px 6px;
-  border: none;
-  background-color: transparent;
-  font-size: 15px;
-  outline: none;
+	flex: 1;
+	padding: 10px 6px;
+	border: none;
+	background-color: transparent;
+	font-size: 15px;
+	outline: none;
 }
 
 /* =========================
@@ -126,25 +194,25 @@
 ========================= */
 
 .address-area {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 20px;
 }
 
 .address-area input {
-  flex: 1;
+	flex: 1;
 }
 
 .address-btn {
-  padding: 8px 16px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  background-color: #452829;
-  color: #FFF57E;
-  font-weight: bold;
-  font-size: 14px;
+	padding: 8px 16px;
+	border-radius: 20px;
+	border: none;
+	cursor: pointer;
+	background-color: #452829;
+	color: #FFF57E;
+	font-weight: bold;
+	font-size: 14px;
 }
 
 /* =========================
@@ -152,21 +220,21 @@
 ========================= */
 
 .form-btns {
-  margin-top: 60px;
-  display: flex;
-  justify-content: center;
+	margin-top: 60px;
+	display: flex;
+	justify-content: center;
 }
 
 .submit-btn {
-  width: 240px;
-  padding: 14px 0;
-  border-radius: 14px;
-  border: none;
-  cursor: pointer;
-  background-color: #452829;
-  color: #FFF57E;
-  font-size: 16px;
-  font-weight: bold;
+	width: 240px;
+	padding: 14px 0;
+	border-radius: 14px;
+	border: none;
+	cursor: pointer;
+	background-color: #452829;
+	color: #FFF57E;
+	font-size: 16px;
+	font-weight: bold;
 }
 
 /* =========================
@@ -174,9 +242,9 @@
 ========================= */
 
 .signUp-input:has(#mainCategoryArea) {
-  flex-direction: column;
-  align-items: center;
-  min-height: 350px;
+	flex-direction: column;
+	align-items: center;
+	min-height: 350px;
 }
 
 /* =========================
@@ -188,75 +256,75 @@
 ========================= */
 
 .hobby-section {
-  margin-top: 5%;
-  width: 700px;
+	margin-top: 5%;
+	width: 700px;
 }
 
 .hobby-tags {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
 }
 
 .hobby-tag {
-  padding: 6px 14px;
-  border-radius: 20px;
-  background-color: #FFF57E;
-  color: #452829;
-  font-size: 14px;
-  font-weight: bold;
+	padding: 6px 14px;
+	border-radius: 20px;
+	background-color: #FFF57E;
+	color: #452829;
+	font-size: 14px;
+	font-weight: bold;
 
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
 }
 
 .hobby-tag .remove-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 13px;
-  padding: 0;
-  color: #452829;
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-weight: bold;
+	font-size: 13px;
+	padding: 0;
+	color: #452829;
 }
 
 .hobby-tag .remove-btn:hover {
-  color: #ff4d4f;
+	color: #ff4d4f;
 }
 
 
 .value {
-  color: #ddd;
-  font-size: 15px;
-  font-weight: normal;
+	color: #ddd;
+	font-size: 15px;
+	font-weight: normal;
 }
 
 #mainCategoryArea {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	padding: 10px 0;
 }
 
 /* 메인 취미 전용 */
 #mainCategoryArea .radio-like {
-  display: inline-block;
-  padding: 10px 14px;
-  border: 1px solid #ddd;
-  border-radius: 30px;
-  background-color: #ffffff;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.2s ease;
+	display: inline-block;
+	padding: 10px 14px;
+	border: 1px solid #ddd;
+	border-radius: 30px;
+	background-color: #ffffff;
+	font-size: 13px;
+	cursor: pointer;
+	transition: all 0.2s ease;
 }
 
 /* 선택된 메인 취미 */
 #mainCategoryArea .radio-like.checked {
-  background-color: #fff57e;
-  color: #452829;
-  border-color: #fff57e;
-  font-weight: 700;
+	background-color: #fff57e;
+	color: #452829;
+	border-color: #fff57e;
+	font-weight: 700;
 }
 
 /* =========================
@@ -264,49 +332,49 @@
 ========================= */
 
 #subTitle {
-  width: 100%;
-  text-align: left;
-  margin-top: 15px;
-  height: 20px;
-  font-size: 14px;
-  font-weight: bold;
+	width: 100%;
+	text-align: left;
+	margin-top: 15px;
+	height: 20px;
+	font-size: 14px;
+	font-weight: bold;
 }
 
 /* 세부 취미 박스 */
 #CategoryArea {
-  width: 100%;
-  height: 200px;
-  overflow-y: auto;
-  margin-top: 10px;
-  padding: 15px;
-  background-color: #fafafa;
-  border: 1px dashed #ccc;
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: flex-start;
+	width: 100%;
+	height: 200px;
+	overflow-y: auto;
+	margin-top: 10px;
+	padding: 15px;
+	background-color: #fafafa;
+	border: 1px dashed #ccc;
+	border-radius: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	align-items: flex-start;
 }
 
 /* 스크롤바 */
 #CategoryArea::-webkit-scrollbar {
-  width: 6px;
+	width: 6px;
 }
 
 #CategoryArea::-webkit-scrollbar-thumb {
-  background-color: #ddd;
-  border-radius: 10px;
+	background-color: #ddd;
+	border-radius: 10px;
 }
 
 /* 세부 취미 항목 */
 #CategoryArea label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 15px;
-  cursor: pointer;
-  width: 100%;
-  flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 15px;
+	cursor: pointer;
+	width: 100%;
+	flex-shrink: 0;
 }
 
 /* =========================
@@ -314,8 +382,8 @@
 ========================= */
 
 #introdution {
-  width: 700px !important;
-  height: 180px !important;
-  padding: 15px !important;
-  resize: none;
+	width: 700px !important;
+	height: 180px !important;
+	padding: 15px !important;
+	resize: none;
 }

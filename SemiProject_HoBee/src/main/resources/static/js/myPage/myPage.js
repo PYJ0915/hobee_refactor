@@ -437,121 +437,134 @@ if (secession != null) {
 	});
 }
 
-// ------------------------프로필 이미지 변경--------------------------
+// ------------------------ 프로필 이미지 변경 (즉시 업로드) --------------------------
 
-// 요소 참조
-const profileForm = document.getElementById("profile");  // 프로필 form
-const profileImg = document.getElementById("profileImg");  // 미리보기 이미지 img
-const imageInput = document.getElementById("imageInput");  // 이미지 파일 선택 input
-const deleteImage = document.getElementById("deleteImage");  // 이미지 삭제 버튼
-const MAX_SIZE = 1024 * 1024 * 5;  // 최대 파일 크기 설정 (5MB)
+const imageInput = document.querySelector("#imageInput");
 
+if(imageInput != null) {
+	
+	imageInput.addEventListener("change", async(e) => {
+		
+		const file = e.target.files[0];
+		if(!file) return;
+		
+		// 미리보기 먼저 보여주기 (FileReader)
+		const reader = new FileReader();
+		reader.onload = (e) => {
+			document.querySelector("#profileImg").src = e.target.result;
+		};
+		reader.readAsDataURL(file);
+		
+		// 로딩 표시
+		showLoading(true);
+		
+		// 서버에 업로드
+		const formData = new FormData();
+		formData.append("profileImg", file);
+		
+		try {
+			const result = await fetch("/myPage/profile", {
+				method: "POST",
+				body: formData
+			}).then(resp => resp.json());
+			
+			if(result.success) {
+				// 실제 서버 경로로 교체
+				document.querySelector("#profileImg").src = result.imagePath;
+				
+				// Toast 알림
+				showToast("프로필 이미지가 변경되었습니다.")
+				
+				// 이미지 살짝 애니메이션
+				const img = document.querySelector("#profileImg");
+				img.style.transition = "opacity 0.3s";
+				img.style.opacity = "0.5";
+				setTimeout(() => img.style.opacity = "1", 300);
+				
+				
+			} else {
+				showToast("이미지 업로드에 실패했습니다.");
+				// 미리보기 원래대로 되돌리기
+				document.querySelector("#profileImg").src = originalProfileImg;
+			}
+			
+		} catch(err) {
+			console.log(err);
+			showToast("오류가 발생했습니다. 다시 시도해주세요.");
+		} finally {
+			// 로딩 해제
+			showLoading(false);
+		}
+		
+	});
+	
+}
+
+// ------------------------ 기본 이미지 변경 --------------------------
+const defaultImgBtn = document.querySelector("#defaultImgBtn");
 const defaultImageUrl = `${window.location.origin}/images/user.png`;
-// 절대경로로 기본 이미지 URL 설정
-// -> http://localhost/images/user.png
 
-let statusCheck = -1; // -1 : 초기 상태, 0 : 이미지 삭제, 1 : 새 이미지 선택
-let previousImage = profileImg.src; // 이전 이미지 URL 기록 (초기 상태의 이미지 URL 저장)
-let previousFile = null;  // 이전에 선택된 파일 객체를 저장
-
-// 이미지 선택 시 미리보기 및 파일 크기 검사
-imageInput.addEventListener("change", (e) => {
-
-	const file = e.target.files[0]; // 선택한 File 객체 가져오기
-
-	console.log(e.target.files); // FileList (input 태그는 FileList 로 저장)
-
-	// 취소 버튼 클릭 시
-	if (!file) {
-		restorePreviousImage();
-		return;
-	}
-
-	const allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
-
-	// 파일 타입 검사
-	if (!allowed.includes(file.type)) {
-		alert("이미지 파일(jpg, png, gif, webp)만 업로드 가능합니다.");
-		restorePreviousImage();
-		return;
-	}
-
-	// 파일 크기 검사
-	if (file.size > MAX_SIZE) { // 파일 크기가 허용범위 이내인 경우
-		alert("5MB 이하의 이미지를 선택해주세요.");
-		restorePreviousImage();
+defaultImgBtn.addEventListener("click", async () => {
+	const profileImg = document.querySelector("#profileImg");
+	
+	if(profileImg.src === defaultImageUrl) {
+		showToast("이미 기본 이미지입니다.");
 		return;
 	}
 	
-	// 정상 처리 (모든 검사 통과)
-	const newImageUrl = URL.createObjectURL(file); // 임시 URL 생성
-	// blob:http://localhost/05631bf1-ab54-4219-819f-64600ba28301
-	// 미리보기 이미지 url 용도
+	showLoading(true);
+	
+	try {
+		
+		// isDefault 파라미터만 전송, 파일 없음
+		const formData = new FormData();
+		// form-data 형식은 String으로만 전송 가능! => 어떤 타입을 넣어도 문자열로 변환되어 전송
+		// 따라서 "true"로 작성하는 것이 의도를 더 명확하게 표현 (둘 다 동작은 동일!)
+		formData.append("isDefault", "true") 
+		
+		const result = await fetch("/myPage/profile", {
+			method: "POST",
+			body: formData
+		}).then(resp => resp.json());
+		
+		if(result.success) {
+			profileImg.src = defaultImageUrl;
 
-	profileImg.src = newImageUrl; // 미리보기 이미지 설정(img 태그의 src에 선택한 파일 임시 경로 대입)
+			profileImg.style.transition = "opacity 0.3s";
+			profileImg.style.opacity = "0.5";
+			setTimeout(() => profileImg.style.opacity = "1", 300);
 
-	statusCheck = 1; // 새 이미지 선택 상태 기록
-
-	previousImage = newImageUrl; // 현재 선택된 이미지를 이전 이미지로 저장(다음에 바뀔일에 대비)
-
-	previousFile = file; // 현재 선택된 파일 객체를 이전 파일로 저장(다음에 바뀔일에 대비)
-
-	console.log("정상 이미지 : ", file);
-
+			showToast("기본 이미지로 변경되었습니다.");
+		} else {
+			showToast("기본 이미지 변경에 실패했습니다.")
+		}
+		
+	} catch(err) {
+		console.log(err);
+		showToast("오류가 발생했습니다. 다시 시도해주세요.");
+	} finally {
+		showLoading(false);
+	}
+	
 });
 
-// 이미지 삭제 버튼 클릭 시
-deleteImage.addEventListener("click", () => {
-	// 기본 이미지 상태가 아니면 삭제 처리
-	if (profileImg.src !== defaultImageUrl) {
-		imageInput.value = ""; // 파일 선택 초기화
-		profileImg.src = defaultImageUrl; // 기본 이미지로 설정
-		statusCheck = 0; // 삭제 상태 기록
-		previousFile = null; // 이전 파일 초기화 기록
-	} else {
-		// 기본 이미지 상태에서 삭제 버튼 클릭 시 상태를 변경하지 않음
-		statusCheck = -1; // 변경 사항 없음 상태 유지
-	}
-});
+// Toast 함수
+function showToast(message) {
+    const toast = document.querySelector("#toastMsg");
+    toast.textContent = message;
+    toast.classList.add("show");
 
-// 폼 제출 시 유효성 검사
-profileForm.addEventListener("submit", e => {
-	console.log(imageInput.files[0]);
-	if (statusCheck === -1) { // 변경 사항이 없는 경우 제출 막기
-		e.preventDefault();
-		alert("이미지 변경 후 제출해주세요.");
-	}
-});
-
-function restorePreviousImage() {
-
-	// 1. 파일 선택 초기화
-	imageInput.value = "";
-
-	// 2. 이전 미리보기 이미지 복구
-	profileImg.src = previousImage;
-
-	// 3. 파일 입력 복구 (이전 파일 존재하면 다시 할당)
-	if (previousFile) {
-
-		const dataTransfer = new DataTransfer();
-		// DataTransfer : 자바스크립트로 파일을 조작할 때 사용되는 인터페이스
-		// DataTransfer.items.add() : 파일 추가
-		// DataTransfer.items.remove() : 파일 제거
-		// DataTransfer.files : FileList 객체를 반환
-		// -> <input type="file"> 요소에 파일을 동적으로 설정 가능
-		// --> input 태그의 files 속성은 FileList만 저장 가능하기 때문에
-		// DataTransfer를 이용하여 현재 File 객체를 FileList 변환하여 할당
-
-		dataTransfer.items.add(previousFile);
-		// 이전 파일을 추가해두기 : DataTransfer에 File 객체를 추가
-
-		imageInput.files = dataTransfer.files;
-		// 이전 파일로 input 요소의 files 속성을 복구 : DataTransfer에 저장된
-		// 파일의 리스트를 FileList 객체로 반환
-	}
-
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2500); // 2.5초 후 사라짐
 }
+
+// 로딩 함수
+function showLoading(flag) {
+    const loading = document.querySelector("#profileLoading");
+    loading.classList.toggle("show", flag);
+}
+
 
 
 

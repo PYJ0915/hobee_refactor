@@ -1,6 +1,8 @@
 package hobee.semi.project.myPage.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -171,36 +173,24 @@ public class MyPageController {
 		return "redirect:" + path;
 	}
 	
+	@ResponseBody
 	@PostMapping("profile")
-	public String profile(@RequestParam("profileImg") MultipartFile profileImg,
-						  @SessionAttribute("loginMember") MemberDTO loginMember,
-						  @ModelAttribute ProfileDTO profileDTO,
-						  Model model,
-						  RedirectAttributes ra) throws Exception {
+	public Map<String, Object> profile(
+						@RequestParam(value = "profileImg", required = false) MultipartFile profileImg,
+				        @RequestParam(value = "isDefault", defaultValue = "false") boolean isDefault,
+						@SessionAttribute("loginMember") MemberDTO loginMember) throws Exception {
 		
-		log.info("controller profileImg : " + profileImg.getOriginalFilename());//데이터 받은 거 확인됨.
+		Map<String, Object> result = new HashMap<>();
 		
-		int result = service.profile(profileImg, loginMember);
+		int updateResult = service.profile(profileImg, isDefault, loginMember);
 		
-		String message = null;
-		
-		if(result > 0) {
-			
-			message = "프로필 이미지가 변경되었습니다.";
-			
-			log.info(message);
-			log.info(loginMember.getProfileImg());
-			
+		if(updateResult > 0) {
+			result.put("success", true);
+			result.put("imagePath", loginMember.getProfileImg());
 		}else {
-			
-			message = "이미지 업로드 중 오류가 발생했습니다.\n잠시 후 다시 시도해주세요.";
-			
+			result.put("success", false);
 		}
-		
-		ra.addFlashAttribute("message",message);
-		
-		return "redirect:updateInfo";
-		
+		return result;
 	}
 	
 	@GetMapping("secession")
