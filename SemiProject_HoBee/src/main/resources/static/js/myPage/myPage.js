@@ -441,6 +441,9 @@ if (secession != null) {
 
 const imageInput = document.querySelector("#imageInput");
 
+// 기존 이미지 주소 저장
+const originalProfileImg = document.querySelector("#profileImg").src;
+
 if(imageInput != null) {
 	
 	imageInput.addEventListener("change", async(e) => {

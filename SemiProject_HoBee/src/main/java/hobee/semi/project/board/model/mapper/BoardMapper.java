@@ -14,7 +14,7 @@ public interface BoardMapper {
 
 	int getListCount(@Param("boardCode") int boardCode, @Param("categoryCode") Integer categoryCode);
 
-	List<Board> selectBoardList(@Param("boardCode") int boardCode, @Param("categoryCode") Integer categoryCode, RowBounds rowBounds);
+	List<Board> selectBoardList(@Param("boardCode") int boardCode, @Param("categoryCode") Integer categoryCode, @Param("sort") String sort, @Param("dir") String dir, RowBounds rowBounds);
 
 	int getSearchCount(Map<String, Object> paramMap);
 

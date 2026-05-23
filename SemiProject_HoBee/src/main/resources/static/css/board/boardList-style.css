@@ -297,3 +297,17 @@ a:hover {
 #boardSearch button:hover {
     background-color: #2e1a1b;
 }
+
+th[data-sort] {
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+}
+
+th[data-sort]:hover { background: rgba(0,0,0,0.04); }
+
+th.active-sort { color: #452829; font-weight: 700; }
+
+.sort-icon { font-size: 11px; color: #888; }
+
+th.active-sort .sort-icon { color: #452829; }

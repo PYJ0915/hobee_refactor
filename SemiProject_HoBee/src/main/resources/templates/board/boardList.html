@@ -36,9 +36,9 @@
                         <th>글번호</th>
                         <th>제목</th>
                         <th>작성자</th>
-                        <th>작성일</th>
-                        <th>조회수</th>
-                        <th>좋아요</th>
+                        <th data-sort="date">작성일<span class="sort-icon"> ↕</span></th>
+						<th data-sort="view">조회수<span class="sort-icon"> ↕</span></th>
+						<th data-sort="like">좋아요<span class="sort-icon"> ↕</span></th>
                     </tr>
                 </thead>
 
@@ -137,6 +137,11 @@
     </section>
 
     <th:block th:replace="~{common/fragments/footer}"></th:block>
+	
+	<script th:inline="javascript">
+		const boardCode = /*[[${boardCode}]]*/ "게시판 코드";
+		const categoryCode = /*[[${categoryCode}]]*/ null;
+	</script>
 
     <script src="/js/board/board.js"></script>
 </body>

@@ -66,7 +66,9 @@ public class BoardController {
 	public String selectBoardList(@PathVariable("boardCode") int boardCode,
 			@PathVariable(name = "categoryCode", required = false) Integer categoryCode,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
-			@RequestParam Map<String, Object> paramMap) {
+			@RequestParam Map<String, Object> paramMap, 
+			@RequestParam(name = "sort", required = false) String sort,
+	        @RequestParam(name = "dir", required = false, defaultValue = "desc") String dir) {
 
 		// URL에 있는 BoardCode와 Map을 통해 게시판 이름 얻어오기
 		String boardName = getBoardName(boardCode);
@@ -99,7 +101,7 @@ public class BoardController {
 
 			// 게시글 목록 조회 서비스 호출
 			log.debug("게시글 목록 조회 시작");
-			map = service.selectBoardList(boardCode, categoryCode, cp);
+			map = service.selectBoardList(boardCode, categoryCode, cp, sort, dir);
 			log.debug("게시글 목록 조회 완료 {}", map);
 
 		} else { // 검색인 경우
@@ -112,6 +114,10 @@ public class BoardController {
 			// -> paramMap은 {key=w, query=짱구, boardCode=1}
 
 			paramMap.put("categoryCode", categoryCode);
+			
+			// 정렬
+			paramMap.put("sort", sort);
+	        paramMap.put("dir", dir);
 
 			// 검색(내가 검색한 게시글 목록 조회) 서비스 호출
 			log.debug("검색한 게시글 목록 조회 시작");
@@ -125,6 +131,8 @@ public class BoardController {
 		model.addAttribute("boardList", map.get("boardList"));
 		model.addAttribute("boardCode", boardCode);
 		model.addAttribute("boardName", boardName);
+		model.addAttribute("currentSort", sort);
+	    model.addAttribute("currentDir", dir);
 
 		// src/main/resources/templates/board/boardList.html 로 forward
 		return "board/boardList";

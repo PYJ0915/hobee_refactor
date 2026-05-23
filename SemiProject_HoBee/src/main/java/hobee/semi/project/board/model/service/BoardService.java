@@ -7,7 +7,7 @@ import hobee.semi.project.board.model.dto.Board;
 
 public interface BoardService {
 
-	Map<String, Object> selectBoardList(int boardCode,Integer categoryCode, int cp);
+	Map<String, Object> selectBoardList(int boardCode, Integer categoryCode, int cp, String sort, String dir);
 
 	Map<String, Object> searchList(Map<String, Object> paramMap, int cp);
 
