@@ -1,0 +1,200 @@
+/* 전체 컨테이너 */
+.profile-container {
+    min-height: calc(100vh - 200px);
+    background-color: #ffffff;
+	
+    display: flex;
+    justify-content: center;
+    padding: 40px 40px;
+	gap: 40px;
+}
+
+
+/* 카드 래퍼 */
+.profile-main {
+    width: 100%;
+    max-width: 900px;
+    background-color: #ffffff;
+    padding: 60px 80px;
+    border-radius: 24px;
+    border: 3px solid #FFF57E;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+}
+
+/* 페이지 타이틀 */
+.page-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #452829;
+    margin-bottom: 40px;
+}
+
+/* ================================
+   프로필 카드 (프래그먼트)
+================================ */
+
+.profile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #FFF57E;
+}
+
+.card-img-wrapper { position: relative; }
+
+.card-profile-img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #FFF57E;
+    display: block;
+}
+
+.card-nickname {
+    font-size: 24px;
+    font-weight: bold;
+    color: #452829;
+    margin: 0;
+}
+
+.card-intro {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.6;
+    max-width: 500px;
+    margin: 0;
+}
+
+.card-intro.empty { color: #aaa; }
+
+/* ================================
+   취미 태그
+================================ */
+
+.card-hobbies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 4px;
+}
+
+.hobby-tag {
+    padding: 6px 14px;
+    border-radius: 20px;
+    background-color: #FFF57E;
+    color: #452829;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* ================================
+   카드 하단 버튼
+================================ */
+
+.card-actions {
+    margin-top: 4px;
+    display: flex;
+    gap: 10px;
+}
+
+.card-btn {
+    height: 36px;
+    padding: 0 20px;
+    border-radius: 20px;
+    border: none;
+    background-color: #452829;
+    color: #FFF57E;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: opacity 0.2s;
+}
+
+.card-btn:hover { opacity: 0.85; }
+
+/* ================================
+   작성한 게시글 섹션
+================================ */
+
+.profile-boards {
+    width: 100%;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #452829;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.section-title::before {
+    content: "•";
+    color: #FFF57E;
+    font-size: 24px;
+    line-height: 1;
+}
+
+.empty-msg {
+    padding: 20px;
+    background-color: #f1f1f1;
+    text-align: center;
+    color: #777;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+/* ================================
+   게시글 목록
+================================ */
+
+.board-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.board-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.board-item:last-child { border-bottom: none; }
+
+.board-title {
+    font-size: 14px;
+    color: #452829;
+    font-weight: bold;
+    text-decoration: none;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 16px;
+}
+
+.board-title:hover { text-decoration: underline; }
+
+.board-date {
+    font-size: 12px;
+    color: #888;
+    flex-shrink: 0;
+}

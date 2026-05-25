@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,18 +21,22 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.findHobby.model.dto.Hobby;
 import hobee.semi.project.member.model.dto.MemberDTO;
+import hobee.semi.project.member.model.service.MemberService;
 import hobee.semi.project.myPage.model.service.MyPageService;
 import hobee.semi.project.profileImg.model.dto.ProfileDTO;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @SessionAttributes({"loginMember"})
 @Controller
 @RequestMapping("myPage")
 @Slf4j
+@RequiredArgsConstructor
 public class MyPageController {
 
-	@Autowired
-	private MyPageService service;
+	private final MyPageService service;
+	
+	private final MemberService memberService;
 	
 	/** 회원 정보 조회
 	 * @param loginMember
@@ -46,11 +49,14 @@ public class MyPageController {
 		
 		List<Hobby> hobbyList =
 			    service.selectHobbyList(loginMember.getHobbyCode());
-		
 
 		loginMember.setHobbyList(hobbyList);
 		
+		// 게시글 목록 조회
+		List<Board> boardList = memberService.selectMemberBoardList(loginMember.getMemberNo());
+		
 		model.addAttribute("hobbyList", hobbyList);
+		model.addAttribute("boardList", boardList);
 		
 		return "myPage/myPage-profile";
 	}

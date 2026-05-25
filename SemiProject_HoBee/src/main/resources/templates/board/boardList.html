@@ -92,7 +92,11 @@
                                 <th:block th:text="|[*{commentCount}]|">댓글 수</th:block>
                             </td>
 
-                            <td th:text="*{memberNickname}">닉네임</td>
+							<td>
+							    <a th:href="@{/member/profile/{memberNo}(memberNo=*{memberNo})}"
+							       th:text="*{memberNickname}"
+							       class="member-link">닉네임</a>
+							</td>
                             <td th:text="*{boardWriteDate}">작성일</td>
                             <td th:text="*{boardViewCount}">0</td>
                             <td th:text="*{likeCount}">0</td>

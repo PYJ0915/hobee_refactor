@@ -255,3 +255,22 @@ body {
 .header-box{
   display: flex;
 }
+
+
+.member-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.member-link:hover {
+    text-decoration: underline;
+    color: #452829;
+}
+
+/* 프로필 이미지 링크 - 커서 변경 */
+a > .profile-img {
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+a > .profile-img:hover { opacity: 0.85; }

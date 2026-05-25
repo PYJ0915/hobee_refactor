@@ -138,7 +138,6 @@
   transition: background-color 0.2s ease;
 }
 
-/* ✅ 핵심 요구사항 */
 .side-item a:hover {
   background-color: #FFF57E;
   font-weight: bold;

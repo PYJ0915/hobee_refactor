@@ -1,0 +1,51 @@
+<!-- profileCard.html -->
+<div th:fragment="profileCard(member, isMyProfile)"
+     class="profile-card">
+
+    <!-- 프로필 이미지 -->
+    <div class="card-img-wrapper">
+        <img th:with="user=#{user.default.image}"
+             th:src="${member.profileImg ?: user}"
+             class="card-profile-img"
+             alt="프로필 이미지">
+    </div>
+
+    <!-- 닉네임 -->
+    <h2 class="card-nickname"
+        th:text="${member.memberNickname}">닉네임</h2>
+
+    <!-- 소개글 -->
+    <p class="card-intro"
+       th:if="${member.memberIntroduction != null
+               and !#strings.isEmpty(member.memberIntroduction)}"
+       th:text="${member.memberIntroduction}">
+        소개글
+    </p>
+    <p class="card-intro empty"
+       th:unless="${member.memberIntroduction != null
+                   and !#strings.isEmpty(member.memberIntroduction)}">
+        등록된 소개글이 없습니다.
+    </p>
+
+    <!-- 취미 태그 -->
+    <div class="card-hobbies"
+         th:if="${!#lists.isEmpty(member.hobbyList)}">
+        <span class="hobby-tag"
+              th:each="hobby : ${member.hobbyList}"
+              th:text="${hobby.hobbyName}">
+            취미
+        </span>
+    </div>
+    <p class="card-intro empty"
+       th:if="${#lists.isEmpty(member.hobbyList)}">
+        선택한 취미가 없습니다.
+    </p>
+
+    <!-- 내 프로필이면 수정 버튼, 남의 프로필이면 빈 공간 (팔로우 나중에) -->
+    <div class="card-actions">
+        <a th:if="${isMyProfile}"
+           href="/myPage/updateInfo"
+           class="card-btn">정보 수정</a>
+    </div>
+
+</div>

@@ -1,98 +1,63 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <title>프로필 | Ho-Bee</title>
 
-  <link rel="stylesheet" href="/css/myPage/myPage-profile.css">
-  <link rel="stylesheet" th:href="@{/css/common.css}">
-  <link rel="stylesheet" href="/css/myPage/myPage.css">
+<head>
+	<meta charset="UTF-8">
+	<title>프로필 | Ho-Bee</title>
+
+	<link rel="stylesheet" th:href="@{/css/common.css}">
+	<link rel="stylesheet" th:href="@{/css/member/memberProfile.css}">
+	<link rel="stylesheet" href="/css/myPage/myPage.css">
 </head>
+
 <body>
 
-<!-- 헤더 -->
-<th:block th:replace="~{common/fragments/header}" />
+	<!-- 헤더 -->
+	<th:block th:replace="~{common/fragments/header}" />
 
-<main class="mypage-container">
+	
 
-  <!-- 사이드 메뉴 -->
-  <th:block th:replace="~{common/fragments/sideMenu}" />
+	<main class="profile-container">
+		
+		<!-- 사이드 메뉴 -->
+		<th:block th:replace="~{common/fragments/sideMenu}" />
+		
+		<div class="profile-main">
+			<!-- 페이지 타이틀 -->
+			<h2 class="page-title">프로필</h2>
 
-  <!-- 메인 콘텐츠 -->
-  <section class="profile-content">
+			<th:block th:replace="~{common/fragments/profileCard ::
+						    profileCard(${session.loginMember}, true)}" />
 
-    <h2 class="page-title">프로필</h2>
+			<!-- 메인 콘텐츠 -->
+			<section class="profile-boards">
+				<h3 class="section-title">작성한 게시글</h3>
 
-    <!-- 프로필 상단 -->
-    <div class="profile-header">
-      <div class="profile-img">
-        <img
-        alt="프로필 이미지"
-        class="profile-img"
+				<th:block th:if="${#lists.isEmpty(boardList)}">
+					<p class="empty-msg">작성한 게시글이 없습니다.</p>
+				</th:block>
 
-        th:with="user=#{user.default.image}"
-        th:src="${session.loginMember.profileImg ?: user}"
-        >
-      </div>
-    </div>
+				<ul class="board-list" th:unless="${#lists.isEmpty(boardList)}">
+					<li th:each="board : ${boardList}" class="board-item">
+						<a th:href="@{/board/detail/{boardCode}/{boardNo}
+				                        (boardCode=${board.boardCode},
+				                         boardNo=${board.boardNo})}" th:text="${board.boardTitle}" class="board-title">
+							게시글 제목
+						</a>
+						<span class="board-date" th:text="${board.boardWriteDate}">
+							작성일
+						</span>
+					</li>
+				</ul>
+			</section>
+		</div>
 
-    <!-- 정보 영역 -->
-    <div class="info-group">
 
-      <div class="info-row">
-        <span class="label">이름</span>
-        <span class="value" th:text="${session.loginMember.memberName}">홍길동</span>
-      </div>
+	</main>
 
-      <div class="info-row">
-        <span class="label">닉네임</span>
-        <span class="value" th:text="${session.loginMember.memberNickname}">길동이</span>
-      </div>
-
-      <div class="info-row">
-        <span class="label">취미</span>
-        <!-- 취미 있을 때 -->
-        <div class="hobby-tags"
-             th:if="${!#lists.isEmpty(hobbyList)}">
-          <span class="hobby-tag"
-                th:each="hobby : ${hobbyList}"
-                th:text="${hobby.hobbyName}">
-            러닝
-          </span>
-        </div>
-
-        <!-- 취미 없을 때 -->
-        <span class="value"
-              th:if="${#lists.isEmpty(hobbyList)}">
-          선택한 취미가 없습니다
-        </span>
-      </div>
-
-      <div class="info-row column">
-        <span class="label">소개</span>
-        <!-- 소개글 있을 때 -->
-        <p class="intro-text"
-           th:if="${session.loginMember.memberIntroduction != null
-                    and !#strings.isEmpty(session.loginMember.memberIntroduction)}"
-           th:text="${session.loginMember.memberIntroduction}">
-          안녕하세요! 새로운 취미를 찾고 있어요.
-        </p>
-
-        <!-- 소개글 없을 때 -->
-        <p class="intro-text"
-           th:if="${session.loginMember.memberIntroduction == null
-                    or #strings.isEmpty(session.loginMember.memberIntroduction)}">
-          등록된 소개글이 없습니다.
-        </p>
-      </div>
-
-    
-
-  </section>
-</main>
-
-<!-- 푸터 -->
-<th:block th:replace="~{common/fragments/footer}" />
+	<!-- 푸터 -->
+	<th:block th:replace="~{common/fragments/footer}" />
 
 </body>
+
 </html>

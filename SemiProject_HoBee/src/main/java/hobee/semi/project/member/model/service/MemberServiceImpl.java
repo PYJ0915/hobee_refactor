@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.member.model.mapper.MemberMapper;
 import hobee.semi.project.profileImg.model.dto.ProfileDTO;
@@ -146,6 +147,21 @@ public class MemberServiceImpl implements MemberService{
 	public ProfileDTO selectLatestProfile(int memberNo) {
 		ProfileDTO profile = mapper.selectLatestProfile(memberNo);
 		return profile;
+	}
+
+	@Override
+	public MemberDTO selectMemberProfile(int memberNo) {
+		return mapper.selectMemberProfile(memberNo);
+	}
+	
+	@Override
+	public List<Board> selectMemberBoardList(int memberNo) {
+	    return mapper.selectMemberBoardList(memberNo);
+	}
+
+	@Override
+	public List<String> selectMemberHobbyCode(int memberNo) {
+	    return mapper.selectMemberHobbyCode(memberNo);
 	}
 	
 

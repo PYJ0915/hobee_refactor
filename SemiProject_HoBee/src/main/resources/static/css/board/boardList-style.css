@@ -304,10 +304,22 @@ th[data-sort] {
     transition: background 0.15s;
 }
 
-th[data-sort]:hover { background: rgba(0,0,0,0.04); }
+th[data-sort]:hover { 
+	background: rgba(0,0,0,0.04); 
+}
 
-th.active-sort { color: #452829; font-weight: 700; }
+th.active-sort { 
+	color: #452829; 
+	font-weight: 700; 
+}
 
-.sort-icon { font-size: 11px; color: #888; }
+.sort-icon { 
+	font-size: 11px; 
+	color: #888;
+	position: relative; 
+	bottom: 1.5px;
+}
 
-th.active-sort .sort-icon { color: #452829; }
+th.active-sort .sort-icon { 
+	color: #452829; 
+}
