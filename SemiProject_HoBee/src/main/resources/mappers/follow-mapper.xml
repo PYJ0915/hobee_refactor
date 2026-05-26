@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper
+	namespace="hobee.semi.project.follow.model.mapper.FollowMapper">
+
+	<insert id="insertFollow">
+		INSERT INTO FOLLOW (FOLLOW_NO, FOLLOWER_NO,
+		FOLLOWING_NO)
+		VALUES (SEQ_FOLLOW_NO.NEXTVAL, #{followerNo},
+		#{followingNo})
+	</insert>
+
+	<delete id="deleteFollow">
+		DELETE FROM FOLLOW
+		WHERE FOLLOWER_NO = #{followerNo}
+		AND FOLLOWING_NO = #{followingNo}
+	</delete>
+
+	<select id="checkFollow" resultType="int">
+		SELECT COUNT(*)
+		FROM FOLLOW
+		WHERE FOLLOWER_NO = #{followerNo}
+		AND FOLLOWING_NO = #{followingNo}
+	</select>
+
+	<select id="getFollowerCount" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		FOLLOW
+		WHERE FOLLOWING_NO = #{memberNo}
+	</select>
+
+	<select id="getFollowingCount" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		FOLLOW
+		WHERE FOLLOWER_NO = #{memberNo}
+	</select>
+
+	<select id="getFollowerList" resultType="Follow">
+		SELECT F.FOLLOW_NO,
+		F.FOLLOWER_NO, F.FOLLOWING_NO,
+		M.MEMBER_NICKNAME AS MEMBER_NICKNAME,
+		M.PROFILE_IMG AS PROFILE_IMG
+		FROM FOLLOW F
+		JOIN MEMBER M ON M.MEMBER_NO
+		= F.FOLLOWER_NO
+		WHERE F.FOLLOWING_NO = #{memberNo}
+		ORDER BY F.FOLLOW_NO
+		DESC
+	</select>
+
+	<select id="getFollowingList" resultType="Follow">
+		SELECT F.FOLLOW_NO,
+		F.FOLLOWER_NO, F.FOLLOWING_NO,
+		M.MEMBER_NICKNAME AS MEMBER_NICKNAME,
+		M.PROFILE_IMG AS PROFILE_IMG
+		FROM FOLLOW F
+		JOIN MEMBER M ON M.MEMBER_NO
+		= F.FOLLOWING_NO
+		WHERE F.FOLLOWER_NO = #{memberNo}
+		ORDER BY F.FOLLOW_NO
+		DESC
+	</select>
+
+	<select id="getFollowerNoList" resultType="int">
+		SELECT FOLLOWER_NO
+		FROM FOLLOW
+		WHERE FOLLOWING_NO = #{memberNo}
+	</select>
+
+</mapper>
+
+
+
+
+
+

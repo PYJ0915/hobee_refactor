@@ -198,3 +198,52 @@
     color: #888;
     flex-shrink: 0;
 }
+
+/* 팔로우 버튼 */
+.follow-btn {
+    min-width: 100px;
+    justify-content: center;
+}
+
+/* 팔로잉 상태 - 색 반전 */
+.follow-btn.following {
+    background-color: transparent;
+    color: #452829;
+    border: 1.5px solid #452829;
+}
+
+.follow-btn.following:hover {
+    background-color: #f5e6e6;
+}
+
+/* 팔로워/팔로잉 수 */
+.follow-stats {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin: 4px 0;
+}
+
+.follow-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.stat-num {
+    font-size: 20px;
+    font-weight: bold;
+    color: #452829;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #888;
+}
+
+.follow-divider {
+    width: 1px;
+    height: 32px;
+    background: #eee;
+}

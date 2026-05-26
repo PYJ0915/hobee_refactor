@@ -18,6 +18,9 @@ import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.board.model.dto.BoardImg;
 import hobee.semi.project.board.model.mapper.EditBoardMapper;
 import hobee.semi.project.common.util.Utility;
+import hobee.semi.project.follow.model.mapper.FollowMapper;
+import hobee.semi.project.notification.model.dto.Notification;
+import hobee.semi.project.notification.model.mapper.NotificationMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 public class EditBoardServiceImpl implements EditBoardService {
 
     private final EditBoardMapper mapper;
+    private final FollowMapper followMapper;
+    private final NotificationMapper notificationMapper;
 
     @Value("${my.board.web-path}")
     private String webPath; // /images/board/
@@ -87,14 +92,24 @@ public class EditBoardServiceImpl implements EditBoardService {
             Map<String, Object> map = new HashMap<>();
             map.put("boardNo", boardNo);
             map.put("fileNames", fileNames);
-
-            
             int updateCount = mapper.updateImageBoardNo(map);
-
-            
             if (updateCount == 0) {
                 throw new RuntimeException("이미지 정보 연결 실패"); // 롤백
             }
+        }
+        
+        // 팔로워들에게 게시글 등록 알림
+        List<Integer> followerNoList = followMapper.getFollowerNoList(inputBoard.getMemberNo());
+
+        for (int followerNo : followerNoList) {
+            Notification noti = Notification.builder()
+                .receiverNo(followerNo)
+                .senderNo(inputBoard.getMemberNo())
+                .notiType("BOARD")
+                .notiTargetNo(boardNo)
+                .notiMessage("님이 새 게시글을 작성했습니다.")
+                .build();
+            notificationMapper.insertNotification(noti);
         }
 
         return boardNo;

@@ -39,5 +39,9 @@ public interface BoardMapper {
 	List<Board> selectBestList(@Param("boardCode") int boardCode, @Param("categoryCode") Integer categoryCode, RowBounds rowBounds);
 
 	List<Board> selectNoticeList(int noticeBoardCode, RowBounds rowBounds);
+	
+	int selectBoardMemberNo(int boardNo);
+
+	int getBoardCode(int boardNo);
 
 }

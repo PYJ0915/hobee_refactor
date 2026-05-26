@@ -22,10 +22,13 @@
 
 	<!-- 게시글 목록 조회 -->
 	<select id="selectBoardList" resultType="Board">
-		SELECT BOARD_NO, BOARD_TITLE, MEMBER_NICKNAME, MEMBER_NO, BOARD_VIEW_COUNT,
-		(SELECT COUNT(*) FROM "COMMENT" C WHERE C.BOARD_NO = B.BOARD_NO AND
+		SELECT BOARD_NO, BOARD_TITLE, MEMBER_NICKNAME, MEMBER_NO,
+		BOARD_VIEW_COUNT,
+		(SELECT COUNT(*) FROM "COMMENT" C WHERE C.BOARD_NO =
+		B.BOARD_NO AND
 		COMMENT_DEL_FL = 'N') COMMENT_COUNT,
-		(SELECT COUNT(*) FROM "BOARD_LIKE"
+		(SELECT COUNT(*)
+		FROM "BOARD_LIKE"
 		L WHERE L.BOARD_NO = B.BOARD_NO)
 		LIKE_COUNT,
 		BOARD_WRITE_DATE AS BOARD_WRITE_DATE_RAW,
@@ -49,7 +52,7 @@
 			</otherwise>
 		</choose>
 		<choose>
-		
+
 			<when test="sort == 'like'">
 				ORDER BY LIKE_COUNT
 				<choose>
@@ -57,7 +60,7 @@
 					<otherwise>DESC</otherwise>
 				</choose>
 			</when>
-			
+
 			<when test="sort == 'view'">
 				ORDER BY BOARD_VIEW_COUNT
 				<choose>
@@ -65,7 +68,7 @@
 					<otherwise>DESC</otherwise>
 				</choose>
 			</when>
-			
+
 			<when test="sort == 'date'">
 				ORDER BY BOARD_WRITE_DATE_RAW
 				<choose>
@@ -73,11 +76,11 @@
 					<otherwise>DESC</otherwise>
 				</choose>
 			</when>
-			
+
 			<otherwise>
 				ORDER BY BOARD_NO DESC
 			</otherwise>
-			
+
 		</choose>
 	</select>
 
@@ -112,7 +115,8 @@
 		COMMENT_DEL_FL = 'N') COMMENT_COUNT,
 		(SELECT COUNT(*) FROM "BOARD_LIKE"
 		L WHERE L.BOARD_NO = B.BOARD_NO)
-		LIKE_COUNT, BOARD_WRITE_DATE AS BOARD_WRITE_DATE_RAW,
+		LIKE_COUNT, BOARD_WRITE_DATE AS
+		BOARD_WRITE_DATE_RAW,
         <![CDATA[
         CASE
             WHEN SYSDATE - BOARD_WRITE_DATE < 1 / 24 / 60 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24 * 60 * 60) || '초 전'
@@ -141,7 +145,7 @@
 			</when>
 		</choose>
 		<choose>
-		
+
 			<when test="sort == 'like'">
 				ORDER BY LIKE_COUNT
 				<choose>
@@ -149,7 +153,7 @@
 					<otherwise>DESC</otherwise>
 				</choose>
 			</when>
-			
+
 			<when test="sort == 'view'">
 				ORDER BY BOARD_VIEW_COUNT
 				<choose>
@@ -157,7 +161,7 @@
 					<otherwise>DESC</otherwise>
 				</choose>
 			</when>
-			
+
 			<when test="sort == 'date'">
 				ORDER BY BOARD_WRITE_DATE_RAW
 				<choose>
@@ -165,11 +169,11 @@
 					<otherwise>DESC</otherwise>
 				</choose>
 			</when>
-			
+
 			<otherwise>
 				ORDER BY BOARD_NO DESC
 			</otherwise>
-			
+
 		</choose>
 	</select>
 
@@ -363,6 +367,16 @@
 		ORDER BY BOARD_NO DESC
 		)
         <![CDATA[ WHERE ROWNUM <= 5 ]]>
+	</select>
+
+	<select id="selectBoardMemberNo" resultType="int">
+		SELECT MEMBER_NO
+		FROM BOARD
+		WHERE BOARD_NO = #{boardNo}
+	</select>
+
+	<select id="getBoardCode" resultType="int">
+		SELECT BOARD_CODE FROM BOARD WHERE BOARD_NO = #{boardNo}
 	</select>
 
 

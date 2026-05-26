@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.findHobby.model.dto.Hobby;
+import hobee.semi.project.follow.model.service.FollowService;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.member.model.service.MemberService;
 import hobee.semi.project.myPage.model.service.MyPageService;
@@ -38,6 +39,8 @@ public class MyPageController {
 	
 	private final MemberService memberService;
 	
+	private final FollowService followService;
+	
 	/** 회원 정보 조회
 	 * @param loginMember
 	 * @param model
@@ -55,8 +58,14 @@ public class MyPageController {
 		// 게시글 목록 조회
 		List<Board> boardList = memberService.selectMemberBoardList(loginMember.getMemberNo());
 		
+		// 팔로우 관련 데이터
+	    int followerCount  = followService.getFollowerCount(loginMember.getMemberNo());
+	    int followingCount = followService.getFollowingCount(loginMember.getMemberNo());
+		
 		model.addAttribute("hobbyList", hobbyList);
 		model.addAttribute("boardList", boardList);
+		model.addAttribute("followerCount", followerCount);
+	    model.addAttribute("followingCount", followingCount);
 		
 		return "myPage/myPage-profile";
 	}

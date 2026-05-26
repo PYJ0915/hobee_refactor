@@ -130,6 +130,12 @@ body {
   margin-bottom: 36px;
 }
 
+ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
 .footer-links {
   display: flex;
   justify-content: center;
@@ -274,3 +280,257 @@ a > .profile-img {
 }
 
 a > .profile-img:hover { opacity: 0.85; }
+
+/* 알림 래퍼 */
+.noti-wrapper {
+    position: relative;
+}
+
+/* 알림 버튼 */
+.noti-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #452829;
+    position: relative;
+    padding: 4px 8px;
+}
+
+/* 뱃지 */
+.noti-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: #e74c3c;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 드롭다운 */
+.noti-dropdown {
+    position: absolute;
+    top: 44px;
+    right: 0;
+    width: 320px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.noti-dropdown.popup-hidden { display: none; }
+
+/* 드롭다운 헤더 */
+.noti-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid #eee;
+    font-weight: bold;
+    color: #452829;
+}
+
+.noti-read-all {
+    background: none;
+    border: none;
+    font-size: 12px;
+    color: #888;
+    cursor: pointer;
+}
+
+.noti-read-all:hover { color: #452829; }
+
+/* 알림 목록 */
+.noti-list {
+    list-style: none;
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+/* 알림 아이템 */
+.noti-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #f5f5f5;
+    transition: background 0.15s;
+}
+
+.noti-item:hover { background: #fafafa; }
+
+.noti-item.unread { background: #fffef0; }
+
+.noti-item:last-child { border-bottom: none; }
+
+/* 알림 프로필 이미지 */
+.noti-profile-img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+/* 알림 내용 */
+.noti-content { flex: 1; }
+
+.noti-msg {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.4;
+}
+
+.noti-msg strong { color: #452829; }
+
+.noti-date {
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 2px;
+}
+
+/* 빈 알림 */
+.noti-empty {
+    text-align: center;
+    padding: 30px;
+    color: #aaa;
+    font-size: 13px;
+}
+
+/* 알림 헤더 버튼 영역 */
+.noti-header-btns {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.noti-divider { color: #ddd; font-size: 12px; }
+
+.noti-delete-all {
+    background: none;
+    border: none;
+    font-size: 12px;
+    color: #e74c3c;
+    cursor: pointer;
+}
+
+.noti-delete-all:hover { text-decoration: underline; }
+
+/* 개별 삭제 버튼 */
+.noti-delete-btn {
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 4px;
+    flex-shrink: 0;
+    line-height: 1;
+    transition: color 0.15s;
+}
+
+.noti-delete-btn:hover { color: #e74c3c; }
+
+/* 팔로우 목록 모달 */
+.follow-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.follow-modal.popup-hidden { display: none; }
+
+.follow-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+}
+
+.follow-modal-box {
+    position: relative;
+    background: white;
+    border-radius: 16px;
+    width: 360px;
+    max-height: 500px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+}
+
+.follow-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+    font-weight: bold;
+    color: #452829;
+}
+
+.follow-modal-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #888;
+    line-height: 1;
+}
+
+.follow-modal-list {
+    list-style: none;
+    overflow-y: auto;
+    padding: 8px 0;
+}
+
+.follow-modal-item {
+    padding: 4px 0;
+}
+
+.follow-modal-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #333;
+    transition: background 0.15s;
+}
+
+.follow-modal-link:hover { background: #fafafa; }
+
+.follow-modal-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #f0ebe8;
+}
+
+.follow-modal-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #452829;
+}
+
+.follow-modal-empty {
+    text-align: center;
+    padding: 30px;
+    color: #aaa;
+    font-size: 13px;
+}

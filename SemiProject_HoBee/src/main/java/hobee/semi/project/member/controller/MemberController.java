@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.findHobby.model.dto.Hobby;
+import hobee.semi.project.follow.model.service.FollowService;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.member.model.service.MemberService;
 import hobee.semi.project.myPage.model.service.MyPageService;
@@ -37,6 +38,7 @@ public class MemberController {
 
 	private final MemberService service;
 	private final MyPageService myPageService;
+	private final FollowService followService;
 
 	// 로그인 페이지
 	@GetMapping("loginPage")
@@ -264,10 +266,19 @@ public class MemberController {
 		// 내 프로필인지 여부 (수정 버튼 / 팔로우 버튼 분기용)
 		boolean isMyProfile = loginMember != null
                 && loginMember.getMemberNo() == memberNo;
+		
+		// 팔로우 관련 데이터
+	    int followerCount  = followService.getFollowerCount(memberNo);
+	    int followingCount = followService.getFollowingCount(memberNo);
+	    boolean isFollowing = loginMember != null && !isMyProfile
+	                       && followService.isFollowing(loginMember.getMemberNo(), memberNo);
 
 		model.addAttribute("targetMember", targetMember);
 	    model.addAttribute("boardList", boardList);
 	    model.addAttribute("isMyProfile", isMyProfile);
+	    model.addAttribute("followerCount", followerCount);
+	    model.addAttribute("followingCount", followingCount);
+	    model.addAttribute("isFollowing", isFollowing);
 
 	    return "member/memberProfile";
 	}

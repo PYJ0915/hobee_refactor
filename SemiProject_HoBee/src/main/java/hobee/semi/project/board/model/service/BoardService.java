@@ -23,4 +23,6 @@ public interface BoardService {
 
 	List<Board> noticeList(int boardCode);
 
+	int getBoardCode(int boardNo);
+
 }

@@ -51,5 +51,12 @@
 
 <th:block th:replace="~{common/fragments/footer}"/>
 
+<script th:inline="javascript">
+    const targetMemberNo = /*[[${targetMember.memberNo}]]*/ null;
+    const loginMemberNo  = /*[[${session.loginMember?.memberNo}]]*/ null;
+</script>
+
+<script src="/js/member/memberProfile.js"></script>
+
 </body>
 </html>

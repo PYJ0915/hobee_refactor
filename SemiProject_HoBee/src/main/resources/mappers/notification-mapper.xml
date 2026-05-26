@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper
+	namespace="hobee.semi.project.notification.model.mapper.NotificationMapper">
+
+	<insert id="insertNotification">
+		INSERT INTO NOTIFICATION (
+		NOTI_NO, RECEIVER_NO,
+		SENDER_NO,
+		NOTI_TYPE, NOTI_TARGET_NO, NOTI_MESSAGE
+		)
+		VALUES (
+		SEQ_NOTI_NO.NEXTVAL, #{receiverNo}, #{senderNo},
+		#{notiType},
+		#{notiTargetNo}, #{notiMessage}
+		)
+	</insert>
+
+	<select id="getUnreadCount" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		NOTIFICATION
+		WHERE RECEIVER_NO = #{receiverNo}
+		AND NOTI_READ_FL = 'N'
+	</select>
+
+	<select id="selectNotifications" resultType="Notification">
+		SELECT N.NOTI_NO,
+		N.RECEIVER_NO, N.SENDER_NO,
+		N.NOTI_TYPE, N.NOTI_TARGET_NO,
+		N.NOTI_MESSAGE, N.NOTI_READ_FL,
+		TO_CHAR(N.NOTI_DATE, 'YYYY-MM-DD
+		HH24:MI') AS NOTI_DATE,
+		M.MEMBER_NICKNAME AS SENDER_NICKNAME,
+		M.PROFILE_IMG AS SENDER_PROFILE_IMG
+		FROM NOTIFICATION N
+		JOIN MEMBER M ON
+		M.MEMBER_NO = N.SENDER_NO
+		WHERE N.RECEIVER_NO = #{receiverNo}
+		ORDER BY
+		N.NOTI_NO DESC
+		FETCH FIRST 20 ROWS ONLY
+	</select>
+
+	<update id="readNotification">
+		UPDATE NOTIFICATION
+		SET NOTI_READ_FL = 'Y'
+		WHERE
+		NOTI_NO = #{notiNo}
+	</update>
+
+	<update id="readAllNotifications">
+		UPDATE NOTIFICATION
+		SET NOTI_READ_FL = 'Y'
+		WHERE
+		RECEIVER_NO = #{receiverNo}
+		AND NOTI_READ_FL = 'N'
+	</update>
+
+	<delete id="deleteNotification">
+		DELETE FROM NOTIFICATION
+		WHERE NOTI_NO = #{notiNo}
+	</delete>
+
+	<delete id="deleteAllNotifications">
+		DELETE FROM NOTIFICATION
+		WHERE RECEIVER_NO = #{receiverNo}
+	</delete>
+
+</mapper>
+
+
+
+
+
+

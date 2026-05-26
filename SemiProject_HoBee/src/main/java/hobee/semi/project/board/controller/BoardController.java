@@ -238,6 +238,13 @@ public class BoardController {
 	public int boardLike(@RequestBody Map<String, Integer> map) {
 		return service.boardLike(map);
 	}
+	
+	@ResponseBody
+	@GetMapping("getBoardCode/{boardNo}")
+	public int getBoardCode(@PathVariable("boardNo") int boardNo) {
+	    return service.getBoardCode(boardNo);
+	}
+	
 
 	/**
 	 * 게시판 코드를 받아 게시판 이름으로 반환해주는 함수

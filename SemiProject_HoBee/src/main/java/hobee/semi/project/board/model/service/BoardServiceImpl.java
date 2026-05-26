@@ -151,4 +151,9 @@ public class BoardServiceImpl implements BoardService {
 		return resultMap;
 	}
 
+	@Override
+	public int getBoardCode(int boardNo) {
+		return mapper.getBoardCode(boardNo);
+	}
+
 }

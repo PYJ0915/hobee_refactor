@@ -8,6 +8,7 @@
 	<link rel="stylesheet" th:href="@{/css/common.css}">
 	<link rel="stylesheet" th:href="@{/css/member/memberProfile.css}">
 	<link rel="stylesheet" href="/css/myPage/myPage.css">
+	<th:block th:replace="~{common/common}"></th:block>
 </head>
 
 <body>
@@ -57,6 +58,10 @@
 
 	<!-- 푸터 -->
 	<th:block th:replace="~{common/fragments/footer}" />
+	
+	<script th:inline="javascript">
+	    const loginMemberNo  = /*[[${session.loginMember?.memberNo}]]*/ null;
+	</script>
 
 </body>
 
