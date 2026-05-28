@@ -87,5 +87,10 @@ public interface MemberService {
 	 */
 	List<Board> selectMemberBoardList(int memberNo);
 
-
+	
+	/** 단체 채팅방 참여자 검색
+	 * @param keyword
+	 * @return
+	 */
+	List<MemberDTO> searchMembers(String keyword);
 }

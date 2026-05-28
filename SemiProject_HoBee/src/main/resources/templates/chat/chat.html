@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>채팅 | Ho-Bee</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/chat/chatPage.css}">
+    <th:block th:replace="~{common/common}" />
+</head>
+
+<body>
+
+    <th:block th:replace="~{common/fragments/header}" />
+
+    <main class="chat-page-container">
+
+        <!-- 왼쪽: 채팅방 목록 -->
+        <aside class="chat-sidebar">
+
+            <div class="chat-sidebar-header">
+                <h2 class="chat-sidebar-title">채팅</h2>
+                <button class="chat-create-btn" id="createGroupBtn">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
+
+            <!-- 채팅방 목록 -->
+            <ul class="chat-room-list" id="chatRoomList">
+                <li class="chat-room-loading">불러오는 중...</li>
+            </ul>
+
+        </aside>
+
+        <!-- 오른쪽: 채팅 화면 -->
+        <section class="chat-main" id="chatMain">
+
+            <!-- 채팅방 선택 전 -->
+            <div class="chat-placeholder" id="chatPlaceholder">
+                <i class="fa-regular fa-comment-dots"></i>
+                <p>채팅방을 선택해주세요</p>
+            </div>
+
+            <!-- 채팅방 선택 후 -->
+            <div class="chat-window popup-hidden" id="chatWindow">
+
+                <!-- 채팅 헤더 -->
+                <div class="chat-window-header">
+                    <div class="chat-window-user">
+                        <img src="" class="chat-window-avatar" id="chatWindowAvatar" alt="프로필">
+                        <div>
+                            <span class="chat-window-name" id="chatWindowName">채팅방 이름</span>
+                            <span class="chat-window-count" id="chatWindowCount"></span>
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <span class="chat-status-dot" id="chatStatusDot"></span>
+                        <button class="chat-leave-btn" id="chatLeaveBtn" title="채팅방 나가기">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 메시지 목록 -->
+                <ul class="chat-message-list" id="chatMessageList">
+                    <li class="chat-empty">메시지를 불러오는 중...</li>
+                </ul>
+
+                <!-- 입력 영역 -->
+                <div class="chat-input-area">
+                    <input type="text" id="chatInput" class="chat-input" placeholder="메시지를 입력하세요..." maxlength="500"
+                        autocomplete="off">
+                    <button class="chat-send-btn" id="chatSendBtn">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- 단체 채팅방 생성 모달 -->
+    <div class="group-modal popup-hidden" id="groupModal">
+        <div class="group-modal-backdrop" id="groupModalBackdrop"></div>
+        <div class="group-modal-box">
+            <div class="group-modal-header">
+                <h3>단체 채팅방 만들기</h3>
+                <button class="group-modal-close" id="groupModalClose">&times;</button>
+            </div>
+            <div class="group-modal-body">
+                <input type="text" id="groupRoomName" class="group-room-name-input" placeholder="채팅방 이름을 입력하세요"
+                    maxlength="30">
+
+                <p class="group-search-label">참여자 검색</p>
+                <div class="group-search-area">
+                    <input type="text" id="groupMemberSearch" class="group-search-input" placeholder="닉네임으로 검색">
+                    <button class="group-search-btn" id="groupSearchBtn">검색</button>
+                </div>
+
+                <ul class="group-search-result" id="groupSearchResult"></ul>
+
+                <div class="group-selected-area">
+                    <p class="group-selected-label">선택된 참여자
+                        <span id="selectedCount">0</span>명
+                    </p>
+                    <ul class="group-selected-list" id="groupSelectedList"></ul>
+                </div>
+
+            </div>
+            <div class="group-modal-footer">
+                <button class="group-create-confirm" id="groupCreateConfirm">
+                    채팅방 만들기
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <th:block th:replace="~{common/fragments/footer}" />
+
+    <script th:inline="javascript">
+        const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ null;
+        const loginNickname = /*[[${session.loginMember?.memberNickname}]]*/ null;
+        const loginProfileImg = /*[[${session.loginMember?.profileImg}]]*/ null;
+        const defaultImg = /*[[#{user.default.image}]]*/ "/images/user.png";
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script src="/js/chat/chatPage.js"></script>
+
+</body>
+
+</html>

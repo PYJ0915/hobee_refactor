@@ -1,62 +1,65 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title th:text="${targetMember.memberNickname} + '님의 프로필 | Ho-Bee'">프로필</title>
-    <link rel="stylesheet" th:href="@{/css/common.css}">
-    <link rel="stylesheet" th:href="@{/css/member/memberProfile.css}">
-    <th:block th:replace="~{common/common}"/>
+	<meta charset="UTF-8">
+	<title th:text="${targetMember.memberNickname} + '님의 프로필 | Ho-Bee'">프로필</title>
+	<link rel="stylesheet" th:href="@{/css/common.css}">
+	<link rel="stylesheet" th:href="@{/css/member/memberProfile.css}">
+	<link rel="stylesheet" th:href="@{/css/member/chat.css}">
+	<th:block th:replace="~{common/common}" />
 </head>
+
 <body>
 
-<th:block th:replace="~{common/fragments/header}"/>
+	<th:block th:replace="~{common/fragments/header}" />
 
-<main class="profile-container">
-    <div class="profile-main">
+	<main class="profile-container">
+		<div class="profile-main">
 
-        <!-- 페이지 타이틀 -->
-        <h2 class="page-title">프로필</h2>
+			<!-- 페이지 타이틀 -->
+			<h2 class="page-title">프로필</h2>
 
-        <!-- 프로필 카드 프래그먼트 -->
-        <th:block th:replace="~{common/fragments/profileCard ::
-            profileCard(${targetMember}, ${isMyProfile})}"/>
+			<!-- 프로필 카드 프래그먼트 -->
+			<th:block th:replace="~{common/fragments/profileCard ::
+            profileCard(${targetMember}, ${isMyProfile})}" />
 
-        <!-- 작성한 게시글 목록 -->
-        <section class="profile-boards">
-            <h3 class="section-title">작성한 게시글</h3>
+			<!-- 작성한 게시글 목록 -->
+			<section class="profile-boards">
+				<h3 class="section-title">작성한 게시글</h3>
 
-            <th:block th:if="${#lists.isEmpty(boardList)}">
-                <p class="empty-msg">작성한 게시글이 없습니다.</p>
-            </th:block>
+				<th:block th:if="${#lists.isEmpty(boardList)}">
+					<p class="empty-msg">작성한 게시글이 없습니다.</p>
+				</th:block>
 
-            <ul class="board-list" th:unless="${#lists.isEmpty(boardList)}">
-                <li th:each="board : ${boardList}" class="board-item">
-                    <a th:href="@{/board/detail/{boardCode}/{boardNo}
+				<ul class="board-list" th:unless="${#lists.isEmpty(boardList)}">
+					<li th:each="board : ${boardList}" class="board-item">
+						<a th:href="@{/board/detail/{boardCode}/{boardNo}
                         (boardCode=${board.boardCode},
-                         boardNo=${board.boardNo})}"
-                       th:text="${board.boardTitle}"
-                       class="board-title">
-                        게시글 제목
-                    </a>
-                    <span class="board-date"
-                          th:text="${board.boardWriteDate}">
-                        작성일
-                    </span>
-                </li>
-            </ul>
-        </section>
+                         boardNo=${board.boardNo})}" th:text="${board.boardTitle}" class="board-title">
+							게시글 제목
+						</a>
+						<span class="board-date" th:text="${board.boardWriteDate}">
+							작성일
+						</span>
+					</li>
+				</ul>
+			</section>
 
-    </div>
-</main>
+		</div>
+	</main>
 
-<th:block th:replace="~{common/fragments/footer}"/>
+	<th:block th:replace="~{common/fragments/footer}" />
 
-<script th:inline="javascript">
-    const targetMemberNo = /*[[${targetMember.memberNo}]]*/ null;
-    const loginMemberNo  = /*[[${session.loginMember?.memberNo}]]*/ null;
-</script>
+	<script th:inline="javascript">
+		const targetMemberNo = /*[[${targetMember.memberNo}]]*/ null;
+		const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ null;
+		const loginNickname = /*[[${session.loginMember?.memberNickname}]]*/ null;
+		const targetNickname = /*[[${targetMember.memberNickname}]]*/ null;
+	</script>
 
-<script src="/js/member/memberProfile.js"></script>
-
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 </body>
+
 </html>

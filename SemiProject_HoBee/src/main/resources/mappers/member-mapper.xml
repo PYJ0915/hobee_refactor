@@ -156,4 +156,12 @@
 		WHERE MEMBER_NO = #{memberNo}
 	</select>
 
+	<select id="searchMembers" resultType="MemberDTO">
+    SELECT MEMBER_NO, MEMBER_NICKNAME, PROFILE_IMG
+    FROM MEMBER
+    WHERE MEMBER_NICKNAME LIKE '%' || #{keyword} || '%'
+    AND MEMBER_DEL_FL = 'N'
+    AND ROWNUM <![CDATA[<=]]> 10
+</select>
+
 </mapper>

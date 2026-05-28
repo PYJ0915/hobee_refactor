@@ -196,7 +196,6 @@ ul {
 }
 
 
-
 /* 로그인 후 사용자 영역 */
 .header-user-loggedin {
   display: flex;
@@ -533,4 +532,43 @@ a > .profile-img:hover { opacity: 0.85; }
     padding: 30px;
     color: #aaa;
     font-size: 13px;
+}
+
+/* ================================
+   헤더 채팅 아이콘
+================================ */
+
+.chat-icon-wrapper { position: relative; }
+
+.chat-icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: #452829;
+    font-size: 18px;
+    text-decoration: none;
+    position: relative;
+    transition: background 0.15s;
+}
+
+.chat-icon-btn:hover { background: #f5f0ee; }
+
+.chat-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: #e74c3c;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 99px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
 }

@@ -151,3 +151,32 @@ if (notiDeleteAll != null) {
 	});
 }
 
+const chatBadge = document.querySelector("#chatBadge");
+
+async function loadUnreadChatCount() {
+    try {
+        const resp = await fetch("/chat/unreadCount");
+        if (!resp.ok) return;
+        const count = await resp.text();
+
+        const chatIcon = document.querySelector("#chatIconBtn i"); // 추가
+
+        if (count > 0) {
+            chatBadge.textContent = count > 99 ? "99+" : count;
+            chatBadge.style.display = "flex";
+            if (chatIcon) chatIcon.className = "fa-solid fa-comment-dots"; // 추가
+        } else {
+            chatBadge.style.display = "none";
+            if (chatIcon) chatIcon.className = "fa-regular fa-comment-dots"; // 추가
+        }
+    } catch (err) {
+        console.log("채팅 수 조회 실패:", err);
+    }
+}
+
+// notiBtn이 있을 때만 (로그인 상태) 실행
+if (notiBtn != null) {
+    loadUnreadCount();
+    loadUnreadChatCount(); // 추가
+}
+

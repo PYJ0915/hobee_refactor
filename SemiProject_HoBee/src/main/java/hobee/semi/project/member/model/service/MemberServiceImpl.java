@@ -164,5 +164,10 @@ public class MemberServiceImpl implements MemberService{
 	    return mapper.selectMemberHobbyCode(memberNo);
 	}
 	
+	// 단체 채팅방 참여자 검색
+	@Override
+	public List<MemberDTO> searchMembers(String keyword) {
+	    return mapper.searchMembers(keyword);
+	}
 
 }

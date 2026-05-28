@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="hobee.semi.project.chat.model.mapper.ChatMapper">
+
+	<!-- 채팅방 생성 -->
+	<insert id="insertRoom">
+		<selectKey keyProperty="roomNo" resultType="int"
+			order="BEFORE">
+			SELECT SEQ_CHAT_ROOM_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO CHAT_ROOM (ROOM_NO, ROOM_TYPE, ROOM_NAME)
+		VALUES
+		(#{roomNo}, #{roomType}, #{roomName})
+	</insert>
+
+	<!-- 채팅방 참여자 추가 -->
+	<insert id="insertRoomMember">
+		INSERT INTO CHAT_ROOM_MEMBER (ROOM_NO, MEMBER_NO)
+		VALUES (#{roomNo}, #{memberNo})
+	</insert>
+
+	<!-- 1:1 채팅방 존재 여부 조회 -->
+	<select id="findDirectRoom" resultType="ChatRoom">
+		SELECT R.ROOM_NO,
+		R.ROOM_TYPE, R.CREATE_DATE
+		FROM CHAT_ROOM R
+		WHERE R.ROOM_TYPE = 'DIRECT'
+		AND EXISTS (
+		SELECT 1 FROM CHAT_ROOM_MEMBER
+		WHERE ROOM_NO = R.ROOM_NO
+		AND MEMBER_NO = #{memberNoA}
+		)
+		AND EXISTS (
+		SELECT 1 FROM
+		CHAT_ROOM_MEMBER
+		WHERE ROOM_NO = R.ROOM_NO AND MEMBER_NO = #{memberNoB}
+		)
+		AND (
+		SELECT COUNT(*) FROM CHAT_ROOM_MEMBER
+		WHERE ROOM_NO = R.ROOM_NO
+		)
+		= 2
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+
+	<!-- 이전 메시지 조회 (최근 50개, 오래된 순) -->
+	<select id="selectMessages" resultType="ChatMessage">
+		SELECT *
+		FROM (
+		SELECT
+		CM.MSG_NO, CM.ROOM_NO, CM.SENDER_NO,
+		CASE WHEN CM.SENDER_NO = 0 THEN 'SYSTEM'
+		ELSE TO_CHAR(M.MEMBER_NICKNAME) END AS SENDER,
+		CASE WHEN CM.SENDER_NO = 0 THEN NULL
+		ELSE TO_CHAR(M.PROFILE_IMG) END AS SENDER_PROFILE_IMG,
+		CM.CONTENT,
+		TO_CHAR(CM.SEND_TIME, 'YYYY-MM-DD HH24:MI:SS') AS SEND_TIME
+		FROM CHAT_MESSAGE CM
+		LEFT JOIN MEMBER M ON M.MEMBER_NO = CM.SENDER_NO
+		WHERE CM.ROOM_NO = #{roomId}
+		AND CM.MSG_DEL_FL = 'N'
+		ORDER BY CM.SEND_TIME DESC
+		)
+		WHERE ROWNUM &lt;= 50
+		ORDER BY MSG_NO ASC
+	</select>
+
+	<!-- 메시지 저장 -->
+	<insert id="insertMessage">
+		INSERT INTO CHAT_MESSAGE (MSG_NO, ROOM_NO, SENDER_NO,
+		CONTENT)
+		VALUES (SEQ_CHAT_MSG_NO.NEXTVAL, #{roomId}, #{senderNo},
+		#{content})
+	</insert>
+
+	<!-- 내 채팅방 목록 조회 -->
+	<select id="selectMyRooms" resultType="ChatRoomSummary">
+		SELECT R.ROOM_NO,
+		R.ROOM_TYPE,
+		CASE
+		WHEN R.ROOM_TYPE = 'DIRECT' THEN
+		(SELECT
+		TO_CHAR(M.MEMBER_NICKNAME)
+		FROM CHAT_ROOM_MEMBER CRM
+		JOIN MEMBER M ON
+		M.MEMBER_NO = CRM.MEMBER_NO
+		WHERE CRM.ROOM_NO = R.ROOM_NO
+		AND
+		CRM.MEMBER_NO != #{memberNo}
+		AND ROWNUM = 1)
+		ELSE R.ROOM_NAME
+		END AS
+		ROOM_NAME,
+		CASE
+		WHEN R.ROOM_TYPE = 'DIRECT' THEN
+		(SELECT M.PROFILE_IMG
+		FROM CHAT_ROOM_MEMBER CRM
+		JOIN MEMBER M ON M.MEMBER_NO = CRM.MEMBER_NO
+		WHERE CRM.ROOM_NO = R.ROOM_NO
+		AND CRM.MEMBER_NO != #{memberNo}
+		AND
+		ROWNUM = 1)
+		ELSE NULL
+		END AS ROOM_PROFILE_IMG,
+		(SELECT CM.CONTENT
+		FROM
+		CHAT_MESSAGE CM
+		WHERE CM.ROOM_NO = R.ROOM_NO
+		ORDER BY CM.MSG_NO DESC
+		FETCH FIRST 1 ROWS ONLY) AS LAST_MESSAGE,
+		(SELECT TO_CHAR(CM.SEND_TIME,
+		'YYYY-MM-DD HH24:MI')
+		FROM CHAT_MESSAGE CM
+		WHERE CM.ROOM_NO = R.ROOM_NO
+		ORDER BY CM.MSG_NO DESC
+		FETCH FIRST 1 ROWS ONLY) AS LAST_MESSAGE_TIME,
+		(SELECT COUNT(*)
+		FROM CHAT_MESSAGE CM
+		WHERE CM.ROOM_NO = R.ROOM_NO
+		AND
+		CM.SENDER_NO != #{memberNo}
+		AND CM.READ_FL = 'N') AS UNREAD_COUNT,
+		(SELECT COUNT(*)
+		FROM CHAT_ROOM_MEMBER
+		WHERE ROOM_NO = R.ROOM_NO) AS
+		MEMBER_COUNT
+		FROM CHAT_ROOM R
+		JOIN CHAT_ROOM_MEMBER CRM ON CRM.ROOM_NO =
+		R.ROOM_NO
+		WHERE CRM.MEMBER_NO = #{memberNo}
+		ORDER BY (
+		SELECT MAX(MSG_NO)
+		FROM CHAT_MESSAGE
+		WHERE ROOM_NO = R.ROOM_NO
+		) DESC NULLS LAST
+	</select>
+
+	<!-- 단체 채팅방 참여자 추가 -->
+	<insert id="insertGroupRoomMember">
+		INSERT INTO CHAT_ROOM_MEMBER (ROOM_NO, MEMBER_NO)
+		VALUES (#{roomNo}, #{memberNo})
+	</insert>
+
+	<!-- 채팅방 멤버 여부 확인 -->
+	<select id="checkRoomMember" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		CHAT_ROOM_MEMBER
+		WHERE ROOM_NO = #{roomNo}
+		AND MEMBER_NO = #{memberNo}
+	</select>
+
+	<!-- 안 읽은 채팅 수 -->
+	<select id="getUnreadChatCount" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		CHAT_MESSAGE CM
+		JOIN CHAT_ROOM_MEMBER CRM ON CRM.ROOM_NO = CM.ROOM_NO
+		WHERE CRM.MEMBER_NO = #{memberNo}
+		AND CM.SENDER_NO != #{memberNo}
+		AND
+		CM.READ_FL = 'N'
+	</select>
+
+	<!-- 메시지 읽음 처리 -->
+	<update id="markMessagesAsRead">
+		UPDATE CHAT_MESSAGE
+		SET READ_FL = 'Y'
+		WHERE ROOM_NO =
+		#{roomNo}
+		AND SENDER_NO != #{memberNo}
+		AND READ_FL = 'N'
+	</update>
+
+	<!-- 채팅방 나가기 -->
+	<delete id="leaveRoom">
+		DELETE FROM CHAT_ROOM_MEMBER
+		WHERE ROOM_NO = #{roomNo}
+		AND MEMBER_NO = #{memberNo}
+	</delete>
+
+</mapper>

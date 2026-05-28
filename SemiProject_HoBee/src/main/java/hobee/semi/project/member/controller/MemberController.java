@@ -283,4 +283,12 @@ public class MemberController {
 	    return "member/memberProfile";
 	}
 
+	// 단체 채팅방 참여자 검색
+	@ResponseBody
+	@GetMapping("search")
+	public List<MemberDTO> searchMembers(
+	        @RequestParam("keyword") String keyword) {
+	    return service.searchMembers(keyword);
+	}
+	
 }

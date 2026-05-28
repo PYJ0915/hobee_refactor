@@ -87,6 +87,8 @@ public interface MemberMapper {
 
 	List<String> selectMemberHobbyCode(int memberNo);
 
+	List<MemberDTO> searchMembers(String keyword);
+
 	
 	
 	

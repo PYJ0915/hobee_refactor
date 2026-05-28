@@ -12,21 +12,15 @@
 
 	<!-- 팔로워 / 팔로잉 수 (내 프로필 아닐 때만) -->
 	<div class="follow-stats">
-	    <div class="follow-stat" id="followerStat"
-	         style="cursor:pointer;"
-	         th:data-member-no="${member.memberNo}">
-	        <span class="stat-num" id="followerCount"
-	              th:text="${followerCount}">0</span>
-	        <span class="stat-label">팔로워</span>
-	    </div>
-	    <div class="follow-divider"></div>
-	    <div class="follow-stat" id="followingStat"
-	         style="cursor:pointer;"
-	         th:data-member-no="${member.memberNo}">
-	        <span class="stat-num"
-	              th:text="${followingCount}">0</span>
-	        <span class="stat-label">팔로잉</span>
-	    </div>
+		<div class="follow-stat" id="followerStat" style="cursor:pointer;" th:data-member-no="${member.memberNo}">
+			<span class="stat-num" id="followerCount" th:text="${followerCount}">0</span>
+			<span class="stat-label">팔로워</span>
+		</div>
+		<div class="follow-divider"></div>
+		<div class="follow-stat" id="followingStat" style="cursor:pointer;" th:data-member-no="${member.memberNo}">
+			<span class="stat-num" th:text="${followingCount}">0</span>
+			<span class="stat-label">팔로잉</span>
+		</div>
 	</div>
 
 	<!-- 소개글 -->
@@ -49,15 +43,28 @@
 		선택한 취미가 없습니다.
 	</p>
 
-	<!-- 내 프로필이면 수정 버튼, 남의 프로필이면 빈 공간 (팔로우 나중에) -->
+	<!-- 버튼 영역 -->
 	<div class="card-actions">
+
+		<!-- 내 프로필 → 정보 수정 버튼 -->
 		<a th:if="${isMyProfile}" href="/myPage/updateInfo" class="card-btn">정보 수정</a>
 
-		<!-- 남의 프로필 → 팔로우 버튼 -->
-		<button th:unless="${isMyProfile}" id="followBtn" th:classappend="${isFollowing} ? ' following' : ''"
-			th:data-following-no="${member.memberNo}" th:data-is-following="${isFollowing}" class="card-btn follow-btn">
-			<span th:text="${isFollowing} ? '팔로잉 ✓' : '팔로우'">팔로우</span>
-		</button>
+		<!-- 남의 프로필 → 팔로우 + 채팅 버튼 -->
+		<th:block th:unless="${isMyProfile}">
+			<button id="followBtn" th:classappend="${isFollowing} ? ' following' : ''"
+				th:data-following-no="${member.memberNo}" th:data-is-following="${isFollowing}"
+				class="card-btn follow-btn">
+				<span th:text="${isFollowing} ? '팔로잉 ✓' : '팔로우'">팔로우</span>
+			</button>
+
+			<!-- 채팅 버튼 : 팔로우 관계일 때만 노출 -->
+			<button th:if="${isFollowing}" id="chatBtn" th:data-target-no="${member.memberNo}"
+				class="card-btn chat-btn">
+				<i class="fa-solid fa-comment"></i>
+				1:1 채팅
+			</button>
+		</th:block>
+
 	</div>
 
 	<!-- 팔로우 모달 -->
@@ -73,10 +80,45 @@
 			</ul>
 		</div>
 	</div>
-	
+
+	<!-- 1:1 채팅 모달 -->
+	<div class="chat-modal popup-hidden" id="chatModal">
+		<div class="chat-modal-backdrop" id="chatModalBackdrop"></div>
+		<div class="chat-modal-box">
+
+			<!-- 채팅 헤더 -->
+			<div class="chat-modal-header">
+				<div class="chat-modal-user">
+					<img th:with="user=#{user.default.image}" th:src="${member.profileImg ?: user}"
+						class="chat-modal-avatar" alt="프로필">
+					<span class="chat-modal-name" th:text="${member.memberNickname}">상대방</span>
+					<span class="chat-status-dot" id="chatStatusDot"></span>
+				</div>
+				<button class="chat-modal-close" id="chatModalClose">&times;</button>
+			</div>
+
+			<!-- 메시지 목록 -->
+			<ul class="chat-message-list" id="chatMessageList">
+				<li class="chat-loading" id="chatLoading">
+					<span>대화 내용을 불러오는 중...</span>
+				</li>
+			</ul>
+
+			<!-- 입력 영역 -->
+			<div class="chat-input-area">
+				<input type="text" id="chatInput" class="chat-input" placeholder="메시지를 입력하세요..." maxlength="500"
+					autocomplete="off">
+				<button class="chat-send-btn" id="chatSendBtn">
+					<i class="fa-solid fa-paper-plane"></i>
+				</button>
+			</div>
+
+		</div>
+	</div>
+
 	<script th:src="@{/js/member/memberProfile.js}" defer></script>
 	<script th:inline="javascript" defer>
-	    const isMyProfile  = /*[[${isMyProfile}]]*/ "내 프로필 여부";
+		const isMyProfile = /*[[${isMyProfile}]]*/ "내 프로필 여부";
 	</script>
-	
+
 </div>
