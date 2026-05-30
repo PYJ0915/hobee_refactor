@@ -248,3 +248,46 @@ function StringToDate(date) {
 
 	return `${yyyy}-${mm}-${dd}`;
 }
+
+// 수락 버튼
+document.addEventListener("click", async (e) => {
+
+    // 수락 버튼
+    const approveBtn = e.target.closest(".approve-btn");
+    if (approveBtn) {
+        if (!confirm("참여 신청을 수락하시겠습니까?")) return;
+        const gatheringNo = approveBtn.dataset.gatheringNo;
+        const memberNo    = approveBtn.dataset.memberNo;
+
+        const result = await fetch(
+            `/gathering/approve/${gatheringNo}/${memberNo}`,
+            { method: "POST" }
+        ).then(r => r.json());
+
+        if (result.success) {
+            alert("수락되었습니다.");
+            location.reload();
+        } else {
+            alert("수락 처리에 실패했습니다.");
+        }
+        return;
+    }
+
+    // 거절 버튼
+    const rejectBtn = e.target.closest(".reject-btn");
+    if (rejectBtn) {
+        if (!confirm("정말 거절하시겠습니까?")) return;
+        const gatheringNo = rejectBtn.dataset.gatheringNo;
+        const memberNo    = rejectBtn.dataset.memberNo;
+
+        const result = await fetch(
+            `/gathering/reject/${gatheringNo}/${memberNo}`,
+            { method: "POST" }
+        ).then(r => r.json());
+
+        if (result.success) {
+            alert("거절되었습니다.");
+            location.reload();
+        }
+    }
+});

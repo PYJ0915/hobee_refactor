@@ -31,7 +31,8 @@
 				<div class="writer-left">
 					<div>
 						<a th:href="@{/member/profile/{memberNo}(memberNo=${board.memberNo})}">
-							<img alt="프로필 이미지" th:with="user=#{user.default.image}" th:src="${board.profileImg ?: user}" class="profile-img">
+							<img alt="프로필 이미지" th:with="user=#{user.default.image}" th:src="${board.profileImg ?: user}"
+								class="profile-img">
 						</a>
 					</div>
 
@@ -52,16 +53,150 @@
 				게시글 내용 영역
 			</div>
 
+			<!-- boardDetail.html - 모임 정보 블록 -->
+			<th:block th:if="${board.boardCode == 4 and gathering != null}">
+
+				<div class="gathering-info-box">
+					<h3 class="gathering-title">모임 정보</h3>
+
+					<div class="gathering-row">
+						<span class="gathering-label">📅 날짜</span>
+						<span th:text="${gathering.gatheringDate}">2025-01-01</span>
+					</div>
+
+					<div class="gathering-row">
+						<span class="gathering-label">📍 장소</span>
+						<span th:text="${gathering.gatheringPlace}">장소</span>
+					</div>
+					<div class="gathering-row" th:if="${gathering.gatheringPlaceDetail != null}">
+							<span class="gathering-label">🚪 상세</span>
+							<span th:text="${gathering.gatheringPlaceDetail}">상세주소</span>
+						</div>	
+
+					<div class="gathering-row">
+						<span class="gathering-label">👥 인원</span>
+						<span>
+							<span th:text="${gathering.currentMember}">1</span>
+							/
+							<span th:text="${gathering.maxMember}">10</span>
+							명
+						</span>
+					</div>
+
+					<!-- 지도 -->
+					<div id="gatheringMap" style="width:100%; height:250px;
+             border-radius:10px; margin-top:12px;"></div>
+
+					<!-- 참여 버튼 -->
+					<div class="gathering-actions" th:if="${session.loginMember != null}">
+
+						<!-- 작성자: 모임 확정 버튼 -->
+						<th:block th:if="${board.memberNo == session.loginMember.memberNo}">
+							<button th:if="${gathering.gatheringStatus == 'OPEN'}" id="confirmBtn"
+								th:data-gathering-no="${gathering.gatheringNo}" class="gathering-btn confirm-btn">
+								모임 확정하기
+							</button>
+							<span th:if="${gathering.gatheringStatus == 'CLOSED'}" class="gathering-closed-badge">모집 마감</span>
+						</th:block>
+
+						<!-- 일반 참여자 -->
+						<th:block th:unless="${board.memberNo == session.loginMember.memberNo}">
+
+							<!-- 미신청 상태 + 모집 중 -->
+							<button th:if="${gathering.myJoinStatus == null and gathering.gatheringStatus == 'OPEN'}" id="joinBtn"
+								th:data-gathering-no="${gathering.gatheringNo}" class="gathering-btn join-btn">
+								참여 신청
+							</button>
+
+							<!-- 신청 대기 중 -->
+							<span th:if="${gathering.myJoinStatus == 'PENDING'}" class="gathering-status-badge pending-badge">
+								⏳ 수락 대기 중
+							</span>
+							<button th:if="${gathering.myJoinStatus == 'PENDING'}" id="cancelBtn"
+								th:data-gathering-no="${gathering.gatheringNo}" class="gathering-btn cancel-btn">
+								신청 취소
+							</button>
+
+							<!-- 승낙된 상태 -->
+							<span th:if="${gathering.myJoinStatus == 'APPROVED'}"
+								class="gathering-status-badge approved-badge-status">
+								✅ 참여 확정
+							</span>
+							<button th:if="${gathering.myJoinStatus == 'APPROVED'}" id="cancelBtn"
+								th:data-gathering-no="${gathering.gatheringNo}" class="gathering-btn cancel-btn">
+								참여 취소
+							</button>
+
+							<!-- 거절된 상태 -->
+							<span th:if="${gathering.myJoinStatus == 'REJECTED'}" class="gathering-status-badge rejected-badge">
+								❌ 참여 거절됨
+							</span>
+
+							<!-- 모집 마감 + 미참여 -->
+							<span th:if="${gathering.gatheringStatus == 'CLOSED' and gathering.myJoinStatus == null}"
+								class="gathering-closed-badge">모집 마감</span>
+
+						</th:block>
+
+					</div>
+
+					<!-- 작성자에게만 보이는 신청 관리 영역 -->
+					<div th:if="${board.memberNo == session.loginMember?.memberNo}" class="gathering-manage-area">
+
+						<!-- 신청 대기 목록 -->
+						<div th:if="${gathering.pendingList != null and !#lists.isEmpty(gathering.pendingList)}">
+							<p class="gathering-members-title">
+								신청 대기 <span th:text="${#lists.size(gathering.pendingList)}">0</span>명
+							</p>
+							<ul class="gathering-members-list">
+								<li th:each="member : ${gathering.pendingList}" class="pending-member-item">
+									<img th:with="user=#{user.default.image}" th:src="${member.profileImg ?: user}"
+										class="gathering-member-img">
+									<span th:text="${member.memberNickname}">닉네임</span>
+									<div class="member-action-btns">
+										<button class="approve-btn" th:data-gathering-no="${gathering.gatheringNo}"
+											th:data-member-no="${member.memberNo}">
+											수락
+										</button>
+										<button class="reject-btn" th:data-gathering-no="${gathering.gatheringNo}"
+											th:data-member-no="${member.memberNo}">
+											거절
+										</button>
+									</div>
+								</li>
+							</ul>
+						</div>
+
+						<!-- 확정 참여자 목록 -->
+						<div th:if="${gathering.approvedList != null and !#lists.isEmpty(gathering.approvedList)}">
+							<p class="gathering-members-title">
+								확정 참여자 <span th:text="${#lists.size(gathering.approvedList)}">0</span>명
+							</p>
+							<ul class="gathering-members-list">
+								<li th:each="member : ${gathering.approvedList}">
+									<img th:with="user=#{user.default.image}" th:src="${member.profileImg ?: user}"
+										class="gathering-member-img">
+									<span th:text="${member.memberNickname}">닉네임</span>
+									<span class="approved-badge">✓ 확정</span>
+								</li>
+							</ul>
+						</div>
+
+					</div>
+
+				</div>
+
+			</th:block>
+
 			<!-- 게시글 하단 액션 -->
 			<div class="board-actions">
 
 				<button class="like-btn" th:classappend="${board.likeCheck == 1} ? like-checked : like-unchecked">
-					<i class="fa-thumbs-up boardLike"
-						th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i> 좋아요
+					<i class="fa-thumbs-up boardLike" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i> 좋아요
 					<span class="like-count" th:text="${board.likeCount}">12</span>
 				</button>
 
-				<th:block th:unless="${board.boardCode} == 1">
+				<th:block th:unless="${boardCode == 1}">
 
 					<button class="report-btn" id="board-report" th:data-writer="${board.memberNickname}"
 						th:data-reported-member-no="${board.memberNo}" th:data-target-no="${board.boardNo}">
@@ -126,12 +261,12 @@
 							<div class="comment-writer">
 
 								<a th:href="@{/member/profile/{memberNo}(memberNo=*{memberNo})}">
-									<img class="profile-img small" th:with="user=#{user.default.image}" th:src="${comment.profileImg ?: user}">
+									<img class="profile-img small" th:with="user=#{user.default.image}"
+										th:src="${comment.profileImg ?: user}">
 								</a>
 
-								<a th:href="@{/member/profile/{memberNo}(memberNo=${comment.memberNo})}"
-								   class="nickname member-link"
-								   th:text="${comment.memberNickname}">닉네임</a>
+								<a th:href="@{/member/profile/{memberNo}(memberNo=${comment.memberNo})}" class="nickname member-link"
+									th:text="${comment.memberNickname}">닉네임</a>
 
 								<span class="comment-date" th:text="${comment.commentWriteDate}">
 									작성일
@@ -141,12 +276,10 @@
 
 							<div class="comment-actions top-actions">
 
-								<button class="reply-btn"
-									th:onclick="|showInsertComment(*{commentNo}, this)|">답글</button>
+								<button class="reply-btn" th:onclick="|showInsertComment(*{commentNo}, this)|">답글</button>
 
 								<button class="report-btn comment-report" th:data-writer="${comment.memberNickname}"
-									th:data-reported-member-no="${comment.memberNo}"
-									th:data-target-no="${comment.commentNo}"
+									th:data-reported-member-no="${comment.memberNo}" th:data-target-no="${comment.commentNo}"
 									th:data-comment-author-level="${comment.authorLevel}">신고</button>
 
 							</div>
@@ -161,10 +294,8 @@
 
 						<div class="comment-actions bottom-actions"
 							th:if="${session.loginMember != null and session.loginMember.memberNo == comment.memberNo}">
-							<button th:onclick="|deleteComment(*{commentNo})|"
-								class="del-btn fa-solid fa-trash"></button>
-							<button th:onclick="|showUpdateComment(*{commentNo}, this)|"
-								class="edit-btn fa-solid fa-pen"></button>
+							<button th:onclick="|deleteComment(*{commentNo})|" class="del-btn fa-solid fa-trash"></button>
+							<button th:onclick="|showUpdateComment(*{commentNo}, this)|" class="edit-btn fa-solid fa-pen"></button>
 						</div>
 					</th:block>
 
@@ -251,6 +382,21 @@
 		const userDefaultImage = /*[[#{user.default.image}]]*/ "기본이미지";
 
 	</script>
+
+	<!-- 카카오맵 SDK -->
+	<script th:if="${board.boardCode == 4 and gathering != null}"
+        th:src="|https://dapi.kakao.com/v2/maps/sdk.js?appkey=55f99a0cab068e0d7c6881e08679cd8f&libraries=services&autoload=false|">
+</script>
+
+<script th:if="${board.boardCode == 4 and gathering != null}" th:inline="javascript">
+    const gatheringLat   = /*[[${gathering.placeLat}]]*/  37.5665;
+    const gatheringLng   = /*[[${gathering.placeLng}]]*/  126.9780;
+    const gatheringPlace = /*[[${gathering.gatheringPlace}]]*/ "";
+</script>
+
+<script th:if="${board.boardCode == 4 and gathering != null}"
+        src="/js/gathering/gatheringDetail.js">
+</script>
 
 	<script src="/js/board/boardDetail.js"></script>
 

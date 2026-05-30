@@ -22,37 +22,41 @@
 
 	<!-- 게시글 목록 조회 -->
 	<select id="selectBoardList" resultType="Board">
-		SELECT BOARD_NO, BOARD_TITLE, MEMBER_NICKNAME, MEMBER_NO,
-		BOARD_VIEW_COUNT,
-		(SELECT COUNT(*) FROM "COMMENT" C WHERE C.BOARD_NO =
-		B.BOARD_NO AND
-		COMMENT_DEL_FL = 'N') COMMENT_COUNT,
-		(SELECT COUNT(*)
-		FROM "BOARD_LIKE"
-		L WHERE L.BOARD_NO = B.BOARD_NO)
-		LIKE_COUNT,
-		BOARD_WRITE_DATE AS BOARD_WRITE_DATE_RAW,
-        <![CDATA[
-        CASE
-            WHEN SYSDATE - BOARD_WRITE_DATE < 1 / 24 / 60 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24 * 60 * 60) || '초 전'
-            WHEN SYSDATE - BOARD_WRITE_DATE < 1 / 24 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24 * 60) || '분 전'
-            WHEN SYSDATE - BOARD_WRITE_DATE < 1 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24) || '시간 전'
-            ELSE TO_CHAR(B.BOARD_WRITE_DATE, 'YYYY-MM-DD')
-        END BOARD_WRITE_DATE
-        ]]>
+		SELECT B.BOARD_NO,
+		B.BOARD_TITLE,
+		M.MEMBER_NICKNAME,
+		B.MEMBER_NO,
+		B.BOARD_VIEW_COUNT,
+		(SELECT COUNT(*) FROM "COMMENT" C
+		WHERE C.BOARD_NO = B.BOARD_NO AND C.COMMENT_DEL_FL = 'N') COMMENT_COUNT,
+		(SELECT COUNT(*) FROM "BOARD_LIKE" L
+		WHERE L.BOARD_NO = B.BOARD_NO) LIKE_COUNT,
+		B.BOARD_WRITE_DATE AS BOARD_WRITE_DATE_RAW,
+		G.GATHERING_STATUS,
+           <![CDATA[
+           CASE
+               WHEN SYSDATE - B.BOARD_WRITE_DATE < 1/24/60 THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24 * 60 * 60) || '초 전'
+               WHEN SYSDATE - B.BOARD_WRITE_DATE < 1/24   THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24 * 60)      || '분 전'
+               WHEN SYSDATE - B.BOARD_WRITE_DATE < 1      THEN FLOOR((SYSDATE - B.BOARD_WRITE_DATE) * 24)           || '시간 전'
+               ELSE TO_CHAR(B.BOARD_WRITE_DATE, 'YYYY-MM-DD')
+           END BOARD_WRITE_DATE
+           ]]>
 		FROM "BOARD" B
-		JOIN "MEMBER" USING(MEMBER_NO)
-		WHERE BOARD_DEL_FL = 'N'
+		JOIN "MEMBER" M ON B.MEMBER_NO = M.MEMBER_NO
+		LEFT JOIN GATHERING G ON B.BOARD_NO = G.BOARD_NO
+		WHERE B.BOARD_DEL_FL = 'N'
 		<choose>
 			<when test="categoryCode != null">
-				AND CATEGORY_CODE = #{categoryCode}
+				AND B.CATEGORY_CODE = #{categoryCode}
 			</when>
 			<otherwise>
-				AND BOARD_CODE = #{boardCode}
+				AND B.BOARD_CODE = #{boardCode}
 			</otherwise>
 		</choose>
+		<if test="onlyOpen == true">
+			AND G.GATHERING_STATUS = 'OPEN'
+		</if>
 		<choose>
-
 			<when test="sort == 'like'">
 				ORDER BY LIKE_COUNT
 				<choose>
@@ -60,15 +64,13 @@
 					<otherwise>DESC</otherwise>
 				</choose>
 			</when>
-
 			<when test="sort == 'view'">
-				ORDER BY BOARD_VIEW_COUNT
+				ORDER BY B.BOARD_VIEW_COUNT
 				<choose>
 					<when test="dir == 'asc'">ASC</when>
 					<otherwise>DESC</otherwise>
 				</choose>
 			</when>
-
 			<when test="sort == 'date'">
 				ORDER BY BOARD_WRITE_DATE_RAW
 				<choose>
@@ -76,11 +78,9 @@
 					<otherwise>DESC</otherwise>
 				</choose>
 			</when>
-
 			<otherwise>
-				ORDER BY BOARD_NO DESC
+				ORDER BY B.BOARD_NO DESC
 			</otherwise>
-
 		</choose>
 	</select>
 
@@ -376,7 +376,8 @@
 	</select>
 
 	<select id="getBoardCode" resultType="int">
-		SELECT BOARD_CODE FROM BOARD WHERE BOARD_NO = #{boardNo}
+		SELECT BOARD_CODE FROM
+		BOARD WHERE BOARD_NO = #{boardNo}
 	</select>
 
 

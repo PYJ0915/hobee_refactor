@@ -22,10 +22,10 @@ public class BoardServiceImpl implements BoardService {
 	private final BoardMapper mapper;
 
 	@Override
-	public Map<String, Object> selectBoardList(int boardCode, Integer categoryCode, int cp, String sort, String dir) {
+	public Map<String, Object> selectBoardList(int boardCode, Integer categoryCode, int cp, String sort, String dir, boolean onlyOpen) {
 
 		// 1. 해당 게시판의 전체 게시글 수 조회 (삭제 안 된 것)
-		int listCount = mapper.getListCount(boardCode, categoryCode);
+		int listCount = mapper.getListCount(boardCode, categoryCode, onlyOpen);
 
 		// 2. Pagination 객체 생성 (현재 페이지, 전체 게시글 수 전달)
 		Pagination pagination = new Pagination(cp, listCount);
@@ -33,7 +33,7 @@ public class BoardServiceImpl implements BoardService {
 		// 3. 특정 페이지 목록 조회
 		RowBounds rowBounds = createRowBounds(cp, listCount);
 
-		List<Board> boardList = mapper.selectBoardList(boardCode, categoryCode, sort, dir, rowBounds);
+		List<Board> boardList = mapper.selectBoardList(boardCode, categoryCode, sort, dir, onlyOpen, rowBounds);
 
 		// 4. 결과 담기
 		return toBoardListMap(pagination, boardList);

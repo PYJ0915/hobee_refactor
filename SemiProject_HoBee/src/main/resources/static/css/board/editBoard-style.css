@@ -35,3 +35,103 @@
     font-size: 1.1rem;
 }
 
+#gatheringFields {
+    margin-top: 10px;
+    padding: 28px 32px;
+    border: 2px solid #f0ebe8;
+    border-radius: 12px;
+    background-color: #fdfaf9;
+}
+
+#gatheringFields h4 {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #452829;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #FFF57E;
+}
+
+/* 각 입력 행 */
+.input-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+.input-row label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #452829;
+}
+
+/* 필수 표시 * */
+.input-row .required {
+    color: #E84545;
+    margin-left: 2px;
+}
+
+/* 공통 input 스타일 */
+.input-row input[type="date"],
+.input-row input[type="number"],
+.input-row input[type="text"] {
+    height: 44px;
+    padding: 0 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333;
+    background-color: #fff;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.input-row input:focus {
+    outline: none;
+    border-color: #452829;
+}
+
+.input-row input[readonly] {
+    background-color: #f9f9f9;
+    cursor: default;
+}
+
+/* 장소 검색 행 (input + 버튼 가로 배치) */
+.input-row > div {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.input-row > div input {
+    flex: 1;
+}
+
+/* 장소 검색 버튼 */
+#searchPlaceBtn {
+    height: 44px;
+    padding: 0 18px;
+    background-color: #452829;
+    color: #FFF57E;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s;
+    flex-shrink: 0;
+}
+
+#searchPlaceBtn:hover {
+    background-color: #2e1a1b;
+}
+
+/* 지도 미리보기 */
+#mapPreview {
+    border-radius: 10px;
+    border: 1px solid #eee;
+    margin-top: 12px;
+    overflow: hidden;
+}

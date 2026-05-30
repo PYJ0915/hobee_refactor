@@ -25,6 +25,27 @@ if (myBoardBtn != null) {
     })
 }
 
+const onlyOpenBtn = document.querySelector("#onlyOpenBtn");
+
+if (onlyOpenBtn != null) {
+    onlyOpenBtn.addEventListener("click", () => {
+        const isOnlyOpen = onlyOpenBtn.dataset.onlyOpen === "true";
+
+        let path = `/board/list/${boardCode}`;
+        const newParams = new URLSearchParams(location.search);
+
+        // 토글: 현재 true면 false로, false면 true로
+        if (isOnlyOpen) {
+            newParams.delete("onlyOpen");
+        } else {
+            newParams.set("onlyOpen", "true");
+        }
+
+        newParams.set("cp", "1"); // 필터 변경 시 1페이지로
+        location.href = path + "?" + newParams.toString();
+    });
+}
+
 
 // 현재 URL에서 sort, dir 파라미터 읽기
 const params = new URLSearchParams(location.search);

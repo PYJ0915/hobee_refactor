@@ -128,10 +128,14 @@ async function loadNotifications() {
 				location.href = `/member/profile/${noti.notiTargetNo}`;
 			} else if (noti.notiType === "BOARD" || noti.notiType === "COMMENT") {
 				const boardNo = noti.notiTargetNo;
-				// boardCode 조회
 				const boardCode = await fetch(`/board/getBoardCode/${boardNo}`)
 					.then(resp => resp.text());
 				location.href = `/board/detail/${boardCode}/${boardNo}`;
+			} else if (noti.notiType === "GATHERING") {
+				// gatheringNo → boardNo 조회 후 모임 게시글(boardCode=4)로 이동
+				const boardNo = await fetch(`/gathering/getBoardNo/${noti.notiTargetNo}`)
+					.then(resp => resp.text());
+				location.href = `/board/detail/4/${boardNo}`;
 			}
 
 
@@ -154,29 +158,29 @@ if (notiDeleteAll != null) {
 const chatBadge = document.querySelector("#chatBadge");
 
 async function loadUnreadChatCount() {
-    try {
-        const resp = await fetch("/chat/unreadCount");
-        if (!resp.ok) return;
-        const count = await resp.text();
+	try {
+		const resp = await fetch("/chat/unreadCount");
+		if (!resp.ok) return;
+		const count = await resp.text();
 
-        const chatIcon = document.querySelector("#chatIconBtn i"); // 추가
+		const chatIcon = document.querySelector("#chatIconBtn i"); // 추가
 
-        if (count > 0) {
-            chatBadge.textContent = count > 99 ? "99+" : count;
-            chatBadge.style.display = "flex";
-            if (chatIcon) chatIcon.className = "fa-solid fa-comment-dots"; // 추가
-        } else {
-            chatBadge.style.display = "none";
-            if (chatIcon) chatIcon.className = "fa-regular fa-comment-dots"; // 추가
-        }
-    } catch (err) {
-        console.log("채팅 수 조회 실패:", err);
-    }
+		if (count > 0) {
+			chatBadge.textContent = count > 99 ? "99+" : count;
+			chatBadge.style.display = "flex";
+			if (chatIcon) chatIcon.className = "fa-solid fa-comment-dots"; // 추가
+		} else {
+			chatBadge.style.display = "none";
+			if (chatIcon) chatIcon.className = "fa-regular fa-comment-dots"; // 추가
+		}
+	} catch (err) {
+		console.log("채팅 수 조회 실패:", err);
+	}
 }
 
 // notiBtn이 있을 때만 (로그인 상태) 실행
 if (notiBtn != null) {
-    loadUnreadCount();
-    loadUnreadChatCount(); // 추가
+	loadUnreadCount();
+	loadUnreadChatCount(); // 추가
 }
 

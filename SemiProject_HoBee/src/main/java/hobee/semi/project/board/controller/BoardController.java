@@ -20,6 +20,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.board.model.service.BoardService;
+import hobee.semi.project.gathering.model.dto.Gathering;
+import hobee.semi.project.gathering.model.service.GatheringService;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,12 +36,15 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardController {
 	
 	private final BoardService service;
+	private final GatheringService gatheringService;
 
 	// BoardCode와 BoardName 매핑해주는 맵
-	private static final Map<Integer, String> BOARD_NAME_MAP = Map.of(
-			1, "공지 게시판", 
-			2, "취미 게시판", 
-			3, "자유 게시판"
+	// Map.of()는 불변이라 수정 불가 → Map.ofEntries()로 교체
+	private static final Map<Integer, String> BOARD_NAME_MAP = Map.ofEntries(
+		    Map.entry(1, "공지 게시판"),
+		    Map.entry(2, "취미 게시판"),
+		    Map.entry(3, "자유 게시판"),
+		    Map.entry(4, "모임 모집")   // 추가
 		);
 
 	// CategoryCode와 CategoryName 매핑해주는 맵
@@ -68,7 +73,8 @@ public class BoardController {
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
 			@RequestParam Map<String, Object> paramMap, 
 			@RequestParam(name = "sort", required = false) String sort,
-	        @RequestParam(name = "dir", required = false, defaultValue = "desc") String dir) {
+	        @RequestParam(name = "dir", required = false, defaultValue = "desc") String dir,
+	        @RequestParam(name = "onlyOpen", required = false, defaultValue = "false") boolean onlyOpen) {
 
 		// URL에 있는 BoardCode와 Map을 통해 게시판 이름 얻어오기
 		String boardName = getBoardName(boardCode);
@@ -101,7 +107,7 @@ public class BoardController {
 
 			// 게시글 목록 조회 서비스 호출
 			log.debug("게시글 목록 조회 시작");
-			map = service.selectBoardList(boardCode, categoryCode, cp, sort, dir);
+			map = service.selectBoardList(boardCode, categoryCode, cp, sort, dir, onlyOpen);
 			log.debug("게시글 목록 조회 완료 {}", map);
 
 		} else { // 검색인 경우
@@ -118,6 +124,7 @@ public class BoardController {
 			// 정렬
 			paramMap.put("sort", sort);
 	        paramMap.put("dir", dir);
+	        paramMap.put("onlyOpen", onlyOpen);
 
 			// 검색(내가 검색한 게시글 목록 조회) 서비스 호출
 			log.debug("검색한 게시글 목록 조회 시작");
@@ -133,6 +140,7 @@ public class BoardController {
 		model.addAttribute("boardName", boardName);
 		model.addAttribute("currentSort", sort);
 	    model.addAttribute("currentDir", dir);
+	    model.addAttribute("onlyOpen", onlyOpen);
 
 		// src/main/resources/templates/board/boardList.html 로 forward
 		return "board/boardList";
@@ -218,6 +226,14 @@ public class BoardController {
 			ra.addFlashAttribute("message", "게시글이 존재하지 않습니다.");
 			return "redirect:/";
 		}
+		
+		if (boardCode == 4) {
+	        Gathering gathering = gatheringService.getGathering(
+	            boardNo,
+	            loginMember != null ? loginMember.getMemberNo() : 0
+	        );
+	        model.addAttribute("gathering", gathering);
+	    }
 
 		handleViewCount(board, boardNo, loginMember, req, resp);
 

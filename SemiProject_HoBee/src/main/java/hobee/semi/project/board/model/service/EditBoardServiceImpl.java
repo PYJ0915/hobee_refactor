@@ -19,6 +19,8 @@ import hobee.semi.project.board.model.dto.BoardImg;
 import hobee.semi.project.board.model.mapper.EditBoardMapper;
 import hobee.semi.project.common.util.Utility;
 import hobee.semi.project.follow.model.mapper.FollowMapper;
+import hobee.semi.project.gathering.model.dto.Gathering;
+import hobee.semi.project.gathering.model.mapper.GatheringMapper;
 import hobee.semi.project.notification.model.dto.Notification;
 import hobee.semi.project.notification.model.mapper.NotificationMapper;
 import lombok.RequiredArgsConstructor;
@@ -31,111 +33,119 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class EditBoardServiceImpl implements EditBoardService {
 
-    private final EditBoardMapper mapper;
-    private final FollowMapper followMapper;
-    private final NotificationMapper notificationMapper;
+	private final EditBoardMapper mapper;
+	private final FollowMapper followMapper;
+	private final NotificationMapper notificationMapper;
+	private final GatheringMapper gatheringMapper;
 
-    @Value("${my.board.web-path}")
-    private String webPath; // /images/board/
+	@Value("${my.board.web-path}")
+	private String webPath; // /images/board/
 
-    @Value("${my.board.folder-path}")
-    private String folderPath; // C:/uploadFiles/boardImg
+	@Value("${my.board.folder-path}")
+	private String folderPath; // C:/uploadFiles/boardImg
 
-    /** [서머노트 전용] 이미지 업로드 서비스 
-     * 
-     */
-    @Override
-    public String imageUpload(MultipartFile file) throws Exception {
-        
-        if (file.isEmpty()) return null;
+	/**
+	 * [서머노트 전용] 이미지 업로드 서비스
+	 * 
+	 */
+	@Override
+	public String imageUpload(MultipartFile file) throws Exception {
 
-        // 1. 파일명 변경
-        String originalName = file.getOriginalFilename();
-        String rename = Utility.fileRename(originalName);
+		if (file.isEmpty())
+			return null;
 
-        // 2. DB에 이미지 정보 미리 삽입
-        BoardImg img = BoardImg.builder()
-                .BoardImgOriginalName(originalName)
-                .BoardImgRename(rename)
-                .BoardImgPath(webPath)
-                .build();
+		// 1. 파일명 변경
+		String originalName = file.getOriginalFilename();
+		String rename = Utility.fileRename(originalName);
 
-        int result = mapper.insertImage(img);
+		// 2. DB에 이미지 정보 미리 삽입
+		BoardImg img = BoardImg.builder().BoardImgOriginalName(originalName).BoardImgRename(rename)
+				.BoardImgPath(webPath).build();
 
-        if (result == 0) throw new RuntimeException("이미지 DB 삽입 실패");
+		int result = mapper.insertImage(img);
 
-        // 3. 서버에 파일 저장 (기존 transferTo 로직 활용)
-        File folder = new File(folderPath);
-        if(!folder.exists()) folder.mkdirs();
-        
-        file.transferTo(new File(folderPath + rename));
+		if (result == 0)
+			throw new RuntimeException("이미지 DB 삽입 실패");
 
-        // 4. 에디터에 뿌려줄 웹 접근 경로 반환
-        return webPath + rename;
-    }
+		// 3. 서버에 파일 저장 (기존 transferTo 로직 활용)
+		File folder = new File(folderPath);
+		if (!folder.exists())
+			folder.mkdirs();
 
-    /** 게시글 작성 서비스 (서머노트 버전) */
-    @Override
-    public int boardInsert(Board inputBoard) {
+		file.transferTo(new File(folderPath + rename));
 
-        // 1. 게시글 부분 INSERT
-        int result = mapper.boardInsert(inputBoard);
-        if (result == 0) return 0;
+		// 4. 에디터에 뿌려줄 웹 접근 경로 반환
+		return webPath + rename;
+	}
 
-        int boardNo = inputBoard.getBoardNo();
+	/** 게시글 작성 서비스 (서머노트 버전) */
+	@Override
+	public int boardInsert(Board inputBoard, Gathering gathering) {
 
-        // 2. 본문(boardContent)에서 이미지 이름들 추출 (정규표현식)
-        List<String> fileNames = getImgNamesFromContent(inputBoard.getBoardContent());
+		// 1. 게시글 부분 INSERT
+		int result = mapper.boardInsert(inputBoard);
+		if (result == 0)
+			return 0;
 
-        // 3. 추출된 이미지가 있다면 DB에서 주인(boardNo) 찾아주기
-        if (!fileNames.isEmpty()) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("boardNo", boardNo);
-            map.put("fileNames", fileNames);
-            int updateCount = mapper.updateImageBoardNo(map);
-            if (updateCount == 0) {
-                throw new RuntimeException("이미지 정보 연결 실패"); // 롤백
-            }
-        }
-        
-        // 팔로워들에게 게시글 등록 알림
-        List<Integer> followerNoList = followMapper.getFollowerNoList(inputBoard.getMemberNo());
+		int boardNo = inputBoard.getBoardNo();
 
-        for (int followerNo : followerNoList) {
-            Notification noti = Notification.builder()
-                .receiverNo(followerNo)
-                .senderNo(inputBoard.getMemberNo())
-                .notiType("BOARD")
-                .notiTargetNo(boardNo)
-                .notiMessage("님이 새 게시글을 작성했습니다.")
-                .build();
-            notificationMapper.insertNotification(noti);
-        }
+		// 2. 본문(boardContent)에서 이미지 이름들 추출 (정규표현식)
+		List<String> fileNames = getImgNamesFromContent(inputBoard.getBoardContent());
 
-        return boardNo;
-    }
+		// 3. 추출된 이미지가 있다면 DB에서 주인(boardNo) 찾아주기
+		if (!fileNames.isEmpty()) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("boardNo", boardNo);
+			map.put("fileNames", fileNames);
+			int updateCount = mapper.updateImageBoardNo(map);
+			if (updateCount == 0) {
+				throw new RuntimeException("이미지 정보 연결 실패"); // 롤백
+			}
+		}
 
-    // SummerNote 에서는 필수로 필요한 메서드임
-    /** 본문에서 파일명 추출하는 도우미 메서드 */
-    private List<String> getImgNamesFromContent(String content) {
-        List<String> list = new ArrayList<>();
-        // webPath(예: /images/board/) 뒤의 파일명을 찾는 패턴
-        Pattern pattern = Pattern.compile(webPath + "([^\"']+)");
-        Matcher matcher = pattern.matcher(content);
+		// 모임 게시글이면 Gathering 테이블에 저장
+		if (inputBoard.getBoardCode() == 4 && gathering != null) {
+			gathering.setBoardNo(boardNo);
+			gatheringMapper.insertGathering(gathering);
 
-        while (matcher.find()) {
-            list.add(matcher.group(1));
-        }
-        return list;
-    }
+			// 작성자 자동 APPROVED로 참여
+			gatheringMapper.joinApproved(gathering.getGatheringNo(), inputBoard.getMemberNo());
+		}
+
+		// 팔로워들에게 게시글 등록 알림
+		List<Integer> followerNoList = followMapper.getFollowerNoList(inputBoard.getMemberNo());
+
+		for (int followerNo : followerNoList) {
+			Notification noti = Notification.builder().receiverNo(followerNo).senderNo(inputBoard.getMemberNo())
+					.notiType("BOARD").notiTargetNo(boardNo).notiMessage("님이 새 게시글을 작성했습니다.").build();
+			notificationMapper.insertNotification(noti);
+		}
+
+		return boardNo;
+	}
+
+	// SummerNote 에서는 필수로 필요한 메서드임
+	/** 본문에서 파일명 추출하는 도우미 메서드 */
+	private List<String> getImgNamesFromContent(String content) {
+		List<String> list = new ArrayList<>();
+		// webPath(예: /images/board/) 뒤의 파일명을 찾는 패턴
+		Pattern pattern = Pattern.compile(webPath + "([^\"']+)");
+		Matcher matcher = pattern.matcher(content);
+
+		while (matcher.find()) {
+			list.add(matcher.group(1));
+		}
+		return list;
+	}
 
 	@Override
 	public int boardDelete(Map<String, Object> map) {
 		return mapper.boardDelete(map);
-		
+
 	}
 
-	/** 게시글 수정 
+	/**
+	 * 게시글 수정
 	 *
 	 */
 	@Override
@@ -147,20 +157,5 @@ public class EditBoardServiceImpl implements EditBoardService {
 	public List<String> selectDbImgList() {
 		return mapper.selectDbImageList();
 	}
-    
-    
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }

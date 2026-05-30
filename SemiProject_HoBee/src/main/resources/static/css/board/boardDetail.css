@@ -504,3 +504,221 @@
 .comment-item .comment-actions {
   margin-left: auto;
 }
+
+.gathering-info-box {
+    margin: 30px 0;
+    padding: 28px 32px;
+    background-color: #fdfaf9;
+    border: 2px solid #f0ebe8;
+    border-radius: 16px;
+}
+
+.gathering-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #452829;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #FFF57E;
+}
+
+/* 정보 행 */
+.gathering-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 15px;
+    color: #333;
+}
+
+.gathering-label {
+    width: 80px;
+    font-weight: bold;
+    color: #452829;
+    flex-shrink: 0;
+}
+
+/* 참여/취소/확정 버튼 공통 */
+.gathering-btn {
+    height: 42px;
+    padding: 0 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: opacity 0.2s, background-color 0.2s;
+}
+
+.gathering-btn:hover {
+    opacity: 0.85;
+}
+
+/* 참여 신청 버튼 */
+.join-btn {
+    background-color: #452829;
+    color: #FFF57E;
+}
+
+/* 참여 취소 버튼 */
+.cancel-btn {
+    background-color: transparent;
+    color: #452829;
+    border: 1.5px solid #452829;
+}
+
+.cancel-btn:hover {
+    background-color: #f5e6e6;
+    opacity: 1;
+}
+
+/* 모임 확정 버튼 */
+.confirm-btn {
+    background-color: #FFF57E;
+    color: #452829;
+    border: 2px solid #452829;
+}
+
+.confirm-btn:hover {
+    background-color: #f5e93e;
+    opacity: 1;
+}
+
+/* 모집 마감 배지 */
+.gathering-closed-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background-color: #eee;
+    color: #888;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* 버튼 영역 */
+.gathering-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+/* 신청 관리 영역 (작성자 전용) */
+.gathering-manage-area {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.gathering-members-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #452829;
+    margin-bottom: 12px;
+}
+
+/* 참여자 목록 */
+.gathering-members-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.gathering-members-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+}
+
+/* 참여자 프로필 이미지 */
+.gathering-member-img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* 수락/거절 버튼 영역 */
+.member-action-btns {
+    margin-left: auto;
+    display: flex;
+    gap: 6px;
+}
+
+/* 수락 버튼 */
+.approve-btn {
+    padding: 5px 14px;
+    border-radius: 6px;
+    border: none;
+    background-color: #452829;
+    color: #FFF57E;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.approve-btn:hover {
+    opacity: 0.8;
+}
+
+/* 거절 버튼 */
+.reject-btn {
+    padding: 5px 14px;
+    border-radius: 6px;
+    border: 1.5px solid #E84545;
+    background-color: transparent;
+    color: #E84545;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.reject-btn:hover {
+    background-color: #ffeaea;
+}
+
+/* 확정 배지 */
+.approved-badge {
+    margin-left: auto;
+    font-size: 12px;
+    color: #452829;
+    font-weight: bold;
+    background-color: #FFF57E;
+    padding: 3px 10px;
+    border-radius: 12px;
+}
+
+.gathering-status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.pending-badge {
+    background-color: #FFF57E;
+    color: #452829;
+}
+
+.approved-badge-status {
+    background-color: #452829;
+    color: #FFF57E;
+}
+
+.rejected-badge {
+    background-color: #ffeaea;
+    color: #E84545;
+    border: 1.5px solid #E84545;
+}
