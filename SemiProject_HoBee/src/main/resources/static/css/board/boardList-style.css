@@ -19,6 +19,7 @@ a:hover {
 .board-list {
     width: 1000px;
     margin: 50px auto;
+    min-height: 993px;
     display: block !important; /* 부모 flex 해제: 요소들이 위아래로 쌓이게 함 */
 }
 

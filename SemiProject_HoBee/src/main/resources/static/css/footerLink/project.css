@@ -9,6 +9,7 @@ body {
     width: 90%;
     max-width: 1000px;
     margin: 60px auto 100px auto;
+    min-height: 903px;
 }
 
 .project-title {
