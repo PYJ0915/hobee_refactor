@@ -137,7 +137,10 @@ document.addEventListener("DOMContentLoaded", () => {
 	const chatInput = document.querySelector("#chatInput");
 	const chatSendBtn = document.querySelector("#chatSendBtn");
 	const chatStatusDot = document.querySelector("#chatStatusDot");
-	let isConnecting  = false;
+	let isConnecting = false;
+	let typingTimer = null;
+	let isTypingSent = false;
+	const TYPING_TIMEOUT = 3000;
 
 	let stompClient = null;
 	let currentRoomId = null;
@@ -146,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	//  채팅 모달 열기
 	// ---------------------------
 	if (chatBtn != null) {
-		
+
 		chatBtn.addEventListener("click", async () => {
 			chatBtn.disabled = true;
 			chatModal.classList.remove("popup-hidden");
@@ -226,7 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	//  WebSocket 연결
 	// ---------------------------
 	function connectWebSocket() {
-		
+
 		if (isConnecting) return;
 
 		// 기존 연결이 살아있으면 먼저 끊기
@@ -234,7 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			stompClient.disconnect();
 			stompClient = null;
 		}
-		
+
 		isConnecting = true;
 
 		const socket = new SockJS('/ws');
@@ -252,11 +255,19 @@ document.addEventListener("DOMContentLoaded", () => {
 			stompClient.subscribe("/topic/chat/room/" + currentRoomId, (message) => {
 				const chatMessage = JSON.parse(message.body);
 
-				// 내가 보낸 메시지는 sendMessage()에서 이미 추가했으므로 무시
 				if (String(chatMessage.senderNo) === String(loginMemberNo)) return;
 
-				appendMessage(chatMessage);
-				scrollToBottom();
+				if (chatMessage.type === "TYPING") {
+					showTypingIndicator();
+
+				} else if (chatMessage.type === "STOP_TYPING") {
+					removeTypingIndicator();
+
+				} else {
+					removeTypingIndicator(); // 메시지 수신 시 타이핑 표시 즉시 제거
+					appendMessage(chatMessage);
+					scrollToBottom();
+				}
 			});
 
 		}, (error) => {
@@ -271,14 +282,16 @@ document.addEventListener("DOMContentLoaded", () => {
 	//  WebSocket 연결 해제
 	// ---------------------------
 	function disconnectWebSocket() {
+		if (isTypingSent && stompClient?.connected && currentRoomId) sendStopTyping();
+		removeTypingIndicator();
 		isConnecting = false;
-	    if (stompClient !== null) {
-	        if (stompClient.connected) {
-	            stompClient.disconnect();
-	        }
-	        stompClient = null; // connected 여부와 관계없이 즉시 null 처리
-	    }
-	    chatStatusDot.classList.remove("connected");
+		if (stompClient !== null) {
+			if (stompClient.connected) {
+				stompClient.disconnect();
+			}
+			stompClient = null; // connected 여부와 관계없이 즉시 null 처리
+		}
+		chatStatusDot.classList.remove("connected");
 		console.log("WebSocket 연결 해제");
 	}
 
@@ -290,6 +303,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		const content = chatInput.value.trim();
 		if (!content) return;
 		if (!stompClient || !stompClient.connected) {
+			sendStopTyping();
 			appendSystemMessage("연결이 끊겼습니다. 잠시 후 다시 시도해주세요.");
 			return;
 		}
@@ -326,11 +340,11 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	if (chatInput) {
-		chatInput.addEventListener("keydown", (e) => {
-			if (e.key === "Enter" && !e.shiftKey) {
-				e.preventDefault();
-				sendMessage();
-			}
+		chatInput.addEventListener("input", () => {
+			if (!stompClient?.connected || !currentRoomId) return;
+			if (!isTypingSent) sendTyping();
+			clearTimeout(typingTimer);
+			typingTimer = setTimeout(() => sendStopTyping(), TYPING_TIMEOUT);
 		});
 	}
 
@@ -398,7 +412,52 @@ document.addEventListener("DOMContentLoaded", () => {
 			.replace(/>/g, "&gt;")
 			.replace(/"/g, "&quot;");
 	}
+	
+	function sendTyping() {
+		if (!stompClient?.connected || !currentRoomId) return;
+		isTypingSent = true;
+		stompClient.send("/app/chat/typing", {}, JSON.stringify({
+			type: "TYPING",
+			roomId: currentRoomId,
+			senderNo: loginMemberNo,
+			sender: loginNickname
+		}));
+	}
 
+	function sendStopTyping() {
+		if (!isTypingSent) return;
+		isTypingSent = false;
+		clearTimeout(typingTimer);
+		if (!stompClient?.connected || !currentRoomId) return;
+		stompClient.send("/app/chat/typing", {}, JSON.stringify({
+			type: "STOP_TYPING",
+			roomId: currentRoomId,
+			senderNo: loginMemberNo,
+			sender: loginNickname
+		}));
+	}
+
+	// 1:1이라 상대방 한 명만 있으므로 단일 요소로 관리
+	function showTypingIndicator() {
+		if (document.getElementById("typing-indicator-modal")) return;
+		const li = document.createElement("li");
+		li.id = "typing-indicator-modal";
+		li.className = "chat-typing-indicator";
+		li.innerHTML = `
+	        <span class="typing-name">${escapeHtml(targetNickname)}</span>
+	        <span class="typing-dots">
+	            <span></span><span></span><span></span>
+	        </span>
+	    `;
+		chatMessageList.appendChild(li);
+		scrollToBottom();
+	}
+
+	function removeTypingIndicator() {
+		document.getElementById("typing-indicator-modal")?.remove();
+	}
+	
 	window.addEventListener("beforeunload", disconnectWebSocket);
 
 });
+

@@ -11,7 +11,14 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ChatMessage {
 
-    public enum MessageType { TALK, ENTER, LEAVE }
+	public enum MessageType {
+	    TALK,
+	    ENTER,
+	    LEAVE,
+	    SYSTEM,
+	    TYPING,
+	    STOP_TYPING
+	}
 
     private MessageType type;
     private int  roomId;

@@ -81,6 +81,15 @@ public class FileConfig implements WebMvcConfigurer {
 
 	@Value("${my.board.resource-location}")
 	private String boardResourceLocation;
+	
+	@Value("${my.chat.resource-handler}")
+	private String chatResourceHandler;
+
+	@Value("${my.chat.resource-location}")
+	private String chatResourceLocation;
+
+	@Value("${my.chat.folder-path}")
+	private String chatFolderPath;
 
 	// -------------------------------------------
 
@@ -112,6 +121,10 @@ public class FileConfig implements WebMvcConfigurer {
 
 		registry.addResourceHandler("profileWebPath")
 		.addResourceLocations("profileFolderPath");
+		
+		 // 채팅방 이미지 추가
+	    registry.addResourceHandler(chatResourceHandler)
+	        .addResourceLocations(chatResourceLocation);
 
 	}
 

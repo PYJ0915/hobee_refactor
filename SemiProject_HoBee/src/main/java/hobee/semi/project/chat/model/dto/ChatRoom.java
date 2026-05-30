@@ -15,5 +15,6 @@ public class ChatRoom {
     private String roomType;   // "DIRECT"
     private String roomName;
     private String createDate;
+    private String roomImg;
     
 }

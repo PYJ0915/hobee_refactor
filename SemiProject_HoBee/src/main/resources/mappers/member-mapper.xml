@@ -161,7 +161,13 @@
     FROM MEMBER
     WHERE MEMBER_NICKNAME LIKE '%' || #{keyword} || '%'
     AND MEMBER_DEL_FL = 'N'
+    AND MEMBER_NO NOT IN (
+        SELECT MEMBER_NO
+        FROM PENALTY
+        WHERE PENALTY_TYPE = 'PERMANENT'
+        AND PENALTY_STATUS = 'ACTIVE'
+    )
     AND ROWNUM <![CDATA[<=]]> 10
-</select>
+	</select>
 
 </mapper>
