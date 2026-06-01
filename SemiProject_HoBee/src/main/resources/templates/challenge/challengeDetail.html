@@ -93,21 +93,27 @@
 
     </div>
 
-    <div th:if="${session.loginMember != null
-             and challenge.joined
-             and not #lists.isEmpty(myCertList)}" class="cert-history">
+    <div th:if="${allCertList != null and not #lists.isEmpty(allCertList)}" class="cert-history">
 
-      <h4 class="cert-history-title">📋 내 인증 내역</h4>
+      <h4 class="cert-history-title">📋 인증 내역</h4>
 
-      <ul class="cert-list">
-        <li th:each="cert : ${myCertList}" class="cert-item">
+      <div id="certHistoryList">
+        <div th:each="cert : ${allCertList}" class="cert-item"
+          th:data-date="${#strings.substring(cert.certWriteDate, 0, 10)}">
+
           <div class="cert-item-header">
-            <span class="cert-item-title" th:text="${cert.certTitle}">제목</span>
-            <span class="cert-item-date" th:text="${cert.certWriteDate}">날짜</span>
+            <a th:href="@{/member/profile/{no}(no=${cert.memberNo})}" class="cert-writer-mini">
+              <img th:with="user=#{user.default.image}" th:src="${cert.profileImg ?: user}"
+                class="cert-writer-mini-img">
+              <span th:text="${cert.memberNickname}" class="cert-writer-mini-name"></span>
+            </a>
+            <span class="cert-item-date" th:text="${cert.certWriteDate}"></span>
           </div>
-          <p class="cert-item-content"  th:utext="${cert.certContent}">내용</p>
-        </li>
-      </ul>
+
+          <p class="cert-item-title" th:text="${cert.certTitle}"></p>
+          <div class="cert-item-content" th:utext="${cert.certContent}"></div>
+        </div>
+      </div>
     </div>
 
   </main>

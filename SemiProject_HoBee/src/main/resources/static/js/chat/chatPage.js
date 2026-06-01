@@ -791,8 +791,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 		// 상대방 메시지일 때만 닉네임 + 아바타 표시
 		const senderInfo = !isMine ? `
         <div class="chat-sender-info">
+				<a href="/member/profile/${msg.senderNo}" 
+           class="chat-sender-profile">
             <img src="${msg.senderProfileImg || defaultImg}" class="chat-sender-avatar" alt="프로필">
             <span class="chat-sender-name">${msg.sender || ''}</span>
+				</a>
         </div>` : '';
 
 		li.innerHTML = `

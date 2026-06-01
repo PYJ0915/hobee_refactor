@@ -13,5 +13,7 @@ public interface CertMapper {
 	int insertCert(Cert cert);
 
 	List<Cert> selectCertList(@Param("challengeNo") int challengeNo, @Param("memberNo") int memberNo);
+	
+	List<Cert> selectAllCertList(int challengeNo);
 
 }

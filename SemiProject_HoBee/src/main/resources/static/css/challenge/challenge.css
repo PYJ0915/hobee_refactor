@@ -456,8 +456,16 @@
 /* 인증 이미지 */
 .cert-item-content img {
     max-width: 100%;
+    max-height: 300px;        /* ← 최대 높이 제한 */
+    object-fit: cover;
     border-radius: 8px;
     margin-top: 8px;
+    cursor: pointer;          /* ← 클릭 가능 표시 */
+    transition: opacity 0.2s;
+}
+
+.cert-item-content img:hover {
+    opacity: 0.85;
 }
 
 /* 인증 상세 뷰 */
@@ -510,4 +518,115 @@
 
 .cert-history-inline.popup-hidden {
     display: none;
+}
+
+/* 날짜 구분선 */
+.cert-date-divider {
+    font-size: 12px;
+    font-weight: bold;
+    color: #aaa;
+    padding: 16px 0 8px;
+    border-bottom: 1px solid #f0ebe8;
+    margin-bottom: 12px;
+}
+
+/* 인증 작성자 미니 프로필 */
+.cert-writer-mini {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cert-writer-mini-img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.cert-writer-mini-name {
+    font-size: 13px;
+    font-weight: bold;
+    color: #452829;
+}
+
+/* cert-item 내 제목 */
+.cert-item-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #452829;
+    margin: 8px 0 4px;
+}
+
+/* 이미지 원본 보기 오버레이 */
+.img-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+}
+
+.img-overlay-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+/* 날짜 네비게이터 */
+.cert-date-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #fdfaf9;
+    border: 1px solid #f0ebe8;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.cert-date-nav-label {
+    font-size: 12px;
+    font-weight: bold;
+    color: #aaa;
+    white-space: nowrap;
+}
+
+.cert-date-nav-list {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.cert-date-nav-btn {
+    padding: 4px 12px;
+    border-radius: 99px;
+    border: 1.5px solid #ddd;
+    background: #fff;
+    font-size: 12px;
+    color: #452829;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+}
+
+.cert-date-nav-btn:hover {
+    background: #452829;
+    color: #FFF57E;
+    border-color: #452829;
+}
+
+a.cert-writer-mini {
+    text-decoration: none;
+    transition: opacity 0.15s;
+}
+
+a.cert-writer-mini:hover {
+    opacity: 0.75;
+    text-decoration: none;
 }

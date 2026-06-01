@@ -581,17 +581,22 @@
 }
 
 .chat-sender-avatar {
-    width: 28px;
-    height: 28px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
+    flex-shrink: 0;
     object-fit: cover;
     border: 1px solid #e0e0e0;
 }
 
 .chat-sender-name {
+    line-height: 1;
     font-size: 14px;
     color: #888;
     font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .chat-leave-btn {
@@ -949,6 +954,20 @@
 }
 
 .room-setting-confirm:hover { opacity: 0.85; }
+
+.chat-sender-profile {
+    text-decoration: none;
+    transition: opacity 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: inherit;
+}
+
+.chat-sender-profile:hover {
+    opacity: 0.75;
+    text-decoration: none;
+}
 
 @keyframes typing-bounce {
     0%, 60%, 100% { transform: translateY(0);    opacity: 0.4; }

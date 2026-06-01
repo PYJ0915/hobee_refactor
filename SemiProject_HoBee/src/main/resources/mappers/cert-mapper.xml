@@ -1,36 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="hobee.semi.project.challenge.model.mapper.CertMapper">
+<mapper
+	namespace="hobee.semi.project.challenge.model.mapper.CertMapper">
 
-    <!-- 인증 등록 -->
-    <insert id="insertCert" parameterType="Cert">
-        <selectKey keyProperty="certNo" resultType="int" order="BEFORE">
-            SELECT SEQ_CERT_NO.NEXTVAL FROM DUAL
-        </selectKey>
-        INSERT INTO CERT (
-            CERT_NO, CHALLENGE_NO, MEMBER_NO, CERT_TITLE, CERT_CONTENT
-        ) VALUES (
-            #{certNo}, #{challengeNo}, #{memberNo}, #{certTitle}, #{certContent}
-        )
-    </insert>
+	<!-- 인증 등록 -->
+	<insert id="insertCert" parameterType="Cert">
+		<selectKey keyProperty="certNo" resultType="int"
+			order="BEFORE">
+			SELECT SEQ_CERT_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO CERT (
+		CERT_NO, CHALLENGE_NO, MEMBER_NO, CERT_TITLE, CERT_CONTENT
+		) VALUES (
+		#{certNo}, #{challengeNo}, #{memberNo}, #{certTitle}, #{certContent}
+		)
+	</insert>
 
-    <!-- 특정 챌린지 + 특정 회원 인증 내역 조회 -->
-    <select id="selectCertList" resultType="Cert">
-        SELECT
-            C.CERT_NO,
-            C.CHALLENGE_NO,
-            C.MEMBER_NO,
-            C.CERT_TITLE,
-            C.CERT_CONTENT,
-            TO_CHAR(C.CERT_WRITE_DATE, 'YYYY-MM-DD HH24:MI') AS CERT_WRITE_DATE,
-            M.MEMBER_NICKNAME,
-            M.PROFILE_IMG
-        FROM CERT C
-        JOIN MEMBER M ON M.MEMBER_NO = C.MEMBER_NO
-        WHERE C.CHALLENGE_NO = #{challengeNo}
-          AND C.MEMBER_NO    = #{memberNo}
-        ORDER BY C.CERT_NO DESC
-    </select>
+	<!-- 특정 챌린지 + 특정 회원 인증 내역 조회 -->
+	<select id="selectCertList" resultType="Cert">
+		SELECT
+		C.CERT_NO,
+		C.CHALLENGE_NO,
+		C.MEMBER_NO,
+		C.CERT_TITLE,
+		C.CERT_CONTENT,
+		TO_CHAR(C.CERT_WRITE_DATE, 'YYYY-MM-DD HH24:MI') AS CERT_WRITE_DATE,
+		M.MEMBER_NICKNAME,
+		M.PROFILE_IMG
+		FROM CERT C
+		JOIN MEMBER M ON M.MEMBER_NO = C.MEMBER_NO
+		WHERE C.CHALLENGE_NO = #{challengeNo}
+		AND C.MEMBER_NO = #{memberNo}
+		ORDER BY C.CERT_NO DESC
+	</select>
+
+	<!-- 특정 챌린지 전체 참여자 인증 내역 (날짜 내림차순) -->
+	<select id="selectAllCertList" resultType="Cert">
+		SELECT
+		C.CERT_NO,
+		C.CHALLENGE_NO,
+		C.MEMBER_NO,
+		C.CERT_TITLE,
+		C.CERT_CONTENT,
+		TO_CHAR(C.CERT_WRITE_DATE, 'YYYY-MM-DD HH24:MI') AS CERT_WRITE_DATE,
+		M.MEMBER_NICKNAME,
+		M.PROFILE_IMG
+		FROM CERT C
+		JOIN MEMBER M ON M.MEMBER_NO = C.MEMBER_NO
+		WHERE C.CHALLENGE_NO = #{challengeNo}
+		ORDER BY C.CERT_WRITE_DATE DESC
+	</select>
 
 </mapper>

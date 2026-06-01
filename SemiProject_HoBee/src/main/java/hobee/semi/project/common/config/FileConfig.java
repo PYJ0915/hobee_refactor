@@ -87,9 +87,12 @@ public class FileConfig implements WebMvcConfigurer {
 
 	@Value("${my.chat.resource-location}")
 	private String chatResourceLocation;
+	
+	@Value("${my.challenge.resource-handler}")
+	private String challengeResourceHandler;
 
-	@Value("${my.chat.folder-path}")
-	private String chatFolderPath;
+	@Value("${my.challenge.resource-location}")
+	private String challengeResourceLocation;
 
 	// -------------------------------------------
 
@@ -125,6 +128,9 @@ public class FileConfig implements WebMvcConfigurer {
 		 // 채팅방 이미지 추가
 	    registry.addResourceHandler(chatResourceHandler)
 	        .addResourceLocations(chatResourceLocation);
+	    
+	    registry.addResourceHandler(challengeResourceHandler)
+        .addResourceLocations(challengeResourceLocation);
 
 	}
 

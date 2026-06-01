@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 참여하기 버튼
   if (joinBtn) {
     joinBtn.addEventListener("click", async () => {
-      if(!confirm("챌린지에 참여 하시겠습니까?")) return;
+      if (!confirm("챌린지에 참여 하시겠습니까?")) return;
       const result = await fetch(`/challenge/join/${challengeNo}`, {
         method: "POST"
       }).then(r => r.json());
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const imgForm = new FormData();
         imgForm.append("file", imgFile);
 
-        imgUrl = await fetch("/editBoard/imageUpload", {
+        imgUrl = await fetch("/challenge/imageUpload", {
           method: "POST",
           body: imgForm
         }).then(r => r.text());
@@ -107,4 +107,74 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  const certItems = document.querySelectorAll("#certHistoryList .cert-item");
+  const dateSet = [];
+  let lastDate = null;
+
+  certItems.forEach(item => {
+    const rawDate = item.dataset.date;
+    if (rawDate !== lastDate) {
+      // 구분선 삽입
+      const divider = document.createElement("div");
+      divider.className = "cert-date-divider";
+      divider.id = `cert-date-${rawDate}`;  // 앵커용 id
+      divider.textContent = rawDate;
+      item.before(divider);
+      lastDate = rawDate;
+      dateSet.push(rawDate);
+    }
+  });
+
+  // 날짜가 2개 이상일 때만 네비게이터 표시
+  const certHistory = document.querySelector(".cert-history");
+  if (certHistory && dateSet.length >= 2) {
+    const nav = document.createElement("div");
+    nav.className = "cert-date-nav";
+
+    const label = document.createElement("span");
+    label.className = "cert-date-nav-label";
+    label.textContent = "날짜 이동:";
+    nav.appendChild(label);
+
+    const navList = document.createElement("div");
+    navList.className = "cert-date-nav-list";
+
+    dateSet.forEach(date => {
+      const btn = document.createElement("button");
+      btn.className = "cert-date-nav-btn";
+      btn.textContent = date;
+      btn.addEventListener("click", () => {
+        const target = document.querySelector(`#cert-date-${date}`);
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+      navList.appendChild(btn);
+    });
+
+    nav.appendChild(navList);
+
+    // 인증 내역 섹션 맨 위에 네비게이터 삽입
+    certHistory.insertBefore(nav, certHistory.querySelector("#certHistoryList"));
+  }
+
+  // 인증 이미지 클릭 시 원본 크기로 보기
+  document.addEventListener("click", e => {
+    const img = e.target.closest(".cert-item-content img");
+    if (!img) return;
+
+    const overlay = document.createElement("div");
+    overlay.className = "img-overlay";
+
+    const fullImg = document.createElement("img");
+    fullImg.src = img.src;
+    fullImg.className = "img-overlay-img";
+
+    overlay.appendChild(fullImg);
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener("click", () => overlay.remove());
+  });
+
 });

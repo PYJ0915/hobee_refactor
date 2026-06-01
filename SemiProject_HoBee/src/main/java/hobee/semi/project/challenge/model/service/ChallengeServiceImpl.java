@@ -1,17 +1,21 @@
 package hobee.semi.project.challenge.model.service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.challenge.model.dto.Cert;
 import hobee.semi.project.challenge.model.dto.Challenge;
 import hobee.semi.project.challenge.model.mapper.CertMapper;
 import hobee.semi.project.challenge.model.mapper.ChallengeMapper;
+import hobee.semi.project.common.util.Utility;
 import hobee.semi.project.notification.model.dto.Notification;
 import hobee.semi.project.notification.model.mapper.NotificationMapper;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +24,19 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Transactional(rollbackFor = Exception.class)
 @RequiredArgsConstructor
+@PropertySource("classpath:/config.properties")
 @Slf4j
 public class ChallengeServiceImpl implements ChallengeService {
 
     private final ChallengeMapper mapper;
     private final CertMapper  certMapper;
     private final NotificationMapper notificationMapper;
+    
+    @Value("${my.challenge.web-path}")
+    private String challengeWebPath;
+
+    @Value("${my.challenge.folder-path}")
+    private String challengeFolderPath;
 
     @Override
     public void createChallenge(Challenge challenge) {
@@ -122,5 +133,30 @@ public class ChallengeServiceImpl implements ChallengeService {
     @Override
     public List<Cert> getCertList(int challengeNo, int memberNo) {
         return certMapper.selectCertList(challengeNo, memberNo);
+    }
+    
+    @Override
+    public List<Cert> getAllCertList(int challengeNo) {
+        return certMapper.selectAllCertList(challengeNo);
+    }
+    
+    public String imageUpload(MultipartFile file) throws Exception {
+        if (file.isEmpty()) return null;
+
+        String originalName = file.getOriginalFilename();
+        String rename = Utility.fileRename(originalName);
+
+        File folder = new File(challengeFolderPath);
+        if (!folder.exists()) folder.mkdirs();
+
+        String savePath = challengeFolderPath + rename;
+
+        if (Utility.isResizableImage(originalName)) {
+            Utility.resizeBoard(file, savePath);
+        } else {
+            file.transferTo(new File(savePath));
+        }
+
+        return challengeWebPath + rename;
     }
 }
