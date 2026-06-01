@@ -19,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import hobee.semi.project.board.model.dto.Board;
+import hobee.semi.project.challenge.model.dto.Challenge;
+import hobee.semi.project.challenge.model.service.ChallengeService;
 import hobee.semi.project.findHobby.model.dto.Hobby;
 import hobee.semi.project.follow.model.service.FollowService;
 import hobee.semi.project.member.model.dto.MemberDTO;
@@ -41,6 +43,8 @@ public class MyPageController {
 	
 	private final FollowService followService;
 	
+	private final ChallengeService challengeService;
+	
 	/** 회원 정보 조회
 	 * @param loginMember
 	 * @param model
@@ -61,11 +65,14 @@ public class MyPageController {
 		// 팔로우 관련 데이터
 	    int followerCount  = followService.getFollowerCount(loginMember.getMemberNo());
 	    int followingCount = followService.getFollowingCount(loginMember.getMemberNo());
+	    
+		List<Challenge> myChallengeList = challengeService.getMyChallenges(loginMember.getMemberNo());
 		
 		model.addAttribute("hobbyList", hobbyList);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("followerCount", followerCount);
 	    model.addAttribute("followingCount", followingCount);
+	    model.addAttribute("myChallengeList", myChallengeList);
 		
 		return "myPage/myPage-profile";
 	}

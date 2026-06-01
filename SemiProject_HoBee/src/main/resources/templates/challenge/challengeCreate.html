@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>챌린지 만들기 | Ho-Bee</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/challenge/challenge.css}">
+    <link rel="stylesheet" th:href="@{/css/challenge/challengeCreate.css}">
+    <th:block th:replace="~{common/common}"/>
+</head>
+<body>
+<th:block th:replace="~{common/fragments/header}"/>
+
+<main class="challenge-create-container">
+
+    <div class="challenge-create-box">
+
+        <div class="create-header">
+            <h2 class="create-title">챌린지 만들기</h2>
+            <p class="create-sub">함께 도전할 챌린지를 등록해보세요!</p>
+        </div>
+
+        <form action="/challenge/create" method="post" id="challengeForm">
+
+            <!-- 챌린지 제목 -->
+            <div class="create-row">
+                <label for="challengeTitle">
+                    챌린지 제목 <span class="required">*</span>
+                </label>
+                <input type="text" id="challengeTitle" name="challengeTitle"
+                       placeholder="챌린지 제목을 입력하세요" maxlength="80" required>
+            </div>
+
+            <!-- 챌린지 설명 -->
+            <div class="create-row">
+                <label for="challengeDesc">
+                    챌린지 설명 <span class="required">*</span>
+                </label>
+                <textarea id="challengeDesc" name="challengeDesc"
+                          placeholder="챌린지에 대해 자세히 설명해주세요 (목표, 방법, 규칙 등)"
+                          rows="4" required></textarea>
+            </div>
+
+            <!-- 카테고리 -->
+            <div class="create-row">
+                <label for="challengeType">
+                    카테고리 <span class="required">*</span>
+                </label>
+                <select id="challengeType" name="challengeType" required>
+                    <option value="" disabled selected>카테고리를 선택하세요</option>
+                    <option value="운동·레저">운동·레저</option>
+                    <option value="자기 계발">자기 계발</option>
+                    <option value="문화·예술">문화·예술</option>
+                    <option value="사회 교류">사회 교류</option>
+                    <option value="수집·소비">수집·소비</option>
+                </select>
+            </div>
+
+            <!-- 목표 인증 횟수 -->
+            <div class="create-row">
+                <label for="goalCount">
+                    목표 인증 횟수 <span class="required">*</span>
+                </label>
+                <div class="input-with-unit">
+                    <input type="number" id="goalCount" name="goalCount"
+                           min="1" max="365" placeholder="예: 30" required>
+                    <span class="input-unit">회</span>
+                </div>
+                <p class="input-hint">챌린지 기간 동안 달성할 총 인증 횟수를 입력하세요 (1~365회)</p>
+            </div>
+
+            <!-- 챌린지 기간 -->
+            <div class="create-row">
+                <label>챌린지 기간 <span class="required">*</span></label>
+                <div class="date-range">
+                    <div class="date-input-wrap">
+                        <span class="date-label">시작일</span>
+                        <input type="date" id="startDate" name="startDate" required>
+                    </div>
+                    <span class="date-divider">~</span>
+                    <div class="date-input-wrap">
+                        <span class="date-label">종료일</span>
+                        <input type="date" id="endDate" name="endDate" required>
+                    </div>
+                </div>
+                <p class="input-hint" id="dateHint"></p>
+            </div>
+
+            <!-- 버튼 -->
+            <div class="create-actions">
+                <a href="/challenge/list" class="cancel-btn">취소</a>
+                <button type="submit" class="challenge-btn join-btn">챌린지 등록</button>
+            </div>
+
+        </form>
+
+    </div>
+
+</main>
+
+<th:block th:replace="~{common/fragments/footer}"/>
+
+<script src="/js/challenge/challengeCreate.js"></script>
+</body>
+</html>

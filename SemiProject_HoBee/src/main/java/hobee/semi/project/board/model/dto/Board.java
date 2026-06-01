@@ -45,4 +45,6 @@ public class Board {
 	// 모임 모집 게시판 전용: OPEN / CLOSED / null
 	private String gatheringStatus;
 	
+	private int challengeNo;
+	
 }

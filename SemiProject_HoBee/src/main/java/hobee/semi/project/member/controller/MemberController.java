@@ -18,6 +18,8 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import hobee.semi.project.board.model.dto.Board;
+import hobee.semi.project.challenge.model.dto.Challenge;
+import hobee.semi.project.challenge.model.service.ChallengeService;
 import hobee.semi.project.findHobby.model.dto.Hobby;
 import hobee.semi.project.follow.model.service.FollowService;
 import hobee.semi.project.member.model.dto.MemberDTO;
@@ -39,6 +41,7 @@ public class MemberController {
 	private final MemberService service;
 	private final MyPageService myPageService;
 	private final FollowService followService;
+	private final ChallengeService challengeService;
 
 	// 로그인 페이지
 	@GetMapping("loginPage")
@@ -272,7 +275,10 @@ public class MemberController {
 	    int followingCount = followService.getFollowingCount(memberNo);
 	    boolean isFollowing = loginMember != null && !isMyProfile
 	                       && followService.isFollowing(loginMember.getMemberNo(), memberNo);
-
+	    
+	    List<Challenge> challengeList = challengeService.getMyChallenges(memberNo);
+	    
+	    model.addAttribute("myChallengeList", challengeList);
 		model.addAttribute("targetMember", targetMember);
 	    model.addAttribute("boardList", boardList);
 	    model.addAttribute("isMyProfile", isMyProfile);

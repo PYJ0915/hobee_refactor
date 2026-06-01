@@ -72,7 +72,13 @@ public class EditBoardServiceImpl implements EditBoardService {
 		if (!folder.exists())
 			folder.mkdirs();
 
-		file.transferTo(new File(folderPath + rename));
+		String savePath = folderPath + rename;
+
+		if (Utility.isResizableImage(file.getOriginalFilename())) {
+		    Utility.resizeBoard(file, savePath);
+		} else {
+		    file.transferTo(new File(savePath));
+		}
 
 		// 4. 에디터에 뿌려줄 웹 접근 경로 반환
 		return webPath + rename;

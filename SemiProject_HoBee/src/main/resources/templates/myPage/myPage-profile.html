@@ -9,6 +9,7 @@
 	<link rel="stylesheet" th:href="@{/css/member/memberProfile.css}">
 	<link rel="stylesheet" th:href="@{/css/member/chat.css}">
 	<link rel="stylesheet" href="/css/myPage/myPage.css">
+	<link rel="stylesheet" th:href="@{/css/challenge/challenge.css}">
 	<th:block th:replace="~{common/common}"></th:block>
 </head>
 
@@ -17,13 +18,13 @@
 	<!-- 헤더 -->
 	<th:block th:replace="~{common/fragments/header}" />
 
-	
+
 
 	<main class="profile-container">
-		
+
 		<!-- 사이드 메뉴 -->
 		<th:block th:replace="~{common/fragments/sideMenu}" />
-		
+
 		<div class="profile-main">
 			<!-- 페이지 타이틀 -->
 			<h2 class="page-title">프로필</h2>
@@ -32,25 +33,70 @@
 						    profileCard(${session.loginMember}, true)}" />
 
 			<!-- 메인 콘텐츠 -->
-			<section class="profile-boards">
-				<h3 class="section-title">작성한 게시글</h3>
+			<section class="profile-accordion">
+        <button class="accordion-header" id="boardAccordionBtn">
+            <span class="accordion-section-title">작성한 게시글</span>
+            <span class="accordion-icon">▼</span>
+        </button>
+        <div class="accordion-body" id="boardAccordionBody">
+            <th:block th:if="${#lists.isEmpty(boardList)}">
+                <p class="empty-msg">작성한 게시글이 없습니다.</p>
+            </th:block>
+            <ul class="board-list" th:unless="${#lists.isEmpty(boardList)}">
+                <li th:each="board : ${boardList}" class="board-item">
+                    <a th:href="@{/board/detail/{boardCode}/{boardNo}
+                                    (boardCode=${board.boardCode},
+                                     boardNo=${board.boardNo})}"
+                       th:text="${board.boardTitle}" class="board-title"></a>
+                    <span class="board-date"
+                          th:text="${board.boardWriteDate}"></span>
+                </li>
+            </ul>
+        </div>
+    </section>
 
-				<th:block th:if="${#lists.isEmpty(boardList)}">
-					<p class="empty-msg">작성한 게시글이 없습니다.</p>
-				</th:block>
+			<section class="profile-accordion profile-accordion--challenge">
+				<button class="accordion-header" id="challengeAccordionBtn">
+					<span class="accordion-section-title">참여 중인 챌린지</span>
+					<span class="accordion-icon">▼</span>
+				</button>
+				<div class="accordion-body" id="challengeAccordionBody">
+					<th:block th:if="${#lists.isEmpty(myChallengeList)}">
+						<p class="empty-msg">참여 중인 챌린지가 없습니다.</p>
+					</th:block>
 
-				<ul class="board-list" th:unless="${#lists.isEmpty(boardList)}">
-					<li th:each="board : ${boardList}" class="board-item">
-						<a th:href="@{/board/detail/{boardCode}/{boardNo}
-				                        (boardCode=${board.boardCode},
-				                         boardNo=${board.boardNo})}" th:text="${board.boardTitle}" class="board-title">
-							게시글 제목
-						</a>
-						<span class="board-date" th:text="${board.boardWriteDate}">
-							작성일
-						</span>
-					</li>
-				</ul>
+					<ul class="board-list" th:unless="${#lists.isEmpty(myChallengeList)}">
+						<li th:each="c : ${myChallengeList}" class="board-item challenge-item">
+
+							<!-- 챌린지 행 (클릭 시 인증 내역 토글) -->
+							<div class="challenge-item-row" th:data-challenge-no="${c.challengeNo}">
+								<div class="challenge-item-left">
+									<span th:text="${c.challengeStatus == 'OPEN'} ? '진행 중' : '종료'" th:class="${c.challengeStatus == 'OPEN'}
+                                             ? 'mini-badge badge-open'
+                                             : 'mini-badge badge-done'">
+									</span>
+									<a th:href="@{/challenge/detail/{no}(no=${c.challengeNo})}" th:text="${c.challengeTitle}"
+										class="board-title" onclick="event.stopPropagation()">
+									</a>
+								</div>
+								<div class="challenge-item-right">
+									<span class="cert-progress">
+										<span th:text="${c.myCount}">0</span>
+										/ <span th:text="${c.goalCount}">0</span> 회
+									</span>
+									<span th:if="${c.complete}" class="mini-complete">✅ 달성</span>
+									<span class="cert-toggle-icon">▲</span>
+								</div>
+							</div>
+
+							<!-- 인증 내역 (챌린지별 아코디언) -->
+							<div class="cert-history-inline popup-hidden" th:id="'certHistory-' + ${c.challengeNo}">
+								<p class="cert-loading">불러오는 중...</p>
+							</div>
+
+						</li>
+					</ul>
+				</div>
 			</section>
 		</div>
 
@@ -59,10 +105,12 @@
 
 	<!-- 푸터 -->
 	<th:block th:replace="~{common/fragments/footer}" />
-	
+
 	<script th:inline="javascript">
-	    const loginMemberNo  = /*[[${session.loginMember?.memberNo}]]*/ null;
+		const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ null;
 	</script>
+
+	<script src="/js/challenge/certList.js"></script>
 
 </body>
 

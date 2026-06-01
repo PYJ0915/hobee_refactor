@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${board.boardTitle} + ' | 챌린지 인증'">챌린지 인증</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/challenge/challenge.css}">
+    <th:block th:replace="~{common/common}"/>
+</head>
+<body>
+<th:block th:replace="~{common/fragments/header}"/>
+
+<main class="challenge-detail-container">
+    <div class="challenge-detail-box">
+
+        <!-- 인증 헤더 -->
+        <div class="challenge-detail-header">
+            <span class="challenge-badge badge-open">챌린지 인증</span>
+            <h2 th:text="${board.boardTitle}">인증 제목</h2>
+        </div>
+
+        <!-- 작성자 정보 -->
+        <div class="cert-writer-row">
+            <a th:href="@{/member/profile/{no}(no=${board.memberNo})}">
+                <img th:with="user=#{user.default.image}"
+                     th:src="${board.profileImg ?: user}"
+                     class="cert-writer-img">
+            </a>
+            <div>
+                <a th:href="@{/member/profile/{no}(no=${board.memberNo})}"
+                   th:text="${board.memberNickname}"
+                   class="cert-writer-name"></a>
+                <span class="cert-writer-date"
+                      th:text="${board.boardWriteDate}"></span>
+            </div>
+        </div>
+
+        <!-- 인증 내용 -->
+        <div class="cert-view-content" th:utext="${board.boardContent}"></div>
+
+        <!-- 뒤로 가기 -->
+        <div class="challenge-actions" style="margin-top: 32px;">
+            <button onclick="history.back()" class="challenge-btn cert-back-btn">← 돌아가기</button>
+        </div>
+
+    </div>
+</main>
+
+<th:block th:replace="~{common/fragments/footer}"/>
+</body>
+</html>

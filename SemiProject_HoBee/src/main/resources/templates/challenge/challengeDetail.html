@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${challenge.challengeTitle} + ' | Ho-Bee'">챌린지</title>
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/css/challenge/challenge.css}">
+  <th:block th:replace="~{common/common}" />
+</head>
+
+<body>
+  <th:block th:replace="~{common/fragments/header}" />
+
+  <main class="challenge-detail-container">
+
+    <div class="challenge-detail-box">
+
+      <!-- 상단 정보 -->
+      <div class="challenge-detail-header">
+        <span class="challenge-badge" th:text="${challenge.challengeStatus == 'OPEN'} ? '진행 중' : '종료'" th:classappend="${challenge.challengeStatus == 'OPEN'}
+                                  ? ' badge-open' : ' badge-done'">
+        </span>
+        <h2 th:text="${challenge.challengeTitle}">챌린지 제목</h2>
+        <p class="challenge-desc" th:text="${challenge.challengeDesc}">설명</p>
+      </div>
+
+      <!-- 정보 행 -->
+      <div class="challenge-info-grid">
+        <div class="info-item">
+          <span class="info-label">카테고리</span>
+          <span th:text="${challenge.challengeType}">운동</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">목표</span>
+          <span th:text="${challenge.goalCount} + '회'">30회</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">기간</span>
+          <span th:text="${challenge.startDate} + ' ~ ' + ${challenge.endDate}">
+            기간
+          </span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">참여자</span>
+          <span th:text="${challenge.participantCount} + '명'">0명</span>
+        </div>
+      </div>
+
+      <!-- 내 진행 현황 (참여 중일 때) -->
+      <div class="my-progress" th:if="${session.loginMember != null and challenge.joined}">
+
+        <p class="progress-label">
+          내 진행 현황:
+          <strong th:text="${challenge.myCount}">0</strong>
+          /
+          <span th:text="${challenge.goalCount}">30</span>
+          회
+        </p>
+
+        <!-- 프로그레스 바 -->
+        <div class="progress-bar-wrapper">
+          <div class="progress-bar" th:style="'width:' + ${challenge.myCount * 100 / challenge.goalCount} + '%'">
+          </div>
+        </div>
+
+        <!-- 달성 배지 -->
+        <span th:if="${challenge.complete}" class="complete-badge">🎉 목표 달성!</span>
+
+      </div>
+
+      <!-- 버튼 영역 -->
+      <div class="challenge-actions" th:if="${session.loginMember != null}">
+
+        <!-- 미참여 + 진행 중 → 참여 버튼 -->
+        <button th:if="${!challenge.joined and challenge.challengeStatus == 'OPEN'}" id="joinBtn"
+          th:data-challenge-no="${challenge.challengeNo}" class="challenge-btn join-btn">
+          참여하기
+        </button>
+
+        <!-- 참여 중 + 진행 중 → 인증 버튼 -->
+        <button th:if="${challenge.joined
+                            and challenge.challengeStatus == 'OPEN'
+                            and !challenge.complete}" id="certBtn" th:data-challenge-no="${challenge.challengeNo}"
+          class="challenge-btn cert-btn">
+          인증하기
+        </button>
+
+        <!-- 완료 -->
+        <span th:if="${challenge.complete}" class="challenge-done-badge">✅ 완료</span>
+
+      </div>
+
+    </div>
+
+    <div th:if="${session.loginMember != null
+             and challenge.joined
+             and not #lists.isEmpty(myCertList)}" class="cert-history">
+
+      <h4 class="cert-history-title">📋 내 인증 내역</h4>
+
+      <ul class="cert-list">
+        <li th:each="cert : ${myCertList}" class="cert-item">
+          <div class="cert-item-header">
+            <span class="cert-item-title" th:text="${cert.certTitle}">제목</span>
+            <span class="cert-item-date" th:text="${cert.certWriteDate}">날짜</span>
+          </div>
+          <p class="cert-item-content"  th:utext="${cert.certContent}">내용</p>
+        </li>
+      </ul>
+    </div>
+
+  </main>
+
+  <!-- 인증 모달 -->
+  <div class="cert-modal popup-hidden" id="certModal">
+    <div class="cert-modal-backdrop" id="certModalBackdrop"></div>
+    <div class="cert-modal-box">
+      <div class="cert-modal-header">
+        <h3>인증하기</h3>
+        <button class="cert-modal-close" id="certModalClose">&times;</button>
+      </div>
+      <div class="cert-modal-body">
+        <input type="text" id="certTitle" placeholder="인증 제목을 입력하세요" maxlength="80">
+        <textarea id="certContent" placeholder="오늘의 인증 내용을 작성해주세요" rows="5"></textarea>
+        <div class="cert-img-area">
+          <label for="certImg" class="cert-img-label">
+            📷 인증 사진 첨부 (선택)
+          </label>
+          <input type="file" id="certImg" accept="image/*" style="display:none;">
+          <div id="certImgPreview" class="cert-img-preview" style="display:none;">
+            <img id="certImgThumb" src="" alt="미리보기">
+            <button type="button" id="certImgRemove">✕</button>
+          </div>
+        </div>
+      </div>
+      <div class="cert-modal-footer">
+        <button id="certSubmitBtn" class="challenge-btn cert-btn">
+          인증 등록
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <th:block th:replace="~{common/fragments/footer}" />
+
+  <script th:inline="javascript">
+    const challengeNo = /*[[${challenge.challengeNo}]]*/ null;
+  </script>
+  <script src="/js/challenge/challengeDetail.js"></script>
+</body>
+
+</html>

@@ -245,6 +245,10 @@ public class BoardController {
 				: "/board/list/" + boardCode;
 
 		model.addAttribute("gotoList", gotoList);
+		
+		if (boardCode == 5) {
+	        return "challenge/certDetail";
+	    }
 
 		return "board/boardDetail";
 	}

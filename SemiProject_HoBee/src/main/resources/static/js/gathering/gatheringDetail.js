@@ -62,6 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (joinBtn) {
         joinBtn.addEventListener("click", async () => {
+            if (!confirm("참여를 신청하시겠습니까?")) return;
             const gatheringNo = joinBtn.dataset.gatheringNo;
             const result = await fetch(`/gathering/join/${gatheringNo}`, {
                 method: "POST"
@@ -78,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (cancelBtn) {
         cancelBtn.addEventListener("click", async () => {
-            if (!confirm("참여를 취소하시겠습니까?")) return;
+            if (!confirm("취소 후에는 재신청이 불가능합니다. 계속 진행하시겠습니까?")) return;
             const gatheringNo = cancelBtn.dataset.gatheringNo;
             await fetch(`/gathering/cancel/${gatheringNo}`, { method: "POST" });
             location.reload();

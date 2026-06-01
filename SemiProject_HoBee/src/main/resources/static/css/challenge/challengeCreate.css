@@ -1,0 +1,181 @@
+/* ===========================
+   챌린지 만들기 페이지
+=========================== */
+
+.challenge-create-container {
+    max-width: 680px;
+    margin: 50px auto;
+    padding: 0 20px 80px;
+}
+
+/* 전체 박스 */
+.challenge-create-box {
+    background: #fff;
+    border: 3px solid #FFF57E;
+    border-radius: 24px;
+    padding: 48px 56px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* 헤더 */
+.create-header {
+    margin-bottom: 36px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #FFF57E;
+}
+
+.create-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #452829;
+    margin-bottom: 6px;
+}
+
+.create-sub {
+    font-size: 14px;
+    color: #888;
+}
+
+/* 입력 행 */
+.create-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.create-row label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #452829;
+}
+
+.required {
+    color: #E84545;
+    margin-left: 2px;
+}
+
+/* 공통 입력 스타일 */
+.create-row input[type="text"],
+.create-row input[type="number"],
+.create-row input[type="date"],
+.create-row textarea,
+.create-row select {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #333;
+    background-color: #fff;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+    font-family: inherit;
+}
+
+.create-row input:focus,
+.create-row textarea:focus,
+.create-row select:focus {
+    outline: none;
+    border-color: #452829;
+}
+
+.create-row textarea {
+    resize: vertical;
+    min-height: 110px;
+    line-height: 1.6;
+}
+
+.create-row select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+}
+
+/* 횟수 입력 + 단위 */
+.input-with-unit {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.input-with-unit input {
+    flex: 1;
+}
+
+.input-unit {
+    font-size: 14px;
+    font-weight: bold;
+    color: #452829;
+    white-space: nowrap;
+}
+
+/* 힌트 텍스트 */
+.input-hint {
+    font-size: 12px;
+    color: #aaa;
+    margin: 0;
+}
+
+/* 날짜 범위 */
+.date-range {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.date-input-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.date-label {
+    font-size: 12px;
+    color: #888;
+    font-weight: bold;
+}
+
+.date-divider {
+    font-size: 18px;
+    color: #ccc;
+    flex-shrink: 0;
+    padding-top: 20px;
+}
+
+/* 하단 버튼 영역 */
+.create-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 1px solid #f0ebe8;
+}
+
+/* 취소 버튼 */
+.cancel-btn {
+    height: 42px;
+    padding: 0 24px;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #888;
+    background: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.cancel-btn:hover {
+    border-color: #452829;
+    color: #452829;
+    text-decoration: none;
+}

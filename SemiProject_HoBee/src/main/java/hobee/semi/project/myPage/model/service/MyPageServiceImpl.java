@@ -208,7 +208,15 @@ public class MyPageServiceImpl implements MyPageService {
 	        
 	        // 새 파일 저장
 	        if (!profileImg.isEmpty()) {
-	            profileImg.transferTo(new File(profileFolderPath + rename));
+	        	String savePath = profileFolderPath + rename;
+
+	            if (Utility.isResizableImage(profileImg.getOriginalFilename())) {
+	                // JPG, PNG, WEBP → 300x300 리사이징 후 저장
+	                Utility.resizeProfile(profileImg, savePath);
+	            } else {
+	                // GIF 등 → 그대로 저장
+	                profileImg.transferTo(new File(savePath));
+	            }
 
 	            if (loginMember.getProfileImg() == null) {
 	                log.info("멤버 테이블에 프로필경로 없음.");
