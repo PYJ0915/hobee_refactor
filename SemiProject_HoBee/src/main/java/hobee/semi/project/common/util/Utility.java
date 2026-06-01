@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
@@ -14,9 +15,17 @@ import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
 
 public class Utility {
+	
+	private static final Map<String, Integer> HOBBY_CODE_MAP = Map.of(
+		    "sports",       1,
+		    "art",          2,
+		    "selfDevelop",  3,
+		    "social",       4,
+		    "shopping",     5
+		);
 
 	public static String fileRename(String originalName) {
-		
+	
 		// 현재 시간
 	    String date = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 
@@ -30,28 +39,7 @@ public class Utility {
 	}
 	
 	public static int getHobbyCode(String hobby) {
-		
-			int hobbyCode = 0;
-			
-			switch (hobby) {
-			case "sports":
-				hobbyCode = 1;
-				break;
-			case "art":
-				hobbyCode = 2;
-				break;
-			case "selfDevelop":
-				hobbyCode = 3;
-				break;
-			case "social":
-				hobbyCode = 4;
-				break;
-			case "shopping":
-				hobbyCode = 5;
-				break;
-			}
-			
-			return hobbyCode;
+			return HOBBY_CODE_MAP.getOrDefault(hobby, 0);
 		}
 	
 	/**
