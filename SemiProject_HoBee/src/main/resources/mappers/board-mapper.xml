@@ -18,6 +18,9 @@
 				AND BOARD_CODE = #{boardCode}
 			</otherwise>
 		</choose>
+		<if test="onlyOpen == true">
+			AND G.GATHERING_STATUS = 'OPEN'
+		</if>
 	</select>
 
 	<!-- 게시글 목록 조회 -->
@@ -28,8 +31,10 @@
 		B.MEMBER_NO,
 		B.BOARD_VIEW_COUNT,
 		(SELECT COUNT(*) FROM "COMMENT" C
-		WHERE C.BOARD_NO = B.BOARD_NO AND C.COMMENT_DEL_FL = 'N') COMMENT_COUNT,
-		(SELECT COUNT(*) FROM "BOARD_LIKE" L
+		WHERE C.BOARD_NO =
+		B.BOARD_NO AND C.COMMENT_DEL_FL = 'N') COMMENT_COUNT,
+		(SELECT COUNT(*)
+		FROM "BOARD_LIKE" L
 		WHERE L.BOARD_NO = B.BOARD_NO) LIKE_COUNT,
 		B.BOARD_WRITE_DATE AS BOARD_WRITE_DATE_RAW,
 		G.GATHERING_STATUS,
@@ -43,7 +48,8 @@
            ]]>
 		FROM "BOARD" B
 		JOIN "MEMBER" M ON B.MEMBER_NO = M.MEMBER_NO
-		LEFT JOIN GATHERING G ON B.BOARD_NO = G.BOARD_NO
+		LEFT JOIN
+		GATHERING G ON B.BOARD_NO = G.BOARD_NO
 		WHERE B.BOARD_DEL_FL = 'N'
 		<choose>
 			<when test="categoryCode != null">

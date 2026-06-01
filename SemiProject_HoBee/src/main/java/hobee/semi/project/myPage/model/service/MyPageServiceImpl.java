@@ -18,19 +18,19 @@ import hobee.semi.project.common.util.Utility;
 import hobee.semi.project.findHobby.model.dto.Hobby;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.myPage.model.mapper.MyPageMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
 @Slf4j
 @PropertySource("classpath:/config.properties")
+@RequiredArgsConstructor
 public class MyPageServiceImpl implements MyPageService {
 
-	@Autowired
-	private MyPageMapper mapper;
+	private final MyPageMapper mapper;
 
-	@Autowired
-	private BCryptPasswordEncoder bcrypt;
+	private final BCryptPasswordEncoder bcrypt;
 
 	@Value("${my.profile.web-path}")
 	private String profileWebPath;

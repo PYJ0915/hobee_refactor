@@ -13,16 +13,16 @@ import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.member.model.mapper.MemberMapper;
 import hobee.semi.project.profileImg.model.dto.ProfileDTO;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
+@RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService{
 
-	@Autowired
-	private  MemberMapper mapper;
+	private final MemberMapper mapper;
 	
-	@Autowired 
-	private BCryptPasswordEncoder bcrypt;
+	private final BCryptPasswordEncoder bcrypt;
 	
 	// 로그인
 	@Override

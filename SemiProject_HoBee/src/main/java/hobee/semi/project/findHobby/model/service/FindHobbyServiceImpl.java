@@ -13,13 +13,14 @@ import hobee.semi.project.findHobby.model.dto.Hobby;
 import hobee.semi.project.findHobby.model.dto.Question;
 import hobee.semi.project.findHobby.model.dto.QuestionScore;
 import hobee.semi.project.findHobby.model.mapper.FindHobbyMapper;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
+@RequiredArgsConstructor
 public class FindHobbyServiceImpl implements FindHobbyService{
 
-	@Autowired
-	private FindHobbyMapper mapper;
+	private final FindHobbyMapper mapper;
 	
 	@Override
 	public List<Question> selectQuestionList() {

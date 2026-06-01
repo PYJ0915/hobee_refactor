@@ -64,4 +64,6 @@ public interface GatheringMapper {
 	int updateGathering(Gathering gathering);
 	
 	Gathering selectGatheringByNo(int gatheringNo);
+
+	String selectBoardTitle(int gatheringNo);
 }

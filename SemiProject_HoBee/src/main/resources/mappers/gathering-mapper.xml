@@ -211,6 +211,15 @@
 		FROM GATHERING
 		WHERE GATHERING_NO = #{gatheringNo}
 	</select>
+	
+	<select id="selectBoardTitle" resultType="string">
+    SELECT B.BOARD_TITLE
+    FROM GATHERING G
+    JOIN BOARD B
+        ON G.BOARD_NO = B.BOARD_NO
+    WHERE G.GATHERING_NO = #{gatheringNo}
+	</select>
+	
 </mapper>
 
 

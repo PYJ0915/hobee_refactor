@@ -126,8 +126,10 @@ public class GatheringServiceImpl implements GatheringService {
         if (!memberNos.contains(loginMemberNo)) {
             memberNos.add(0, loginMemberNo);
         }
+        
+        String boardTitle = mapper.selectBoardTitle(gatheringNo);
 
-        ChatRoom room = chatService.createGroupRoom("모임 채팅방", memberNos);
+        ChatRoom room = chatService.createGroupRoom(boardTitle, memberNos);
         mapper.updateRoomNo(gatheringNo, room.getRoomNo());
         mapper.updateStatus(gatheringNo, "CLOSED");
 
