@@ -1,9 +1,11 @@
 package hobee.semi.project.member.model.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.profileImg.model.dto.ProfileDTO;
 
@@ -74,6 +76,18 @@ public interface MemberMapper {
 	 * @return
 	 */
 	int pwChange(MemberDTO inputMember);
+
+	/** 회원 프로필 조회
+	 * @param memberNo
+	 * @return
+	 */
+	MemberDTO selectMemberProfile(int memberNo);
+
+	List<Board> selectMemberBoardList(int memberNo);
+
+	List<String> selectMemberHobbyCode(int memberNo);
+
+	List<MemberDTO> searchMembers(String keyword);
 
 	
 	

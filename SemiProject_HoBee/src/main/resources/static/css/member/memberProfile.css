@@ -1,0 +1,536 @@
+/* 전체 컨테이너 */
+.profile-container {
+    min-height: calc(100vh - 200px);
+    background-color: #ffffff;
+	
+    display: flex;
+    justify-content: center;
+    padding: 40px 40px;
+	gap: 40px;
+}
+
+
+/* 카드 래퍼 */
+.profile-main {
+    width: 100%;
+    max-width: 900px;
+    background-color: #ffffff;
+    padding: 60px 80px;
+    border-radius: 24px;
+    border: 3px solid #FFF57E;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+}
+
+/* 페이지 타이틀 */
+.page-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #452829;
+    margin-bottom: 40px;
+}
+
+/* ================================
+   프로필 카드 (프래그먼트)
+================================ */
+
+.profile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #FFF57E;
+}
+
+.card-img-wrapper { position: relative; }
+
+.card-profile-img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #FFF57E;
+    display: block;
+}
+
+.card-nickname {
+    font-size: 24px;
+    font-weight: bold;
+    color: #452829;
+    margin: 0;
+}
+
+.card-intro {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.6;
+    max-width: 500px;
+    margin: 0;
+}
+
+.card-intro.empty { color: #aaa; }
+
+/* ================================
+   취미 태그
+================================ */
+
+.card-hobbies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 4px;
+}
+
+.hobby-tag {
+    padding: 6px 14px;
+    border-radius: 20px;
+    background-color: #FFF57E;
+    color: #452829;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* ================================
+   카드 하단 버튼
+================================ */
+
+.card-actions {
+    margin-top: 4px;
+    display: flex;
+    gap: 10px;
+}
+
+.card-btn {
+    height: 36px;
+    padding: 0 20px;
+    border-radius: 20px;
+    border: none;
+    background-color: #452829;
+    color: #FFF57E;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: opacity 0.2s;
+}
+
+.card-btn:hover { opacity: 0.85; }
+
+/* ================================
+   작성한 게시글 섹션
+================================ */
+
+.profile-boards {
+    width: 100%;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #452829;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.section-title::before {
+    content: "•";
+    color: #FFF57E;
+    font-size: 24px;
+    line-height: 1;
+}
+
+.empty-msg {
+    padding: 20px;
+    background-color: #f1f1f1;
+    text-align: center;
+    color: #777;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+/* ================================
+   게시글 목록
+================================ */
+
+.board-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.board-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.board-item:last-child { border-bottom: none; }
+
+.board-title {
+    font-size: 14px;
+    color: #452829;
+    font-weight: bold;
+    text-decoration: none;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 16px;
+}
+
+.board-title:hover { text-decoration: underline; }
+
+.board-date {
+    font-size: 12px;
+    color: #888;
+    flex-shrink: 0;
+}
+
+/* 팔로우 버튼 */
+.follow-btn {
+    min-width: 100px;
+    justify-content: center;
+}
+
+/* 팔로잉 상태 - 색 반전 */
+.follow-btn.following {
+    background-color: transparent;
+    color: #452829;
+    border: 1.5px solid #452829;
+}
+
+.follow-btn.following:hover {
+    background-color: #f5e6e6;
+}
+
+/* 팔로워/팔로잉 수 */
+.follow-stats {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin: 4px 0;
+}
+
+.follow-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.stat-num {
+    font-size: 20px;
+    font-weight: bold;
+    color: #452829;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #888;
+}
+
+.follow-divider {
+    width: 1px;
+    height: 32px;
+    background: #eee;
+}
+
+/* 챌린지 목록 아이템 */
+.challenge-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.challenge-item-row {
+    display:flex; 
+    justify-content:space-between;
+    align-items:center; cursor:pointer; 
+    padding: 8px 0;
+}
+
+.challenge-item-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.challenge-item-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.cert-progress {
+    font-size: 13px;
+    color: #888;
+}
+
+/* 미니 배지 */
+.mini-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.mini-badge.badge-open { background-color: #FFF57E; color: #452829; }
+.mini-badge.badge-done { background-color: #eee;    color: #888; }
+
+.mini-complete {
+    font-size: 12px;
+    color: #2d7a3a;
+    font-weight: bold;
+}
+
+/* 챌린지 인증 내역 인라인 */
+.cert-history-inline {
+    padding: 8px 0 12px 16px;
+    border-left: 2px solid #FFF57E;
+    margin: 4px 0 8px;
+}
+
+.cert-inline-item {
+    padding: 10px 12px;
+    background: #fdfaf9;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.cert-inline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.cert-inline-title {
+    font-size: 13px;
+    font-weight: bold;
+    color: #452829;
+}
+
+.cert-inline-date {
+    font-size: 11px;
+    color: #aaa;
+}
+
+.cert-inline-content {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+    white-space: pre-line;
+}
+
+/* 토글 아이콘 */
+.cert-toggle-icon {
+    font-size: 11px;
+    color: #aaa;
+    margin-left: 6px;
+}
+
+/* 아코디언 섹션 */
+.profile-accordion {
+    border: 1px solid #f0ebe8;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 24px;
+}
+
+.accordion-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: #fdfaf9;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    color: #452829;
+    transition: background 0.2s;
+}
+
+.accordion-header:hover {
+    background: #f5ede8;
+}
+
+.accordion-icon {
+    font-size: 13px;
+    color: #aaa;
+    transition: transform 0.2s;
+}
+
+.accordion-icon.open {
+    transform: rotate(180deg);
+}
+
+.accordion-body {
+    padding: 16px 20px;
+    border-top: 1px solid #f0ebe8;
+}
+
+.accordion-body.hidden {
+    display: none;
+}
+
+/* 챌린지 인증 내역 아코디언 */
+.challenge-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 8px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.15s;
+}
+
+.challenge-item-row:hover {
+    background: #fdfaf9;
+}
+
+.challenge-item-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.challenge-item-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cert-progress {
+    font-size: 13px;
+    color: #888;
+}
+
+.mini-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.mini-badge.badge-open { background-color: #FFF57E; color: #452829; }
+.mini-badge.badge-done { background-color: #eee;    color: #888; }
+
+.mini-complete {
+    font-size: 12px;
+    color: #2d7a3a;
+    font-weight: bold;
+}
+
+.cert-toggle-icon {
+    font-size: 11px;
+    color: #aaa;
+    transition: transform 0.2s;
+}
+
+.cert-toggle-icon.open {
+    transform: rotate(180deg);
+}
+
+/* 인증 내역 인라인 */
+.cert-history-inline {
+    border-left: 3px solid #FFF57E;
+    margin: 4px 0 8px 16px;
+    padding: 8px 16px;
+    background: #fdfaf9;
+    border-radius: 0 8px 8px 0;
+}
+
+.cert-inline-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #f0ebe8;
+}
+
+.cert-inline-item:last-child {
+    border-bottom: none;
+}
+
+.cert-inline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.cert-inline-title {
+    font-size: 13px;
+    font-weight: bold;
+    color: #452829;
+}
+
+.cert-inline-date {
+    font-size: 11px;
+    color: #aaa;
+}
+
+.cert-inline-content {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.6;
+    white-space: pre-line;
+}
+
+/* 인증 내역 이미지 */
+.cert-inline-content img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-top: 6px;
+}
+
+/* 챌린지 섹션 - 위 간격 */
+.profile-accordion--challenge {
+    margin-top: 16px;
+}
+
+/* 아코디언 헤더 내 제목 텍스트 */
+.accordion-section-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #452829;
+    margin: 0;
+    border: none;
+}
+
+/* 챌린지 아이템 레이아웃 */
+.challenge-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+}
+
+/* 인증 상세 돌아가기 버튼 영역 */
+.cert-back-actions {
+    margin-top: 32px;
+}
+
+.cert-loading {
+    font-size:13px; 
+    color:#aaa; 
+    padding:8px 0 4px;
+}

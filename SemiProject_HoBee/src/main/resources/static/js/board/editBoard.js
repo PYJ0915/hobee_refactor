@@ -82,3 +82,65 @@ if (form != null) {
 
     });
 }
+
+// boardCode가 4면 모임 필드 표시
+const boardCodeInput = document.querySelector("#boardCode");
+const boardCode = boardCodeInput ? parseInt(boardCodeInput.value) : NaN;
+
+if (boardCode === 4) {
+    const gatheringFields = document.querySelector("#gatheringFields");
+    if (gatheringFields) {
+        gatheringFields.style.display = "block";
+    }
+
+    // 수정 모드이고 기존 좌표가 있으면 지도 미리보기 표시
+    if (typeof existingLat !== "undefined" && existingLat !== 0) {
+        kakao.maps.load(() => {
+            updateMapPreview(existingLat, existingLng, existingPlace);
+        });
+    }
+}
+
+// 장소 검색 버튼
+document.querySelector("#searchPlaceBtn")?.addEventListener("click", () => {
+    new daum.Postcode({
+        oncomplete: function(data) {
+            document.querySelector("#gatheringPlace").value = data.address;
+
+            const popupEl = document.querySelector(".layer"); // daum postcode 레이어
+            if (popupEl) popupEl.style.display = "none";
+
+            kakao.maps.load(() => {
+                const geocoder = new kakao.maps.services.Geocoder();
+                geocoder.addressSearch(data.address, (result, status) => {
+                    if (status === kakao.maps.services.Status.OK) {
+                        document.querySelector("#placeLat").value = result[0].y;
+                        document.querySelector("#placeLng").value = result[0].x;
+                        updateMapPreview(result[0].y, result[0].x, data.address);
+                        document.querySelector("#gatheringPlaceDetail")?.focus();
+                    }
+                });
+            });
+        },
+    }).open({ autoClose: true });
+});
+
+function updateMapPreview(lat, lng, place) {
+    const mapContainer = document.querySelector("#mapPreview");
+    mapContainer.style.display = "block";
+
+    kakao.maps.load(() => {
+        const map = new kakao.maps.Map(mapContainer, {
+            center: new kakao.maps.LatLng(lat, lng),
+            level: 3
+        });
+        const marker = new kakao.maps.Marker({
+            position: new kakao.maps.LatLng(lat, lng)
+        });
+        marker.setMap(map);
+
+        new kakao.maps.InfoWindow({
+            content: `<div style="padding:5px 10px;font-size:12px;">${place}</div>`
+        }).open(map, marker);
+    });
+}

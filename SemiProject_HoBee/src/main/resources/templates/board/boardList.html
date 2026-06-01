@@ -22,23 +22,33 @@
         <h1 th:text="${hobbyName != null} ? |${hobbyName} 게시판| : ${boardName}" class="board-name"></h1>
 
         <!-- TOP / 공지 -->
-        <th:block th:if="${boardCode != 1}">
+        <th:block th:if="${boardCode != 1 && boardCode != 4}">
             <th:block
-                th:replace="~{common/fragments/board/rankNoticeSection :: rankNoticeSection(${hobbyName}, ${boardName}, ${bestList}, ${noticeList})}">
+                th:replace="~{common/fragments/rankNoticeSection :: rankNoticeSection(${hobbyName}, ${boardName}, ${bestList}, ${noticeList})}">
             </th:block>
         </th:block>
+
+        <div th:if="${boardCode == 4}" class="gathering-filter-bar">
+            <a th:href="${onlyOpen} ?
+        @{/board/list/{boardCode}(boardCode=${boardCode})} :
+        @{/board/list/{boardCode}(boardCode=${boardCode}, onlyOpen=true)}"
+                th:classappend="${onlyOpen} ? ' filter-active' : ''" class="filter-chip">
+                🟢 모집 중만 보기
+            </a>
+        </div>
 
 
         <div class="list-wrapper">
             <table class="list-table">
                 <thead>
                     <tr>
-                        <th>글번호</th>
-                        <th>제목</th>
-                        <th>작성자</th>
-                        <th>작성일</th>
-                        <th>조회수</th>
-                        <th>좋아요</th>
+                        <th class="col-no">글번호</th>
+                        <th th:if="${boardCode == 4}" class="col-badge">모집 여부</th>
+                        <th class="col-title">제목</th>
+                        <th class="col-writer">작성자</th>
+                        <th class="col-date" data-sort="date">작성일<span class="sort-icon"> ↕</span></th>
+                        <th class="col-view" data-sort="view">조회수<span class="sort-icon"> ↕</span></th>
+                        <th class="col-like" data-sort="like">좋아요<span class="sort-icon"> ↕</span></th>
                     </tr>
                 </thead>
 
@@ -51,9 +61,16 @@
 
                     <th:block th:unless="${#lists.isEmpty(boardList)}">
                         <tr th:each="board : ${boardList}" th:object="${board}">
-                            <td th:text="*{boardNo}">게시글 번호</td>
+                            <td class="col-no" th:text="*{boardNo}">게시글 번호</td>
 
-                            <td>
+                            <td th:if="${boardCode == 4}" class="col-badge">
+                                <span th:if="*{gatheringStatus == 'OPEN'}" class="gathering-badge open-badge">모집
+                                    중</span>
+                                <span th:if="*{gatheringStatus == 'CLOSED'}" class="gathering-badge closed-badge">모집
+                                    완료</span>
+                            </td>
+
+                            <td class="title-cell">
                                 <!-- 취미 게시판 아닐 때 -->
                                 <!-- 검색 조건 있을 때 -->
                                 <a th:if="${boardCode != 2 and !#strings.isEmpty(param.key)}" th:href="@{/board/detail/{boardCode}/{boardNo}
@@ -80,81 +97,45 @@
                                 </a>
 
                                 <!-- 검색 조건 없을 때 -->
-                                <a th:if="${boardCode == 2 and #strings.isEmpty(param.key)}" 
-                                th:href="@{/board/detail/{boardCode}/{categoryCode}/{boardNo}
+                                <a th:if="${boardCode == 2 and #strings.isEmpty(param.key)}" th:href="@{/board/detail/{boardCode}/{categoryCode}/{boardNo}
                                 (boardCode=${boardCode},
                                 categoryCode=${categoryCode}, 
                                 boardNo=*{boardNo},
-                                cp=${pagination.currentPage})}" 
-                                th:text="*{boardTitle}">
+                                cp=${pagination.currentPage})}" th:text="*{boardTitle}">
                                 </a>
 
                                 <th:block th:text="|[*{commentCount}]|">댓글 수</th:block>
                             </td>
 
-                            <td th:text="*{memberNickname}">닉네임</td>
-                            <td th:text="*{boardWriteDate}">작성일</td>
-                            <td th:text="*{boardViewCount}">0</td>
-                            <td th:text="*{likeCount}">0</td>
+                            <td class="col-writer"> 
+                                <a th:href="@{/member/profile/{memberNo}(memberNo=*{memberNo})}"
+                                    th:text="*{memberNickname}" class="member-link">닉네임</a>
+                            </td>
+                            <td class="col-date" th:text="*{boardWriteDate}">작성일</td>
+                            <td class="col-view" th:text="*{boardViewCount}">0</td>
+                            <td class="col-like" th:text="*{likeCount}">0</td>
                         </tr>
                     </th:block>
                 </tbody>
             </table>
         </div>
 
-		<div th:if="${
+        <div th:if="${
 			(boardCode == 1 && session.loginMember != null && session.loginMember.authorLevel == 2)
 			||
 			(boardCode != 1 && session.loginMember != null)
 			}">
-	        <div class="btn-area">
-	            <button id="myBoardBtn"
-	                th:data-board-path="${categoryCode != null} ? |board/${boardCode}/${categoryCode}|:|board/${boardCode}|" :>내 글</button>
-	            <button id="insertBtn"
-	                th:data-board-path="${categoryCode != null} ? |editBoard/${boardCode}/${categoryCode}|:|editBoard/${boardCode}|">글쓰기</button>
-	        </div>
-		</div>
+            <div class="btn-area">
+                <button id="myBoardBtn"
+                    th:data-board-path="${categoryCode != null} ? |board/${boardCode}/${categoryCode}|:|board/${boardCode}|"
+                    :>내 글</button>
+                <button id="insertBtn"
+                    th:data-board-path="${categoryCode != null} ? |editBoard/${boardCode}/${categoryCode}|:|editBoard/${boardCode}|">글쓰기</button>
+            </div>
+        </div>
 
         <div class="pagination-area">
-
-            <ul class="pagination" th:unless="${param.key}" th:object="${pagination}">
-                <li><a th:href="@{''(cp=1)}">&lt;&lt;</a></li>
-                <li><a th:href="@{''(cp=*{prevPage})}">&lt;</a></li>
-
-                <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
-                    <li th:if="${i} == *{currentPage}">
-                        <a class="current" th:text="${i}">1</a>
-                    </li>
-                    <li th:unless="${i} == *{currentPage}">
-                        <a th:href="@{''(cp=${i})}" th:text="${i}">2</a>
-                    </li>
-                </th:block>
-
-                <li><a th:href="@{''(cp=*{nextPage})}">&gt;</a></li>
-                <li><a th:href="@{''(cp=*{maxPage})}">&gt;&gt;</a></li>
-            </ul>
-
-            <ul class="pagination" th:if="${param.key}" th:object="${pagination}">
-                <li><a th:href="@{''(cp=1, key=${param.key}, query=${param.query})}">&lt;&lt;</a></li>
-                <li><a th:href="@{''(cp=*{prevPage}, key=${param.key}, query=${param.query})}">&lt;</a></li>
-
-                <th:block th:if="*{startPage lt endPage}" th:each="i : *{#numbers.sequence(startPage, endPage)}">
-                    <li th:if="${i} == *{currentPage}">
-                        <a class="current" th:text="${i}">1</a>
-                    </li>
-                    <li th:unless="${i} == *{currentPage}">
-                        <a th:href="@{''(cp=${i}, key=${param.key}, query=${param.query})}" th:text="${i}">2</a>
-                    </li>
-                </th:block>
-
-                <th:block th:unless="*{startPage lt endPage}">
-                    <li><a class="current">1</a></li>
-                </th:block>
-
-                <li><a th:href="@{''(cp=*{nextPage}, key=${param.key}, query=${param.query})}">&gt;</a></li>
-                <li><a th:href="@{''(cp=*{maxPage}, key=${param.key}, query=${param.query})}">&gt;&gt;</a></li>
-            </ul>
-
+            <th:block th:replace="~{common/fragments/pagination :: pagination(${pagination})}" />
         </div>
 
         <form th:action="${categoryCode != null} ?
@@ -175,6 +156,11 @@
     </section>
 
     <th:block th:replace="~{common/fragments/footer}"></th:block>
+
+    <script th:inline="javascript">
+        const boardCode = /*[[${boardCode}]]*/ "게시판 코드";
+        const categoryCode = /*[[${categoryCode}]]*/ null;
+    </script>
 
     <script src="/js/board/board.js"></script>
 </body>

@@ -27,7 +27,7 @@ public class ImageDeleteScheduling {
 	@Autowired
 	private EditBoardService service;
 
-	@Scheduled(cron = "0 0 0 1 * * ")
+	@Scheduled(cron = "0 5 0 * * *")
 	public void imageDeleteScheduling() {
 		log.info("스케줄러 동작!");
 		

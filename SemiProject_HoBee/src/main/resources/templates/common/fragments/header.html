@@ -1,63 +1,93 @@
 <header class="header">
-  <div class="header-inner">
+	<div class="header-inner">
 
-    <!-- 로고 -->
-    <a href="/" class="header-logo">
-      <img src="/images/logo/logo-header.png" alt="Ho-bee 로고">
-    </a>
+		<!-- 로고 -->
+		<a href="/" class="header-logo">
+			<img src="/images/logo/logo-header.png" alt="Ho-bee 로고">
+		</a>
 
-    <!-- 네비게이션 -->
-    <div class="header-box">
-    <nav class="header-nav">
-      <a href="/board/list/1" class="nav-item">공지 게시판</a>
-      <a href="/board/list/2/1" class="nav-item">취미별 게시판</a>
-      <a href="/board/list/3" class="nav-item">자유 게시판</a>
-      <a href="/findHobby/main" class="nav-item">취미 탐색</a>
-      <th:block th:if="${session.loginMember != null and session.loginMember.authorLevel == 2}">
-        <a href="/report/manageReport" class="nav-item">신고 관리</a>
-        <a href="/penalty/managePenalty" class="nav-item">제재 회원 관리</a>
-        <a href="/footer/manageCS" class="nav-item">문의 확인</a>
-      </th:block>
-    </nav>
+		<!-- 네비게이션 -->
+		<div class="header-box">
+			<nav class="header-nav">
+				<a href="/board/list/1" class="nav-item">공지 게시판</a>
+				<a href="/board/list/2/1" class="nav-item">취미별 게시판</a>
+				<a href="/board/list/3" class="nav-item">자유 게시판</a>
+				<a href="/board/list/4" class="nav-item">모임 모집</a>
+				<a href="/challenge/list" class="nav-item">챌린지</a> 
+				<a href="/findHobby/main" class="nav-item">취미 탐색</a>
+				<th:block th:if="${session.loginMember != null and session.loginMember.authorLevel == 2}">
+					<a href="/report/manageReport" class="nav-item">신고 관리</a>
+					<a href="/penalty/managePenalty" class="nav-item">제재 회원 관리</a>
+					<a href="/footer/manageCS" class="nav-item">문의 확인</a>
+				</th:block>
+			</nav>
 
-    
 
-    <!-- 비로그인 상태 인증 영역 -->
-    <th:block th:if="${session.loginMember == null}">
-      <div class="header-auth">
-        <a href="/member/loginPage" class="login-btn">로그인</a>
-        <a href="/member/signupPage" class="signup-btn">회원가입</a>
-      </div>
-    </th:block>
 
-    <!-- 로그인 상태 사용자 영역 -->
-    <th:block th:if="${session.loginMember != null}">
-    <div class="header-user-loggedin">
+			<!-- 비로그인 상태 인증 영역 -->
+			<th:block th:if="${session.loginMember == null}">
+				<div class="header-auth">
+					<a href="/member/loginPage" class="login-btn">로그인</a>
+					<a href="/member/signupPage" class="signup-btn">회원가입</a>
+				</div>
+			</th:block>
 
-      <a href="/myPage/info" class="header-btn-a">
-        <img
-        alt="프로필 이미지"
-        class="header-profile-img"
+			<!-- 로그인 상태 사용자 영역 -->
+			<th:block th:if="${session.loginMember != null}">
+				<div class="header-user-loggedin">
 
-        th:with="user=#{user.default.image}"
-        th:src="${session.loginMember.profileImg ?: user}"
-        >
-      </a>
+					<a href="/myPage/info" class="header-btn-a">
+						<img alt="프로필 이미지" class="header-profile-img" th:with="user=#{user.default.image}"
+							th:src="${session.loginMember.profileImg ?: user}">
+					</a>
 
-      <a href="/myPage/info" id="nickname" class="header-btn-a">
-      <span class="header-user-name" th:text="${session.loginMember.memberNickname}">
-        홍길동 님
-      </span>
-      </a>
+					<a href="/myPage/info" id="nickname" class="header-btn-a">
+						<span class="header-user-name" th:text="${session.loginMember.memberNickname}">
+							홍길동 님
+						</span>
+					</a>
 
-      <a href="/member/logout" class="header-btn-logout">
-        로그아웃
-      </a>
+					<!-- 채팅 아이콘 -->
+					<div class="chat-icon-wrapper" id="chatIconWrapper">
+						<a href="/chat" class="chat-icon-btn" id="chatIconBtn">
+							<i class="fa-regular fa-comment-dots"></i>
+							<span class="chat-badge" id="chatBadge" style="display:none;">0</span>
+						</a>
+					</div>
 
-    </th:block>
-    </div>
+					<!-- 알림 아이콘 -->
+					<div class="noti-wrapper" id="notiWrapper">
+						<button class="noti-btn" id="notiBtn">
+							<i class="fa-solid fa-bell"></i>
+							<span class="noti-badge" id="notiBadge" style="display:none;">0</span>
+						</button>
 
-  </div>
+						<!-- 알림 드롭다운 -->
+						<div class="noti-dropdown popup-hidden" id="notiDropdown">
+							<div class="noti-header">
+								<span>알림</span>
+								<div class="noti-header-btns">
+									<button class="noti-read-all" id="notiReadAll">모두 읽음</button>
+									<span class="noti-divider">|</span>
+									<button class="noti-delete-all" id="notiDeleteAll">모두 비우기</button>
+								</div>
+							</div>
+							<ul class="noti-list" id="notiList">
+								<li class="noti-empty">알림이 없습니다.</li>
+							</ul>
+						</div>
+					</div>
 
-  </div>
+					<a href="/member/logout" class="header-btn-logout">
+						로그아웃
+					</a>
+
+				</div>
+			</th:block>
+		</div>
+
+	</div>
+
 </header>
+
+<script th:src="@{/js/common/header.js}" defer></script>

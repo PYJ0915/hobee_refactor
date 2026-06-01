@@ -12,9 +12,9 @@ import hobee.semi.project.board.model.dto.Board;
 @Mapper
 public interface BoardMapper {
 
-	int getListCount(@Param("boardCode") int boardCode, @Param("categoryCode") Integer categoryCode);
+	int getListCount(@Param("boardCode") int boardCode, @Param("categoryCode") Integer categoryCode, @Param("onlyOpen") boolean onlyOpen);
 
-	List<Board> selectBoardList(@Param("boardCode") int boardCode, @Param("categoryCode") Integer categoryCode, RowBounds rowBounds);
+	List<Board> selectBoardList(@Param("boardCode") int boardCode, @Param("categoryCode") Integer categoryCode, @Param("sort") String sort, @Param("dir") String dir, @Param("onlyOpen") boolean onlyOpen, RowBounds rowBounds);
 
 	int getSearchCount(Map<String, Object> paramMap);
 
@@ -39,7 +39,9 @@ public interface BoardMapper {
 	List<Board> selectBestList(@Param("boardCode") int boardCode, @Param("categoryCode") Integer categoryCode, RowBounds rowBounds);
 
 	List<Board> selectNoticeList(int noticeBoardCode, RowBounds rowBounds);
+	
+	int selectBoardMemberNo(int boardNo);
 
-	String selectCategoryName(Integer categoryCode);
+	int getBoardCode(int boardNo);
 
 }

@@ -3,6 +3,7 @@ package hobee.semi.project.member.model.service;
 
 import java.util.List;
 
+import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.profileImg.model.dto.ProfileDTO;
 
@@ -68,5 +69,28 @@ public interface MemberService {
 	 */
 	int pwChange(MemberDTO inputMember);
 
+	/** 회원 프로필 조회
+	 * @param memberNo
+	 * @return
+	 */
+	MemberDTO selectMemberProfile(int memberNo);
 
+	/** 회원 취미 코드 조회
+	 * @param memberNo
+	 * @return
+	 */
+	List<String> selectMemberHobbyCode(int memberNo);
+
+	/** 회원 게시글 조회
+	 * @param memberNo
+	 * @return
+	 */
+	List<Board> selectMemberBoardList(int memberNo);
+
+	
+	/** 단체 채팅방 참여자 검색
+	 * @param keyword
+	 * @return
+	 */
+	List<MemberDTO> searchMembers(String keyword);
 }

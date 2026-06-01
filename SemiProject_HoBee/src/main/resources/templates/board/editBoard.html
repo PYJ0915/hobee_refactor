@@ -1,5 +1,6 @@
-	<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>글 작성 화면</title>
@@ -8,57 +9,113 @@
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 
+    <th:block th:if="${boardCode == 4}">
+        <script th:src="|https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js|"></script>
+        <script
+            th:src="|https://dapi.kakao.com/v2/maps/sdk.js?appkey=55f99a0cab068e0d7c6881e08679cd8f&libraries=services&autoload=false|"></script>
+    </th:block>
+
     <th:block th:replace="~{common/common}"></th:block>
     <link rel="stylesheet" href="/css/board/editBoard-style.css">
     <link rel="stylesheet" href="/css/common.css">
 </head>
-    
+
 <body>
     <th:block th:replace="~{common/fragments/header}"></th:block>
-    
+
     <div class="board-write-area">
-<h1 class="write-title">
-    <th:block th:switch="${boardCode}">
-        <span th:case="1">공지사항 작성</span>
-        
-        <span th:case="3">자유게시판 작성</span>
-        
-        <span th:case="2">
-            <th:block th:switch="${categoryCode}">
-                <span th:case="1">운동·레저 게시판 작성</span>
-                <span th:case="2">자기 계발 게시판 작성</span>
-                <span th:case="3">문화·예술 게시판 작성</span>
-                <span th:case="4">사회 교류 게시판 작성</span>
-                <span th:case="5">수집·소비 게시판 작성</span>
-                <span th:case="*">취미 게시판 작성</span>
+        <h1 class="write-title">
+            <th:block th:switch="${boardCode}">
+                <span th:case="1">공지사항 작성</span>
+
+                <span th:case="3">자유게시판 작성</span>
+                <span th:case="4">모임 모집 작성</span>
+
+                <span th:case="2">
+                    <th:block th:switch="${categoryCode}">
+                        <span th:case="1">운동·레저 게시판 작성</span>
+                        <span th:case="2">자기 계발 게시판 작성</span>
+                        <span th:case="3">문화·예술 게시판 작성</span>
+                        <span th:case="4">사회 교류 게시판 작성</span>
+                        <span th:case="5">수집·소비 게시판 작성</span>
+                        <span th:case="*">취미 게시판 작성</span>
+                    </th:block>
+                </span>
+
+                <span th:case="*">게시판 글 쓰기</span>
             </th:block>
-        </span>
-        
-        <span th:case="*">게시판 글 쓰기</span>
-    </th:block>
-</h1>
-        
+        </h1>
+
         <form action="" method="post" id="boardContent">
+            <input type="hidden" id="boardCode" th:value="${boardCode}">
             <input type="hidden" name="boardNo" th:if="${board != null}" th:value="${board?.boardNo}">
 
             <input type="hidden" name="categoryCode" th:value="${board?.categoryCode ?: param.categoryCode}">
 
-            <input type="text" name="boardTitle" class="board-title-input" 
-                   placeholder="제목을 입력하세요" th:value="${board?.boardTitle}" maxlength="80"/>
-            
+            <input type="text" name="boardTitle" class="board-title-input" placeholder="제목을 입력하세요"
+                th:value="${board?.boardTitle}" maxlength="80" />
+
             <textarea id="summernote" name="boardContent" placeholder="내용을 입력하세요."
-            th:utext="${board?.boardContent}"></textarea>
-            
+                th:utext="${board?.boardContent}"></textarea>
+
+            <div id="gatheringFields" style="display:none;">
+
+                <hr style="margin: 24px 0; border-color: #f0ebe8;">
+                <h4 style="color:#452829; margin-bottom:16px;">모임 정보</h4>
+
+                <div class="input-row">
+                    <label for="gatheringDate">모임 날짜 <span class="required">*</span></label>
+                    <input type="date" id="gatheringDate" name="gatheringDate" th:value="${gathering?.gatheringDate}">
+                </div>
+
+                <div class="input-row">
+                    <label for="maxMember">최대 모집 인원 <span class="required">*</span></label>
+                    <input type="number" id="maxMember" name="maxMember" min="2" max="50" placeholder="2~50명"
+                        th:value="${gathering?.maxMember}">
+                </div>
+
+                <div class="input-row">
+                    <label>모임 장소 <span class="required">*</span></label>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <input type="text" id="gatheringPlace" name="gatheringPlace" placeholder="장소를 검색하세요" readonly
+                            style="flex:1;" th:value="${gathering?.gatheringPlace}">
+                        <button type="button" id="searchPlaceBtn" class="address-btn">장소 검색</button>
+                    </div>
+                    <input type="hidden" id="placeLat" name="placeLat" th:value="${gathering?.placeLat}">
+                    <input type="hidden" id="placeLng" name="placeLng" th:value="${gathering?.placeLng}">
+                </div>
+
+                <div class="input-row">
+                    <label for="gatheringPlaceDetail">상세 주소</label>
+                    <input type="text" id="gatheringPlaceDetail" name="gatheringPlaceDetail"
+                        placeholder="상세 주소를 입력하세요 (동/호수, 건물명 등)" th:value="${gathering?.gatheringPlaceDetail}">
+                </div>
+
+                <!-- 지도 미리보기 -->
+                <div id="mapPreview" style="width:100%; height:240px; border-radius:12px;
+         border:1px solid #eee; margin-top:12px;" th:style="${gathering != null and gathering.placeLat != 0}
+                   ? 'display:block; width:100%; height:240px; border-radius:12px; border:1px solid #eee; margin-top:12px;'
+                   : 'display:none; width:100%; height:240px;'">
+                </div>
+
+            </div>
+
             <div style="text-align: right; margin-top: 20px;">
-                <button type="submit" class="hobee-btn"
-                th:text="${board == null ? '등록' : '수정'}">등록</button>
+                <button type="submit" class="hobee-btn" th:text="${board == null ? '등록' : '수정'}">등록</button>
             </div>
         </form>
     </div>
 
     <th:block th:replace="~{common/fragments/footer}"></th:block>
 
+    <script th:if="${boardCode == 4 and gathering != null}" th:inline="javascript">
+        const existingLat = /*[[${gathering.placeLat}]]*/ 0;
+        const existingLng = /*[[${gathering.placeLng}]]*/ 0;
+        const existingPlace = /*[[${gathering.gatheringPlace}]]*/ "";
+    </script>
+
     <script src="/js/board/editBoard.js"></script>
-</script>
+    </script>
 </body>
+
 </html>

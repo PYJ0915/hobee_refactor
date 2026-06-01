@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper
+	namespace="hobee.semi.project.gathering.model.mapper.GatheringMapper">
+
+	<insert id="insertGathering">
+		<selectKey keyProperty="gatheringNo" resultType="int"
+			order="BEFORE">
+			SELECT SEQ_GATHERING_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO GATHERING (
+		GATHERING_NO, BOARD_NO, GATHERING_DATE,
+		GATHERING_PLACE, GATHERING_PLACE_DETAIL,
+		PLACE_LAT, PLACE_LNG,
+		MAX_MEMBER
+		)
+		VALUES (
+		#{gatheringNo}, #{boardNo},
+		TO_DATE(#{gatheringDate}, 'YYYY-MM-DD'),
+		#{gatheringPlace},
+		#{gatheringPlaceDetail},
+		#{placeLat}, #{placeLng}, #{maxMember}
+		)
+	</insert>
+
+	<select id="selectGathering" resultType="Gathering">
+		SELECT G.GATHERING_NO,
+		G.BOARD_NO,
+		TO_CHAR(G.GATHERING_DATE, 'YYYY-MM-DD') AS GATHERING_DATE,
+		G.GATHERING_PLACE,
+		G.GATHERING_PLACE_DETAIL,
+		G.PLACE_LAT,
+		G.PLACE_LNG,
+		G.MAX_MEMBER,
+		G.CURRENT_MEMBER,
+		G.GATHERING_STATUS,
+		G.ROOM_NO
+		FROM
+		GATHERING G
+		WHERE
+		G.BOARD_NO = #{boardNo}
+	</select>
+
+	<!-- 참여 신청 -->
+	<insert id="joinGathering">
+		INSERT INTO GATHERING_MEMBER (GATHERING_NO,
+		MEMBER_NO, JOIN_STATUS)
+		VALUES (#{gatheringNo}, #{memberNo}, 'PENDING')
+	</insert>
+
+	<!-- 수락 -->
+	<update id="approveJoin">
+		UPDATE GATHERING_MEMBER
+		SET JOIN_STATUS = 'APPROVED'
+		WHERE GATHERING_NO = #{gatheringNo}
+		AND MEMBER_NO = #{memberNo}
+	</update>
+
+	<!-- 거절 -->
+	<update id="rejectJoin">
+		UPDATE GATHERING_MEMBER
+		SET JOIN_STATUS = 'REJECTED'
+		WHERE GATHERING_NO = #{gatheringNo}
+		AND MEMBER_NO = #{memberNo}
+	</update>
+
+	<!-- 신청 대기 목록 -->
+	<select id="selectPendingMembers" resultType="MemberDTO">
+		SELECT M.MEMBER_NO,
+		M.MEMBER_NICKNAME, M.PROFILE_IMG
+		FROM GATHERING_MEMBER GM
+		JOIN MEMBER M
+		ON M.MEMBER_NO = GM.MEMBER_NO
+		WHERE GM.GATHERING_NO = #{gatheringNo}
+		AND GM.JOIN_STATUS = 'PENDING'
+		ORDER BY GM.JOIN_DATE ASC
+	</select>
+
+	<!-- 확정 참여자 목록 -->
+	<select id="selectApprovedMembers" resultType="MemberDTO">
+		SELECT
+		M.MEMBER_NO, M.MEMBER_NICKNAME, M.PROFILE_IMG
+		FROM GATHERING_MEMBER GM
+		JOIN MEMBER M ON M.MEMBER_NO = GM.MEMBER_NO
+		WHERE GM.GATHERING_NO =
+		#{gatheringNo}
+		AND GM.JOIN_STATUS = 'APPROVED'
+		ORDER BY GM.JOIN_DATE ASC
+	</select>
+
+	<select id="checkApproved" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		GATHERING_MEMBER
+		WHERE GATHERING_NO = #{gatheringNo}
+		AND MEMBER_NO =
+		#{memberNo}
+		AND JOIN_STATUS = 'APPROVED'
+	</select>
+
+	<update id="cancelGathering">
+		UPDATE GATHERING_MEMBER
+		SET JOIN_STATUS = 'CANCELLED'
+		WHERE GATHERING_NO = #{gatheringNo}
+		AND MEMBER_NO = #{memberNo}
+	</update>
+
+	<!-- 참여 여부 확인 (PENDING + APPROVED 모두) -->
+	<select id="checkJoined" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		GATHERING_MEMBER
+		WHERE GATHERING_NO = #{gatheringNo}
+		AND MEMBER_NO =
+		#{memberNo}
+		AND JOIN_STATUS IN ('PENDING', 'APPROVED')
+	</select>
+
+	<update id="incrementMember">
+		UPDATE GATHERING
+		SET CURRENT_MEMBER = CURRENT_MEMBER +
+		1
+		WHERE GATHERING_NO = #{gatheringNo}
+	</update>
+
+	<update id="decrementMember">
+		UPDATE GATHERING
+		SET CURRENT_MEMBER = CURRENT_MEMBER -
+		1
+		WHERE GATHERING_NO = #{gatheringNo}
+		AND CURRENT_MEMBER > 1
+	</update>
+
+	<select id="selectGatheringMembers" resultType="MemberDTO">
+		SELECT
+		M.MEMBER_NO, M.MEMBER_NICKNAME, M.PROFILE_IMG
+		FROM GATHERING_MEMBER GM
+		JOIN MEMBER M ON M.MEMBER_NO = GM.MEMBER_NO
+		WHERE GM.GATHERING_NO =
+		#{gatheringNo}
+		AND GM.JOIN_STATUS = 'APPROVED'
+		ORDER BY GM.JOIN_DATE ASC
+	</select>
+
+	<update id="updateStatus">
+		UPDATE GATHERING
+		SET GATHERING_STATUS =
+		#{gatheringStatus}
+		WHERE GATHERING_NO = #{gatheringNo}
+	</update>
+
+	<update id="updateRoomNo">
+		UPDATE GATHERING
+		SET ROOM_NO = #{roomNo}
+		WHERE
+		GATHERING_NO = #{gatheringNo}
+	</update>
+
+	<!-- 작성자 자동 APPROVED 참여 -->
+	<insert id="joinApproved">
+		INSERT INTO GATHERING_MEMBER (GATHERING_NO,
+		MEMBER_NO, JOIN_STATUS)
+		VALUES (#{gatheringNo}, #{memberNo},
+		'APPROVED')
+	</insert>
+
+	<select id="selectBoardNoByGatheringNo" resultType="int">
+		SELECT
+		BOARD_NO
+		FROM GATHERING
+		WHERE GATHERING_NO = #{gatheringNo}
+	</select>
+
+	<select id="selectMyJoinStatus" resultType="String">
+		SELECT JOIN_STATUS
+		FROM GATHERING_MEMBER
+		WHERE GATHERING_NO = #{gatheringNo}
+		AND MEMBER_NO
+		= #{memberNo}
+	</select>
+
+
+	<update id="updateGathering">
+		UPDATE GATHERING
+		SET GATHERING_DATE =
+		TO_DATE(#{gatheringDate}, 'YYYY-MM-DD'),
+		GATHERING_PLACE =
+		#{gatheringPlace},
+		GATHERING_PLACE_DETAIL = #{gatheringPlaceDetail},
+		PLACE_LAT = #{placeLat},
+		PLACE_LNG = #{placeLng},
+		MAX_MEMBER =
+		#{maxMember}
+		WHERE BOARD_NO = #{boardNo}
+	</update>
+
+	<select id="selectGatheringByNo" resultType="Gathering">
+		SELECT GATHERING_NO,
+		BOARD_NO,
+		TO_CHAR(GATHERING_DATE, 'YYYY-MM-DD') AS GATHERING_DATE,
+		GATHERING_PLACE,
+		GATHERING_PLACE_DETAIL,
+		PLACE_LAT,
+		PLACE_LNG,
+		MAX_MEMBER,
+		CURRENT_MEMBER,
+		GATHERING_STATUS,
+		ROOM_NO
+		FROM GATHERING
+		WHERE GATHERING_NO = #{gatheringNo}
+	</select>
+	
+	<select id="selectBoardTitle" resultType="string">
+    SELECT B.BOARD_TITLE
+    FROM GATHERING G
+    JOIN BOARD B
+        ON G.BOARD_NO = B.BOARD_NO
+    WHERE G.GATHERING_NO = #{gatheringNo}
+	</select>
+	
+</mapper>
+
+
+
+
+
+

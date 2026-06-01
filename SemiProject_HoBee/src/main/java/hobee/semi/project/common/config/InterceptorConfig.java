@@ -31,7 +31,9 @@ public class InterceptorConfig implements WebMvcConfigurer {
              "/images/**",
              "/favicon.ico",
              // 에러 페이지
-             "/error"
+             "/error",
+             "/notification/**",
+             "/follow/**"
          );
 	}
 	

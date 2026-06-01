@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/member/validation.css">
     <link rel="stylesheet" th:href="@{/css/member/signup.css}">
-
+	<th:block th:replace="~{common/common}"></th:block>
 </head>
 <body>
     <th:block th:replace="~{common/fragments/header}"></th:block>
@@ -29,7 +29,7 @@
                 <h3>* 인증번호</h3>
                 <div class="signUp-input">
                     <input type="text" maxlength="6" placeholder="인증번호" id="authKey" name="authKey" autocomplete="off">
-                    <button type="button" id="checkAuthKeyBtn">인증하기</button>
+                    <button type="button" id="checkAuthKeyBtn" disabled>인증하기</button>
                 </div>
                 <span class="signUp-message" id="authKeyMessage">인증번호 6자리를 입력해주세요.</span>
 

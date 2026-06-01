@@ -7,7 +7,7 @@ import hobee.semi.project.board.model.dto.Board;
 
 public interface BoardService {
 
-	Map<String, Object> selectBoardList(int boardCode,Integer categoryCode, int cp);
+	Map<String, Object> selectBoardList(int boardCode, Integer categoryCode, int cp, String sort, String dir, boolean onlyOpen);
 
 	Map<String, Object> searchList(Map<String, Object> paramMap, int cp);
 
@@ -19,10 +19,10 @@ public interface BoardService {
 
 	Map<String, Object> selectMyBoardList(Map<String, Object> queryMap, int cp);
 
-	String selectCategoryName(Integer categoryCode);
-
 	List<Board> selectBestList(int boardCode, Integer categoryCode);
 
 	List<Board> noticeList(int boardCode);
+
+	int getBoardCode(int boardNo);
 
 }

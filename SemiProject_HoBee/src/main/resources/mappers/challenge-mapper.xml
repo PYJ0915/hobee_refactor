@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="hobee.semi.project.challenge.model.mapper.ChallengeMapper">
+
+	<insert id="insertChallenge">
+		<selectKey keyProperty="challengeNo" resultType="int"
+			order="BEFORE">
+			SELECT SEQ_CHALLENGE_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO CHALLENGE (
+		CHALLENGE_NO, MEMBER_NO, CHALLENGE_TITLE, CHALLENGE_DESC,
+		CHALLENGE_TYPE, GOAL_COUNT, START_DATE, END_DATE
+		)
+		VALUES (
+		#{challengeNo}, #{memberNo}, #{challengeTitle}, #{challengeDesc},
+		#{challengeType}, #{goalCount},
+		TO_DATE(#{startDate}, 'YYYY-MM-DD'),
+		TO_DATE(#{endDate}, 'YYYY-MM-DD')
+		)
+	</insert>
+
+	<select id="selectChallengeList" resultType="Challenge">
+		SELECT C.CHALLENGE_NO, C.CHALLENGE_TITLE, C.CHALLENGE_DESC,
+		C.CHALLENGE_TYPE, C.GOAL_COUNT,
+		TO_CHAR(C.START_DATE, 'YYYY-MM-DD') AS START_DATE,
+		TO_CHAR(C.END_DATE, 'YYYY-MM-DD') AS END_DATE,
+		C.CHALLENGE_STATUS,
+		M.MEMBER_NICKNAME,
+		(SELECT COUNT(*) FROM CHALLENGE_MEMBER
+		WHERE CHALLENGE_NO = C.CHALLENGE_NO) AS PARTICIPANT_COUNT
+		FROM CHALLENGE C
+		JOIN MEMBER M ON M.MEMBER_NO = C.MEMBER_NO
+		WHERE 1=1
+		<if test="status != null and status != ''">
+			AND C.CHALLENGE_STATUS = #{status}
+		</if>
+		<if test="type != null and type != ''">
+			AND C.CHALLENGE_TYPE = #{type}
+		</if>
+		ORDER BY C.CHALLENGE_NO DESC
+	</select>
+
+	<select id="selectChallenge" resultType="Challenge">
+		SELECT C.CHALLENGE_NO, C.CHALLENGE_TITLE, C.CHALLENGE_DESC,
+		C.CHALLENGE_TYPE, C.GOAL_COUNT,
+		TO_CHAR(C.START_DATE, 'YYYY-MM-DD') AS START_DATE,
+		TO_CHAR(C.END_DATE, 'YYYY-MM-DD') AS END_DATE,
+		C.CHALLENGE_STATUS, M.MEMBER_NICKNAME,
+		(SELECT COUNT(*) FROM CHALLENGE_MEMBER
+		WHERE CHALLENGE_NO = C.CHALLENGE_NO) AS PARTICIPANT_COUNT,
+		(SELECT CERT_COUNT FROM CHALLENGE_MEMBER
+		WHERE CHALLENGE_NO = C.CHALLENGE_NO
+		AND MEMBER_NO = #{memberNo}) AS MY_COUNT,
+		(SELECT COUNT(*) FROM CHALLENGE_MEMBER
+		WHERE CHALLENGE_NO = C.CHALLENGE_NO
+		AND MEMBER_NO = #{memberNo}) AS IS_JOINED,
+		NVL((SELECT IS_COMPLETE FROM CHALLENGE_MEMBER
+		WHERE CHALLENGE_NO = C.CHALLENGE_NO
+		AND MEMBER_NO = #{memberNo}), 'N') AS IS_COMPLETE
+		FROM CHALLENGE C
+		JOIN MEMBER M ON M.MEMBER_NO = C.MEMBER_NO
+		WHERE C.CHALLENGE_NO = #{challengeNo}
+	</select>
+
+	<insert id="joinChallenge">
+		INSERT INTO CHALLENGE_MEMBER (CHALLENGE_NO, MEMBER_NO)
+		VALUES (#{challengeNo}, #{memberNo})
+	</insert>
+
+	<select id="checkJoined" resultType="int">
+		SELECT COUNT(*)
+		FROM CHALLENGE_MEMBER
+		WHERE CHALLENGE_NO = #{challengeNo}
+		AND MEMBER_NO = #{memberNo}
+	</select>
+
+	<update id="incrementCertCount">
+		UPDATE CHALLENGE_MEMBER
+		SET CERT_COUNT = CERT_COUNT + 1
+		WHERE CHALLENGE_NO = #{challengeNo}
+		AND MEMBER_NO = #{memberNo}
+	</update>
+
+	<update id="completeChallenge">
+		UPDATE CHALLENGE_MEMBER
+		SET IS_COMPLETE = 'Y'
+		WHERE CHALLENGE_NO = #{challengeNo}
+		AND MEMBER_NO = #{memberNo}
+		AND CERT_COUNT >= (
+		SELECT GOAL_COUNT FROM CHALLENGE
+		WHERE CHALLENGE_NO = #{challengeNo}
+		)
+	</update>
+
+	<update id="updateStatus">
+		UPDATE CHALLENGE
+		SET CHALLENGE_STATUS = #{challengeStatus}
+		WHERE CHALLENGE_NO = #{challengeNo}
+	</update>
+
+	<select id="selectExpiredChallenges" resultType="Challenge">
+		SELECT CHALLENGE_NO
+		FROM CHALLENGE
+		WHERE CHALLENGE_STATUS = 'OPEN'
+        <![CDATA[ AND END_DATE < SYSDATE ]]>
+	</select>
+
+	<select id="selectMyChallenges" resultType="Challenge">
+		SELECT C.CHALLENGE_NO, C.CHALLENGE_TITLE, C.CHALLENGE_TYPE,
+		C.GOAL_COUNT,
+		TO_CHAR(C.END_DATE, 'YYYY-MM-DD') AS END_DATE,
+		C.CHALLENGE_STATUS,
+		CM.CERT_COUNT AS MY_COUNT,
+		CM.IS_COMPLETE
+		FROM CHALLENGE_MEMBER CM
+		JOIN CHALLENGE C ON C.CHALLENGE_NO = CM.CHALLENGE_NO
+		WHERE CM.MEMBER_NO = #{memberNo}
+		ORDER BY CM.JOIN_DATE DESC
+	</select>
+
+</mapper>

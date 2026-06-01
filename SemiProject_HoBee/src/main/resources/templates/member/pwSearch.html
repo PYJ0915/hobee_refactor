@@ -1,64 +1,84 @@
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>비밀변호 변경</title>
+<!DOCTYPE html>
+<html lang="en">
 
-    <link rel="stylesheet" href="/css/common.css">
-    <link rel="stylesheet" href="/css/member/validation.css">
-    <link rel="stylesheet" href="/css/member/pwSearch.css">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>비밀변호 변경</title>
 
-  </head>
-  <body>
-    <th:block th:replace="~{common/fragments/header}"></th:block>
+	<link rel="stylesheet" href="/css/common.css">
+	<link rel="stylesheet" href="/css/member/validation.css">
+	<link rel="stylesheet" href="/css/member/pwSearch.css">
+	<th:block th:replace="~{common/common}"></th:block>
+</head>
 
-    <main>
-      <h1>비밀번호 찾기</h1>
+<body>
+	<th:block th:replace="~{common/fragments/header}"></th:block>
 
-      <section>
-          <form th:action="@{/member/pwSearch}" method="POST" id="pwSearchForm">
+	<main>
+		<h1>비밀번호 찾기</h1>
 
-              <div class="signUp-input-area">
-                  <h3>이메일</h3>
-                  <div class="signUp-input">
-                      <input type="email" placeholder="이메일" id="memberEmail" name="memberEmail" autocomplete="off">
-                      <button type="button" id="sendAuthKeyBtn">인증번호 받기</button>
-                  </div>
-                  <span class="signUp-message" id="emailMessage">메일을 받을 수 있는 이메일을 입력해주세요.</span>
-              </div>
+		<section>
+			<form th:action="@{/member/pwSearch}" method="POST" id="pwSearchForm">
 
-              <div class="signUp-input-area">
-                  <h3>인증번호</h3>
-                  <div class="signUp-input">
-                      <input type="text" maxlength="6" placeholder="인증번호" id="authKey" name="authKey" autocomplete="off">
-                      <button type="button" id="checkAuthKeyBtn">인증하기</button>
-                  </div>
-                  <span class="signUp-message" id="authKeyMessage">인증번호 6자리를 입력해주세요.</span>
-              </div>
+				<div class="signUp-input-area">
+					<h3>이메일</h3>
+					<div class="signUp-input">
+						<input type="email" placeholder="이메일" id="memberEmail" name="memberEmail" autocomplete="off">
+						<button type="button" id="sendAuthKeyBtn">인증번호 받기</button>
+					</div>
+					<span class="signUp-message" id="emailMessage">메일을 받을 수 있는 이메일을 입력해주세요.</span>
+				</div>
 
-              <div class="signUp-input-area">
-                  <h3>새 비밀번호</h3>
-                  <div class="signUp-input">
-                      <input type="password" placeholder="비밀번호" id="memberPw" name="memberPw" minlength="6" maxlength="12">
-                  </div>
-                  <span class="signUp-message" id="pwMessage">영어, 숫자, 특수문자 포함 6~12자 사이로 입력해주세요.</span>
-              </div>
+				<div class="signUp-input-area">
+					<h3>인증번호</h3>
+					<div class="signUp-input">
+						<input type="text" maxlength="6" placeholder="인증번호" id="authKey" name="authKey"
+							autocomplete="off">
+						<button type="button" id="checkAuthKeyBtn" disabled>인증하기</button>
+					</div>
+					<span class="signUp-message" id="authKeyMessage">인증번호 6자리를 입력해주세요.</span>
+				</div>
 
-              <div class="signUp-input-area">
-                  <h3>비밀번호 획인</h3>
-                  <div class="signUp-input">
-                      <input type="password" placeholder="비밀번호 확인" id="memberPwConfirm" name="memberPwConfirm">
-                  </div>
-                  <span class="signUp-message" id="pwConMessage">비밀번호를 입력해주세요.</span>
-              </div>
+				<div class="signUp-input-area">
+					<h3>이름</h3>
+					<div class="signUp-input">
+						<input type="text" placeholder="이름" id="memberName" name="memberName">
+					</div>
+					<span class="signUp-message" id="nameMessage">이름을 입력해주세요.</span>
+				</div>
 
-              <button id="pwSearchBtn" class="main-btn">비밀번호 변경</button>
+				<div class="signUp-input-area">
+					<h3>전화번호</h3>
+					<div class="signUp-input">
+						<input type="tel" placeholder="전화번호(숫자만 입력)" id="memberTel" name="memberTel" maxlength="12">
+					</div>
+					<span class="signUp-message" id="telMessage">전화번호를 입력해주세요.</span>
+				</div>
 
-          </form>
-      </section>
+				<div class="signUp-input-area">
+					<h3>새 비밀번호</h3>
+					<div class="signUp-input">
+						<input type="password" placeholder="비밀번호" id="memberPw" name="memberPw" minlength="6"
+							maxlength="12">
+					</div>
+					<span class="signUp-message" id="pwMessage">영어, 숫자, 특수문자 포함 6~12자 사이로 입력해주세요.</span>
+				</div>
 
-    </main>
+				<div class="signUp-input-area">
+					<h3>새 비밀번호 확인</h3>
+					<div class="signUp-input">
+						<input type="password" placeholder="비밀번호 확인" id="memberPwConfirm" name="memberPwConfirm">
+					</div>
+					<span class="signUp-message" id="pwConMessage">비밀번호를 입력해주세요.</span>
+				</div>
+
+				<button id="pwSearchBtn" class="main-btn">비밀번호 변경</button>
+
+			</form>
+		</section>
+
+	</main>
 
 
 
@@ -68,10 +88,11 @@
 
 
 
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-  
-    <script src="/js/member/pwsearch.js"></script>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-    <th:block th:replace="~{common/fragments/footer}"></th:block>
-  </body>
-  </html>
+	<script src="/js/member/pwsearch.js"></script>
+
+	<th:block th:replace="~{common/fragments/footer}"></th:block>
+</body>
+
+</html>

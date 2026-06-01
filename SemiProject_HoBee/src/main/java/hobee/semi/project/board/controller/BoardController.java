@@ -20,6 +20,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.board.model.service.BoardService;
+import hobee.semi.project.gathering.model.dto.Gathering;
+import hobee.semi.project.gathering.model.service.GatheringService;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,31 +35,68 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BoardController {
 	
-	private static final Map<Integer, String> BOARD_NAME_MAP = Map.of(
-	        1, "공지 게시판",
-	        2, "취미 게시판",
-	        3, "자유 게시판"
-	    );
-
 	private final BoardService service;
+	private final GatheringService gatheringService;
 
+	// BoardCode와 BoardName 매핑해주는 맵
+	// Map.of()는 불변이라 수정 불가 → Map.ofEntries()로 교체
+	private static final Map<Integer, String> BOARD_NAME_MAP = Map.ofEntries(
+		    Map.entry(1, "공지 게시판"),
+		    Map.entry(2, "취미 게시판"),
+		    Map.entry(3, "자유 게시판"),
+		    Map.entry(4, "모임 모집")   // 추가
+		);
+
+	// CategoryCode와 CategoryName 매핑해주는 맵
+	private static final Map<Integer, String> CATEGORY_NAME_MAP = Map.of(
+			1, "운동·레저", 
+			2, "자기 계발", 
+			3, "문화·예술", 
+			4, "사회 교류",
+			5, "수집·소비"
+		);
+
+
+	/**
+	 * 게시글 목록 조회 메서드
+	 * 
+	 * @param boardCode
+	 * @param categoryCode
+	 * @param cp
+	 * @param model
+	 * @param paramMap
+	 * @return
+	 */
 	@GetMapping({ "list/{boardCode:[0-9]+}", "list/{boardCode:[0-9]+}/{categoryCode:[0-9]+}" })
 	public String selectBoardList(@PathVariable("boardCode") int boardCode,
 			@PathVariable(name = "categoryCode", required = false) Integer categoryCode,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
-			@RequestParam Map<String, Object> paramMap) {
+			@RequestParam Map<String, Object> paramMap, 
+			@RequestParam(name = "sort", required = false) String sort,
+	        @RequestParam(name = "dir", required = false, defaultValue = "desc") String dir,
+	        @RequestParam(name = "onlyOpen", required = false, defaultValue = "false") boolean onlyOpen) {
 
+		// URL에 있는 BoardCode와 Map을 통해 게시판 이름 얻어오기
 		String boardName = getBoardName(boardCode);
 
 		// 취미 게시판인 경우 해야할 작업
 		if (categoryCode != null) {
 
-			log.debug("취미 게시판 이름 조회 시작");
-			String categoryName = service.selectCategoryName(categoryCode);
-			log.debug("취미 게시판 이름 조회 완료 {}", categoryName);
+			String categoryName = selectCategoryName(categoryCode);
 
 			model.addAttribute("categoryCode", categoryCode);
 			model.addAttribute("hobbyName", categoryName);
+		}
+
+		// 자유 및 취미 게시판에서 해야하는 작업
+		if (boardCode != 1 && boardCode != 4) {
+			log.debug("인기 게시글 및 공지사항 조회 시작");
+			List<Board> bestList = service.selectBestList(boardCode, categoryCode);
+			List<Board> noticeList = service.noticeList(1);
+			log.debug("인기 게시글 및 공지사항 조회 완료 {}, {}", bestList, noticeList);
+
+			model.addAttribute("bestList", bestList);
+			model.addAttribute("noticeList", noticeList);
 		}
 
 		// 조회 서비스 호출 후 결과 반환
@@ -68,7 +107,7 @@ public class BoardController {
 
 			// 게시글 목록 조회 서비스 호출
 			log.debug("게시글 목록 조회 시작");
-			map = service.selectBoardList(boardCode, categoryCode, cp);
+			map = service.selectBoardList(boardCode, categoryCode, cp, sort, dir, onlyOpen);
 			log.debug("게시글 목록 조회 완료 {}", map);
 
 		} else { // 검색인 경우
@@ -81,6 +120,11 @@ public class BoardController {
 			// -> paramMap은 {key=w, query=짱구, boardCode=1}
 
 			paramMap.put("categoryCode", categoryCode);
+			
+			// 정렬
+			paramMap.put("sort", sort);
+	        paramMap.put("dir", dir);
+	        paramMap.put("onlyOpen", onlyOpen);
 
 			// 검색(내가 검색한 게시글 목록 조회) 서비스 호출
 			log.debug("검색한 게시글 목록 조회 시작");
@@ -89,23 +133,14 @@ public class BoardController {
 
 		}
 
-		// 자유 및 취미 게시판에서 해야하는 작업
-		if (boardCode != 1) {
-			log.debug("인기 게시글 및 공지사항 조회 시작");
-			List<Board> bestList = service.selectBestList(boardCode, categoryCode);
-			List<Board> noticeList = service.noticeList(1);
-			log.debug("인기 게시글 및 공지사항 조회 완료 {}, {}", bestList, noticeList);
-
-			model.addAttribute("bestList", bestList);
-			model.addAttribute("noticeList", noticeList);
-
-		}
-
 		// model에 결과 값 등록
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));
 		model.addAttribute("boardCode", boardCode);
 		model.addAttribute("boardName", boardName);
+		model.addAttribute("currentSort", sort);
+	    model.addAttribute("currentDir", dir);
+	    model.addAttribute("onlyOpen", onlyOpen);
 
 		// src/main/resources/templates/board/boardList.html 로 forward
 		return "board/boardList";
@@ -127,11 +162,11 @@ public class BoardController {
 			@SessionAttribute(value = "loginMember", required = false) MemberDTO loginMember, RedirectAttributes ra) {
 
 		Map<String, Object> queryMap = new HashMap<>();
-		
+
 		String boardName = getBoardName(boardCode);
 
 		if (categoryCode != null) {
-			String categoryName = service.selectCategoryName(categoryCode);
+			String categoryName = selectCategoryName(categoryCode);
 
 			queryMap.put("categoryCode", categoryCode);
 
@@ -167,9 +202,9 @@ public class BoardController {
 	 * 게시글 상세 조회 함수
 	 * 
 	 */
-	@GetMapping({ "detail/{boardCode:[0-9]+}/{boardNo:[0-9]+}", "detail/{boardCode:[0-9]+}/{categoryCode:[0-9]+}/{boardNo:[0-9]+}" })
-	public String boardDetail(
-			@PathVariable(name = "boardCode", required = false) Integer boardCode,
+	@GetMapping({ "detail/{boardCode:[0-9]+}/{boardNo:[0-9]+}",
+			"detail/{boardCode:[0-9]+}/{categoryCode:[0-9]+}/{boardNo:[0-9]+}" })
+	public String boardDetail(@PathVariable(name = "boardCode", required = false) Integer boardCode,
 			@PathVariable(name = "categoryCode", required = false) Integer categoryCode,
 			@PathVariable("boardNo") int boardNo,
 			@SessionAttribute(value = "loginMember", required = false) MemberDTO loginMember, Model model,
@@ -191,19 +226,31 @@ public class BoardController {
 			ra.addFlashAttribute("message", "게시글이 존재하지 않습니다.");
 			return "redirect:/";
 		}
+		
+		int safeBoardCode = (boardCode != null) ? boardCode : board.getBoardCode();
+
+		if (safeBoardCode == 4) {
+		    Gathering gathering = gatheringService.getGathering(
+		        boardNo,
+		        loginMember != null ? loginMember.getMemberNo() : 0
+		    );
+		    model.addAttribute("gathering", gathering);
+		}
+
+		// 아래 model.addAttribute도 safeBoardCode 사용으로 변경
+		model.addAttribute("boardCode", safeBoardCode);
 
 		handleViewCount(board, boardNo, loginMember, req, resp);
 
 		model.addAttribute("board", board);
 		model.addAttribute("boardCode", boardCode);
 		model.addAttribute("categoryCode", categoryCode);
-		
-		String gotoList = categoryCode != null
-			    ? "/board/list/" + boardCode + "/" + categoryCode
-			    : "/board/list/" + boardCode;
-		
-		model.addAttribute("gotoList", gotoList);
 
+		String gotoList = categoryCode != null ? "/board/list/" + boardCode + "/" + categoryCode
+				: "/board/list/" + boardCode;
+
+		model.addAttribute("gotoList", gotoList);
+		
 		return "board/boardDetail";
 	}
 
@@ -212,12 +259,28 @@ public class BoardController {
 	public int boardLike(@RequestBody Map<String, Integer> map) {
 		return service.boardLike(map);
 	}
+	
+	@ResponseBody
+	@GetMapping("getBoardCode/{boardNo}")
+	public int getBoardCode(@PathVariable("boardNo") int boardNo) {
+	    return service.getBoardCode(boardNo);
+	}
+	
 
-	/** 게시판 코드를 받아 게시판 이름으로 반환해주는 함수
+	/**
+	 * 게시판 코드를 받아 게시판 이름으로 반환해주는 함수
 	 * 
 	 */
 	private String getBoardName(int boardCode) {
 		return BOARD_NAME_MAP.getOrDefault(boardCode, "게시판");
+	}
+
+	/** 
+	 * 카테고리 코드를 받아 카테고리 이름으로 반환해주는 함수
+	 * 
+	 */
+	private String selectCategoryName(Integer categoryCode) {
+		return CATEGORY_NAME_MAP.getOrDefault(categoryCode, "게시판");
 	}
 
 	/**

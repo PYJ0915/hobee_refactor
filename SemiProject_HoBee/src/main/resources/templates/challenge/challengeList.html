@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>챌린지 | Ho-Bee</title>
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/css/challenge/challenge.css}">
+  <th:block th:replace="~{common/common}" />
+</head>
+
+<body>
+  <th:block th:replace="~{common/fragments/header}" />
+
+  <main class="challenge-container">
+
+    <div class="challenge-header">
+      <h2 class="page-title">챌린지</h2>
+      <a href="/challenge/create" class="challenge-create-btn">
+        + 챌린지 만들기
+      </a>
+    </div>
+
+    <!-- 필터 탭 -->
+    <div class="challenge-filter">
+      <a th:href="@{/challenge/list}" th:classappend="${currentStatus == null} ? ' active' : ''">전체</a>
+      <a th:href="@{/challenge/list(status='OPEN')}" th:classappend="${currentStatus == 'OPEN'} ? ' active' : ''">진행
+        중</a>
+      <a th:href="@{/challenge/list(status='DONE')}" th:classappend="${currentStatus == 'DONE'} ? ' active' : ''">종료</a>
+    </div>
+
+    <!-- 챌린지 카드 목록 -->
+    <div class="challenge-grid">
+      <th:block th:if="${#lists.isEmpty(challengeList)}">
+        <div class="empty-challenge">
+          <p class="empty-icon">🏆</p>
+          <p class="empty-text">아직 등록된 챌린지가 없습니다.</p>
+          <p class="empty-sub">첫 번째 챌린지를 만들어보세요!</p>
+          <a href="/challenge/create" class="challenge-create-btn" style="margin-top: 16px;">
+            + 챌린지 만들기
+          </a>
+        </div>
+      </th:block>
+
+      <div th:each="c : ${challengeList}" class="challenge-card"
+        th:classappend="${c.challengeStatus == 'DONE'} ? ' done' : ''">
+
+        <!-- 상태 배지 -->
+        <span class="challenge-badge" th:text="${c.challengeStatus == 'OPEN'} ? '진행 중' : '종료'" th:classappend="${c.challengeStatus == 'OPEN'}
+                                  ? ' badge-open' : ' badge-done'">
+          진행 중
+        </span>
+
+        <h3 class="challenge-card-title" th:text="${c.challengeTitle}">챌린지 제목</h3>
+
+        <p class="challenge-type" th:text="${c.challengeType}">카테고리</p>
+
+        <div class="challenge-meta">
+          <span>🎯 목표 <strong th:text="${c.goalCount}">30</strong>회</span>
+          <span>👥 <strong th:text="${c.participantCount}">0</strong>명 참여</span>
+        </div>
+
+        <div class="challenge-dates">
+          <span th:text="${c.startDate}">시작일</span>
+          ~
+          <span th:text="${c.endDate}">종료일</span>
+        </div>
+
+        <a th:href="@{/challenge/detail/{no}(no=${c.challengeNo})}" class="challenge-detail-btn">자세히 보기</a>
+      </div>
+    </div>
+
+  </main>
+
+  <th:block th:replace="~{common/fragments/footer}" />
+</body>
+
+</html>

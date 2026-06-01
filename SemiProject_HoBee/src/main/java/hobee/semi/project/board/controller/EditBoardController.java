@@ -20,6 +20,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.board.model.service.BoardService;
 import hobee.semi.project.board.model.service.EditBoardService;
+import hobee.semi.project.gathering.model.dto.Gathering;
+import hobee.semi.project.gathering.model.service.GatheringService;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,8 @@ public class EditBoardController {
 	private final EditBoardService service;
 
 	private final BoardService boardService;
+
+	private final GatheringService gatheringService;
 
 	/**
 	 * 글작성 화면 조회
@@ -60,6 +64,12 @@ public class EditBoardController {
 	public String boardInsert(@PathVariable("boardCode") int boardCode,
 			@PathVariable(name = "categoryCode", required = false) Integer categoryCode,
 			@ModelAttribute Board inputBoard,
+			@RequestParam(value = "gatheringDate", required = false) String gatheringDate,
+			@RequestParam(value = "gatheringPlace", required = false) String gatheringPlace,
+			@RequestParam(value = "gatheringPlaceDetail", required = false) String gatheringPlaceDetail,
+			@RequestParam(value = "placeLat", required = false) Double placeLat,
+			@RequestParam(value = "placeLng", required = false) Double placeLng,
+			@RequestParam(value = "maxMember", required = false) Integer maxMember,
 			@SessionAttribute("loginMember") MemberDTO loginMember, RedirectAttributes ra)
 			throws IllegalStateException, IOException {
 
@@ -68,25 +78,35 @@ public class EditBoardController {
 
 		// 2. 게시판 이름 세팅
 		inputBoard.setBoardCode(boardCode);
-		
+
 		// 취미 게시판인 경우 카테고리 코드 세팅
-		if (categoryCode != null) inputBoard.setCategoryCode(categoryCode);
+		if (categoryCode != null)
+			inputBoard.setCategoryCode(categoryCode);
+
+		// 모임 모집 게시글이면 Gathering 객체 생성
+		Gathering gathering = null;
+		if (inputBoard.getBoardCode() == 4 && gatheringDate != null && gatheringPlace != null && maxMember != null) {
+
+			gathering = Gathering.builder().gatheringDate(gatheringDate).gatheringPlace(gatheringPlace)
+					.gatheringPlaceDetail(gatheringPlaceDetail).placeLat(placeLat != null ? placeLat : 0)
+					.placeLng(placeLng != null ? placeLng : 0).maxMember(maxMember).build();
+		}
 
 		// 3. 서비스 호출 (비즈니스 로직에서 이미지 DB 매칭 처리)
-		int boardNo = service.boardInsert(inputBoard);
-		
+		int boardNo = service.boardInsert(inputBoard, gathering);
+
 		String message = null;
 		String path = null;
 
 		if (boardNo > 0) {
 			message = "게시글이 성공적으로 등록되었습니다.";
-			
+
 			if (categoryCode != null) {
 				path = String.format("redirect:/board/detail/%d/%d/%d", boardCode, categoryCode, boardNo);
 			} else {
 				path = String.format("redirect:/board/detail/%d/%d", boardCode, boardNo);
 			}
-			
+
 		} else {
 			message = "게시글 등록에 실패했습니다. 다시 시도해 주세요.";
 			path = "redirect:insert";
@@ -96,7 +116,6 @@ public class EditBoardController {
 		return path;
 
 	}
-
 
 	/**
 	 * 게시판 삭제 기능
@@ -108,7 +127,8 @@ public class EditBoardController {
 	 * @param ra
 	 * @return
 	 */
-	@PostMapping({"/{boardCode:[0-9]+}/{boardNo:[0-9]+}/delete", "/{boardCode:[0-9]+}/{categoryCode:[0-9]+}/{boardNo:[0-9]+}/delete"})
+	@PostMapping({ "/{boardCode:[0-9]+}/{boardNo:[0-9]+}/delete",
+			"/{boardCode:[0-9]+}/{categoryCode:[0-9]+}/{boardNo:[0-9]+}/delete" })
 	public String BoardDelete(@PathVariable("boardCode") int boardCode,
 			@PathVariable(name = "categoryCode", required = false) Integer categoryCode,
 			@PathVariable("boardNo") int boardNo,
@@ -129,28 +149,27 @@ public class EditBoardController {
 
 		if (result > 0) {
 			message = "글 삭제가 완료되었습니다";
-			
-			if(categoryCode != null) {
+
+			if (categoryCode != null) {
 				path = String.format("/board/list/%d/%d?cp=%d", boardCode, categoryCode, cp);
 			} else {
 				path = String.format("/board/list/%d?cp=%d", boardCode, cp);
 			}
-			
+
 		} else {
 			message = "게시글 삭제에 실패했습니다. 다시 시도해 주세요.";
-			
-			if(categoryCode != null) {
+
+			if (categoryCode != null) {
 				path = String.format("/board/detail/%d/%d/%d?cp=%d", boardCode, categoryCode, boardNo, cp);
 			} else {
 				path = String.format("/board/detail/%d/%d/?cp=%d", boardCode, boardNo, cp);
 			}
-			
+
 		}
-		
+
 		ra.addFlashAttribute("message", message);
 		return "redirect:" + path;
 	}
-
 
 	/**
 	 * 게시글 수정 화면 조회
@@ -182,6 +201,11 @@ public class EditBoardController {
 		model.addAttribute("board", board);
 		model.addAttribute("boardCode", boardCode);
 
+		if (boardCode == 4) {
+			Gathering gathering = gatheringService.getGathering(boardNo, loginMember.getMemberNo());
+			model.addAttribute("gathering", gathering);
+		}
+
 		return "board/editBoard";
 	}
 
@@ -201,36 +225,48 @@ public class EditBoardController {
 			"/{boardCode:[0-9]+}/{categoryCode:[0-9]+}/{boardNo:[0-9]+}/update" })
 	public String boardUpdate(@PathVariable("boardCode") int boardCode, @PathVariable("boardNo") int boardNo,
 			@PathVariable(value = "categoryCode", required = false) Integer categoryCode, Board inputBoard,
+			// 모임 필드 추가
+			@RequestParam(value = "gatheringDate", required = false) String gatheringDate,
+			@RequestParam(value = "gatheringPlace", required = false) String gatheringPlace,
+			@RequestParam(value = "gatheringPlaceDetail", required = false) String gatheringPlaceDetail,
+			@RequestParam(value = "placeLat", required = false) Double placeLat,
+			@RequestParam(value = "placeLng", required = false) Double placeLng,
+			@RequestParam(value = "maxMember", required = false) Integer maxMember,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
 			@SessionAttribute("loginMember") MemberDTO loginMember, RedirectAttributes ra) {
 
 		inputBoard.setBoardNo(boardNo);
 		inputBoard.setMemberNo(loginMember.getMemberNo());
 		inputBoard.setAuthorLevel(loginMember.getAuthorLevel());
-		if (categoryCode != null) {
+		if (categoryCode != null)
 			inputBoard.setCategoryCode(categoryCode);
-		}
 
 		int result = service.boardUpdate(inputBoard);
 
-		String message = null;
-		String path = null;
+// 모임 게시글이면 gathering도 업데이트
+		if (boardCode == 4 && gatheringDate != null) {
+			Gathering gathering = Gathering.builder().boardNo(boardNo).gatheringDate(gatheringDate)
+					.gatheringPlace(gatheringPlace).gatheringPlaceDetail(gatheringPlaceDetail)
+					.placeLat(placeLat != null ? placeLat : 0).placeLng(placeLng != null ? placeLng : 0)
+					.maxMember(maxMember != null ? maxMember : 0).build();
+			gatheringService.updateGathering(gathering);
+		}
+
+		String message;
+		String path;
 
 		if (result > 0) {
-			message = "게시글이 수정 되었습니다";
-
-			if(categoryCode != null) {
+			message = "게시글이 수정되었습니다.";
+			if (categoryCode != null) {
 				path = String.format("/board/detail/%d/%d/%d?cp=%d", boardCode, categoryCode, boardNo, cp);
 			} else {
 				path = String.format("/board/detail/%d/%d?cp=%d", boardCode, boardNo, cp);
 			}
-			
 		} else {
 			message = "수정 실패";
 			path = "update";
-
 		}
-		
+
 		ra.addFlashAttribute("message", message);
 		return "redirect:" + path;
 	}

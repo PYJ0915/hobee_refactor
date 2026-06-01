@@ -12,19 +12,20 @@ import org.springframework.transaction.annotation.Transactional;
 import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.board.model.dto.Pagination;
 import hobee.semi.project.board.model.mapper.BoardMapper;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
 public class BoardServiceImpl implements BoardService {
 
-	@Autowired
-	private BoardMapper mapper;
+	private final BoardMapper mapper;
 
 	@Override
-	public Map<String, Object> selectBoardList(int boardCode, Integer categoryCode, int cp) {
+	public Map<String, Object> selectBoardList(int boardCode, Integer categoryCode, int cp, String sort, String dir, boolean onlyOpen) {
 
 		// 1. 해당 게시판의 전체 게시글 수 조회 (삭제 안 된 것)
-		int listCount = mapper.getListCount(boardCode, categoryCode);
+		int listCount = mapper.getListCount(boardCode, categoryCode, onlyOpen);
 
 		// 2. Pagination 객체 생성 (현재 페이지, 전체 게시글 수 전달)
 		Pagination pagination = new Pagination(cp, listCount);
@@ -32,7 +33,7 @@ public class BoardServiceImpl implements BoardService {
 		// 3. 특정 페이지 목록 조회
 		RowBounds rowBounds = createRowBounds(cp, listCount);
 
-		List<Board> boardList = mapper.selectBoardList(boardCode, categoryCode, rowBounds);
+		List<Board> boardList = mapper.selectBoardList(boardCode, categoryCode, sort, dir, onlyOpen, rowBounds);
 
 		// 4. 결과 담기
 		return toBoardListMap(pagination, boardList);
@@ -130,10 +131,6 @@ public class BoardServiceImpl implements BoardService {
 		return mapper.selectNoticeList(noticeBoardCode, rowBounds);
 	}
 
-	@Override
-	public String selectCategoryName(Integer categoryCode) {
-		return mapper.selectCategoryName(categoryCode);
-	}
 
 	/** rowBounds 만드는 함수 (공통 작업)
 	 * RowBounds(건너뛸 개수, 가져올 개수)
@@ -152,6 +149,11 @@ public class BoardServiceImpl implements BoardService {
 		resultMap.put("pagination", pagination);
 		resultMap.put("boardList", boardList);
 		return resultMap;
+	}
+
+	@Override
+	public int getBoardCode(int boardNo) {
+		return mapper.getBoardCode(boardNo);
 	}
 
 }

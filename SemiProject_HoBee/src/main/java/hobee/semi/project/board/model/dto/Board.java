@@ -42,4 +42,9 @@ public class Board {
 	
 	private String profileImg;
 	
+	// 모임 모집 게시판 전용: OPEN / CLOSED / null
+	private String gatheringStatus;
+	
+	private int challengeNo;
+	
 }

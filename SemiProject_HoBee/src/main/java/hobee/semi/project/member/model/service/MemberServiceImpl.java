@@ -9,19 +9,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import hobee.semi.project.board.model.dto.Board;
 import hobee.semi.project.member.model.dto.MemberDTO;
 import hobee.semi.project.member.model.mapper.MemberMapper;
 import hobee.semi.project.profileImg.model.dto.ProfileDTO;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
+@RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService{
 
-	@Autowired
-	private  MemberMapper mapper;
+	private final MemberMapper mapper;
 	
-	@Autowired 
-	private BCryptPasswordEncoder bcrypt;
+	private final BCryptPasswordEncoder bcrypt;
 	
 	// 로그인
 	@Override
@@ -120,13 +121,13 @@ public class MemberServiceImpl implements MemberService{
 		if(result == 0) { // 해당 이메일이 없을 경우
 			return -1;
 		}
+		
 		return  mapper.checkTel(inputMember);
 	}
 
 	// 아이디 찾기 결과 값 창으로 이동
 	@Override
 	public String findId(MemberDTO inputMember) {
-
 		return mapper.findId(inputMember);
 	}
 
@@ -138,7 +139,6 @@ public class MemberServiceImpl implements MemberService{
 		
 		inputMember.setMemberPw(encPw); // 암호화 하고 짚어 넣기
 		
-		
 		return mapper.pwChange(inputMember);
 	}
 	
@@ -148,6 +148,26 @@ public class MemberServiceImpl implements MemberService{
 		ProfileDTO profile = mapper.selectLatestProfile(memberNo);
 		return profile;
 	}
+
+	@Override
+	public MemberDTO selectMemberProfile(int memberNo) {
+		return mapper.selectMemberProfile(memberNo);
+	}
 	
+	@Override
+	public List<Board> selectMemberBoardList(int memberNo) {
+	    return mapper.selectMemberBoardList(memberNo);
+	}
+
+	@Override
+	public List<String> selectMemberHobbyCode(int memberNo) {
+	    return mapper.selectMemberHobbyCode(memberNo);
+	}
+	
+	// 단체 채팅방 참여자 검색
+	@Override
+	public List<MemberDTO> searchMembers(String keyword) {
+	    return mapper.searchMembers(keyword);
+	}
 
 }

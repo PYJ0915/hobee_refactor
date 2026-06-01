@@ -83,6 +83,7 @@ authEmail.addEventListener("input", e => {
 
 // 인증 코드 보내기 ------------------------------------------------------------------------------------
 const sendAuthKeyBtn = document.querySelector("#sendAuthKeyBtn"); // 인증번호 받기 버튼
+const checkAuthKeyBtn = document.querySelector("#checkAuthKeyBtn"); // 인증하기 버튼
 const authKeyMessage = document.querySelector("#authKeyMessage"); // 인증 span 메세지
 
 sendAuthKeyBtn.addEventListener("click", () => {
@@ -125,6 +126,10 @@ sendAuthKeyBtn.addEventListener("click", () => {
 				console.log("인증 번호 발송 성공");
 				alert("인증번호가 발송되었습니다.");
 				// 인증번호 보내기 누를 시 타이머 초기화 시키기!
+				
+				// 인증번호 전송이 완료되어야 인증 버튼 활성화
+				checkAuthKeyBtn.disabled = false;
+				sendAuthKeyBtn.innerText = "전송완료"; // 사용자에게 진행 상태 알림 
 
 				min = initMin;
 				sec = initSec;
@@ -169,7 +174,6 @@ function addZero(number) {
 
 
 // 인증코드 확인
-const checkAuthKeyBtn = document.querySelector("#checkAuthKeyBtn"); // 인증하기 버튼
 const authKey = document.querySelector("#authKey"); // 인증번호
 
 checkAuthKeyBtn.addEventListener("click", e => {
@@ -590,12 +594,6 @@ signUpForm.addEventListener("submit", e => {
 	}
 });
 
-
-
-
-
-
-
 // 주소 검색 버튼 클릭 시
 document.querySelector("#searchAddress").addEventListener("click", execDaumPostcode);
 
@@ -625,5 +623,3 @@ function execDaumPostcode() {
 		}
 	}).open();
 }
-// 주소 검색 버튼 클릭 시
-document.querySelector("#searchAddress").addEventListener("click", execDaumPostcode);

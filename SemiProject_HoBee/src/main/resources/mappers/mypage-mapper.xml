@@ -113,6 +113,11 @@
 	WHERE MEMBER_NO = #{memberNo}
 	</update>
 	
+	<delete id="deleteProfile">
+    DELETE FROM PROFILE_IMG
+    WHERE MEMBER_NO = #{memberNo}
+	</delete>
+	
 	<!-- 회원 탈퇴 -->
 	<update id="secession">
 		UPDATE "MEMBER" SET

@@ -12,13 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 import hobee.semi.project.board.model.dto.Pagination;
 import hobee.semi.project.penalty.model.dto.Penalty;
 import hobee.semi.project.penalty.model.mapper.PenaltyMapper;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
+@RequiredArgsConstructor
 public class PenaltyServiceImpl implements PenaltyService{
 
-	@Autowired
-	private PenaltyMapper mapper;
+	private final PenaltyMapper mapper;
 	
 	@Override
 	public Penalty selectPenalty(int memberNo) {
