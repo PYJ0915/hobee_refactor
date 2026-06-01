@@ -165,18 +165,6 @@
   - 원인: `mapper.profile()` DB INSERT 성공 후 `transferTo()`(파일 저장) 실패 시 `@Transactional`이 롤백되지 않아 DB에는 경로가 저장되지만 실제 파일이 없는 상태 발생
   - 해결: 파일 저장 로직을 try-catch로 감싸고 실패 시 `RuntimeException`을 throw하여 트랜잭션 롤백 보장
 
-- **카카오맵 SDK autoload 문제로 지도 미렌더링**
-  - 원인: SDK 로드 완료 전에 `kakao.maps.Map()` 생성자가 호출되어 지도가 표시되지 않음
-  - 해결: SDK URL에 `autoload=false` 파라미터 추가 후 `kakao.maps.load(() => { ... })` 콜백 안에서 지도 초기화
-
-- **`static int seqNum` 동시 요청 시 파일명 중복 발생**
-  - 원인: 멀티스레드 환경에서 두 스레드가 같은 `seqNum` 값을 읽어 동일한 파일명 생성 가능
-  - 해결: `AtomicInteger`로 교체하여 `getAndIncrement()` 원자적 연산으로 중복 방지
-
-- **Gathering 참여 신청 무한 가능 문제**
-  - 원인: 모집 인원이 꽉 찬 상태에서도 신청 버튼이 활성화되어 신청 가능
-  - 해결: `joinGathering()` 서비스에서 `currentMember >= maxMember` 체크 추가, 마감 상태(`CLOSED`) 이중 방어
-
 ---
 
 ## 📊 ERD
