@@ -141,7 +141,7 @@ public class MemberController {
 	// 닉네임 중복검사
 	@ResponseBody
 	@GetMapping("checkNickname")
-	public int checNickname(@RequestParam("memberNickname") String memberNickname) {
+	public int checkNickname(@RequestParam("memberNickname") String memberNickname) {
 		return service.checkNickname(memberNickname);
 	}
 

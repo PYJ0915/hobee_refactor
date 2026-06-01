@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
@@ -14,34 +15,23 @@ import net.coobird.thumbnailator.geometry.Positions;
 
 public class Utility {
 
-	public static int seqNum = 1;
-	
-	public static int hobbyCode = 0;
-	
 	public static String fileRename(String originalName) {
 		
-		// 시간을 원하는 형태의 문자열로 간단히 변경
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-		
-		// 현재 시간 저장
-		String date = sdf.format(new Date());
-		
-		// 00001 포맷
-		String number = String.format("%05d", seqNum);
+		// 현재 시간
+	    String date = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 
-		// 1증가
-		seqNum++;
+	    // 확장자
+	    String ext = originalName.substring(originalName.lastIndexOf("."));
 
-		// 99999 넘어갈 시 1로 초기화
-		if(seqNum == 100000) seqNum = 1;
-		
-		// 확장자 구하기
-		String ext = originalName.substring(originalName.lastIndexOf("."));
-		
-		return date + "_" + number + ext;
+	    // UUID 8자리 사용
+	    String uuid = UUID.randomUUID().toString().replace("-", "") .substring(0, 8);
+
+	    return date + "_" + uuid + ext;
 	}
 	
 	public static int getHobbyCode(String hobby) {
+		
+			int hobbyCode = 0;
 			
 			switch (hobby) {
 			case "sports":

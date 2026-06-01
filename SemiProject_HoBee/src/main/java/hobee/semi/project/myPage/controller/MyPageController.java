@@ -144,7 +144,7 @@ public class MyPageController {
 	
 	@ResponseBody
 	@GetMapping("checkNickname")
-	public int checNickname(@RequestParam("memberNickname") String memberNickname,
+	public int checkNickname(@RequestParam("memberNickname") String memberNickname,
 							@SessionAttribute("loginMember") MemberDTO loginMember) {
 		
 		int memberNo = loginMember.getMemberNo();
