@@ -73,23 +73,22 @@ public class MyPageServiceImpl implements MyPageService {
 		// 기존 취미 전부 삭제
 		mapper.deleteMemberHobby(memberNo);
 
-	    // 새로 선택한 취미 등록
-	    List<String> hobbyCodeList = inputMember.getHobbyCode();
-	    
-	    Map<String, Object> map = new HashMap<>();
-	    map.put("memberNo", memberNo);
-	    
-	    
-	    if (hobbyCodeList != null && !hobbyCodeList.isEmpty()) {
-	        
-	    		for (String hobbyCode : hobbyCodeList) {
-	        
-	    			map.put("hobbyCode", hobbyCode);
-	    			
-	    		    mapper.insertMemberHobby(map);
-	        }
-	    }
-		
+		// 새로 선택한 취미 등록
+		List<String> hobbyCodeList = inputMember.getHobbyCode();
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("memberNo", memberNo);
+
+		if (hobbyCodeList != null && !hobbyCodeList.isEmpty()) {
+
+			for (String hobbyCode : hobbyCodeList) {
+
+				map.put("hobbyCode", hobbyCode);
+
+				mapper.insertMemberHobby(map);
+			}
+		}
+
 		return result;
 	}
 
@@ -126,141 +125,129 @@ public class MyPageServiceImpl implements MyPageService {
 	@Override
 	public int profile(MultipartFile profileImg, boolean isDefault, MemberDTO loginMember) throws Exception {
 
-	    // ===================== 기본 이미지 변경 요청 =====================
-	    if (isDefault) {
-	        MemberDTO member = MemberDTO.builder()
-	                .memberNo(loginMember.getMemberNo())
-	                .profileImg(null)
-	                .profilePath(null)
-	                .profileOriginalName(null)
-	                .profileRename(null)
-	                .profileFullPath(null)
-	                .build();
+		// ===================== 기본 이미지 변경 =====================
+		if (isDefault) {
 
-	        // 한 번도 프로필 등록 안 한 회원은 PROFILE_IMG 테이블 업데이트 불필요
-	        if (loginMember.getProfileImg() != null) {
-	        	
-	        	// DB 삭제와 함께 파일도 즉시 삭제
-	            File oldFile = new File(profileFolderPath + loginMember.getProfileRename());
-	            if (oldFile.exists()) {
-	                oldFile.delete();
-	            }
-	            
-	        	mapper.deleteProfile(member);
-	        }
+			MemberDTO member = MemberDTO.builder().memberNo(loginMember.getMemberNo()).profileImg(null)
+					.profilePath(null).profileOriginalName(null).profileRename(null).profileFullPath(null).build();
 
-	        int updateProfile = mapper.updateProfile(member);
+			int updateProfile = mapper.updateProfile(member);
 
-	        if (updateProfile > 0) {
-	            loginMember.setProfileImg(null);
-	            loginMember.setProfilePath(null);
-	            loginMember.setProfileOriginalName(null);
-	            loginMember.setProfileRename(null);
+			if (updateProfile > 0) {
 
-	            log.info("기본 이미지로 변경 완료 - memberNo: " + loginMember.getMemberNo());
-	        }
+				if (loginMember.getProfileImg() != null && loginMember.getProfileRename() != null) {
 
-	        return updateProfile;
-	    }
+					mapper.deleteProfile(member);
 
-	    // ===================== 일반 이미지 업로드 =====================
-	    log.info("service profileImg : " + profileImg.getOriginalFilename());
+					File oldFile = new File(profileFolderPath + loginMember.getProfileRename());
 
-	    String updatePath = null;
-	    String rename = null;
-	    String profilePath = profileWebPath;
-	    int result = 0;
+					if (oldFile.exists()) {
+						oldFile.delete();
+					}
+				}
 
-	    if (!profileImg.isEmpty()) {
-	        rename = Utility.fileRename(profileImg.getOriginalFilename());
-	        updatePath = profileWebPath + rename;
-	    }
+				loginMember.setProfileImg(null);
+				loginMember.setProfilePath(null);
+				loginMember.setProfileOriginalName(null);
+				loginMember.setProfileRename(null);
 
-	    MemberDTO member = MemberDTO.builder()
-	            .memberNo(loginMember.getMemberNo())
-	            .profileImg(updatePath)
-	            .profilePath(profilePath)
-	            .profileOriginalName(profileImg.getOriginalFilename())
-	            .profileRename(rename)
-	            .profileFullPath(updatePath)
-	            .build();
+				log.info("기본 이미지로 변경 완료 - memberNo: {}", loginMember.getMemberNo());
+			}
 
-	    if (!profileImg.isEmpty()) {
-	        result = mapper.profile(member);
-	        log.info("프로필테이블에서 변경한 프로필 : " + member.getProfileImg());
-	    }
+			return updateProfile;
+		}
 
-	    loginMember.setProfileImg(member.getProfileImg());
+		// ===================== 프로필 업로드 =====================
 
-	    if (result > 0) {
-	        log.info("SQL문 수행 성공");
-	        log.info("member.getMemberNo() : " + member.getMemberNo());
-	        log.info("member.getProfileFullPath() : " + member.getProfileImg());
+		if (profileImg.isEmpty()) {
+			return 0;
+		}
 
-	        // 기존 파일 삭제
-	        if (loginMember.getProfileRename() != null) {
-	            File oldFile = new File(profileFolderPath + loginMember.getProfileRename());
-	            if (oldFile.exists()) {
-	                oldFile.delete();
-	                log.info("기존 프로필 파일 삭제 완료 : " + oldFile.getName());
-	            }
-	        }
-	        
-	        // 새 파일 저장
-	        if (!profileImg.isEmpty()) {
-	        	String savePath = profileFolderPath + rename;
+		log.info("service profileImg : {}", profileImg.getOriginalFilename());
 
-	            if (Utility.isResizableImage(profileImg.getOriginalFilename())) {
-	                // JPG, PNG, WEBP → 300x300 리사이징 후 저장
-	                Utility.resizeProfile(profileImg, savePath);
-	            } else {
-	                // GIF 등 → 그대로 저장
-	                profileImg.transferTo(new File(savePath));
-	            }
+		String rename = Utility.fileRename(profileImg.getOriginalFilename());
 
-	            if (loginMember.getProfileImg() == null) {
-	                log.info("멤버 테이블에 프로필경로 없음.");
-	            }
-	        }
+		String profilePath = profileWebPath;
+		String updatePath = profilePath + rename;
 
-	        loginMember.setProfileOriginalName(profileImg.getOriginalFilename());
-	        loginMember.setProfilePath(profilePath);
-	        loginMember.setProfileRename(rename);
+		String oldRename = loginMember.getProfileRename();
 
-	        log.info("loginMember.getProfilePath() : " + loginMember.getProfilePath());
-	        log.info("updatePath : " + updatePath);
-	    }
+		MemberDTO member = MemberDTO.builder().memberNo(loginMember.getMemberNo()).profileImg(updatePath)
+				.profilePath(profilePath).profileOriginalName(profileImg.getOriginalFilename()).profileRename(rename)
+				.profileFullPath(updatePath).build();
 
-	    int updateProfile = mapper.updateProfile(member);
+		// PROFILE_IMG 테이블 저장
+		int result = mapper.profile(member);
 
-	    if (updateProfile > 0) {
-	        log.info("MEMBER TABLE PROFILE_IMG UPDATE 성공");
-	        log.info(" 변경한 프로필 : " + member.getProfileImg());
-	        log.info("profilePath : " + profilePath);
+		if (result <= 0) {
+			return 0;
+		}
 
-	        // profileImg가 비어있지 않을 때만 세션 갱신 (방어 처리)
-	        if (!profileImg.isEmpty()) {
-	            if (rename == null) {
-	                loginMember.setProfileImg(null);
-	            } else {
-	                loginMember.setProfileImg(profilePath + rename);
-	            }
-	        }
-	    }
+		log.info("프로필 테이블 저장 성공 : {}", member.getProfileImg());
 
-	    return updateProfile;
+		// ===================== 파일 저장 =====================
+
+		String savePath = profileFolderPath + rename;
+
+		try {
+
+			if (Utility.isResizableImage(profileImg.getOriginalFilename())) {
+				Utility.resizeProfile(profileImg, savePath);
+			} else {
+				profileImg.transferTo(new File(savePath));
+			}
+		} catch (Exception e) {
+
+			log.error("프로필 이미지 파일 저장 실패 : {}", savePath, e);
+
+			// @Transactional rollback 유도
+			throw new RuntimeException("프로필 이미지 저장에 실패했습니다.", e);
+		}
+
+		// ===================== MEMBER 테이블 업데이트 =====================
+
+		int updateProfile = mapper.updateProfile(member);
+
+		if (updateProfile <= 0) {
+			throw new RuntimeException("회원 프로필 정보 업데이트 실패");
+		}
+
+		log.info("MEMBER TABLE PROFILE_IMG UPDATE 성공");
+
+		// ===================== 기존 파일 삭제 =====================
+
+		if (oldRename != null) {
+
+			File oldFile = new File(profileFolderPath + oldRename);
+
+			if (oldFile.exists()) {
+
+				oldFile.delete();
+
+				log.info("기존 프로필 파일 삭제 완료 : {}", oldFile.getName());
+			}
+		}
+
+		// ===================== Session 갱신 =====================
+
+		loginMember.setProfileImg(updatePath);
+		loginMember.setProfilePath(profilePath);
+		loginMember.setProfileOriginalName(profileImg.getOriginalFilename());
+		loginMember.setProfileRename(rename);
+
+		return updateProfile;
 	}
-	
-	//회원 탈퇴
+
+	// 회원 탈퇴
 	@Override
 	public int secession(String memberPw, int memberNo) {
-		
+
 		String encPw = mapper.checkPw(memberNo);
-		
+
 		if (!bcrypt.matches(memberPw, encPw)) {
 			return 0;
 		}
-		
+
 		return mapper.secession(memberNo);
 	}
 }
