@@ -227,13 +227,18 @@ public class BoardController {
 			return "redirect:/";
 		}
 		
-		if (boardCode == 4) {
-	        Gathering gathering = gatheringService.getGathering(
-	            boardNo,
-	            loginMember != null ? loginMember.getMemberNo() : 0
-	        );
-	        model.addAttribute("gathering", gathering);
-	    }
+		int safeBoardCode = (boardCode != null) ? boardCode : board.getBoardCode();
+
+		if (safeBoardCode == 4) {
+		    Gathering gathering = gatheringService.getGathering(
+		        boardNo,
+		        loginMember != null ? loginMember.getMemberNo() : 0
+		    );
+		    model.addAttribute("gathering", gathering);
+		}
+
+		// 아래 model.addAttribute도 safeBoardCode 사용으로 변경
+		model.addAttribute("boardCode", safeBoardCode);
 
 		handleViewCount(board, boardNo, loginMember, req, resp);
 
@@ -246,10 +251,6 @@ public class BoardController {
 
 		model.addAttribute("gotoList", gotoList);
 		
-		if (boardCode == 5) {
-	        return "challenge/certDetail";
-	    }
-
 		return "board/boardDetail";
 	}
 
