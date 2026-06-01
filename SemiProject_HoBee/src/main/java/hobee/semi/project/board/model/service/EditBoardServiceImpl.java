@@ -151,8 +151,21 @@ public class EditBoardServiceImpl implements EditBoardService {
 
 	@Override
 	public int boardDelete(Map<String, Object> map) {
-		return mapper.boardDelete(map);
+		int result = mapper.boardDelete(map);
 
+	    // 모임 모집 게시글이면 GATHERING 상태도 DONE으로 변경
+	    if (result > 0) {
+	        Integer boardCode = (Integer) map.get("boardCode");
+	        if (boardCode != null && boardCode == 4) {
+	            int boardNo = (Integer) map.get("boardNo");
+	            Gathering gathering = gatheringMapper.selectGathering(boardNo);
+	            if (gathering != null) {
+	                gatheringMapper.updateStatus(gathering.getGatheringNo(), "DONE");
+	            }
+	        }
+	    }
+
+	    return result;
 	}
 
 	/**
