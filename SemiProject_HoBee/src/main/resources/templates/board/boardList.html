@@ -22,7 +22,7 @@
         <h1 th:text="${hobbyName != null} ? |${hobbyName} 게시판| : ${boardName}" class="board-name"></h1>
 
         <!-- TOP / 공지 -->
-        <th:block th:if="${boardCode != 1}">
+        <th:block th:if="${boardCode != 1 && boardCode != 4}">
             <th:block
                 th:replace="~{common/fragments/rankNoticeSection :: rankNoticeSection(${hobbyName}, ${boardName}, ${bestList}, ${noticeList})}">
             </th:block>

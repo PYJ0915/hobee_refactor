@@ -8,16 +8,19 @@
 	<!-- 게시글 개수 조회 (페이지네이션) -->
 	<select id="getListCount" resultType="_int">
 		SELECT COUNT(*)
-		FROM "BOARD"
-		WHERE BOARD_DEL_FL = 'N'
+		FROM BOARD B
+		JOIN GATHERING G ON B.BOARD_NO = G.BOARD_NO
+		WHERE B.BOARD_DEL_FL = 'N'
+
 		<choose>
 			<when test="categoryCode != null">
-				AND CATEGORY_CODE = #{categoryCode}
+				AND B.CATEGORY_CODE = #{categoryCode}
 			</when>
 			<otherwise>
-				AND BOARD_CODE = #{boardCode}
+				AND B.BOARD_CODE = #{boardCode}
 			</otherwise>
 		</choose>
+
 		<if test="onlyOpen == true">
 			AND G.GATHERING_STATUS = 'OPEN'
 		</if>

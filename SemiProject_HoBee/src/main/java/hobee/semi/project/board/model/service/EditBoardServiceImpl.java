@@ -122,9 +122,14 @@ public class EditBoardServiceImpl implements EditBoardService {
 		List<Integer> followerNoList = followMapper.getFollowerNoList(inputBoard.getMemberNo());
 
 		for (int followerNo : followerNoList) {
-			Notification noti = Notification.builder().receiverNo(followerNo).senderNo(inputBoard.getMemberNo())
-					.notiType("BOARD").notiTargetNo(boardNo).notiMessage("님이 새 게시글을 작성했습니다.").build();
-			notificationMapper.insertNotification(noti);
+		    Notification noti = Notification.builder()
+		        .receiverNo(followerNo)
+		        .senderNo(inputBoard.getMemberNo())
+		        .notiType("BOARD")
+		        .notiTargetNo(boardNo)
+		        .notiMessage("님이 새 게시글을 작성했습니다.")
+		        .build();
+		    notificationMapper.insertNotification(noti);
 		}
 
 		return boardNo;

@@ -89,7 +89,7 @@ public class BoardController {
 		}
 
 		// 자유 및 취미 게시판에서 해야하는 작업
-		if (boardCode != 1) {
+		if (boardCode != 1 && boardCode != 4) {
 			log.debug("인기 게시글 및 공지사항 조회 시작");
 			List<Board> bestList = service.selectBestList(boardCode, categoryCode);
 			List<Board> noticeList = service.noticeList(1);
