@@ -34,7 +34,7 @@
 |------|------|------|
 | 게시판 구조 | FreeBoardController, HobbyBoardController, NoticeBoardController 분리 | BoardController 단일 컨트롤러로 통합, boardCode 파라미터로 분기 |
 | 의존성 주입 | `@Autowired` 필드 주입 혼용 | `@RequiredArgsConstructor` + `final` 생성자 주입으로 전체 통일 |
-| 동시성 | `static int seqNum` 공유 필드 | `AtomicInteger`로 교체하여 스레드 안전성 보장 |
+| 동시성 | `static int seqNum` 공유 필드 | UUID를 통한 동시성 제거 |
 | 정적 필드 | `static int hobbyCode` 공유 필드 | 로컬 변수로 변경하여 사이드 이펙트 제거 |
 | 예외 처리 | `ExceptionController` 에러 정보 없음 | `@Slf4j` 로그 추가, URI 및 스택 트레이스 기록 |
 | NPE 방어 | `AdminFilter`에서 loginMember null 체크 없음 | null 체크 후 리다이렉트 처리 |
