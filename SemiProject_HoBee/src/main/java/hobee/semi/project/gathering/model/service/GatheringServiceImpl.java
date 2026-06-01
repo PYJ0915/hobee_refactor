@@ -134,14 +134,7 @@ public class GatheringServiceImpl implements GatheringService {
         // APPROVED 참여자 전원 알림
         members.forEach(m -> {
             if (m.getMemberNo() == loginMemberNo) return;
-            Notification noti = Notification.builder()
-                .receiverNo(m.getMemberNo())
-                .senderNo(loginMemberNo)
-                .notiType("GATHERING")
-                .notiTargetNo(gatheringNo)
-                .notiMessage("님의 모임이 확정되어 채팅방이 생성되었습니다.")
-                .build();
-            notificationMapper.insertNotification(noti);
+            sendGatheringNoti(loginMemberNo, loginMemberNo, gatheringNo, "님의 모임이 확정되어 채팅방이 생성되었습니다.");
         });
 
         return room.getRoomNo();
@@ -157,14 +150,7 @@ public class GatheringServiceImpl implements GatheringService {
         mapper.incrementMember(gatheringNo);
 
         // 신청자에게 수락 알림
-        Notification noti = Notification.builder()
-            .receiverNo(targetMemberNo)
-            .senderNo(loginMemberNo)
-            .notiType("GATHERING")
-            .notiTargetNo(gatheringNo)
-            .notiMessage("님이 모임 참여 신청을 수락했습니다.")
-            .build();
-        notificationMapper.insertNotification(noti);
+        sendGatheringNoti(targetMemberNo, loginMemberNo, gatheringNo, "님이 모임 참여 신청을 수락했습니다.");
 
         result.put("success", true);
         return result;
@@ -179,14 +165,7 @@ public class GatheringServiceImpl implements GatheringService {
         mapper.rejectJoin(gatheringNo, targetMemberNo);
 
         // 신청자에게 거절 알림
-        Notification noti = Notification.builder()
-            .receiverNo(targetMemberNo)
-            .senderNo(loginMemberNo)
-            .notiType("GATHERING")
-            .notiTargetNo(gatheringNo)
-            .notiMessage("님이 모임 참여 신청을 거절했습니다.")
-            .build();
-        notificationMapper.insertNotification(noti);
+        sendGatheringNoti(targetMemberNo, loginMemberNo, gatheringNo, "님이 모임 참여 신청을 거절했습니다.");
 
         result.put("success", true);
         return result;
@@ -200,5 +179,17 @@ public class GatheringServiceImpl implements GatheringService {
     @Override
     public void updateGathering(Gathering gathering) {
         mapper.updateGathering(gathering);
+    }
+    
+    // Gathering 알림 메서드
+    private void sendGatheringNoti(int receiverNo, int senderNo, int gatheringNo, String message) {
+		Notification noti = Notification.builder()
+		.receiverNo(receiverNo)
+		.senderNo(senderNo)
+		.notiType("GATHERING")
+		.notiTargetNo(gatheringNo)
+		.notiMessage(message)
+		.build();
+		notificationMapper.insertNotification(noti);
     }
 }
