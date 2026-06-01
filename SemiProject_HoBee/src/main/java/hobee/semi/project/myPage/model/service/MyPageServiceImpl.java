@@ -125,39 +125,60 @@ public class MyPageServiceImpl implements MyPageService {
 	@Override
 	public int profile(MultipartFile profileImg, boolean isDefault, MemberDTO loginMember) throws Exception {
 
-		// ===================== 기본 이미지 변경 =====================
 		if (isDefault) {
-
-			MemberDTO member = MemberDTO.builder().memberNo(loginMember.getMemberNo()).profileImg(null)
-					.profilePath(null).profileOriginalName(null).profileRename(null).profileFullPath(null).build();
-
-			int updateProfile = mapper.updateProfile(member);
-
-			if (updateProfile > 0) {
-
-				if (loginMember.getProfileImg() != null && loginMember.getProfileRename() != null) {
-
-					mapper.deleteProfile(member);
-
-					File oldFile = new File(profileFolderPath + loginMember.getProfileRename());
-
-					if (oldFile.exists()) {
-						oldFile.delete();
-					}
-				}
-
-				loginMember.setProfileImg(null);
-				loginMember.setProfilePath(null);
-				loginMember.setProfileOriginalName(null);
-				loginMember.setProfileRename(null);
-
-				log.info("기본 이미지로 변경 완료 - memberNo: {}", loginMember.getMemberNo());
-			}
-
-			return updateProfile;
+			return changeToDefaultProfile(loginMember);
 		}
 
-		// ===================== 프로필 업로드 =====================
+		return uploadNewProfile(profileImg, loginMember);
+	}
+
+	// 회원 탈퇴
+	@Override
+	public int secession(String memberPw, int memberNo) {
+
+		String encPw = mapper.checkPw(memberNo);
+
+		if (!bcrypt.matches(memberPw, encPw)) {
+			return 0;
+		}
+
+		return mapper.secession(memberNo);
+	}
+
+	// 프로필 기본이미지 변경 함수
+	private int changeToDefaultProfile(MemberDTO loginMember) {
+
+		MemberDTO member = MemberDTO.builder().memberNo(loginMember.getMemberNo()).profileImg(null).profilePath(null)
+				.profileOriginalName(null).profileRename(null).profileFullPath(null).build();
+
+		int updateProfile = mapper.updateProfile(member);
+
+		if (updateProfile > 0) {
+
+			if (loginMember.getProfileImg() != null && loginMember.getProfileRename() != null) {
+
+				mapper.deleteProfile(member);
+
+				File oldFile = new File(profileFolderPath + loginMember.getProfileRename());
+
+				if (oldFile.exists()) {
+					oldFile.delete();
+				}
+			}
+
+			loginMember.setProfileImg(null);
+			loginMember.setProfilePath(null);
+			loginMember.setProfileOriginalName(null);
+			loginMember.setProfileRename(null);
+
+			log.info("기본 이미지로 변경 완료 - memberNo: {}", loginMember.getMemberNo());
+		}
+
+		return updateProfile;
+	}
+
+	// 새 프로필 변경 함수
+	private int uploadNewProfile(MultipartFile profileImg, MemberDTO loginMember) throws Exception {
 
 		if (profileImg.isEmpty()) {
 			return 0;
@@ -176,7 +197,7 @@ public class MyPageServiceImpl implements MyPageService {
 				.profilePath(profilePath).profileOriginalName(profileImg.getOriginalFilename()).profileRename(rename)
 				.profileFullPath(updatePath).build();
 
-		// PROFILE_IMG 테이블 저장
+		// PROFILE_IMG 저장
 		int result = mapper.profile(member);
 
 		if (result <= 0) {
@@ -185,8 +206,7 @@ public class MyPageServiceImpl implements MyPageService {
 
 		log.info("프로필 테이블 저장 성공 : {}", member.getProfileImg());
 
-		// ===================== 파일 저장 =====================
-
+		// 파일 저장
 		String savePath = profileFolderPath + rename;
 
 		try {
@@ -196,16 +216,13 @@ public class MyPageServiceImpl implements MyPageService {
 			} else {
 				profileImg.transferTo(new File(savePath));
 			}
+
 		} catch (Exception e) {
-
 			log.error("프로필 이미지 파일 저장 실패 : {}", savePath, e);
-
-			// @Transactional rollback 유도
 			throw new RuntimeException("프로필 이미지 저장에 실패했습니다.", e);
 		}
 
-		// ===================== MEMBER 테이블 업데이트 =====================
-
+		// MEMBER 업데이트
 		int updateProfile = mapper.updateProfile(member);
 
 		if (updateProfile <= 0) {
@@ -214,8 +231,7 @@ public class MyPageServiceImpl implements MyPageService {
 
 		log.info("MEMBER TABLE PROFILE_IMG UPDATE 성공");
 
-		// ===================== 기존 파일 삭제 =====================
-
+		// 기존 파일 삭제
 		if (oldRename != null) {
 
 			File oldFile = new File(profileFolderPath + oldRename);
@@ -228,26 +244,12 @@ public class MyPageServiceImpl implements MyPageService {
 			}
 		}
 
-		// ===================== Session 갱신 =====================
-
+		// Session 갱신
 		loginMember.setProfileImg(updatePath);
 		loginMember.setProfilePath(profilePath);
 		loginMember.setProfileOriginalName(profileImg.getOriginalFilename());
 		loginMember.setProfileRename(rename);
 
 		return updateProfile;
-	}
-
-	// 회원 탈퇴
-	@Override
-	public int secession(String memberPw, int memberNo) {
-
-		String encPw = mapper.checkPw(memberNo);
-
-		if (!bcrypt.matches(memberPw, encPw)) {
-			return 0;
-		}
-
-		return mapper.secession(memberNo);
 	}
 }
