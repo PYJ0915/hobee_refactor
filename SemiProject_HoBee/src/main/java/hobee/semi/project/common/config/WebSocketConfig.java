@@ -16,6 +16,8 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
@@ -51,7 +53,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
 
         	    if (accessor != null && StompCommand.CONNECT.equals(accessor.getCommand())) {
         	        String nickname = accessor.getFirstNativeHeader("nickname");
-        	        System.out.println(">>> CONNECT nickname: " + nickname); // 확인용
         	        if (nickname != null && !nickname.isBlank()) {
         	            accessor.setUser(new UsernamePasswordAuthenticationToken(
         	                nickname, null, new ArrayList<>()

@@ -51,61 +51,25 @@ public class MemberController {
 
 	// 로그인
 	@PostMapping("loginPage")
-	public String login(@ModelAttribute MemberDTO inputMember/* 로그인 창에 쓴 값(그릇) */,
-			@ModelAttribute ProfileDTO profileDTO, Model model, /* 값을 들고 클라이언트 이동(바구니) */
-			RedirectAttributes ra, @RequestParam(value = "saveId", required = false) String saveId/* saveId 값 */,
-			HttpServletResponse resp /* 쿠기를 클라이언트로 옮기기 위해 */
-	) {
+	public String login(@ModelAttribute MemberDTO inputMember, Model model, RedirectAttributes ra,
+			@RequestParam(value = "saveId", required = false) String saveId, HttpServletResponse resp) {
 
-		try {
-			// member 모든 값이 들어가져 있음
-			MemberDTO loginMember = service.loginMember(inputMember);
+		MemberDTO loginMember = service.loginMember(inputMember);
 
-			log.debug("로그인 회원 loginMember 상태 : " + loginMember);
-			log.debug("체크박스 saveId 상태 : " + saveId);
-
-			if (loginMember != null) {
-
-				// --------------------------------------------------
-				// 최신 프로필 이미지 조회
-//				ProfileDTO profile =
-//		                service.selectLatestProfile(loginMember.getMemberNo());
-//
-//		        if(profile != null) {
-//		            loginMember.setProfileImg(
-//		                profile.getProfilePath() + profile.getProfileRename()
-//		            );
-//		        }
-				// --------------------------------------------------
-
-				log.info("memberDTO 회원 프로필 이미지 경로 : " + loginMember.getProfileImg());
-				log.info("memberDTO 회원 닉네임 : " + loginMember.getMemberNickname());
-
-				model.addAttribute("loginMember", loginMember);
-
-				// 쿠키 객체 생성(회원 정보 관리하기 위해(입장권 번호))
-				Cookie cookie = new Cookie("saveId", loginMember.getMemberId());
-
-				// 사이트 모두 가능
-				cookie.setPath("/");
-
-				if (saveId != null) {// 체크함
-					cookie.setMaxAge(60 * 60 * 24 * 30); // 30일동안 생존 이후 삭제
-				} else {
-					cookie.setMaxAge(0); // 실패 시 0초 생존
-				}
-
-				// 클라이언트로 이동
-				resp.addCookie(cookie);
-
-			} else {
-				ra.addFlashAttribute("message", "아이디 또는 비밀번호가 일치하지 않습니다.");
-				return "redirect:/member/loginPage"; // 로그인 실패시 로그인 페이지로 이동
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (loginMember == null) {
+			ra.addFlashAttribute("message", "아이디 또는 비밀번호가 일치하지 않습니다.");
+			return "redirect:/member/loginPage";
 		}
+
+		model.addAttribute("loginMember", loginMember);
+
+		Cookie cookie = new Cookie("saveId", loginMember.getMemberId());
+		cookie.setPath("/");
+		cookie.setMaxAge(saveId != null ? 60 * 60 * 24 * 30 : 0);
+
+		resp.addCookie(cookie);
+
+		log.info("로그인 성공 : {}", loginMember.getMemberId());
 
 		return "redirect:/";
 	}
@@ -242,10 +206,8 @@ public class MemberController {
 	}
 
 	@GetMapping("profile/{memberNo:[0-9]+}")
-	public String memberProfile(
-			@PathVariable("memberNo") int memberNo,
-			@SessionAttribute(value = "loginMember", required = false) MemberDTO loginMember, 
-			Model model,
+	public String memberProfile(@PathVariable("memberNo") int memberNo,
+			@SessionAttribute(value = "loginMember", required = false) MemberDTO loginMember, Model model,
 			RedirectAttributes ra) {
 
 		// 조회할 회원 정보 가져오기
@@ -255,46 +217,44 @@ public class MemberController {
 			ra.addFlashAttribute("message", "존재하지 않거나 탈퇴한 회원입니다.");
 			return "redirect:/";
 		}
-		
+
 		// 취미 코드 조회 → 취미 이름 목록 조회
-		 List<String> hobbyCodes = service.selectMemberHobbyCode(memberNo);
-		 targetMember.setHobbyCode(hobbyCodes);
-		 
-		 List<Hobby> hobbyList = myPageService.selectHobbyList(hobbyCodes);
-		 targetMember.setHobbyList(hobbyList);
-		 
+		List<String> hobbyCodes = service.selectMemberHobbyCode(memberNo);
+		targetMember.setHobbyCode(hobbyCodes);
+
+		List<Hobby> hobbyList = myPageService.selectHobbyList(hobbyCodes);
+		targetMember.setHobbyList(hobbyList);
+
 		// 게시글 목록 조회
 		List<Board> boardList = service.selectMemberBoardList(memberNo);
-		    
-		// 내 프로필인지 여부 (수정 버튼 / 팔로우 버튼 분기용)
-		boolean isMyProfile = loginMember != null
-                && loginMember.getMemberNo() == memberNo;
-		
-		// 팔로우 관련 데이터
-	    int followerCount  = followService.getFollowerCount(memberNo);
-	    int followingCount = followService.getFollowingCount(memberNo);
-	    boolean isFollowing = loginMember != null && !isMyProfile
-	                       && followService.isFollowing(loginMember.getMemberNo(), memberNo);
-	    
-	    List<Challenge> challengeList = challengeService.getMyChallenges(memberNo);
-	    
-	    model.addAttribute("myChallengeList", challengeList);
-		model.addAttribute("targetMember", targetMember);
-	    model.addAttribute("boardList", boardList);
-	    model.addAttribute("isMyProfile", isMyProfile);
-	    model.addAttribute("followerCount", followerCount);
-	    model.addAttribute("followingCount", followingCount);
-	    model.addAttribute("isFollowing", isFollowing);
 
-	    return "member/memberProfile";
+		// 내 프로필인지 여부 (수정 버튼 / 팔로우 버튼 분기용)
+		boolean isMyProfile = loginMember != null && loginMember.getMemberNo() == memberNo;
+
+		// 팔로우 관련 데이터
+		int followerCount = followService.getFollowerCount(memberNo);
+		int followingCount = followService.getFollowingCount(memberNo);
+		boolean isFollowing = loginMember != null && !isMyProfile
+				&& followService.isFollowing(loginMember.getMemberNo(), memberNo);
+
+		List<Challenge> challengeList = challengeService.getMyChallenges(memberNo);
+
+		model.addAttribute("myChallengeList", challengeList);
+		model.addAttribute("targetMember", targetMember);
+		model.addAttribute("boardList", boardList);
+		model.addAttribute("isMyProfile", isMyProfile);
+		model.addAttribute("followerCount", followerCount);
+		model.addAttribute("followingCount", followingCount);
+		model.addAttribute("isFollowing", isFollowing);
+
+		return "member/memberProfile";
 	}
 
 	// 단체 채팅방 참여자 검색
 	@ResponseBody
 	@GetMapping("search")
-	public List<MemberDTO> searchMembers(
-	        @RequestParam("keyword") String keyword) {
-	    return service.searchMembers(keyword);
+	public List<MemberDTO> searchMembers(@RequestParam("keyword") String keyword) {
+		return service.searchMembers(keyword);
 	}
-	
+
 }
