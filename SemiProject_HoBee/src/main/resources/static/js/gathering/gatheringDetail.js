@@ -23,7 +23,7 @@ window.addEventListener("load", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
 
-     // 지도 초기화 함수
+    // 지도 초기화 함수
     function initMap() {
         const mapContainer = document.querySelector("#gatheringMap");
         if (!mapContainer) return;
@@ -90,13 +90,20 @@ document.addEventListener("DOMContentLoaded", () => {
         confirmBtn.addEventListener("click", async () => {
             if (!confirm("모임을 확정하시겠습니까? 참여자들에게 채팅방이 생성됩니다.")) return;
             const gatheringNo = confirmBtn.dataset.gatheringNo;
-            const result = await fetch(`/gathering/confirm/${gatheringNo}`, {
-                method: "POST"
-            }).then(r => r.json());
 
-            if (result.success) {
-                alert("모임이 확정되었습니다! 채팅방으로 이동합니다.");
-                location.href = `/chat`;
+            try {
+                const result = await fetch(`/gathering/confirm/${gatheringNo}`, {
+                    method: "POST"
+                }).then(r => r.json());
+
+                if (result.success) {
+                    alert("모임이 확정되었습니다! 채팅방으로 이동합니다.");
+                    location.href = "/chat";
+                } else {
+                    alert(result.message || "모임 확정에 실패했습니다.");  // ← 메시지 표시
+                }
+            } catch (err) {
+                alert("오류가 발생했습니다. 다시 시도해주세요.");
             }
         });
     }

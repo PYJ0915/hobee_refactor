@@ -44,12 +44,18 @@ public class GatheringController {
 	public Map<String, Object> confirm(@PathVariable("gatheringNo") int gatheringNo,
 			@SessionAttribute("loginMember") MemberDTO loginMember) {
 
-		int roomNo = service.confirmGathering(gatheringNo, loginMember.getMemberNo());
-
 		Map<String, Object> result = new HashMap<>();
-		result.put("success", true);
-		result.put("roomNo", roomNo);
-		return result;
+
+	    try {
+	        int roomNo = service.confirmGathering(gatheringNo, loginMember.getMemberNo());
+	        result.put("success", true);
+	        result.put("roomNo", roomNo);
+	    } catch (IllegalStateException e) {
+	        result.put("success", false);
+	        result.put("message", e.getMessage()); 
+	    }
+
+	    return result;
 	}
 
 	// 수락

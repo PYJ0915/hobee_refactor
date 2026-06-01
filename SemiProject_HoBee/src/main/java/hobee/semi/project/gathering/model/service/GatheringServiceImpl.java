@@ -118,6 +118,11 @@ public class GatheringServiceImpl implements GatheringService {
 
         // APPROVED 멤버만 조회
         List<MemberDTO> members = mapper.selectApprovedMembers(gatheringNo);
+        
+        if (members.isEmpty()) {
+            throw new IllegalStateException("승인된 참여자가 없어 모임을 확정할 수 없습니다.");
+        }
+        
         List<Integer> memberNos = members.stream()
             .map(MemberDTO::getMemberNo)
             .collect(Collectors.toList());
