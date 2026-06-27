@@ -81,13 +81,13 @@ public class FileConfig implements WebMvcConfigurer {
 
 	@Value("${my.board.resource-location}")
 	private String boardResourceLocation;
-	
+
 	@Value("${my.chat.resource-handler}")
 	private String chatResourceHandler;
 
 	@Value("${my.chat.resource-location}")
 	private String chatResourceLocation;
-	
+
 	@Value("${my.challenge.resource-handler}")
 	private String challengeResourceHandler;
 
@@ -116,21 +116,16 @@ public class FileConfig implements WebMvcConfigurer {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-		registry.addResourceHandler(boardResourceHandler)
-		.addResourceLocations(boardResourceLocation);
+		registry.addResourceHandler(boardResourceHandler).addResourceLocations(boardResourceLocation);
 
-		registry.addResourceHandler(profileResourceHandler)
-		.addResourceLocations(profileResourceLocation);
+		registry.addResourceHandler(profileResourceHandler).addResourceLocations(profileResourceLocation);
 
-		registry.addResourceHandler("profileWebPath")
-		.addResourceLocations("profileFolderPath");
-		
-		 // 채팅방 이미지 추가
-	    registry.addResourceHandler(chatResourceHandler)
-	        .addResourceLocations(chatResourceLocation);
-	    
-	    registry.addResourceHandler(challengeResourceHandler)
-        .addResourceLocations(challengeResourceLocation);
+		registry.addResourceHandler("profileWebPath").addResourceLocations("profileFolderPath");
+
+		// 채팅방 이미지 추가
+		registry.addResourceHandler(chatResourceHandler).addResourceLocations(chatResourceLocation);
+
+		registry.addResourceHandler(challengeResourceHandler).addResourceLocations(challengeResourceLocation);
 
 	}
 

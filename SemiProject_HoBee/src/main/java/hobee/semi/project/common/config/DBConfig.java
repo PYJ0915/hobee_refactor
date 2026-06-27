@@ -22,23 +22,23 @@ public class DBConfig {
 
 	@Autowired
 	private ApplicationContext applicationContext;
-	
+
 	// HikariCp 설정
-	
+
 	@Bean
 	@ConfigurationProperties(prefix = "spring.datasource.hikari")
 	public HikariConfig hikariConfig() {
 		return new HikariConfig();
 	}
-	
+
 	@Bean
 	public DataSource dataSource(HikariConfig config) {
 		DataSource dataSource = new HikariDataSource(config);
 		return dataSource;
 	}
-	
+
 	// MyBatis 설정
-	
+
 	@Bean
 	public SqlSessionFactory sessionFactory(DataSource dataSource) throws Exception {
 		SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
@@ -48,16 +48,15 @@ public class DBConfig {
 		sessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:/mybatis-config.xml"));
 		return sessionFactoryBean.getObject();
 	}
-	
+
 	@Bean
 	public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sessionFactory) {
 		return new SqlSessionTemplate(sessionFactory);
 	}
-	
+
 	@Bean
 	public DataSourceTransactionManager dataSourceTransactionManager(DataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
 	}
-	
-	
+
 }
