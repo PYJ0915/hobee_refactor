@@ -129,3 +129,48 @@ body {
         font-size: 16px;
     }
 }
+
+/* --- Tablet (768px ~ 1199px) 보완 --- */
+@media (max-width: 1199px) {
+    .cs-container {
+        width: 92%;
+    }
+}
+
+/* --- Mobile L (480px ~ 767px) 보완 --- */
+@media (max-width: 767px) {
+    .cs-container {
+        width: 95%;
+        margin: 40px auto 80px;
+    }
+
+    .cs-title {
+        font-size: 26px;
+        margin-bottom: 28px;
+    }
+
+    .faq-question {
+        font-size: 15px;
+    }
+}
+
+/* --- Mobile S (~ 479px) 보완 --- */
+@media (max-width: 479px) {
+    .cs-title {
+        font-size: 22px;
+    }
+
+    .section-title {
+        font-size: 18px;
+    }
+
+    .faq-question {
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+        font-size: 14px;
+    }
+}

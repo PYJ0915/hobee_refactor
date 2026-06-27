@@ -630,3 +630,105 @@ a.cert-writer-mini:hover {
     opacity: 0.75;
     text-decoration: none;
 }
+
+/* ================================================
+   반응형 미디어 쿼리 (4단계)
+================================================ */
+
+/* --- Tablet (768px ~ 1199px) --- */
+@media (max-width: 1199px) {
+    .challenge-container,
+    .challenge-detail-container {
+        max-width: 90%;
+    }
+
+    .challenge-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+}
+
+/* --- Mobile L (480px ~ 767px) --- */
+@media (max-width: 767px) {
+    .challenge-container,
+    .challenge-detail-container {
+        max-width: 95%;
+        margin: 24px auto;
+        padding: 0 12px 40px;
+    }
+
+    .challenge-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .challenge-filter {
+        flex-wrap: wrap;
+    }
+
+    .challenge-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* 상세 박스 */
+    .challenge-detail-box {
+        padding: 28px 20px;
+        border-radius: 16px;
+    }
+
+    .challenge-detail-header h2 {
+        font-size: 20px;
+    }
+
+    .challenge-info-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .challenge-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .challenge-btn,
+    .challenge-done-badge {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* 인증 모달 */
+    .cert-modal-box {
+        width: 92%;
+    }
+
+    /* 날짜 네비게이터 */
+    .cert-date-nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}
+
+/* --- Mobile S (~ 479px) --- */
+@media (max-width: 479px) {
+    .challenge-detail-box {
+        padding: 20px 14px;
+    }
+
+    .challenge-detail-header h2 {
+        font-size: 18px;
+    }
+
+    .cert-modal-box {
+        width: 96%;
+        border-radius: 12px;
+    }
+
+    .cert-item {
+        padding: 12px 14px;
+    }
+
+    .cert-date-nav-list {
+        gap: 4px;
+    }
+}

@@ -115,3 +115,72 @@ input:focus {
 .divider {
     color: #ddd;
 }
+
+/* ================================================
+   반응형 미디어 쿼리 (4단계)
+================================================ */
+
+/* --- Tablet (768px ~ 1199px) --- */
+@media (max-width: 1199px) {
+    main {
+        max-width: 700px;
+    }
+}
+
+/* --- Mobile L (480px ~ 767px) --- */
+@media (max-width: 767px) {
+    main {
+        max-width: 95%;
+        margin: 36px auto;
+        padding: 0 16px;
+    }
+
+    h1 {
+        font-size: 26px;
+        margin-bottom: 36px;
+    }
+
+    #login {
+        width: 100%;
+    }
+
+    #login-btn {
+        height: 52px;
+        font-size: 16px;
+    }
+
+    .search-area {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+}
+
+/* --- Mobile S (~ 479px) --- */
+@media (max-width: 479px) {
+    main {
+        margin: 24px auto;
+        padding: 0 12px;
+    }
+
+    h1 {
+        font-size: 22px;
+        margin-bottom: 28px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        height: 44px;
+        font-size: 14px;
+    }
+
+    #login-btn {
+        height: 48px;
+        font-size: 15px;
+        margin-top: 24px;
+    }
+
+    .search-area {
+        font-size: 13px;
+    }
+}

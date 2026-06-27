@@ -116,3 +116,70 @@ button[type="button"]:disabled {
     margin-top: 30px;
     cursor: pointer;
 }
+
+
+/* ================================================
+   반응형 미디어 쿼리 (4단계)
+================================================ */
+
+/* --- Tablet (768px ~ 1199px) --- */
+@media (max-width: 1199px) {
+    main {
+        max-width: 700px;
+    }
+}
+
+/* --- Mobile L (480px ~ 767px) --- */
+@media (max-width: 767px) {
+    main {
+        max-width: 95%;
+        margin: 36px auto;
+        padding: 0 16px;
+    }
+
+    h1 {
+        font-size: 26px;
+        margin-bottom: 36px;
+    }
+
+    #idSearchForm {
+        width: 100%;
+    }
+
+    .signUp-input {
+        flex-direction: column;
+    }
+
+    button[type="button"] {
+        width: 100%;
+    }
+
+    #idSearchBtn {
+        height: 52px;
+        font-size: 16px;
+    }
+}
+
+/* --- Mobile S (~ 479px) --- */
+@media (max-width: 479px) {
+    main {
+        margin: 24px auto;
+        padding: 0 12px;
+    }
+
+    h1 {
+        font-size: 22px;
+        margin-bottom: 28px;
+    }
+
+    input[type="text"],
+    input[type="email"] {
+        height: 44px;
+        font-size: 14px;
+    }
+
+    #idSearchBtn {
+        height: 48px;
+        font-size: 15px;
+    }
+}

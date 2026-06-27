@@ -125,3 +125,98 @@
   color: #452829;
   font-weight: 500;
 }
+
+
+/* ================================================
+   반응형 미디어 쿼리 (4단계)
+================================================ */
+
+/* --- Tablet (768px ~ 1199px) --- */
+@media (max-width: 1199px) {
+    .category-card {
+        width: 300px;
+        padding: 30px;
+    }
+
+    .result-message {
+        max-width: 90%;
+    }
+}
+
+/* --- Mobile L (480px ~ 767px) --- */
+@media (max-width: 767px) {
+    .result-container {
+        padding: 50px 16px;
+    }
+
+    .result-title h1 {
+        font-size: 24px;
+    }
+
+    .result-name,
+    .result-title p {
+        font-size: 15px;
+    }
+
+    .top-category {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .category-card {
+        width: 100%;
+        max-width: 360px;
+        padding: 28px 24px;
+    }
+
+    .result-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .btn {
+        width: 80%;
+        text-align: center;
+        padding: 14px 20px;
+    }
+
+    .result-message p {
+        font-size: 15px;
+    }
+}
+
+/* --- Mobile S (~ 479px) --- */
+@media (max-width: 479px) {
+    .result-title h1 {
+        font-size: 20px;
+    }
+
+    .category-card {
+        padding: 20px 16px;
+        border-radius: 14px;
+    }
+
+    .category-card h2 {
+        font-size: 18px;
+    }
+
+    .hobby-list li {
+        font-size: 15px;
+    }
+
+    .btn {
+        width: 100%;
+        font-size: 15px;
+    }
+
+    .result-message {
+        padding: 14px 16px;
+    }
+
+    .result-message p {
+        font-size: 14px;
+        line-height: 1.8;
+    }
+}

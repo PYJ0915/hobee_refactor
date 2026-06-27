@@ -72,3 +72,28 @@ body {
         height: 400px;
     }
 }
+
+/* --- Tablet (768px ~ 1199px) 보완 --- */
+@media (max-width: 1199px) {
+    .terms-container {
+        width: 92%;
+        margin: 40px auto 80px;
+    }
+}
+
+/* --- Mobile S (~ 479px) 보완 --- */
+@media (max-width: 479px) {
+    .terms-container {
+        width: 95%;
+        margin: 24px auto 60px;
+    }
+
+    .terms-title {
+        font-size: 22px;
+        margin-bottom: 24px;
+    }
+
+    .terms-box {
+        padding: 16px;
+    }
+}

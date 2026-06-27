@@ -66,3 +66,103 @@
   color: #FFF57E;
   font-size: 16px;
 }
+
+
+/* ================================================
+   반응형 미디어 쿼리 (4단계)
+================================================ */
+
+/* --- Tablet (768px ~ 1199px) --- */
+@media (max-width: 1199px) {
+    .hero {
+        height: 340px;
+    }
+
+    .hero-text h1 {
+        font-size: 50px;
+    }
+
+    .hero-text p {
+        font-size: 17px;
+    }
+
+    .intro-card {
+        width: 90%;
+    }
+}
+
+/* --- Mobile L (480px ~ 767px) --- */
+@media (max-width: 767px) {
+    .hero {
+        height: 260px;
+    }
+
+    .hero-text h1 {
+        font-size: 36px;
+        margin-bottom: 8px;
+    }
+
+    .hero-text p {
+        font-size: 15px;
+    }
+
+    .intro {
+        padding: 50px 16px;
+    }
+
+    .intro-card {
+        width: 100%;
+        flex-direction: column;
+        border-radius: 20px;
+    }
+
+    .intro-logo {
+        width: 100%;
+        padding: 30px 0 20px;
+    }
+
+    .intro-logo img {
+        width: 180px;
+    }
+
+    .intro-text {
+        width: 100%;
+        padding: 28px 24px;
+        box-sizing: border-box;
+    }
+
+    .intro-text p {
+        font-size: 14px;
+    }
+}
+
+/* --- Mobile S (~ 479px) --- */
+@media (max-width: 479px) {
+    .hero {
+        height: 220px;
+    }
+
+    .hero-text h1 {
+        font-size: 28px;
+    }
+
+    .hero-text p {
+        font-size: 14px;
+    }
+
+    .intro {
+        padding: 36px 12px;
+    }
+
+    .intro-logo img {
+        width: 140px;
+    }
+
+    .intro-text {
+        padding: 20px 16px;
+    }
+
+    .intro-text p {
+        font-size: 13px;
+    }
+}

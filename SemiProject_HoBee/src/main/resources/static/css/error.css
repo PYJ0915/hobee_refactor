@@ -103,3 +103,85 @@ html, body {
   transform: translateY(-2px);
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
 }
+
+
+/* ================================================
+   반응형 미디어 쿼리 (4단계)
+================================================ */
+
+/* --- Tablet (768px ~ 1199px) --- */
+@media (max-width: 1199px) {
+    .error-box {
+        width: 380px;
+        padding: 50px 40px;
+    }
+
+    .error-code {
+        font-size: 80px;
+    }
+}
+
+/* --- Mobile L (480px ~ 767px) --- */
+@media (max-width: 767px) {
+    .error-box {
+        width: 88%;
+        padding: 44px 32px;
+        border-radius: 20px;
+    }
+
+    .error-code {
+        font-size: 64px;
+    }
+
+    .error-title {
+        font-size: 24px;
+    }
+
+    .error-desc {
+        font-size: 15px;
+    }
+
+    .error-help p {
+        font-size: 16px;
+    }
+
+    .error-help ul {
+        font-size: 14px;
+    }
+}
+
+/* --- Mobile S (~ 479px) --- */
+@media (max-width: 479px) {
+    .error-box {
+        width: 92%;
+        padding: 36px 20px;
+        border-radius: 16px;
+    }
+
+    .error-code {
+        font-size: 52px;
+        margin-bottom: 8px;
+    }
+
+    .error-title {
+        font-size: 20px;
+        margin-bottom: 12px;
+    }
+
+    .error-desc {
+        font-size: 14px;
+    }
+
+    .error-help p {
+        font-size: 14px;
+    }
+
+    .error-help ul {
+        font-size: 13px;
+    }
+
+    .error-btn {
+        padding: 12px 28px;
+        font-size: 13px;
+    }
+}

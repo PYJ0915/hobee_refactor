@@ -136,3 +136,74 @@
     margin-top: 12px;
     overflow: hidden;
 }
+
+
+/* ================================================
+   반응형 미디어 쿼리 (4단계)
+================================================ */
+
+/* --- Tablet (768px ~ 1199px) --- */
+@media (max-width: 1199px) {
+    .board-write-area {
+        max-width: 90% !important;
+        margin: 40px auto !important;
+    }
+}
+
+/* --- Mobile L (480px ~ 767px) --- */
+@media (max-width: 767px) {
+    .board-write-area {
+        max-width: 95% !important;
+        margin: 24px auto !important;
+        padding: 0 12px;
+    }
+
+    .board-title-input {
+        font-size: 1rem;
+    }
+
+    #gatheringFields {
+        padding: 20px 16px;
+    }
+
+    #gatheringFields h4 {
+        font-size: 1rem;
+    }
+
+    .input-row > div {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #searchPlaceBtn {
+        width: 100%;
+    }
+}
+
+/* --- Mobile S (~ 479px) --- */
+@media (max-width: 479px) {
+    .board-write-area {
+        padding: 0 8px;
+    }
+
+    .board-title-input {
+        font-size: 0.95rem;
+        height: 44px;
+    }
+
+    #gatheringFields {
+        padding: 14px 10px;
+    }
+
+    .input-row input[type="date"],
+    .input-row input[type="number"],
+    .input-row input[type="text"] {
+        height: 40px;
+        font-size: 13px;
+    }
+
+    .hobee-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
