@@ -402,3 +402,130 @@
 	padding: 15px !important;
 	resize: none;
 }
+
+/* ================================================
+   반응형 미디어 쿼리 (4단계)
+================================================ */
+
+/* --- Tablet (768px ~ 1199px) --- */
+@media (max-width: 1199px) {
+    .myPage-wrapper {
+        max-width: 95%;
+        gap: 24px;
+    }
+
+    .myPage-content {
+        padding: 48px 48px;
+    }
+
+    .hobby-section {
+        width: 100%;
+    }
+
+    #introdution {
+        width: 100% !important;
+    }
+}
+
+/* --- Mobile L (480px ~ 767px) --- */
+@media (max-width: 767px) {
+    .myPage-container {
+        padding: 20px 16px;
+    }
+
+    .myPage-wrapper {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .myPage-content {
+        padding: 28px 20px;
+        border-radius: 16px;
+    }
+
+    .myPage-title {
+        font-size: 22px;
+    }
+
+    /* 프로필 이미지 영역 */
+    .profile-area {
+        margin-left: 0;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .profile-btn-area {
+        align-self: center;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 0;
+    }
+
+    /* 입력 행 */
+    .myPage-row {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+        gap: 6px;
+        padding-bottom: 10px;
+    }
+
+    .myPage-row label {
+        width: 100%;
+    }
+
+    /* 주소 */
+    .address-area {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .address-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* 취미 */
+    #mainCategoryArea {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 8px;
+    }
+
+    .hobby-section {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    /* 저장 버튼 */
+    .submit-btn {
+        width: 100%;
+    }
+}
+
+/* --- Mobile S (~ 479px) --- */
+@media (max-width: 479px) {
+    .myPage-content {
+        padding: 20px 14px;
+    }
+
+    .myPage-title {
+        font-size: 18px;
+    }
+
+    .profile-img {
+        width: 90px;
+        height: 90px;
+    }
+
+    #CategoryArea {
+        height: 160px;
+    }
+
+    #introdution {
+        width: 100% !important;
+        height: 140px !important;
+    }
+}

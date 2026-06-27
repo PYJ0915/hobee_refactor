@@ -144,3 +144,104 @@
 }
 
 #imageInput{ display: none;}
+
+/* ================================================
+   반응형 미디어 쿼리 (4단계)
+================================================ */
+
+/* --- Tablet (768px ~ 1199px) --- */
+@media (max-width: 1199px) {
+    .myPage-side {
+        width: 180px;
+        padding: 30px 14px;
+    }
+
+    .myPage-content {
+        padding: 48px 40px;
+    }
+}
+
+/* --- Mobile L (480px ~ 767px) --- */
+@media (max-width: 767px) {
+    .myPage-container {
+        flex-direction: column;
+    }
+
+    /* 사이드메뉴: 상단 수평 탭으로 전환 */
+    .myPage-side {
+        width: 100%;
+        padding: 12px 16px;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .side-menu {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .side-item {
+        margin-bottom: 0;
+    }
+
+    .side-item a {
+        padding: 8px 14px;
+        font-size: 13px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+    }
+
+    .myPage-content {
+        padding: 28px 20px;
+    }
+
+    .myPage-title {
+        font-size: 22px;
+    }
+
+    .myPage-row {
+        width: 100%;
+        height: auto;
+        flex-direction: column;
+        align-items: flex-start;
+        padding-bottom: 12px;
+    }
+
+    .myPage-row input {
+        width: 100%;
+    }
+
+    .address-area {
+        flex-wrap: wrap;
+    }
+
+    .submit-btn {
+        width: 100%;
+        font-size: 17px;
+    }
+}
+
+/* --- Mobile S (~ 479px) --- */
+@media (max-width: 479px) {
+    .myPage-side {
+        padding: 10px 12px;
+    }
+
+    .side-item a {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .myPage-content {
+        padding: 20px 14px;
+    }
+
+    .myPage-title {
+        font-size: 18px;
+    }
+
+    .myPage-row > * {
+        font-size: 15px;
+    }
+}

@@ -604,3 +604,145 @@ a>.profile-img:hover {
   justify-content: center;
   padding: 0 3px;
 }
+
+/* ================================================
+   반응형 미디어 쿼리 (4단계)
+================================================ */
+
+/* --- Tablet (768px ~ 1199px) --- */
+@media (max-width: 1199px) {
+    .header-inner {
+        max-width: 100%;
+        padding: 12px 20px;
+    }
+
+    .header-logo {
+        margin-left: 20px;
+    }
+
+    .header-logo img {
+        height: 56px;
+    }
+
+    .header-nav {
+        gap: 6px;
+        margin-right: 16px;
+    }
+
+    .nav-item {
+        font-size: 14px;
+        padding: 6px 10px;
+        line-height: 36px;
+    }
+
+    .categories {
+        gap: 36px;
+        padding: 48px 20px;
+    }
+}
+
+/* --- Mobile L (480px ~ 767px) --- */
+@media (max-width: 767px) {
+    .header-inner {
+        flex-wrap: wrap;
+        padding: 10px 16px;
+        gap: 8px;
+        position: relative;
+    }
+
+    .header-logo {
+        margin-left: 0;
+    }
+
+    .header-logo img {
+        height: 44px;
+        transform: scale(1.1);
+    }
+
+    /* 네비게이션 숨기고 필요 시 햄버거로 대체 가능 */
+    .header-nav {
+        order: 3;
+        width: 100%;
+        flex-wrap: wrap;
+        margin-right: 0;
+        gap: 4px;
+    }
+
+    .nav-item {
+        font-size: 13px;
+        padding: 5px 10px;
+        line-height: 1.4;
+        border: 1px solid #eee;
+        border-radius: 20px;
+    }
+
+    /* 카테고리 */
+    .categories {
+        gap: 20px;
+        padding: 36px 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .category i {
+        width: 70px;
+        height: 70px;
+        font-size: 26px;
+    }
+
+    /* 알림 드롭다운 */
+    .noti-dropdown {
+        width: 280px;
+        right: -40px;
+    }
+
+    /* 팔로우 모달 */
+    .follow-modal-box {
+        width: 90vw;
+    }
+}
+
+/* --- Mobile S (~ 479px) --- */
+@media (max-width: 479px) {
+    .header-logo img {
+        height: 38px;
+        transform: scale(1.0);
+    }
+
+    .nav-item {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+
+    .categories {
+        gap: 14px;
+        padding: 28px 8px;
+    }
+
+    .category i {
+        width: 58px;
+        height: 58px;
+        font-size: 22px;
+    }
+
+    .footer-copy {
+        font-size: 15px;
+    }
+
+    .footer-links {
+        flex-wrap: wrap;
+        gap: 8px;
+        font-size: 12px;
+    }
+
+    .noti-dropdown {
+        width: 94vw;
+        right: -60px;
+    }
+
+    .login-btn,
+    .signup-btn {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+}

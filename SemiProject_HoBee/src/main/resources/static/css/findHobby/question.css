@@ -53,3 +53,73 @@ body {
   background-color: #452829;
   color: #FFF57E; 
 }
+
+
+/* ================================================
+   반응형 미디어 쿼리 (4단계)
+================================================ */
+
+/* --- Tablet (768px ~ 1199px) --- */
+@media (max-width: 1199px) {
+    .question-title {
+        font-size: 38px;
+    }
+
+    .answer-area {
+        gap: 60px;
+    }
+}
+
+/* --- Mobile L (480px ~ 767px) --- */
+@media (max-width: 767px) {
+    .question-title {
+        font-size: 28px;
+    }
+
+    .question-sub {
+        font-size: 15px;
+    }
+
+    .answer-area {
+        gap: 30px;
+        padding-left: 0;
+        padding-bottom: 120px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .answer {
+        font-size: 22px;
+        padding: 16px 30px;
+    }
+}
+
+/* --- Mobile S (~ 479px) --- */
+@media (max-width: 479px) {
+    .question-area {
+        margin-bottom: 50px;
+        padding: 0 16px;
+    }
+
+    .question-title {
+        font-size: 22px;
+    }
+
+    .question-sub {
+        font-size: 14px;
+    }
+
+    .answer-area {
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        padding-bottom: 60px;
+    }
+
+    .answer {
+        width: 80%;
+        text-align: center;
+        font-size: 18px;
+        padding: 14px 20px;
+    }
+}

@@ -71,3 +71,29 @@ body {
         height: 400px;
     }
 }
+
+/* --- Tablet (768px ~ 1199px) 보완 --- */
+@media (max-width: 1199px) {
+    .privacy-container {
+        width: 92%;
+        margin: 40px auto 80px;
+    }
+}
+
+/* --- Mobile S (~ 479px) 보완 --- */
+/* 기존 480px 쿼리에 추가 항목 보완 */
+@media (max-width: 479px) {
+    .privacy-container {
+        width: 95%;
+        margin: 24px auto 60px;
+    }
+
+    .privacy-title {
+        font-size: 22px;
+        margin-bottom: 24px;
+    }
+
+    .privacy-box {
+        padding: 16px;
+    }
+}

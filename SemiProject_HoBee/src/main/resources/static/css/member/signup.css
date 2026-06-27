@@ -180,3 +180,97 @@ button[type="button"]:disabled {
 }
 
 /*---------------------------*/
+
+/* ================================================
+   반응형 미디어 쿼리 (4단계)
+================================================ */
+
+/* --- Tablet (768px ~ 1199px) --- */
+@media (max-width: 1199px) {
+    main {
+        max-width: 700px;
+    }
+}
+
+/* --- Mobile L (480px ~ 767px) --- */
+@media (max-width: 767px) {
+    main {
+        max-width: 95%;
+        margin: 36px auto;
+        padding: 0 16px;
+    }
+
+    h1 {
+        font-size: 26px;
+        margin-bottom: 36px;
+    }
+
+    h3 {
+        width: 100%;
+    }
+
+    .signUp-input,
+    .signUp-input-area {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .signUp-message {
+        width: 100%;
+    }
+
+    /* 취미 영역 */
+    #mainCategoryArea {
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: flex-start;
+    }
+
+    #signUpBtn {
+        width: 100%;
+        height: 54px;
+        font-size: 16px;
+        margin: 36px 0;
+    }
+
+    #introdution {
+        width: 100% !important;
+    }
+}
+
+/* --- Mobile S (~ 479px) --- */
+@media (max-width: 479px) {
+    main {
+        margin: 24px auto;
+        padding: 0 12px;
+    }
+
+    h1 {
+        font-size: 22px;
+        margin-bottom: 28px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="tel"],
+    textarea {
+        height: 44px;
+        font-size: 14px;
+    }
+
+    button[type="button"] {
+        height: 44px;
+        padding: 0 14px;
+        font-size: 13px;
+    }
+
+    #signUpBtn {
+        height: 48px;
+        font-size: 15px;
+    }
+
+    #CategoryArea {
+        height: 160px;
+    }
+}

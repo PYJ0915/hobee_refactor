@@ -185,3 +185,86 @@
 }
 
 .dot{ opacity: .8; }
+
+
+/* ================================================
+   반응형 미디어 쿼리 (4단계)
+================================================ */
+
+/* --- Tablet (768px ~ 1199px) --- */
+@media (max-width: 1199px) {
+    .penalty-card {
+        padding: 40px 40px 30px;
+    }
+}
+
+/* --- Mobile L (480px ~ 767px) --- */
+@media (max-width: 767px) {
+    .penalty-page {
+        padding: 30px 16px;
+    }
+
+    .penalty-card {
+        padding: 30px 24px 24px;
+        border-radius: 20px;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+
+    .subtitle {
+        font-size: 13px;
+    }
+
+    .info-row {
+        grid-template-columns: 100px 1fr;
+        gap: 10px;
+        padding: 10px 0;
+    }
+
+    .actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .footer-links {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+}
+
+/* --- Mobile S (~ 479px) --- */
+@media (max-width: 479px) {
+    .penalty-card {
+        padding: 24px 16px 20px;
+        border-radius: 16px;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+
+    .info-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+        padding: 10px 0;
+    }
+
+    .label {
+        font-size: 13px;
+    }
+
+    .value {
+        font-size: 14px;
+    }
+
+    .message {
+        font-size: 13px;
+    }
+}

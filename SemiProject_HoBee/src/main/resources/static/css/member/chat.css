@@ -369,3 +369,57 @@
 @media (prefers-reduced-motion: reduce) {
     .typing-dots span { animation: none; opacity: 0.6; }
 }
+
+/* ================================================
+   반응형 미디어 쿼리 (4단계)
+   (채팅 모달 컴포넌트용)
+================================================ */
+
+/* --- Tablet (768px ~ 1199px) --- */
+@media (max-width: 1199px) {
+    .chat-modal-box {
+        width: 380px;
+        height: 540px;
+    }
+}
+
+/* --- Mobile L (480px ~ 767px) --- */
+@media (max-width: 767px) {
+    .chat-modal-box {
+        width: 92vw;
+        height: 70vh;
+        border-radius: 16px;
+    }
+
+    .chat-bubble {
+        font-size: 14px;
+        padding: 10px 14px;
+    }
+}
+
+/* --- Mobile S (~ 479px) --- */
+@media (max-width: 479px) {
+    .chat-modal-box {
+        width: 98vw;
+        height: 78vh;
+        border-radius: 12px;
+    }
+
+    .chat-modal-header {
+        padding: 12px 14px;
+    }
+
+    .chat-modal-name {
+        font-size: 14px;
+    }
+
+    .chat-input {
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+
+    .chat-bubble {
+        font-size: 13px;
+        padding: 9px 12px;
+    }
+}
