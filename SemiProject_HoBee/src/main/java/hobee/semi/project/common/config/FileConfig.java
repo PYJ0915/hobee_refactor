@@ -120,8 +120,6 @@ public class FileConfig implements WebMvcConfigurer {
 
 		registry.addResourceHandler(profileResourceHandler).addResourceLocations(profileResourceLocation);
 
-		registry.addResourceHandler("profileWebPath").addResourceLocations("profileFolderPath");
-
 		// 채팅방 이미지 추가
 		registry.addResourceHandler(chatResourceHandler).addResourceLocations(chatResourceLocation);
 
