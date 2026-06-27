@@ -23,7 +23,7 @@ public class MainController {
 
 	    MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 
-	    String path = "/common/main";
+	    String path = "common/main";
 
 	    if (loginMember != null) {
 
@@ -41,7 +41,7 @@ public class MainController {
 	                // 경고를 한 번 보여줬다고 세션에 기록
 	                session.setAttribute("showWarning", true);
 
-	                path = "/penalty/penalty";
+	                path = "penalty/penalty";
 	            }
 	        }
 	    }
