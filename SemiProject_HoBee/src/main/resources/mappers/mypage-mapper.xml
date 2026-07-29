@@ -101,12 +101,6 @@
 				s.MEMBER_NO)
 	</insert>
 	
-	<insert id="insertProfile">
-	INSERT INTO MEMBER(PROFILE_IMG)
-	VALUES(#{profileFullPath})
-	WHERE MEMBER_NO = #{memberNo}
-	</insert>
-	
 	<update id="updateProfile">
 	UPDATE MEMBER SET
 	PROFILE_IMG = #{profileImg}

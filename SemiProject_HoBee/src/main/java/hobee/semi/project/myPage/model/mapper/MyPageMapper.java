@@ -64,8 +64,6 @@ public interface MyPageMapper {
 	 */
 	int profile(MemberDTO member);
 	
-	int insertProfile(MemberDTO member);
-
 	int updateProfile(MemberDTO member);
 	
 	int deleteProfile(MemberDTO member);
