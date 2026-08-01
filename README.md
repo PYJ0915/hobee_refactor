@@ -25,15 +25,15 @@
 
 | 메인 | 게시판 |
 |---|---|
-| <img src=""> | <img src=""> |
+| <img src="./docs/images/main.png" width="400"> | <img src="./docs/images/board.png" width="400"> |
 
 | 채팅 | 챌린지 |
 |---|---|
-| <img src=""> | <img src=""> |
+| <img src="./docs/images/chat.png" width="400"> | <img src="./docs/images/challenge.png" width="400"> |
 
 | 모임 모집 | 마이페이지 |
 |---|---|
-| <img src=""> | <img src=""> |
+| <img src="./docs/images/gathering.png" width="400"> | <img src="./docs/images/mypage.png" width="400"> |
 
 ---
 
@@ -46,7 +46,7 @@
 | **🖥 Front-end** | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) |
 | **🛠 Back-end** | ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white) ![MyBatis](https://img.shields.io/badge/MyBatis-DC382D?style=for-the-badge&logo=databricks&logoColor=white) ![Oracle](https://img.shields.io/badge/Oracle_DB-F80000?style=for-the-badge&logo=oracle&logoColor=white) ![Tomcat](https://img.shields.io/badge/Apache_Tomcat-F8DC75?style=for-the-badge&logo=apachetomcat&logoColor=black) |
 | **🗃 DB Tool** | ![DBeaver](https://img.shields.io/badge/DBeaver-382923?style=for-the-badge&logo=dbeaver&logoColor=white) |
-| **📦 라이브러리** | Thumbnailator 0.4.20 (이미지 리사이징), SummerNote (웹 에디터), Kakao Maps API, SockJS + STOMP (WebSocket) |
+| **📦 라이브러리** | ![Thumbnailator](https://img.shields.io/badge/Thumbnailator_0.4.20-4CAF50?style=for-the-badge) ![SummerNote](https://img.shields.io/badge/SummerNote-2D3E50?style=for-the-badge) ![Kakao Maps API](https://img.shields.io/badge/Kakao_Maps_API-FFCD00?style=for-the-badge) ![SockJS+STOMP](https://img.shields.io/badge/SockJS_%2B_STOMP-010101?style=for-the-badge) |
 
 </div>
 
